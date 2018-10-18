@@ -1,0 +1,10 @@
+{
+  "extends": "ikatyang:library",
+  "packages": [
+    {
+      "packageName": "@angular/compiler",
+      "updateTypes": ["major", "minor", "patch"],
+      "automerge": false
+    }
+  ]
+}
