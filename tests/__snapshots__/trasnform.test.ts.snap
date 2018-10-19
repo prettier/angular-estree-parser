@@ -1,11 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`" " ("EmptyExpr" -> "NGEmptyExpression") ast 1`] = `
-NGEmptyExpression { comments: [] }
-> 1 |  
-    |  ^
-`;
-
 exports[`" a ; b " ("Chain" -> "NGChainedExpression") ast 1`] = `
 NGChainedExpression { expressions: ["Identifier", "Identifier"], comments: [] }
 > 1 |  a ; b 
@@ -47,4 +41,10 @@ exports[`" javascript : void(0) " ("Quote" -> "NGQuotedExpression") ast 1`] = `
 NGQuotedExpression { prefix: "javascript", value: " void(0) ", comments: [] }
 > 1 |  javascript : void(0) 
     |  ^^^^^^^^^^^^^^^^^^^^
+`;
+
+exports[`"" ("EmptyExpr" -> "NGEmptyExpression") ast 1`] = `
+NGEmptyExpression { comments: [] }
+> 1 | 
+    | ^
 `;
