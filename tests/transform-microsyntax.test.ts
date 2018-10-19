@@ -3,7 +3,7 @@ import { snapshotAst } from './helpers';
 
 test.each`
   input                             | types
-  ${' '}                            | ${[]}
+  ${''}                             | ${[]}
   ${' let hero '}                   | ${['NGMicrosyntaxLet']}
   ${' let hero = hello '}           | ${['NGMicrosyntaxLet']}
   ${' let hero of heroes '}         | ${['NGMicrosyntaxLet', 'NGMicrosyntaxKeyedExpression']}
