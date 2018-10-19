@@ -14,7 +14,12 @@ import {
   parseNgInterpolation,
   parseNgSimpleBinding,
 } from '../src/utils';
-import { massageAst, parseBabel, parseBabelExpression } from './helpers';
+import {
+  massageAst,
+  parseBabel,
+  parseBabelExpression,
+  snapshotAst,
+} from './helpers';
 
 describe.each`
   beforeType            | afterType                     | input                       | action   | binding  | simple   | interpolation
@@ -22,7 +27,7 @@ describe.each`
   ${'Binary'}           | ${'BinaryExpression'}         | ${' 0 - 1 '}                | ${true}  | ${true}  | ${true}  | ${true}
   ${'Binary'}           | ${'UnaryExpression'}          | ${' - 1 '}                  | ${true}  | ${true}  | ${true}  | ${true}
   ${'Conditional'}      | ${'ConditionalExpression'}    | ${' a ? 1 : 2 '}            | ${true}  | ${true}  | ${true}  | ${true}
-  ${'EmptyExpr'}        | ${'NGEmptyExpression'}        | ${' '}                      | ${true}  | ${true}  | ${true}  | ${false}
+  ${'EmptyExpr'}        | ${'NGEmptyExpression'}        | ${''}                       | ${true}  | ${true}  | ${true}  | ${false}
   ${'FunctionCall'}     | ${'CallExpression'}           | ${' a ( 1 ) ( 2 ) '}        | ${true}  | ${true}  | ${true}  | ${true}
   ${'KeyedRead'}        | ${'MemberExpression'}         | ${' a [ b ] '}              | ${true}  | ${true}  | ${true}  | ${true}
   ${'LiteralArray'}     | ${'ArrayExpression'}          | ${' [ 1 ] '}                | ${true}  | ${true}  | ${true}  | ${true}
@@ -33,7 +38,7 @@ describe.each`
   ${'LiteralPrimitive'} | ${'NullLiteral'}              | ${' null '}                 | ${true}  | ${true}  | ${true}  | ${true}
   ${'LiteralPrimitive'} | ${'NumericLiteral'}           | ${' ( 1 ) '}                | ${true}  | ${true}  | ${true}  | ${true}
   ${'LiteralPrimitive'} | ${'NumericLiteral'}           | ${' 1 '}                    | ${true}  | ${true}  | ${true}  | ${true}
-  ${'LiteralPrimitive'} | ${'StringLiteral'}            | ${'  "hello" '}             | ${true}  | ${true}  | ${true}  | ${true}
+  ${'LiteralPrimitive'} | ${'StringLiteral'}            | ${' "hello" '}              | ${true}  | ${true}  | ${true}  | ${true}
   ${'MethodCall'}       | ${'CallExpression'}           | ${' a ( 1 , 2 ) '}          | ${true}  | ${true}  | ${true}  | ${true}
   ${'MethodCall'}       | ${'CallExpression'}           | ${' a . b ( 1 , 2 ) '}      | ${true}  | ${true}  | ${true}  | ${true}
   ${'NonNullAssert'}    | ${'TSNonNullExpression'}      | ${' x ! '}                  | ${true}  | ${true}  | ${true}  | ${true}
@@ -87,7 +92,7 @@ describe.each`
 
     if (afterNode!.type.startsWith('NG')) {
       expect(() => parseBabelExpression(input)).toThrowError();
-      expect(afterNode).toMatchSnapshot();
+      expect(snapshotAst(afterNode, input)).toMatchSnapshot();
     } else {
       try {
         expect(afterNode).toEqual(massageAst(parseBabelExpression(input)));
