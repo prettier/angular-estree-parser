@@ -1,168 +1,50 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`" " ("EmptyExpr" -> "NGEmptyExpression") ast 1`] = `
-Object {
-  "comments": Array [],
-  "end": 1,
-  "loc": Object {
-    "end": Object {
-      "column": 1,
-      "line": 1,
-    },
-    "start": Object {
-      "column": 1,
-      "line": 1,
-    },
-  },
-  "start": 1,
-  "type": "NGEmptyExpression",
-}
+NGEmptyExpression { comments: [] }
+> 1 |  
+    |  ^
 `;
 
 exports[`" a ; b " ("Chain" -> "NGChainedExpression") ast 1`] = `
-Object {
-  "comments": Array [],
-  "end": 6,
-  "expressions": Array [
-    Object {
-      "end": 2,
-      "loc": Object {
-        "end": Object {
-          "column": 2,
-          "line": 1,
-        },
-        "identifierName": "a",
-        "start": Object {
-          "column": 1,
-          "line": 1,
-        },
-      },
-      "name": "a",
-      "start": 1,
-      "type": "Identifier",
-    },
-    Object {
-      "end": 6,
-      "loc": Object {
-        "end": Object {
-          "column": 6,
-          "line": 1,
-        },
-        "identifierName": "b",
-        "start": Object {
-          "column": 5,
-          "line": 1,
-        },
-      },
-      "name": "b",
-      "start": 5,
-      "type": "Identifier",
-    },
-  ],
-  "loc": Object {
-    "end": Object {
-      "column": 6,
-      "line": 1,
-    },
-    "start": Object {
-      "column": 1,
-      "line": 1,
-    },
-  },
-  "start": 1,
-  "type": "NGChainedExpression",
-}
+NGChainedExpression { expressions: ["Identifier", "Identifier"], comments: [] }
+> 1 |  a ; b 
+    |  ^^^^^
+--------------------------------------------------------------------------------
+Identifier { name: "a" }
+> 1 |  a ; b 
+    |  ^
+--------------------------------------------------------------------------------
+Identifier { name: "b" }
+> 1 |  a ; b 
+    |      ^
 `;
 
 exports[`" a | b : c " ("BindingPipe" -> "NGPipeExpression") ast 1`] = `
-Object {
-  "arguments": Array [
-    Object {
-      "end": 10,
-      "loc": Object {
-        "end": Object {
-          "column": 10,
-          "line": 1,
-        },
-        "identifierName": "c",
-        "start": Object {
-          "column": 9,
-          "line": 1,
-        },
-      },
-      "name": "c",
-      "start": 9,
-      "type": "Identifier",
-    },
-  ],
-  "comments": Array [],
-  "end": 10,
-  "left": Object {
-    "end": 2,
-    "loc": Object {
-      "end": Object {
-        "column": 2,
-        "line": 1,
-      },
-      "identifierName": "a",
-      "start": Object {
-        "column": 1,
-        "line": 1,
-      },
-    },
-    "name": "a",
-    "start": 1,
-    "type": "Identifier",
-  },
-  "loc": Object {
-    "end": Object {
-      "column": 10,
-      "line": 1,
-    },
-    "start": Object {
-      "column": 1,
-      "line": 1,
-    },
-  },
-  "right": Object {
-    "end": 10,
-    "loc": Object {
-      "end": Object {
-        "column": 10,
-        "line": 1,
-      },
-      "identifierName": "b",
-      "start": Object {
-        "column": 9,
-        "line": 1,
-      },
-    },
-    "name": "b",
-    "start": 9,
-    "type": "Identifier",
-  },
-  "start": 1,
-  "type": "NGPipeExpression",
+NGPipeExpression {
+  left: "Identifier",
+  right: "Identifier",
+  arguments: ["Identifier"],
+  comments: []
 }
+> 1 |  a | b : c 
+    |  ^^^^^^^^^
+--------------------------------------------------------------------------------
+Identifier { name: "a" }
+> 1 |  a | b : c 
+    |  ^
+--------------------------------------------------------------------------------
+Identifier { name: "b" }
+> 1 |  a | b : c 
+    |          ^
+--------------------------------------------------------------------------------
+Identifier { name: "c" }
+> 1 |  a | b : c 
+    |          ^
 `;
 
 exports[`" javascript : void(0) " ("Quote" -> "NGQuotedExpression") ast 1`] = `
-Object {
-  "comments": Array [],
-  "end": 21,
-  "loc": Object {
-    "end": Object {
-      "column": 21,
-      "line": 1,
-    },
-    "start": Object {
-      "column": 1,
-      "line": 1,
-    },
-  },
-  "prefix": "javascript",
-  "start": 1,
-  "type": "NGQuotedExpression",
-  "value": " void(0) ",
-}
+NGQuotedExpression { prefix: "javascript", value: " void(0) ", comments: [] }
+> 1 |  javascript : void(0) 
+    |  ^^^^^^^^^^^^^^^^^^^^
 `;

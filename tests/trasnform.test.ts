@@ -14,7 +14,12 @@ import {
   parseNgInterpolation,
   parseNgSimpleBinding,
 } from '../src/utils';
-import { massageAst, parseBabel, parseBabelExpression } from './helpers';
+import {
+  massageAst,
+  parseBabel,
+  parseBabelExpression,
+  snapshotAst,
+} from './helpers';
 
 describe.each`
   beforeType            | afterType                     | input                       | action   | binding  | simple   | interpolation
@@ -87,7 +92,7 @@ describe.each`
 
     if (afterNode!.type.startsWith('NG')) {
       expect(() => parseBabelExpression(input)).toThrowError();
-      expect(afterNode).toMatchSnapshot();
+      expect(snapshotAst(afterNode, input)).toMatchSnapshot();
     } else {
       try {
         expect(afterNode).toEqual(massageAst(parseBabelExpression(input)));
