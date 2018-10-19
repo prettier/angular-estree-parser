@@ -1,11 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`" " 1`] = `
-NGMicrosyntax { body: [] }
-> 1 |  
-    | ^
-`;
-
 exports[`" a " 1`] = `
 NGMicrosyntax { body: ["NGMicrosyntaxExpression"] }
 > 1 |  a 
@@ -328,4 +322,10 @@ NGMicrosyntaxExpression { expression: "Identifier", alias: null }
 Identifier { name: "heroes" }
 > 1 |  let hero of heroes 
     |              ^^^^^^
+`;
+
+exports[`"" 1`] = `
+NGMicrosyntax { body: [] }
+> 1 | 
+    | ^
 `;
