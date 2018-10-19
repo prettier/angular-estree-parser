@@ -59,7 +59,7 @@ export const transform = (node: InputNode, context: Context): OutputNode => {
     case 'BindingPipe': {
       const { args, exp, name } = node as ng.BindingPipe;
       const left = _t<b.Expression>(exp);
-      const rightStart = _findBackChar(/\S/, _findBackChar(/:/, left.end) + 1);
+      const rightStart = _findBackChar(/\S/, _findBackChar(/\|/, left.end) + 1);
       return _c<NGPipeExpression>('NGPipeExpression', {
         left,
         right: _c<b.Identifier>(
