@@ -14,4 +14,5 @@ module.exports = {
       statements: 100,
     },
   },
+  snapshotSerializers: ['jest-snapshot-serializer-raw'],
 };
