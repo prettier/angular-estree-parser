@@ -1,12 +1,14 @@
 import * as ng from '@angular/compiler/src/expression_parser/ast';
 import { Context } from './context';
 import { InputNode, transform } from './transform';
-import { NGNode, RawNGComment } from './types';
+import { transformTemplateBindings } from './transform-microsyntax';
+import { NGMicrosyntax, NGNode, RawNGComment } from './types';
 import {
   parseNgAction,
   parseNgBinding,
   parseNgInterpolation,
   parseNgSimpleBinding,
+  parseNgTemplateBindings,
 } from './utils';
 
 function parse(
@@ -35,4 +37,11 @@ export function parseInterpolation(input: string): NGNode {
 
 export function parseAction(input: string): NGNode {
   return parse(input, parseNgAction);
+}
+
+export function parseTemplateBindings(input: string): NGMicrosyntax {
+  return transformTemplateBindings(
+    parseNgTemplateBindings(input),
+    new Context(input),
+  );
 }

@@ -3,7 +3,8 @@ import { Lexer } from '@angular/compiler/src/expression_parser/lexer';
 import { Parser } from '@angular/compiler/src/expression_parser/parser';
 import { RawNGComment } from './types';
 
-const fakeLocation = 'angular-estree-parser';
+const NG_PARSE_FAKE_LOCATION = 'angular-estree-parser';
+const NG_PARSE_TEMPLATE_BINDINGS_FAKE_PREFIX = 'NgEstreeParser';
 
 function createNgParser() {
   return new Parser(new Lexer());
@@ -22,20 +23,31 @@ function parseNg(
 
 export function parseNgBinding(input: string) {
   return parseNg(input, (astInput, ngParser) =>
-    ngParser.parseBinding(astInput, fakeLocation),
+    ngParser.parseBinding(astInput, NG_PARSE_FAKE_LOCATION),
   );
 }
 
 export function parseNgSimpleBinding(input: string) {
   return parseNg(input, (astInput, ngParser) =>
-    ngParser.parseSimpleBinding(astInput, fakeLocation),
+    ngParser.parseSimpleBinding(astInput, NG_PARSE_FAKE_LOCATION),
   );
 }
 
 export function parseNgAction(input: string) {
   return parseNg(input, (astInput, ngParser) =>
-    ngParser.parseAction(astInput, fakeLocation),
+    ngParser.parseAction(astInput, NG_PARSE_FAKE_LOCATION),
   );
+}
+
+export function parseNgTemplateBindings(input: string) {
+  const ngParser = createNgParser();
+  const { templateBindings: ast, errors } = ngParser.parseTemplateBindings(
+    NG_PARSE_TEMPLATE_BINDINGS_FAKE_PREFIX,
+    input,
+    NG_PARSE_FAKE_LOCATION,
+  );
+  assertAstErrors(errors);
+  return ast;
 }
 
 export function parseNgInterpolation(input: string) {
@@ -45,7 +57,7 @@ export function parseNgInterpolation(input: string) {
   const suffix = '}}';
   const { ast: rawAst, errors } = ngParser.parseInterpolation(
     prefix + astInput + suffix,
-    fakeLocation,
+    NG_PARSE_FAKE_LOCATION,
   )!;
   assertAstErrors(errors);
   const ast = (rawAst as ng.Interpolation).expressions[0];
@@ -162,4 +174,8 @@ export function findBackChar(regex: RegExp, index: number, text: string) {
     i++;
   }
   return i;
+}
+
+export function toLowerCamelCase(str: string) {
+  return str.slice(0, 1).toLowerCase() + str.slice(1);
 }
