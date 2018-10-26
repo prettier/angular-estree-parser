@@ -25,6 +25,7 @@ describe.each`
   beforeType            | afterType                     | input                       | action   | binding  | simple   | interpolation
   ${'BindingPipe'}      | ${'NGPipeExpression'}         | ${' a | b : c '}            | ${false} | ${true}  | ${false} | ${true}
   ${'Binary'}           | ${'BinaryExpression'}         | ${' 0 - 1 '}                | ${true}  | ${true}  | ${true}  | ${true}
+  ${'Binary'}           | ${'LogicalExpression'}        | ${' a && b '}               | ${true}  | ${true}  | ${true}  | ${true}
   ${'Binary'}           | ${'UnaryExpression'}          | ${' - 1 '}                  | ${true}  | ${true}  | ${true}  | ${true}
   ${'Conditional'}      | ${'ConditionalExpression'}    | ${' a ? 1 : 2 '}            | ${true}  | ${true}  | ${true}  | ${true}
   ${'EmptyExpr'}        | ${'NGEmptyExpression'}        | ${''}                       | ${true}  | ${true}  | ${true}  | ${false}
