@@ -50,11 +50,17 @@ export const transform = (node: InputNode, context: Context): OutputNode => {
             argument: _t<b.Expression>(right),
             operator: operation as b.UnaryExpression['operator'],
           })
-        : _c<b.BinaryExpression>('BinaryExpression', {
-            left: _t<b.Expression>(left),
-            right: _t<b.Expression>(right),
-            operator: operation as b.BinaryExpression['operator'],
-          });
+        : operation === '&&' || operation === '||'
+          ? _c<b.LogicalExpression>('LogicalExpression', {
+              left: _t<b.Expression>(left),
+              right: _t<b.Expression>(right),
+              operator: operation,
+            })
+          : _c<b.BinaryExpression>('BinaryExpression', {
+              left: _t<b.Expression>(left),
+              right: _t<b.Expression>(right),
+              operator: operation as b.BinaryExpression['operator'],
+            });
     }
     case 'BindingPipe': {
       const { args, exp, name } = node as ng.BindingPipe;
