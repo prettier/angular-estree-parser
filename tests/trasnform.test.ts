@@ -23,14 +23,16 @@ import {
 
 describe.each`
   beforeType            | afterType                     | input                       | action   | binding  | simple   | interpolation
-  ${'BindingPipe'}      | ${'NGPipeExpression'}         | ${' a | b : c '}            | ${false} | ${true}  | ${false} | ${true}
   ${'Binary'}           | ${'BinaryExpression'}         | ${' 0 - 1 '}                | ${true}  | ${true}  | ${true}  | ${true}
   ${'Binary'}           | ${'LogicalExpression'}        | ${' a && b '}               | ${true}  | ${true}  | ${true}  | ${true}
   ${'Binary'}           | ${'UnaryExpression'}          | ${' - 1 '}                  | ${true}  | ${true}  | ${true}  | ${true}
+  ${'BindingPipe'}      | ${'NGPipeExpression'}         | ${' a | b : c '}            | ${false} | ${true}  | ${false} | ${true}
+  ${'Chain'}            | ${'NGChainedExpression'}      | ${' a ; b '}                | ${true}  | ${false} | ${false} | ${false}
   ${'Conditional'}      | ${'ConditionalExpression'}    | ${' a ? 1 : 2 '}            | ${true}  | ${true}  | ${true}  | ${true}
   ${'EmptyExpr'}        | ${'NGEmptyExpression'}        | ${''}                       | ${true}  | ${true}  | ${true}  | ${false}
   ${'FunctionCall'}     | ${'CallExpression'}           | ${' a ( 1 ) ( 2 ) '}        | ${true}  | ${true}  | ${true}  | ${true}
   ${'KeyedRead'}        | ${'MemberExpression'}         | ${' a [ b ] '}              | ${true}  | ${true}  | ${true}  | ${true}
+  ${'KeyedWrite'}       | ${'AssignmentExpression'}     | ${' a [ b ] = 1 '}          | ${true}  | ${true}  | ${true}  | ${true}
   ${'LiteralArray'}     | ${'ArrayExpression'}          | ${' [ 1 ] '}                | ${true}  | ${true}  | ${true}  | ${true}
   ${'LiteralMap'}       | ${'ObjectExpression'}         | ${' { "a" : 1 } '}          | ${true}  | ${true}  | ${true}  | ${true}
   ${'LiteralMap'}       | ${'ObjectExpression'}         | ${' { a : 1 } '}            | ${true}  | ${true}  | ${true}  | ${true}
@@ -40,21 +42,19 @@ describe.each`
   ${'LiteralPrimitive'} | ${'NumericLiteral'}           | ${' ( 1 ) '}                | ${true}  | ${true}  | ${true}  | ${true}
   ${'LiteralPrimitive'} | ${'NumericLiteral'}           | ${' 1 '}                    | ${true}  | ${true}  | ${true}  | ${true}
   ${'LiteralPrimitive'} | ${'StringLiteral'}            | ${' "hello" '}              | ${true}  | ${true}  | ${true}  | ${true}
-  ${'MethodCall'}       | ${'CallExpression'}           | ${' a ( 1 , 2 ) '}          | ${true}  | ${true}  | ${true}  | ${true}
   ${'MethodCall'}       | ${'CallExpression'}           | ${' a . b ( 1 , 2 ) '}      | ${true}  | ${true}  | ${true}  | ${true}
+  ${'MethodCall'}       | ${'CallExpression'}           | ${' a ( 1 , 2 ) '}          | ${true}  | ${true}  | ${true}  | ${true}
   ${'NonNullAssert'}    | ${'TSNonNullExpression'}      | ${' x ! '}                  | ${true}  | ${true}  | ${true}  | ${true}
   ${'PrefixNot'}        | ${'UnaryExpression'}          | ${' ! x '}                  | ${true}  | ${true}  | ${true}  | ${true}
   ${'PropertyRead'}     | ${'Identifier'}               | ${' ( ( a ) ) '}            | ${true}  | ${true}  | ${true}  | ${true}
   ${'PropertyRead'}     | ${'Identifier'}               | ${' a '}                    | ${true}  | ${true}  | ${true}  | ${true}
   ${'PropertyRead'}     | ${'Identifier'}               | ${' a // hello '}           | ${true}  | ${true}  | ${true}  | ${true}
   ${'PropertyRead'}     | ${'MemberExpression'}         | ${' a . b '}                | ${true}  | ${true}  | ${true}  | ${true}
+  ${'PropertyWrite'}    | ${'AssignmentExpression'}     | ${' a . b = 1 '}            | ${true}  | ${false} | ${false} | ${false}
+  ${'PropertyWrite'}    | ${'AssignmentExpression'}     | ${' a = 1 '}                | ${true}  | ${false} | ${false} | ${false}
   ${'Quote'}            | ${'NGQuotedExpression'}       | ${' javascript : void(0) '} | ${false} | ${true}  | ${true}  | ${false}
   ${'SafeMethodCall'}   | ${'OptionalCallExpression'}   | ${' a ?. b ( ) '}           | ${true}  | ${true}  | ${true}  | ${true}
   ${'SafePropertyRead'} | ${'OptionalMemberExpression'} | ${' a ?. b '}               | ${true}  | ${true}  | ${true}  | ${true}
-  ${'PropertyWrite'}    | ${'AssignmentExpression'}     | ${' a = 1 '}                | ${true}  | ${false} | ${false} | ${false}
-  ${'PropertyWrite'}    | ${'AssignmentExpression'}     | ${' a . b = 1 '}            | ${true}  | ${false} | ${false} | ${false}
-  ${'KeyedWrite'}       | ${'AssignmentExpression'}     | ${' a [ b ] = 1 '}          | ${true}  | ${true}  | ${true}  | ${true}
-  ${'Chain'}            | ${'NGChainedExpression'}      | ${' a ; b '}                | ${true}  | ${false} | ${false} | ${false}
 `('$input ($beforeType -> $afterType)', fields => {
   const { beforeType, afterType, input } = fields;
 
