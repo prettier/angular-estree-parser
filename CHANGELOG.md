@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.1.2"></a>
+## [1.1.2](https://github.com/ikatyang/angular-estree-parser/compare/v1.1.1...v1.1.2) (2018-10-30)
+
+
+### Bug Fixes
+
+* **transform:** add missing ThisExpression ([#13](https://github.com/ikatyang/angular-estree-parser/issues/13)) ([6718ead](https://github.com/ikatyang/angular-estree-parser/commit/6718ead))
+
+
+
 <a name="1.1.1"></a>
 ## [1.1.1](https://github.com/ikatyang/angular-estree-parser/compare/v1.1.0...v1.1.1) (2018-10-26)
 
