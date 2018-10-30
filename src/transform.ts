@@ -227,7 +227,17 @@ export const transform = (node: InputNode, context: Context): OutputNode => {
       const isOptional = type === 'SafePropertyRead';
       const { name, receiver } = node as ng.PropertyRead | ng.SafePropertyRead;
       if (getNgType(receiver) === 'ImplicitReceiver') {
-        return _c<b.Identifier>('Identifier', { name });
+        return receiver.span.start === receiver.span.end
+          ? _c<b.Identifier>('Identifier', { name })
+          : _c<b.MemberExpression>('MemberExpression', {
+              computed: false,
+              object: _c<b.ThisExpression>('ThisExpression', {}, receiver.span),
+              property: _c<b.Identifier>(
+                'Identifier',
+                { name },
+                { start: receiver.span.end + 1, end: node.span.end },
+              ),
+            });
       }
       const memberExpression = _c<
         b.MemberExpression | b.OptionalMemberExpression

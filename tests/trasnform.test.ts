@@ -50,6 +50,7 @@ describe.each`
   ${'PropertyRead'}     | ${'Identifier'}               | ${' a '}                    | ${true}  | ${true}  | ${true}  | ${true}
   ${'PropertyRead'}     | ${'Identifier'}               | ${' a // hello '}           | ${true}  | ${true}  | ${true}  | ${true}
   ${'PropertyRead'}     | ${'MemberExpression'}         | ${' a . b '}                | ${true}  | ${true}  | ${true}  | ${true}
+  ${'PropertyRead'}     | ${'MemberExpression'}         | ${' this . a '}             | ${true}  | ${true}  | ${true}  | ${true}
   ${'PropertyWrite'}    | ${'AssignmentExpression'}     | ${' a . b = 1 '}            | ${true}  | ${false} | ${false} | ${false}
   ${'PropertyWrite'}    | ${'AssignmentExpression'}     | ${' a = 1 '}                | ${true}  | ${false} | ${false} | ${false}
   ${'Quote'}            | ${'NGQuotedExpression'}       | ${' javascript : void(0) '} | ${false} | ${true}  | ${true}  | ${false}
