@@ -184,6 +184,9 @@ export const transform = (node: InputNode, context: Context): OutputNode => {
         );
       } else {
         const object = _t<b.Expression>(receiver);
+        const isObjectOptionalExpression =
+          object.type === 'OptionalMemberExpression' ||
+          object.type === 'OptionalCallExpression';
         const propertyStart = _findBackChar(
           /\S/,
           _findBackChar(/\./, object.end) + 1,
@@ -196,15 +199,24 @@ export const transform = (node: InputNode, context: Context): OutputNode => {
         callExpression.callee = _c<
           b.MemberExpression | b.OptionalMemberExpression
         >(
-          isOptional ? 'OptionalMemberExpression' : 'MemberExpression',
+          isOptional || isObjectOptionalExpression
+            ? 'OptionalMemberExpression'
+            : 'MemberExpression',
           {
             computed: false,
             object,
             property,
-            ...(isOptional && { optional: true }),
+            ...(isOptional
+              ? { optional: true }
+              : isObjectOptionalExpression
+                ? { optional: false }
+                : null),
           },
           { start: object.start, end: property.end },
         );
+        if (callExpression.callee.type === 'OptionalMemberExpression') {
+          callExpression.type = 'OptionalCallExpression';
+        }
       }
       return callExpression;
     }
@@ -239,13 +251,26 @@ export const transform = (node: InputNode, context: Context): OutputNode => {
               ),
             });
       }
+      const object = _t<b.Expression>(receiver);
+      const isObjectOptionalExpression =
+        object.type === 'OptionalMemberExpression' ||
+        object.type === 'OptionalCallExpression';
       const memberExpression = _c<
         b.MemberExpression | b.OptionalMemberExpression
-      >(isOptional ? 'OptionalMemberExpression' : 'MemberExpression', {
-        computed: false,
-        object: _t<b.Expression>(receiver),
-        ...(isOptional && { optional: true }),
-      });
+      >(
+        isOptional || isObjectOptionalExpression
+          ? 'OptionalMemberExpression'
+          : 'MemberExpression',
+        {
+          computed: false,
+          object,
+          ...(isOptional
+            ? { optional: true }
+            : isObjectOptionalExpression
+              ? { optional: false }
+              : null),
+        },
+      );
       memberExpression.property = _c<b.Identifier>(
         'Identifier',
         { name },
