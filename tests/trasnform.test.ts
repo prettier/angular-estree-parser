@@ -26,6 +26,7 @@ describe.each`
   ${'Binary'}           | ${'BinaryExpression'}         | ${' 0 - 1 '}                | ${true}  | ${true}  | ${true}  | ${true}
   ${'Binary'}           | ${'LogicalExpression'}        | ${' a && b '}               | ${true}  | ${true}  | ${true}  | ${true}
   ${'Binary'}           | ${'UnaryExpression'}          | ${' - 1 '}                  | ${true}  | ${true}  | ${true}  | ${true}
+  ${'Binary'}           | ${'UnaryExpression'}          | ${' + 1 '}                  | ${true}  | ${true}  | ${true}  | ${true}
   ${'BindingPipe'}      | ${'NGPipeExpression'}         | ${' a | b '}                | ${false} | ${true}  | ${false} | ${true}
   ${'BindingPipe'}      | ${'NGPipeExpression'}         | ${' a | b : c '}            | ${false} | ${true}  | ${false} | ${true}
   ${'Chain'}            | ${'NGChainedExpression'}      | ${' a ; b '}                | ${true}  | ${false} | ${false} | ${false}
