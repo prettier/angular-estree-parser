@@ -26,10 +26,13 @@ describe.each`
   ${'Binary'}           | ${'BinaryExpression'}         | ${' 0 - 1 '}                | ${true}  | ${true}  | ${true}  | ${true}
   ${'Binary'}           | ${'LogicalExpression'}        | ${' a && b '}               | ${true}  | ${true}  | ${true}  | ${true}
   ${'Binary'}           | ${'UnaryExpression'}          | ${' - 1 '}                  | ${true}  | ${true}  | ${true}  | ${true}
+  ${'BindingPipe'}      | ${'NGPipeExpression'}         | ${' a | b '}                | ${false} | ${true}  | ${false} | ${true}
   ${'BindingPipe'}      | ${'NGPipeExpression'}         | ${' a | b : c '}            | ${false} | ${true}  | ${false} | ${true}
   ${'Chain'}            | ${'NGChainedExpression'}      | ${' a ; b '}                | ${true}  | ${false} | ${false} | ${false}
   ${'Conditional'}      | ${'ConditionalExpression'}    | ${' a ? 1 : 2 '}            | ${true}  | ${true}  | ${true}  | ${true}
   ${'EmptyExpr'}        | ${'NGEmptyExpression'}        | ${''}                       | ${true}  | ${true}  | ${true}  | ${false}
+  ${'FunctionCall'}     | ${'CallExpression'}           | ${' ( a . b ) ( 1 , 2 ) '}  | ${true}  | ${true}  | ${true}  | ${true}
+  ${'FunctionCall'}     | ${'CallExpression'}           | ${' ( a ) ( 1 , 2 ) '}      | ${true}  | ${true}  | ${true}  | ${true}
   ${'FunctionCall'}     | ${'CallExpression'}           | ${' a ( 1 ) ( 2 ) '}        | ${true}  | ${true}  | ${true}  | ${true}
   ${'KeyedRead'}        | ${'MemberExpression'}         | ${' a [ b ] '}              | ${true}  | ${true}  | ${true}  | ${true}
   ${'KeyedWrite'}       | ${'AssignmentExpression'}     | ${' a [ b ] = 1 '}          | ${true}  | ${true}  | ${true}  | ${true}
@@ -97,7 +100,6 @@ describe.each`
     expect(afterNode!.type).toEqual(afterType);
 
     if (afterNode!.type.startsWith('NG')) {
-      expect(() => parseBabelExpression(input)).toThrowError();
       expect(snapshotAst(afterNode, input)).toMatchSnapshot();
     } else {
       try {
@@ -106,7 +108,7 @@ describe.each`
         const { comments, program } = parseBabel(input);
         const statement = program.body[0] as b.ExpressionStatement;
         expect(statement.type).toEqual('ExpressionStatement');
-        expect(afterNode).toEqual(
+        expect(massageAst(afterNode)).toEqual(
           massageAst({ ...statement.expression, comments }),
         );
       }

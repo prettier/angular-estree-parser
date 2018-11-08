@@ -14,6 +14,20 @@ Identifier { name: "b" }
     |      ^
 `;
 
+exports[`" a | b " ("BindingPipe" -> "NGPipeExpression") ast 1`] = `
+NGPipeExpression { left: "Identifier", right: "Identifier", arguments: [], comments: [] }
+> 1 |  a | b 
+    |  ^^^^^
+--------------------------------------------------------------------------------
+Identifier { name: "a" }
+> 1 |  a | b 
+    |  ^
+--------------------------------------------------------------------------------
+Identifier { name: "b" }
+> 1 |  a | b 
+    |      ^
+`;
+
 exports[`" a | b : c " ("BindingPipe" -> "NGPipeExpression") ast 1`] = `
 NGPipeExpression {
   left: "Identifier",

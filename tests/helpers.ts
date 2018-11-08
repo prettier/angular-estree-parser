@@ -34,8 +34,8 @@ export function massageAst(ast: any): any {
         break;
       case 'extra': {
         const extra = massageAst(ast[key]);
-        delete extra.parenStart;
-        delete extra.parenthesized;
+        // we added a custom `parenEnd` field for positioning
+        delete extra.parenEnd;
         if (Object.keys(extra).length !== 0) {
           reduced[key] = extra;
         }
