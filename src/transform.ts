@@ -49,23 +49,29 @@ export const transform = (
   switch (type) {
     case 'Binary': {
       const { left, operation, right } = node as ng.Binary;
-      const tRight = _t<b.Expression>(right);
-      if (left.span.start === left.span.end) {
+      const isPrefixAdd = right.span.start === right.span.end; // +1 === 1 - 0
+      const isPrefixMinus = left.span.start === left.span.end; // -1 === 0 - 1
+      if (isPrefixAdd || isPrefixMinus) {
+        const tArgument =
+          left.span.start === left.span.end
+            ? _t<b.Expression>(right)
+            : _t<b.Expression>(left);
         return _c<b.UnaryExpression>(
           'UnaryExpression',
           {
             prefix: true,
-            argument: tRight,
-            operator: operation as b.UnaryExpression['operator'],
+            argument: tArgument,
+            operator: isPrefixAdd ? '+' : '-',
           },
           {
             start: node.span.start, // operator
-            end: _getOuterEnd(tRight),
+            end: _getOuterEnd(tArgument),
           },
           { hasParentParens: isInParentParens },
         );
       }
       const tLeft = _t<b.Expression>(left);
+      const tRight = _t<b.Expression>(right);
       return _c<b.LogicalExpression | b.BinaryExpression>(
         operation === '&&' || operation === '||'
           ? 'LogicalExpression'
