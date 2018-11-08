@@ -1,7 +1,7 @@
 import * as ng from '@angular/compiler/src/expression_parser/ast';
 import { Lexer } from '@angular/compiler/src/expression_parser/lexer';
 import { Parser } from '@angular/compiler/src/expression_parser/parser';
-import { RawNGComment } from './types';
+import { RawNGComment, RawNGSpan } from './types';
 
 const NG_PARSE_FAKE_LOCATION = 'angular-estree-parser';
 const NG_PARSE_TEMPLATE_BINDINGS_FAKE_PREFIX = 'NgEstreeParser';
@@ -141,9 +141,8 @@ export function getNgType(node: (ng.AST | RawNGComment) & { type?: string }) {
   return node.type;
 }
 
-export function stripSurroundingSpaces(
-  startIndex: number,
-  endIndex: number,
+function stripSurroundingSpaces(
+  { start: startIndex, end: endIndex }: RawNGSpan,
   text: string,
 ) {
   let start = startIndex;
@@ -158,6 +157,71 @@ export function stripSurroundingSpaces(
   }
 
   return { start, end };
+}
+
+function expandSurroundingSpaces(
+  { start: startIndex, end: endIndex }: RawNGSpan,
+  text: string,
+) {
+  let start = startIndex;
+  let end = endIndex;
+
+  while (end !== text.length && /\s/.test(text[end])) {
+    end++;
+  }
+
+  while (start !== 0 && /\s/.test(text[start - 1])) {
+    start--;
+  }
+
+  return { start, end };
+}
+
+function expandSurroundingParens(span: RawNGSpan, text: string) {
+  return text[span.start - 1] === '(' && text[span.end] === ')'
+    ? { start: span.start - 1, end: span.end + 1 }
+    : span;
+}
+
+export function fitSpans(
+  span: RawNGSpan,
+  text: string,
+  hasParentParens: boolean,
+): { outerSpan: RawNGSpan; innerSpan: RawNGSpan; hasParens: boolean } {
+  let parensCount = 0;
+
+  const outerSpan = { start: span.start, end: span.end };
+
+  while (true) {
+    const spacesExpandedSpan = expandSurroundingSpaces(outerSpan, text);
+    const parensExpandedSpan = expandSurroundingParens(
+      spacesExpandedSpan,
+      text,
+    );
+
+    if (
+      spacesExpandedSpan.start === parensExpandedSpan.start &&
+      spacesExpandedSpan.end === parensExpandedSpan.end
+    ) {
+      break;
+    }
+
+    outerSpan.start = parensExpandedSpan.start;
+    outerSpan.end = parensExpandedSpan.end;
+
+    parensCount++;
+  }
+
+  return {
+    hasParens: (hasParentParens ? parensCount - 1 : parensCount) !== 0,
+    outerSpan: stripSurroundingSpaces(
+      hasParentParens
+        ? { start: outerSpan.start + 1, end: outerSpan.end - 1 }
+        : outerSpan,
+      text,
+    ),
+    innerSpan: stripSurroundingSpaces(span, text),
+  };
 }
 
 export function findFrontChar(regex: RegExp, index: number, text: string) {
@@ -178,4 +242,11 @@ export function findBackChar(regex: RegExp, index: number, text: string) {
 
 export function toLowerCamelCase(str: string) {
   return str.slice(0, 1).toLowerCase() + str.slice(1);
+}
+
+export function getLast<T>(array: T[]): T | undefined {
+  return array.length === 0
+    ? // istanbul ignore next
+      undefined
+    : array[array.length - 1];
 }

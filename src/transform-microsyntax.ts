@@ -180,7 +180,7 @@ export function transformTemplateBindings(
   ): T & RawNGSpan {
     return {
       type: t,
-      ...transformSpan(span, context, stripSpaces),
+      ...transformSpan(span, context, stripSpaces, false),
       // @ts-ignore
       ...n,
     };
