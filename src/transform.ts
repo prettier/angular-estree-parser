@@ -448,12 +448,12 @@ export const transform = (
     span: RawNGSpan,
     { processSpan = true, hasParentParens = false } = {},
   ) {
-    const newNode: T & RawNGSpan = {
+    const newNode = {
       type: t,
       ...transformSpan(span, context, processSpan, hasParentParens),
       // @ts-ignore
       ...n,
-    };
+    } as T & RawNGSpan;
     switch (t) {
       case 'Identifier': {
         const identifier = newNode as b.Identifier;
@@ -547,8 +547,8 @@ export const transform = (
 export function transformSpan(
   span: RawNGSpan,
   context: Context,
-  processSpan: boolean,
-  hasParentParens: boolean,
+  processSpan = false,
+  hasParentParens = false,
 ): {
   start: NonNullable<b.BaseNode['start']>;
   end: NonNullable<b.BaseNode['end']>;

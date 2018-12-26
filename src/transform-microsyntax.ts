@@ -177,13 +177,13 @@ export function transformTemplateBindings(
     n: Partial<T>,
     span: RawNGSpan,
     stripSpaces: boolean = true,
-  ): T & RawNGSpan {
+  ) {
     return {
       type: t,
-      ...transformSpan(span, context, stripSpaces, false),
+      ...transformSpan(span, context, stripSpaces),
       // @ts-ignore
       ...n,
-    };
+    } as T & RawNGSpan;
   }
 
   function findBackKeySpan(start: number, key: string): RawNGSpan {
