@@ -32,7 +32,7 @@
     "@types/babel-types": "7.0.4",
     "@types/babel__code-frame": "7.0.0",
     "@types/babel__parser": "7.0.0",
-    "@types/jest": "23.3.11",
+    "@types/jest": "23.3.12",
     "@types/prettier": "1.15.2",
     "jest": "23.6.0",
     "jest-snapshot-serializer-raw": "1.1.0",
