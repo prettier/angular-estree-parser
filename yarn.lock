@@ -30,7 +30,7 @@
   resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.2.3.tgz#32f5df65744b70888d17872ec106b02434ba1489"
   integrity sha512-0LyEcVlfCoFmci8mXx8A5oIkpkOgyo8dRHtxBnK9RRBwxO2+JZPNsqtVEZQ7mJFPxnXF9lfmU24mHOPI0qnlkA==
 
-"@babel/types@^7.0.0-beta.54":
+"@babel/types@7.1.5":
   version "7.1.5"
   resolved "https://registry.yarnpkg.com/@babel/types/-/types-7.1.5.tgz#12fe64e91a431234b7017b4227a78cc0eec4e081"
   integrity sha512-sJeqa/d9eM/bax8Ivg+fXF7FpN3E/ZmTrWbkk6r+g7biVYfALMnLin4dKijsaqEhpd2xvOGfQTkQkD31YCVV4A==
@@ -48,13 +48,6 @@
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/@types/babel__code-frame/-/babel__code-frame-7.0.0.tgz#d5658827984c1e386c1b4ef30699b344d3f732a2"
   integrity sha512-Rt0KuqopAdtpyvxO0JbKbwgtw7B+y0NQpTXns+tiz1lqGXywOESSKIiiQt0wnCreqEKvmrArH7KZ6bQg+w8BoA==
-
-"@types/babel__parser@7.0.0":
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/@types/babel__parser/-/babel__parser-7.0.0.tgz#0c7a8e317eff2747a94bc5a116e010a363cbab27"
-  integrity sha512-eJt+CTd/WlS5NHyhXo0WMY3eRS3DRXpe1y/oo9aZUFKLbDkl+R85+GeMDZynWcSbs/iZfzdLFERUF0W3K5TkYQ==
-  dependencies:
-    "@babel/types" "^7.0.0-beta.54"
 
 "@types/jest@23.3.12":
   version "23.3.12"
