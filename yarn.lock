@@ -3306,10 +3306,10 @@ prettier-config-ikatyang@1.1.1:
   resolved "https://registry.yarnpkg.com/prettier-config-ikatyang/-/prettier-config-ikatyang-1.1.1.tgz#9ccab4bc2d441e4c68b58dbe8f1a4e18213c3f2d"
   integrity sha512-n86eQBJoJFyPYd3/FomebHo0PGBD/SMUTwGsGaMdd++zjvSA607tCgAOtpPIjfgAs57aV2T4UiEZJDL3yaHpCw==
 
-prettier@1.16.1:
-  version "1.16.1"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.16.1.tgz#534c2c9d7853f8845e5e078384e71973bd74089f"
-  integrity sha512-XXUITwIkGb3CPJ2hforHah/zTINRyie5006Jd2HKy2qz7snEJXl0KLfsJZW/wst9g6R2rFvqba3VpNYdu1hDcA==
+prettier@1.16.2:
+  version "1.16.2"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.16.2.tgz#f60bc5929a7f9a05260cc88d5430391100092414"
+  integrity sha512-vBMdCn1LjrFi2CpBsiWVKOq+WP9poXDTIGPe2sG3eE33LQ3b6IUgmaMjLZKKY+frD/8FqPeEK1qAx9mOV8iruA==
 
 pretty-format@^23.6.0:
   version "23.6.0"
