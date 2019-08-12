@@ -33,7 +33,7 @@
     "@types/babel-types": "7.0.4",
     "@types/babel__code-frame": "7.0.1",
     "@types/jest": "23.3.14",
-    "@types/prettier": "1.18.1",
+    "@types/prettier": "1.18.2",
     "jest": "23.6.0",
     "jest-snapshot-serializer-raw": "1.1.0",
     "prettier": "1.18.2",
