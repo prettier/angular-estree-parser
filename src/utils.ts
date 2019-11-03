@@ -23,19 +23,19 @@ function parseNg(
 
 export function parseNgBinding(input: string) {
   return parseNg(input, (astInput, ngParser) =>
-    ngParser.parseBinding(astInput, NG_PARSE_FAKE_LOCATION),
+    ngParser.parseBinding(astInput, NG_PARSE_FAKE_LOCATION, 0),
   );
 }
 
 export function parseNgSimpleBinding(input: string) {
   return parseNg(input, (astInput, ngParser) =>
-    ngParser.parseSimpleBinding(astInput, NG_PARSE_FAKE_LOCATION),
+    ngParser.parseSimpleBinding(astInput, NG_PARSE_FAKE_LOCATION, 0),
   );
 }
 
 export function parseNgAction(input: string) {
   return parseNg(input, (astInput, ngParser) =>
-    ngParser.parseAction(astInput, NG_PARSE_FAKE_LOCATION),
+    ngParser.parseAction(astInput, NG_PARSE_FAKE_LOCATION, 0),
   );
 }
 
@@ -45,6 +45,7 @@ export function parseNgTemplateBindings(input: string) {
     NG_PARSE_TEMPLATE_BINDINGS_FAKE_PREFIX,
     input,
     NG_PARSE_FAKE_LOCATION,
+    0,
   );
   assertAstErrors(errors);
   return ast;
@@ -58,6 +59,7 @@ export function parseNgInterpolation(input: string) {
   const { ast: rawAst, errors } = ngParser.parseInterpolation(
     prefix + astInput + suffix,
     NG_PARSE_FAKE_LOCATION,
+    0,
   )!;
   assertAstErrors(errors);
   const ast = (rawAst as ng.Interpolation).expressions[0];
