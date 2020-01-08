@@ -26,7 +26,7 @@
     "tslib": "^1.9.3"
   },
   "devDependencies": {
-    "@angular/compiler": "6.0.0",
+    "@angular/compiler": "7.2.16",
     "@babel/code-frame": "7.5.5",
     "@babel/parser": "7.6.4",
     "@babel/types": "7.1.5",
