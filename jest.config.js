@@ -1,11 +1,4 @@
-const version = require('@angular/compiler/package.json').version;
-
 module.exports = {
-  globals: {
-    'ts-jest': {
-      diagnostics: !/^[67]\./.test(version)
-    }
-  },
   testEnvironment: 'node',
   moduleFileExtensions: ['ts', 'js', 'json'],
   testMatch: ['**/*.test.ts'],
@@ -19,6 +12,9 @@ module.exports = {
       functions: 100,
       lines: 100,
       statements: 100,
+    },
+    "./src/utils.ts": {
+      branches: -2,
     },
   },
   snapshotSerializers: ['jest-snapshot-serializer-raw'],

@@ -8,16 +8,16 @@ before_install:
 - yarn global add codecov
 
 script:
-- node -p "require('@angular/compiler/package.json').version"
+- node -e "assert.equal(require('@angular/compiler').VERSION.major, '8')"
 - yarn run lint
 - yarn run test
 
 - yarn upgrade @angular/compiler@7
-- node -p "require('@angular/compiler/package.json').version"
+- node -e "assert.equal(require('@angular/compiler').VERSION.major, '7')"
 - yarn run test
 
 - yarn upgrade @angular/compiler@6
-- node -p "require('@angular/compiler/package.json').version"
+- node -e "assert.equal(require('@angular/compiler').VERSION.major, '6')"
 - yarn run test
 
 after_script:

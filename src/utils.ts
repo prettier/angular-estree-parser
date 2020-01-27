@@ -1,3 +1,4 @@
+import { VERSION } from '@angular/compiler';
 import * as ng from '@angular/compiler/src/expression_parser/ast';
 import { Lexer } from '@angular/compiler/src/expression_parser/lexer';
 import { Parser } from '@angular/compiler/src/expression_parser/parser';
@@ -5,6 +6,11 @@ import { RawNGComment, RawNGSpan } from './types';
 
 const NG_PARSE_FAKE_LOCATION = 'angular-estree-parser';
 const NG_PARSE_TEMPLATE_BINDINGS_FAKE_PREFIX = 'NgEstreeParser';
+const NG_PARSE_FAKE_ABSOLUTE_OFFSET = 0;
+const IS_LEGACY_VERSION = VERSION.major === '6' || VERSION.major === '7';
+const extraParams = IS_LEGACY_VERSION
+  ? [NG_PARSE_FAKE_LOCATION]
+  : [NG_PARSE_FAKE_LOCATION, NG_PARSE_FAKE_ABSOLUTE_OFFSET];
 
 function createNgParser() {
   return new Parser(new Lexer());
@@ -22,31 +28,37 @@ function parseNg(
 }
 
 export function parseNgBinding(input: string) {
-  return parseNg(input, (astInput, ngParser) =>
-    ngParser.parseBinding(astInput, NG_PARSE_FAKE_LOCATION, 0),
-  );
+  return parseNg(input, (astInput, ngParser) => {
+    const args: any = [astInput, ...extraParams];
+    return ngParser.parseBinding.apply(ngParser, args);
+  });
 }
 
 export function parseNgSimpleBinding(input: string) {
-  return parseNg(input, (astInput, ngParser) =>
-    ngParser.parseSimpleBinding(astInput, NG_PARSE_FAKE_LOCATION, 0),
-  );
+  return parseNg(input, (astInput, ngParser) => {
+    const args: any = [astInput, ...extraParams];
+    return ngParser.parseSimpleBinding.apply(ngParser, args);
+  });
 }
 
 export function parseNgAction(input: string) {
-  return parseNg(input, (astInput, ngParser) =>
-    ngParser.parseAction(astInput, NG_PARSE_FAKE_LOCATION, 0),
-  );
+  return parseNg(input, (astInput, ngParser) => {
+    const args: any = [astInput, ...extraParams];
+    return ngParser.parseAction.apply(ngParser, args);
+  });
 }
 
 export function parseNgTemplateBindings(input: string) {
   const ngParser = createNgParser();
-  const { templateBindings: ast, errors } = ngParser.parseTemplateBindings(
+  const args: any = [
     NG_PARSE_TEMPLATE_BINDINGS_FAKE_PREFIX,
     input,
-    NG_PARSE_FAKE_LOCATION,
-    0,
-  );
+    ...extraParams,
+  ];
+  const {
+    templateBindings: ast,
+    errors,
+  } = ngParser.parseTemplateBindings.apply(ngParser, args);
   assertAstErrors(errors);
   return ast;
 }
@@ -56,10 +68,10 @@ export function parseNgInterpolation(input: string) {
   const { astInput, comments } = extractComments(input, ngParser);
   const prefix = '{{';
   const suffix = '}}';
-  const { ast: rawAst, errors } = ngParser.parseInterpolation(
-    prefix + astInput + suffix,
-    NG_PARSE_FAKE_LOCATION,
-    0,
+  const args: any = [prefix + astInput + suffix, ...extraParams];
+  const { ast: rawAst, errors } = ngParser.parseInterpolation.apply(
+    ngParser,
+    args,
   )!;
   assertAstErrors(errors);
   const ast = (rawAst as ng.Interpolation).expressions[0];
