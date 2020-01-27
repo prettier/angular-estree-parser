@@ -23,10 +23,5 @@ script:
 after_script:
 - codecov
 
-cache:
-  yarn: true
-  directories:
-  - node_modules
-
 matrix:
   fast_finish: true

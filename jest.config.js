@@ -1,4 +1,11 @@
+const version = require('@angular/compiler/package.json').version;
+
 module.exports = {
+  globals: {
+    'ts-jest': {
+      diagnostics: !/^[67]\./.test(version)
+    }
+  },
   testEnvironment: 'node',
   moduleFileExtensions: ['ts', 'js', 'json'],
   testMatch: ['**/*.test.ts'],
