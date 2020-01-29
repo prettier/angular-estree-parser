@@ -1,4 +1,9 @@
 module.exports = {
+  globals: {
+    'ts-jest': {
+      diagnostics: false,
+    }
+  },
   testEnvironment: 'node',
   moduleFileExtensions: ['ts', 'js', 'json'],
   testMatch: ['**/*.test.ts'],
