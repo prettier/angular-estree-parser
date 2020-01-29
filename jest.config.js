@@ -13,9 +13,6 @@ module.exports = {
       lines: 100,
       statements: 100,
     },
-    "./src/utils.ts": {
-      branches: -2,
-    },
   },
   snapshotSerializers: ['jest-snapshot-serializer-raw'],
 };
