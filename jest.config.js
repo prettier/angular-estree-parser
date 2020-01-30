@@ -1,7 +1,9 @@
+const NG_VERSION = require('@angular/compiler').VERSION;
+
 module.exports = {
   globals: {
     'ts-jest': {
-      diagnostics: false,
+      diagnostics: NG_VERSION.major !== '6' && NG_VERSION.major !== '7',
     }
   },
   testEnvironment: 'node',
