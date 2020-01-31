@@ -8,10 +8,12 @@ const NG_PARSE_FAKE_LOCATION = 'angular-estree-parser';
 const NG_PARSE_TEMPLATE_BINDINGS_FAKE_PREFIX = 'NgEstreeParser';
 const NG_PARSE_FAKE_ABSOLUTE_OFFSET = 0;
 /* istanbul ignore next */
-const NG_PARSE_SHARED_PARAMS: readonly [string, number] =
-  NG_VERSION.major === '6' || NG_VERSION.major === '7'
-    ? ([NG_PARSE_FAKE_LOCATION] as any)
-    : ([NG_PARSE_FAKE_LOCATION, NG_PARSE_FAKE_ABSOLUTE_OFFSET] as const);
+const NG_PARSE_SHARED_PARAMS: readonly [
+  string,
+  number,
+] = /^(?:[67]|8\.[01])\./.test(NG_VERSION.full)
+  ? ([NG_PARSE_FAKE_LOCATION] as any)
+  : ([NG_PARSE_FAKE_LOCATION, NG_PARSE_FAKE_ABSOLUTE_OFFSET] as const);
 
 function createNgParser() {
   return new Parser(new Lexer());

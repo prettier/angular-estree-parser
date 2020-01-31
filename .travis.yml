@@ -8,8 +8,12 @@ before_install:
 - yarn global add codecov
 
 script:
-- node -e "assert.equal(require('@angular/compiler').VERSION.major, '8')"
+- node -e "assert.ok(!/^(?:[67]|8\.[01])\./.test(require('@angular/compiler').VERSION.full))"
 - yarn run lint
+- yarn run test
+
+- yarn upgrade @angular/compiler@8.1
+- node -e "assert.equal(require('@angular/compiler').VERSION.full.slice(0, 4), '8.1.')"
 - yarn run test
 
 - yarn upgrade @angular/compiler@7
