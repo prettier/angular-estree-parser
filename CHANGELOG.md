@@ -8,7 +8,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Features
 
-* **peer-deps:** support `[@angular](https://github.com/angular)/compiler@8` ([#151](https://github.com/ikatyang/angular-estree-parser/issues/151)) ([44ecf5d](https://github.com/ikatyang/angular-estree-parser/commit/44ecf5d))
+* **peer-deps:** support `@angular/compiler@8` ([#151](https://github.com/ikatyang/angular-estree-parser/issues/151)) ([44ecf5d](https://github.com/ikatyang/angular-estree-parser/commit/44ecf5d))
 
 
 
