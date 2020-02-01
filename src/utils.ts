@@ -1,3 +1,4 @@
+import { VERSION as NG_VERSION } from '@angular/compiler';
 import * as ng from '@angular/compiler/src/expression_parser/ast';
 import { Lexer } from '@angular/compiler/src/expression_parser/lexer';
 import { Parser } from '@angular/compiler/src/expression_parser/parser';
@@ -5,6 +6,14 @@ import { RawNGComment, RawNGSpan } from './types';
 
 const NG_PARSE_FAKE_LOCATION = 'angular-estree-parser';
 const NG_PARSE_TEMPLATE_BINDINGS_FAKE_PREFIX = 'NgEstreeParser';
+const NG_PARSE_FAKE_ABSOLUTE_OFFSET = 0;
+/* istanbul ignore next */
+const NG_PARSE_SHARED_PARAMS: readonly [
+  string,
+  number,
+] = /^(?:[67]|8\.[01])\./.test(NG_VERSION.full)
+  ? ([NG_PARSE_FAKE_LOCATION] as any)
+  : ([NG_PARSE_FAKE_LOCATION, NG_PARSE_FAKE_ABSOLUTE_OFFSET] as const);
 
 function createNgParser() {
   return new Parser(new Lexer());
@@ -23,19 +32,19 @@ function parseNg(
 
 export function parseNgBinding(input: string) {
   return parseNg(input, (astInput, ngParser) =>
-    ngParser.parseBinding(astInput, NG_PARSE_FAKE_LOCATION),
+    ngParser.parseBinding(astInput, ...NG_PARSE_SHARED_PARAMS),
   );
 }
 
 export function parseNgSimpleBinding(input: string) {
   return parseNg(input, (astInput, ngParser) =>
-    ngParser.parseSimpleBinding(astInput, NG_PARSE_FAKE_LOCATION),
+    ngParser.parseSimpleBinding(astInput, ...NG_PARSE_SHARED_PARAMS),
   );
 }
 
 export function parseNgAction(input: string) {
   return parseNg(input, (astInput, ngParser) =>
-    ngParser.parseAction(astInput, NG_PARSE_FAKE_LOCATION),
+    ngParser.parseAction(astInput, ...NG_PARSE_SHARED_PARAMS),
   );
 }
 
@@ -44,7 +53,7 @@ export function parseNgTemplateBindings(input: string) {
   const { templateBindings: ast, errors } = ngParser.parseTemplateBindings(
     NG_PARSE_TEMPLATE_BINDINGS_FAKE_PREFIX,
     input,
-    NG_PARSE_FAKE_LOCATION,
+    ...NG_PARSE_SHARED_PARAMS,
   );
   assertAstErrors(errors);
   return ast;
@@ -57,7 +66,7 @@ export function parseNgInterpolation(input: string) {
   const suffix = '}}';
   const { ast: rawAst, errors } = ngParser.parseInterpolation(
     prefix + astInput + suffix,
-    NG_PARSE_FAKE_LOCATION,
+    ...NG_PARSE_SHARED_PARAMS,
   )!;
   assertAstErrors(errors);
   const ast = (rawAst as ng.Interpolation).expressions[0];
