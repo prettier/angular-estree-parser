@@ -11,6 +11,10 @@ script:
 - yarn run lint
 - yarn run test
 
+- yarn upgrade @angular/compiler@8.2.0
+- node -e "assert.equal(require('@angular/compiler').VERSION.full, '8.2.0')"
+- yarn run test
+
 - yarn upgrade @angular/compiler@8.0.0
 - node -e "assert.equal(require('@angular/compiler').VERSION.full, '8.0.0')"
 - yarn run test
