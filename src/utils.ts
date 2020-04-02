@@ -1,4 +1,3 @@
-import { VERSION as NG_VERSION } from '@angular/compiler';
 import * as ng from '@angular/compiler/src/expression_parser/ast';
 import { Lexer } from '@angular/compiler/src/expression_parser/lexer';
 import { Parser } from '@angular/compiler/src/expression_parser/parser';
@@ -7,13 +6,10 @@ import { RawNGComment, RawNGSpan } from './types';
 const NG_PARSE_FAKE_LOCATION = 'angular-estree-parser';
 const NG_PARSE_TEMPLATE_BINDINGS_FAKE_PREFIX = 'NgEstreeParser';
 const NG_PARSE_FAKE_ABSOLUTE_OFFSET = 0;
-/* istanbul ignore next */
-const NG_PARSE_SHARED_PARAMS: readonly [
-  string,
-  number,
-] = /^(?:[67]|8\.[01])\./.test(NG_VERSION.full)
-  ? ([NG_PARSE_FAKE_LOCATION] as any)
-  : ([NG_PARSE_FAKE_LOCATION, NG_PARSE_FAKE_ABSOLUTE_OFFSET] as const);
+const NG_PARSE_SHARED_PARAMS: readonly [string, number] = [
+  NG_PARSE_FAKE_LOCATION,
+  NG_PARSE_FAKE_ABSOLUTE_OFFSET,
+];
 
 function createNgParser() {
   return new Parser(new Lexer());
@@ -53,7 +49,9 @@ export function parseNgTemplateBindings(input: string) {
   const { templateBindings: ast, errors } = ngParser.parseTemplateBindings(
     NG_PARSE_TEMPLATE_BINDINGS_FAKE_PREFIX,
     input,
-    ...NG_PARSE_SHARED_PARAMS,
+    NG_PARSE_FAKE_LOCATION,
+    NG_PARSE_FAKE_ABSOLUTE_OFFSET,
+    NG_PARSE_FAKE_ABSOLUTE_OFFSET,
   );
   assertAstErrors(errors);
   return ast;
