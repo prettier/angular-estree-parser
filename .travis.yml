@@ -1,7 +1,7 @@
 language: node_js
 
 node_js:
-- 6
+- 10.13.0
 - stable
 
 before_install:
@@ -9,22 +9,6 @@ before_install:
 
 script:
 - yarn run lint
-- yarn run test
-
-- yarn upgrade @angular/compiler@8.2.0
-- node -e "assert.equal(require('@angular/compiler').VERSION.full, '8.2.0')"
-- yarn run test
-
-- yarn upgrade @angular/compiler@8.0.0
-- node -e "assert.equal(require('@angular/compiler').VERSION.full, '8.0.0')"
-- yarn run test
-
-- yarn upgrade @angular/compiler@7
-- node -e "assert.equal(require('@angular/compiler').VERSION.major, '7')"
-- yarn run test
-
-- yarn upgrade @angular/compiler@6
-- node -e "assert.equal(require('@angular/compiler').VERSION.major, '6')"
 - yarn run test
 
 after_script:
