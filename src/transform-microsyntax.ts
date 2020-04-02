@@ -12,17 +12,22 @@ import {
   NGNode,
   RawNGSpan,
 } from './types';
-import { findBackChar, toLowerCamelCase } from './utils';
+import { toLowerCamelCase } from './utils';
 
 export function transformTemplateBindings(
   rawTemplateBindings: ng.TemplateBinding[],
   context: Context,
 ): NGMicrosyntax {
+  rawTemplateBindings.forEach(fixTemplateBindingSpan);
+
   const [firstTemplateBinding] = rawTemplateBindings;
   const { key: prefix } = firstTemplateBinding;
   const templateBindings =
     context.text
-      .slice(firstTemplateBinding.span.start, firstTemplateBinding.span.end)
+      .slice(
+        firstTemplateBinding.sourceSpan.start,
+        firstTemplateBinding.sourceSpan.end,
+      )
       .trim().length === 0
       ? rawTemplateBindings.slice(1)
       : rawTemplateBindings;
@@ -32,20 +37,18 @@ export function transformTemplateBindings(
   let lastTemplateBinding: ng.TemplateBinding | null = null;
   for (let i = 0; i < templateBindings.length; i++) {
     const templateBinding = templateBindings[i];
-    const { key, keyIsVar, name, span } = templateBinding;
 
     if (
       lastTemplateBinding &&
-      lastTemplateBinding.key === name &&
-      keyIsVar &&
-      /^as\s$/.test(context.text.slice(span.start, span.start + 3))
+      isExpressionBinding(lastTemplateBinding) &&
+      isVariableBinding(templateBinding) &&
+      templateBinding.value &&
+      templateBinding.value.source === lastTemplateBinding.key.source
     ) {
-      const keyStart = findBackChar(/\S/, span.start + 3, context.text);
-      const keySpan = findBackKeySpan(keyStart, key);
       const alias = _c<NGMicrosyntaxKey>(
         'NGMicrosyntaxKey',
-        { name: key },
-        keySpan,
+        { name: templateBinding.key.source },
+        templateBinding.key.span,
       );
       const updateSpanEnd = <T extends NGNode>(node: T, end: number): T => ({
         // @ts-ignore
@@ -78,91 +81,89 @@ export function transformTemplateBindings(
     'NGMicrosyntax',
     { body },
     body.length === 0
-      ? rawTemplateBindings[0].span
+      ? rawTemplateBindings[0].sourceSpan
       : { start: body[0].start, end: body[body.length - 1].end },
   );
 
   function transformTemplateBinding(
-    { key, keyIsVar, name, expression, span }: ng.TemplateBinding,
+    templateBinding: ng.TemplateBinding,
     index: number,
   ): Exclude<NGMicrosyntaxNode, NGMicrosyntax> {
-    if (!keyIsVar) {
-      if (!expression) {
+    if (isExpressionBinding(templateBinding)) {
+      const { key, value } = templateBinding;
+      if (!value) {
         return _c<NGMicrosyntaxKey>(
           'NGMicrosyntaxKey',
-          { name: removePrefix(key) },
-          span,
+          { name: removePrefix(key.source) },
+          key.span,
         );
       } else if (index === 0) {
         return _c<NGMicrosyntaxExpression>(
           'NGMicrosyntaxExpression',
-          { expression: _t<NGNode>(expression.ast), alias: null },
-          span,
+          { expression: _t<NGNode>(value.ast), alias: null },
+          value.sourceSpan,
         );
       } else {
-        const ngExpression = _t<NGNode>(expression.ast);
-        const { start, end } = ngExpression;
-        const keyName = removePrefix(key);
         return _c<NGMicrosyntaxKeyedExpression>(
           'NGMicrosyntaxKeyedExpression',
           {
             key: _c<NGMicrosyntaxKey>(
               'NGMicrosyntaxKey',
-              { name: keyName },
-              findBackKeySpan(span.start, keyName),
+              { name: removePrefix(key.source) },
+              key.span,
             ),
             expression: _c<NGMicrosyntaxExpression>(
               'NGMicrosyntaxExpression',
-              { expression: ngExpression, alias: null },
-              { start, end },
+              { expression: _t<NGNode>(value.ast), alias: null },
+              value.sourceSpan,
             ),
           },
-          span,
+          { start: key.span.start, end: value.sourceSpan.end },
         );
       }
     } else {
-      if (/^let\s$/.test(context.text.slice(span.start, span.start + 4))) {
-        const keyStart = findBackChar(/\S/, span.start + 4, context.text);
-        const keySpan = findBackKeySpan(keyStart, key);
+      const { key, value, sourceSpan } = templateBinding;
+      const startsWithLet = /^let\s$/.test(
+        context.text.slice(sourceSpan.start, sourceSpan.start + 4),
+      );
+      if (startsWithLet) {
         return _c<NGMicrosyntaxLet>(
           'NGMicrosyntaxLet',
           {
             key: _c<NGMicrosyntaxKey>(
               'NGMicrosyntaxKey',
-              { name: key },
-              keySpan,
+              { name: key.source },
+              key.span,
             ),
-            value:
-              context.text.slice(keySpan.end, span.end).trim().length === 0
-                ? null
-                : _c<NGMicrosyntaxKey>(
-                    'NGMicrosyntaxKey',
-                    { name },
-                    {
-                      start: findBackChar(/=/, keySpan.end, context.text) + 1,
-                      end: span.end,
-                    },
-                  ),
+            value: !value
+              ? null
+              : _c<NGMicrosyntaxKey>(
+                  'NGMicrosyntaxKey',
+                  { name: value.source },
+                  value.span,
+                ),
           },
-          span,
+          {
+            start: sourceSpan.start,
+            end: value ? value.span.end : key.span.end,
+          },
         );
       } else {
-        const keySpan = findBackKeySpan(span.start, name);
         return _c<NGMicrosyntaxAs>(
           'NGMicrosyntaxAs',
           {
-            key: _c<NGMicrosyntaxKey>('NGMicrosyntaxKey', { name }, keySpan),
+            key: _c<NGMicrosyntaxKey>(
+              'NGMicrosyntaxKey',
+              { name: value!.source },
+              value!.span,
+            ),
             alias: _c<NGMicrosyntaxKey>(
               'NGMicrosyntaxKey',
-              { name: key },
-              {
-                start:
-                  findBackChar(/\S/, keySpan.end, context.text) + 'as'.length,
-                end: span.end,
-              },
+              { name: key.source },
+              key.span,
             ),
           },
-          span,
+          { start: value!.span.start, end: key.span.end },
         );
       }
     }
@@ -186,28 +187,54 @@ export function transformTemplateBindings(
     } as T & RawNGSpan;
   }
 
-  function findBackKeySpan(start: number, key: string): RawNGSpan {
-    if (context.text[start] !== "'" && context.text[start] !== '"') {
-      return { start, end: start + key.length };
-    }
-    const quote = context.text[start];
-    let backslash = 0;
-    let index = start + 1;
-    while (true) {
-      const char = context.text[index];
-      if (char === quote && backslash % 2 === 0) {
-        return { start, end: index + 1 };
-      }
-      if (char === '\\') {
-        backslash++;
-      } else {
-        backslash = 0;
-      }
-      index++;
+  function removePrefix(string: string) {
+    return toLowerCamelCase(string.slice(prefix.source.length));
+  }
+
+  function isExpressionBinding(
+    templateBinding: ng.TemplateBinding,
+  ): templateBinding is ng.ExpressionBinding {
+    return templateBinding instanceof ng.ExpressionBinding;
+  }
+
+  function isVariableBinding(
+    templateBinding: ng.TemplateBinding,
+  ): templateBinding is ng.VariableBinding {
+    return templateBinding instanceof ng.VariableBinding;
+  }
+
+  function fixTemplateBindingSpan(templateBinding: ng.TemplateBinding) {
+    fixSpan(templateBinding.key.span);
+    if (isVariableBinding(templateBinding) && templateBinding.value) {
+      fixSpan(templateBinding.value.span);
     }
   }
 
-  function removePrefix(string: string) {
-    return toLowerCamelCase(string.slice(prefix.length));
+  /**
+   * - "a"  (start=0 end=1) -> (start=0 end=3)
+   * - '\'' (start=0 end=1) -> (start=0 end=4)
+   */
+  function fixSpan(span: RawNGSpan) {
+    if (context.text[span.start] !== '"' && context.text[span.start] !== "'") {
+      return;
+    }
+    const quote = context.text[span.start];
+    let hasBackSlash = false;
+    for (let i = span.start + 1; i < context.text.length; i++) {
+      switch (context.text[i]) {
+        case quote:
+          if (!hasBackSlash) {
+            span.end = i + 1;
+            return;
+          }
+        // fall through
+        default:
+          hasBackSlash = false;
+          break;
+        case '\\':
+          hasBackSlash = !hasBackSlash;
+          break;
+      }
+    }
   }
 }

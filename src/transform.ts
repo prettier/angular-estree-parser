@@ -488,7 +488,7 @@ export const transform = (
     props: { computed: boolean; optional: boolean },
     { end = _getOuterEnd(tName), hasParentParens = false } = {},
   ) {
-    if (receiver.span.start === receiver.span.end) {
+    if (receiver.span.start >= receiver.span.end) {
       return tName;
     }
     const tReceiver =
