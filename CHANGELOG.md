@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.3.1"></a>
+## [1.3.1](https://github.com/ikatyang/angular-estree-parser/compare/v1.3.0...v1.3.1) (2020-04-02)
+
+
+### Bug Fixes
+
+* **peer-deps:** Angular 9.0.6+ is not supported ([#188](https://github.com/ikatyang/angular-estree-parser/issues/188)) ([ff1a252](https://github.com/ikatyang/angular-estree-parser/commit/ff1a252))
+
+
+
 <a name="1.3.0"></a>
 # [1.3.0](https://github.com/ikatyang/angular-estree-parser/compare/v1.2.0...v1.3.0) (2020-02-10)
 
