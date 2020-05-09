@@ -36,6 +36,8 @@ describe.each`
   ${'FunctionCall'}     | ${'CallExpression'}           | ${' ( a ) ( 1 , 2 ) '}      | ${true}  | ${true}  | ${true}  | ${true}
   ${'FunctionCall'}     | ${'CallExpression'}           | ${' a ( 1 ) ( 2 ) '}        | ${true}  | ${true}  | ${true}  | ${true}
   ${'KeyedRead'}        | ${'MemberExpression'}         | ${' a [ b ] '}              | ${true}  | ${true}  | ${true}  | ${true}
+  ${'KeyedRead'}        | ${'OptionalMemberExpression'} | ${' a ?. b [ c ] '}         | ${true}  | ${true}  | ${true}  | ${true}
+  ${'KeyedRead'}        | ${'OptionalMemberExpression'} | ${' a ?. b () [ c ] '}      | ${true}  | ${true}  | ${true}  | ${true}
   ${'KeyedWrite'}       | ${'AssignmentExpression'}     | ${' a [ b ] = 1 '}          | ${true}  | ${true}  | ${true}  | ${true}
   ${'LiteralArray'}     | ${'ArrayExpression'}          | ${' [ 1 ] '}                | ${true}  | ${true}  | ${true}  | ${true}
   ${'LiteralMap'}       | ${'ObjectExpression'}         | ${' { "a" : 1 } '}          | ${true}  | ${true}  | ${true}  | ${true}
