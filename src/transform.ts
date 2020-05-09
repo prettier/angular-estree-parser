@@ -170,20 +170,18 @@ export const transform = (
     }
     case 'KeyedRead': {
       const { obj, key } = node as ng.KeyedRead;
-      const tObj = _t<b.Expression>(obj);
       const tKey = _t<b.Expression>(key);
-      return _c<b.MemberExpression>(
-        'MemberExpression',
+      return _transformReceiverAndName(
+        obj,
+        tKey,
         {
           computed: true,
-          object: tObj,
-          property: tKey,
+          optional: false,
         },
         {
-          start: _getOuterStart(tObj),
           end: node.span.end, // ]
+          hasParentParens: isInParentParens,
         },
-        { hasParentParens: isInParentParens },
       );
     }
     case 'LiteralArray': {
