@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.1"></a>
+## [2.0.1](https://github.com/ikatyang/angular-estree-parser/compare/v2.0.0...v2.0.1) (2020-05-09)
+
+
+### Bug Fixes
+
+* **transform:** correct chained optional expression with computed properties ([#193](https://github.com/ikatyang/angular-estree-parser/issues/193)) ([73cf46d](https://github.com/ikatyang/angular-estree-parser/commit/73cf46d))
+* **transform:** handle ThisExpression correctly ([#194](https://github.com/ikatyang/angular-estree-parser/issues/194)) ([cf89706](https://github.com/ikatyang/angular-estree-parser/commit/cf89706))
+
+
+
 <a name="2.0.0"></a>
 # [2.0.0](https://github.com/ikatyang/angular-estree-parser/compare/v1.3.1...v2.0.0) (2020-04-02)
 
