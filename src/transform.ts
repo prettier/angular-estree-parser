@@ -168,6 +168,11 @@ export const transform = (
         { hasParentParens: isInParentParens },
       );
     }
+    case 'ImplicitReceiver': {
+      return _c<b.ThisExpression>('ThisExpression', {}, node.span, {
+        hasParentParens: isInParentParens,
+      });
+    }
     case 'KeyedRead': {
       const { obj, key } = node as ng.KeyedRead;
       const tObj = _t<b.Expression>(obj);
@@ -488,13 +493,11 @@ export const transform = (
     props: { computed: boolean; optional: boolean },
     { end = _getOuterEnd(tName), hasParentParens = false } = {},
   ) {
+    // implicit `this`
     if (receiver.span.start >= receiver.span.end) {
       return tName;
     }
-    const tReceiver =
-      getNgType(receiver) === 'ImplicitReceiver'
-        ? _c<b.ThisExpression>('ThisExpression', {}, receiver.span)
-        : _t<b.Expression>(receiver);
+    const tReceiver = _t<b.Expression>(receiver);
     const isOptionalReceiver = _isOptionalReceiver(tReceiver);
     return _c<b.OptionalMemberExpression | b.MemberExpression>(
       props.optional || isOptionalReceiver

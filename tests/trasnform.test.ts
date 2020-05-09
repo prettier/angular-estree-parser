@@ -37,6 +37,7 @@ describe.each`
   ${'FunctionCall'}     | ${'CallExpression'}           | ${' a ( 1 ) ( 2 ) '}        | ${true}  | ${true}  | ${true}  | ${true}
   ${'KeyedRead'}        | ${'MemberExpression'}         | ${' a [ b ] '}              | ${true}  | ${true}  | ${true}  | ${true}
   ${'KeyedWrite'}       | ${'AssignmentExpression'}     | ${' a [ b ] = 1 '}          | ${true}  | ${true}  | ${true}  | ${true}
+  ${'ImplicitReceiver'} | ${'ThisExpression'}           | ${' this '}                 | ${true}  | ${true}  | ${true}  | ${true}
   ${'LiteralArray'}     | ${'ArrayExpression'}          | ${' [ 1 ] '}                | ${true}  | ${true}  | ${true}  | ${true}
   ${'LiteralMap'}       | ${'ObjectExpression'}         | ${' { "a" : 1 } '}          | ${true}  | ${true}  | ${true}  | ${true}
   ${'LiteralMap'}       | ${'ObjectExpression'}         | ${' { a : 1 } '}            | ${true}  | ${true}  | ${true}  | ${true}
@@ -46,6 +47,7 @@ describe.each`
   ${'LiteralPrimitive'} | ${'NumericLiteral'}           | ${' ( 1 ) '}                | ${true}  | ${true}  | ${true}  | ${true}
   ${'LiteralPrimitive'} | ${'NumericLiteral'}           | ${' 1 '}                    | ${true}  | ${true}  | ${true}  | ${true}
   ${'LiteralPrimitive'} | ${'StringLiteral'}            | ${' "hello" '}              | ${true}  | ${true}  | ${true}  | ${true}
+  ${'MethodCall'}       | ${'CallExpression'}           | ${' a ( this ) '}           | ${true}  | ${true}  | ${true}  | ${true}
   ${'MethodCall'}       | ${'CallExpression'}           | ${' a . b ( 1 , 2 ) '}      | ${true}  | ${true}  | ${true}  | ${true}
   ${'MethodCall'}       | ${'CallExpression'}           | ${' a ( 1 , 2 ) '}          | ${true}  | ${true}  | ${true}  | ${true}
   ${'MethodCall'}       | ${'OptionalCallExpression'}   | ${' a ?. b . c ( ) '}       | ${true}  | ${true}  | ${true}  | ${true}
