@@ -354,10 +354,7 @@ export const transform = (
         'Identifier',
         { name },
         { start: nameEnd - name.length, end: nameEnd },
-        // special case
-        receiver.span.start === receiver.span.end
-          ? { hasParentParens: isInParentParens }
-          : {},
+        _isImplicitThis(receiver) ? { hasParentParens: isInParentParens } : {},
       );
       return _transformReceiverAndName(
         receiver,
@@ -491,8 +488,7 @@ export const transform = (
     props: { computed: boolean; optional: boolean },
     { end = _getOuterEnd(tName), hasParentParens = false } = {},
   ) {
-    // implicit `this`
-    if (receiver.span.start >= receiver.span.end) {
+    if (_isImplicitThis(receiver)) {
       return tName;
     }
     const tReceiver = _t<b.Expression>(receiver);
@@ -522,6 +518,10 @@ export const transform = (
 
   function _findBackChar(regex: RegExp, index: number) {
     return findBackChar(regex, index, context.text);
+  }
+
+  function _isImplicitThis(n: ng.AST): boolean {
+    return n.span.start >= n.span.end;
   }
 
   function _isOptionalReceiver(n: OutputNode): boolean {
