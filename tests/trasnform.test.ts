@@ -50,6 +50,7 @@ describe.each`
   ${'LiteralPrimitive'} | ${'NumericLiteral'}           | ${' 1 '}                    | ${true}  | ${true}  | ${true}  | ${true}
   ${'LiteralPrimitive'} | ${'StringLiteral'}            | ${' "hello" '}              | ${true}  | ${true}  | ${true}  | ${true}
   ${'MethodCall'}       | ${'CallExpression'}           | ${' a ( this ) '}           | ${true}  | ${true}  | ${true}  | ${true}
+  ${'MethodCall'}       | ${'CallExpression'}           | ${' a ( b) '}               | ${true}  | ${true}  | ${true}  | ${true}
   ${'MethodCall'}       | ${'CallExpression'}           | ${' a . b ( 1 , 2 ) '}      | ${true}  | ${true}  | ${true}  | ${true}
   ${'MethodCall'}       | ${'CallExpression'}           | ${' a ( 1 , 2 ) '}          | ${true}  | ${true}  | ${true}  | ${true}
   ${'MethodCall'}       | ${'OptionalCallExpression'}   | ${' a ?. b . c ( ) '}       | ${true}  | ${true}  | ${true}  | ${true}
