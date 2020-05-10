@@ -234,7 +234,14 @@ export function fitSpans(
 export function findFrontChar(regex: RegExp, index: number, text: string) {
   let i = index;
   while (!regex.test(text[i])) {
-    i--;
+    // istanbul ignore next
+    if (--i < 0) {
+      throw new Error(
+        `Cannot find front char ${regex} from index ${index} in ${JSON.stringify(
+          text,
+        )}`,
+      );
+    }
   }
   return i;
 }
@@ -242,7 +249,14 @@ export function findFrontChar(regex: RegExp, index: number, text: string) {
 export function findBackChar(regex: RegExp, index: number, text: string) {
   let i = index;
   while (!regex.test(text[i])) {
-    i++;
+    // istanbul ignore next
+    if (++i >= text.length) {
+      throw new Error(
+        `Cannot find back char ${regex} from index ${index} in ${JSON.stringify(
+          text,
+        )}`,
+      );
+    }
   }
   return i;
 }
