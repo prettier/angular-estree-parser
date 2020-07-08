@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.1.0"></a>
+# [2.1.0](https://github.com/ikatyang/angular-estree-parser/compare/v2.0.3...v2.1.0) (2020-07-08)
+
+
+### Bug Fixes
+
+* **transform-microsyntax:** handle implicit `$implicit` correctly ([#200](https://github.com/ikatyang/angular-estree-parser/issues/200)) ([0970bc7](https://github.com/ikatyang/angular-estree-parser/commit/0970bc7))
+
+
+### Features
+
+* **peer-deps:** support Angular 10 ([#199](https://github.com/ikatyang/angular-estree-parser/issues/199)) ([950fe68](https://github.com/ikatyang/angular-estree-parser/commit/950fe68))
+
+
+
 <a name="2.0.3"></a>
 ## [2.0.3](https://github.com/ikatyang/angular-estree-parser/compare/v2.0.2...v2.0.3) (2020-05-10)
 
