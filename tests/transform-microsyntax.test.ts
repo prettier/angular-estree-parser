@@ -8,6 +8,7 @@ test.each`
   ${' let hero = hello '}           | ${['NGMicrosyntaxLet']}
   ${' let hero of heroes '}         | ${['NGMicrosyntaxLet', 'NGMicrosyntaxKeyedExpression']}
   ${' let hero ; of : heroes '}     | ${['NGMicrosyntaxLet', 'NGMicrosyntaxKeyedExpression']}
+  ${' as b '}                       | ${['NGMicrosyntaxAs']}
   ${' a '}                          | ${['NGMicrosyntaxExpression']}
   ${' a as b '}                     | ${['NGMicrosyntaxExpression']}
   ${' a , b '}                      | ${['NGMicrosyntaxExpression', 'NGMicrosyntaxKey']}

@@ -12,7 +12,11 @@ import {
   NGNode,
   RawNGSpan,
 } from './types';
-import { toLowerCamelCase } from './utils';
+import {
+  findBackChar,
+  NG_PARSE_TEMPLATE_BINDINGS_FAKE_PREFIX,
+  toLowerCamelCase,
+} from './utils';
 
 export function transformTemplateBindings(
   rawTemplateBindings: ng.TemplateBinding[],
@@ -122,11 +126,12 @@ export function transformTemplateBindings(
         );
       }
     } else {
-      const { key, value, sourceSpan } = templateBinding;
+      const { key, sourceSpan } = templateBinding;
       const startsWithLet = /^let\s$/.test(
         context.text.slice(sourceSpan.start, sourceSpan.start + 4),
       );
       if (startsWithLet) {
+        const { value } = templateBinding;
         return _c<NGMicrosyntaxLet>(
           'NGMicrosyntaxLet',
           {
@@ -149,6 +154,7 @@ export function transformTemplateBindings(
           },
         );
       } else {
+        const value = getAsVariableBindingValue(templateBinding);
         return _c<NGMicrosyntaxAs>(
           'NGMicrosyntaxAs',
           {
@@ -236,5 +242,29 @@ export function transformTemplateBindings(
           break;
       }
     }
+  }
+
+  /**
+   * - "as b" (value="NgEstreeParser" key="b") -> (value="$implicit" key="b")
+   */
+  function getAsVariableBindingValue(
+    variableBinding: ng.VariableBinding,
+  ): ng.VariableBinding['value'] {
+    if (
+      !variableBinding.value ||
+      variableBinding.value.source !== NG_PARSE_TEMPLATE_BINDINGS_FAKE_PREFIX
+    ) {
+      return variableBinding.value;
+    }
+
+    const index = findBackChar(
+      /\S/,
+      variableBinding.sourceSpan.start,
+      context.text,
+    );
+    return {
+      source: '$implicit',
+      span: { start: index, end: index },
+    };
   }
 }

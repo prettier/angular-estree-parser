@@ -4,7 +4,7 @@ import { Parser } from '@angular/compiler/src/expression_parser/parser';
 import { RawNGComment, RawNGSpan } from './types';
 
 const NG_PARSE_FAKE_LOCATION = 'angular-estree-parser';
-const NG_PARSE_TEMPLATE_BINDINGS_FAKE_PREFIX = 'NgEstreeParser';
+export const NG_PARSE_TEMPLATE_BINDINGS_FAKE_PREFIX = 'NgEstreeParser';
 const NG_PARSE_FAKE_ABSOLUTE_OFFSET = 0;
 const NG_PARSE_SHARED_PARAMS: readonly [string, number] = [
   NG_PARSE_FAKE_LOCATION,

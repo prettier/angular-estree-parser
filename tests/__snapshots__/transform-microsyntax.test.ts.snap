@@ -188,6 +188,24 @@ NGMicrosyntaxKey { name: "b" }
     |       ^
 `;
 
+exports[`" as b " 1`] = `
+NGMicrosyntax { body: ["NGMicrosyntaxAs"] }
+> 1 |  as b 
+    |  ^^^^
+--------------------------------------------------------------------------------
+NGMicrosyntaxAs { key: "NGMicrosyntaxKey", alias: "NGMicrosyntaxKey" }
+> 1 |  as b 
+    |  ^^^^
+--------------------------------------------------------------------------------
+NGMicrosyntaxKey { name: "$implicit" }
+> 1 |  as b 
+    |  ^
+--------------------------------------------------------------------------------
+NGMicrosyntaxKey { name: "b" }
+> 1 |  as b 
+    |     ^
+`;
+
 exports[`" let \\"\\\\\\"\\" " 1`] = `
 NGMicrosyntax { body: ["NGMicrosyntaxLet"] }
 > 1 |  let "\\"" 
