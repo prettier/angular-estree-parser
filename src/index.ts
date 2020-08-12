@@ -23,6 +23,8 @@ function parse(
   return ast;
 }
 
+export { NGMicrosyntax, NGNode };
+
 export function parseBinding(input: string): NGNode {
   return parse(input, parseNgBinding);
 }
