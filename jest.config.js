@@ -1,4 +1,5 @@
 const NG_VERSION = require('@angular/compiler').VERSION.full;
+const collectCoverage = !!process.env.CI && !/^(?:9|10\.0)\./.test(NG_VERSION)
 
 module.exports = {
   globals: {
@@ -11,7 +12,7 @@ module.exports = {
   testMatch: ['**/*.test.ts'],
   transform: { '\\.ts$': 'ts-jest' },
   coverageReporters: ['lcov', 'text-summary'],
-  collectCoverage: !!process.env.CI,
+  collectCoverage,
   collectCoverageFrom: ['src/**/*.ts'],
   coverageThreshold: {
     global: {
