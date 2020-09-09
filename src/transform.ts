@@ -48,16 +48,15 @@ export const transform = (
   const type = getNgType(node);
   switch (type) {
     case 'Unary': {
-      // @ts-ignore
-      const { left, right, expr } = node as ng.Unary;
-      const isPrefixMinus = right === expr;
-      const tArgument = _t<b.Expression>(isPrefixMinus ? right : left);
+      // @ts-ignore: there is no `Unary` in `@angular/compiler@<10.1.0` 
+      const { operator, expr } = node as ng.Unary;
+      const tArgument = _t<b.Expression>(expr);
       return _c<b.UnaryExpression>(
         'UnaryExpression',
         {
           prefix: true,
           argument: tArgument,
-          operator: isPrefixMinus ? '-' : '+',
+          operator: operator as '-' | '+',
         },
         node.span,
         { hasParentParens: isInParentParens },

@@ -129,7 +129,7 @@ function extractComments(
 
 // prettier-ignore
 export function getNgType(node: (ng.AST | RawNGComment) & { type?: string }) {
-  // @ts-ignore
+  // @ts-ignore: there is no `Unary` in `@angular/compiler@<10.1.0`
   if (ng.Unary && node instanceof ng.Unary) { return 'Unary'; }
   if (node instanceof ng.Binary) { return 'Binary'; }
   if (node instanceof ng.BindingPipe) { return "BindingPipe"; }
