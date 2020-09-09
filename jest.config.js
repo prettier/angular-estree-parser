@@ -1,5 +1,4 @@
 const NG_VERSION = require('@angular/compiler').VERSION.full;
-const collectCoverage = !!process.env.CI && !/^(?:9|10\.0)\./.test(NG_VERSION)
 
 module.exports = {
   globals: {

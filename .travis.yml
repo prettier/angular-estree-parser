@@ -9,7 +9,7 @@ before_install:
 
 script:
 - yarn run lint
-- yarn run test
+- ENABLE_COVERAGE=1 yarn run test
 
 - yarn upgrade @angular/compiler@^9.1.0
 - yarn run test

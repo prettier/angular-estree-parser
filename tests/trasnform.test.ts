@@ -104,8 +104,7 @@ describe.each`
 
     // `Unary` was `Binary` in `@angular/compier@<10.1.0"`
     if (beforeType === 'Unary') {
-      const type = getNgType(beforeNode!);
-      expect(['Binary', 'Unary']).toContain(type);
+      expect(['Binary', 'Unary']).toContain(getNgType(beforeNode!));
     } else {
       expect(getNgType(beforeNode!)).toEqual(beforeType);
     }
