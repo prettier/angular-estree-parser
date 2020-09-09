@@ -48,7 +48,7 @@ export const transform = (
   const type = getNgType(node);
   switch (type) {
     case 'Unary': {
-      // @ts-ignore: there is no `Unary` in `@angular/compiler@<10.1.0` 
+      // @ts-ignore: there is no `Unary` in `@angular/compiler@<10.1.0`
       const { operator, expr } = node as ng.Unary;
       const tArgument = _t<b.Expression>(expr);
       return _c<b.UnaryExpression>(
