@@ -11,7 +11,7 @@ module.exports = {
   testMatch: ['**/*.test.ts'],
   transform: { '\\.ts$': 'ts-jest' },
   coverageReporters: ['lcov', 'text-summary'],
-  collectCoverage: !!process.env.CI,
+  collectCoverage: !!process.env.ENABLE_COVERAGE,
   collectCoverageFrom: ['src/**/*.ts'],
   coverageThreshold: {
     global: {

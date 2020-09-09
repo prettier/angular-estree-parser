@@ -25,8 +25,8 @@ describe.each`
   beforeType            | afterType                     | input                       | action   | binding  | simple   | interpolation
   ${'Binary'}           | ${'BinaryExpression'}         | ${' 0 - 1 '}                | ${true}  | ${true}  | ${true}  | ${true}
   ${'Binary'}           | ${'LogicalExpression'}        | ${' a && b '}               | ${true}  | ${true}  | ${true}  | ${true}
-  ${'Binary'}           | ${'UnaryExpression'}          | ${' - 1 '}                  | ${true}  | ${true}  | ${true}  | ${true}
-  ${'Binary'}           | ${'UnaryExpression'}          | ${' + 1 '}                  | ${true}  | ${true}  | ${true}  | ${true}
+  ${'Unary'}            | ${'UnaryExpression'}          | ${' - 1 '}                  | ${true}  | ${true}  | ${true}  | ${true}
+  ${'Unary'}            | ${'UnaryExpression'}          | ${' + 1 '}                  | ${true}  | ${true}  | ${true}  | ${true}
   ${'BindingPipe'}      | ${'NGPipeExpression'}         | ${' a | b '}                | ${false} | ${true}  | ${false} | ${true}
   ${'BindingPipe'}      | ${'NGPipeExpression'}         | ${' a | b : c '}            | ${false} | ${true}  | ${false} | ${true}
   ${'Chain'}            | ${'NGChainedExpression'}      | ${' a ; b '}                | ${true}  | ${false} | ${false} | ${false}
@@ -102,7 +102,12 @@ describe.each`
     expect(beforeNode).not.toEqual(null);
     expect(afterNode).not.toEqual(null);
 
-    expect(getNgType(beforeNode!)).toEqual(beforeType);
+    // `Unary` was `Binary` in `@angular/compier@<10.1.0"`
+    if (beforeType === 'Unary') {
+      expect(['Binary', 'Unary']).toContain(getNgType(beforeNode!));
+    } else {
+      expect(getNgType(beforeNode!)).toEqual(beforeType);
+    }
     expect(afterNode!.type).toEqual(afterType);
 
     if (afterNode!.type.startsWith('NG')) {

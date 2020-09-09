@@ -68,9 +68,13 @@ export function parseNgInterpolation(input: string) {
   )!;
   assertAstErrors(errors);
   const ast = (rawAst as ng.Interpolation).expressions[0];
+  const visited = new Set();
   visitSpan(ast, span => {
-    span.start -= prefix.length;
-    span.end -= prefix.length;
+    if (!visited.has(span)) {
+      span.start -= prefix.length;
+      span.end -= prefix.length;
+      visited.add(span);
+    }
   });
   return { ast, comments };
 }
@@ -125,6 +129,8 @@ function extractComments(
 
 // prettier-ignore
 export function getNgType(node: (ng.AST | RawNGComment) & { type?: string }) {
+  // @ts-ignore: there is no `Unary` in `@angular/compiler@<10.1.0`
+  if (ng.Unary && node instanceof ng.Unary) { return 'Unary'; }
   if (node instanceof ng.Binary) { return 'Binary'; }
   if (node instanceof ng.BindingPipe) { return "BindingPipe"; }
   if (node instanceof ng.Chain) { return "Chain"; }
