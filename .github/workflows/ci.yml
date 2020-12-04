@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - actions/checkout@v2.3.4
+      - actions/setup-node@v2.1.2
+      - yarn install --frozen-lockfile
+      - yarn run lint
+
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        node:
+          - "15"
+          - "14"
+          - "10"
+        angular:
+          - ""
+          - "^9.1.0"
+          - "~10.0.0"
+    name: Node.js ${{ matrix.node }} / angular ${{ matrix.angular }}
+    runs-on: ubuntu-latest
+    env:
+      - ENABLE_COVERAGE: 1
+    steps:
+      - actions/checkout@v2.3.4
+      - actions/setup-node@v2.1.2
+      - yarn install --frozen-lockfile
+      - yarn global add codecov
+      - if: matrix.angular != ''
+        run: yarn upgrade @angular/compiler@${{ matrix.angular }}
+      - yarn run lint
+      - codecov
