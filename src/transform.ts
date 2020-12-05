@@ -473,12 +473,12 @@ export const transform = (
     } as T & RawNGSpan;
     switch (t) {
       case 'Identifier': {
-        const identifier = newNode as b.Identifier;
+        const identifier = (newNode as unknown) as b.Identifier;
         identifier.loc!.identifierName = identifier.name;
         break;
       }
       case 'NumericLiteral': {
-        const numericLiteral = newNode as b.NumberLiteral;
+        const numericLiteral = (newNode as unknown) as b.NumberLiteral;
         numericLiteral.extra = {
           ...numericLiteral.extra,
           raw: context.text.slice(numericLiteral.start!, numericLiteral.end!),
@@ -487,7 +487,7 @@ export const transform = (
         break;
       }
       case 'StringLiteral': {
-        const stringLiteral = newNode as b.StringLiteral;
+        const stringLiteral = (newNode as unknown) as b.StringLiteral;
         stringLiteral.extra = {
           ...stringLiteral.extra,
           raw: context.text.slice(stringLiteral.start!, stringLiteral.end!),

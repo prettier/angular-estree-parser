@@ -20,23 +20,23 @@ jobs:
       matrix:
         node:
           - "14"
-          - "10.3.0"
+          - "10.13.0"
         angular:
           - ""
           - "^9.1.0"
           - "~10.0.0"
+          - "^10.1.0"
     name: Node.js ${{ matrix.node }} / angular ${{ matrix.angular }}
     runs-on: ubuntu-latest
-    env:
-      ENABLE_COVERAGE: 1
     steps:
       - uses: actions/checkout@v2.3.4
       - uses: actions/setup-node@v2.1.2
-        with: 
+        with:
           node-version: ${{ matrix.node }}
       - run: yarn install --frozen-lockfile
-      - run: yarn global add codecov
       - if: matrix.angular != ''
         run: yarn upgrade @angular/compiler@${{ matrix.angular }}
       - run: yarn run test
-      - run: codecov
+        env:
+          ENABLE_COVERAGE: ${{ matrix.angular == '' && '1' || '' }}
+      - run: npx codecov

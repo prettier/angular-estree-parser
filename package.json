@@ -1,6 +1,6 @@
 {
   "name": "angular-estree-parser",
-  "version": "2.2.1",
+  "version": "2.3.0",
   "description": "A parser that converts Angular source code into an ESTree-compatible form",
   "keywords": [],
   "main": "lib/index.js",
@@ -23,10 +23,10 @@
   },
   "dependencies": {
     "lines-and-columns": "^1.1.6",
-    "tslib": "^1.9.3"
+    "tslib": "^2.0.3"
   },
   "devDependencies": {
-    "@angular/compiler": "10.1.0",
+    "@angular/compiler": "11.0.2",
     "@babel/code-frame": "7.8.3",
     "@babel/parser": "7.6.4",
     "@babel/types": "7.1.5",
@@ -43,10 +43,10 @@
     "tslint": "5.20.1",
     "tslint-config-prettier": "1.18.0",
     "tslint-plugin-prettier": "2.1.0",
-    "typescript": "3.7.5"
+    "typescript": "4.1.2"
   },
   "peerDependencies": {
-    "@angular/compiler": "^9.1.0 || ^10.0.0"
+    "@angular/compiler": "^9.1.0 || ^10.0.0 || ^11.0.0"
   },
   "engines": {
     "node": ">= 10.13.0"
