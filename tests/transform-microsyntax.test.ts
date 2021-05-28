@@ -22,5 +22,5 @@ test.each`
 `('$input', ({ input, types }) => {
   const ast = parseTemplateBindings(input);
   expect(snapshotAst(ast, input)).toMatchSnapshot();
-  expect(ast.body.map(node => node.type)).toEqual(types);
+  expect(ast.body.map((node) => node.type)).toEqual(types);
 });

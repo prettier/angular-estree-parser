@@ -14,7 +14,8 @@ export type NGNode = { comments?: b.CommentLine[] } & (
   | NGEmptyExpression
   | NGPipeExpression
   | NGQuotedExpression
-  | NGChainedExpression);
+  | NGChainedExpression
+);
 
 export interface NGEmptyExpression extends NGBaseNode {
   type: 'NGEmptyExpression';
@@ -75,13 +76,13 @@ export interface RawNGSpan {
  */
 export interface NGMicrosyntax extends NGBaseNode {
   type: 'NGMicrosyntax';
-  body: Array<
+  body: (
     | NGMicrosyntaxAs
     | NGMicrosyntaxExpression
     | NGMicrosyntaxKey
     | NGMicrosyntaxKeyedExpression
     | NGMicrosyntaxLet
-  >;
+  )[];
 }
 
 export type NGMicrosyntaxNode =

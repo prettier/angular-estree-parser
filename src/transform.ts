@@ -32,8 +32,8 @@ declare module '@babel/types' {
     method: boolean;
   }
   type CommentLine = Pick<
-    b.LineComment,
-    Exclude<keyof b.LineComment, 'type'>
+    b.CommentLine,
+    Exclude<keyof b.CommentLine, 'type'>
   > & { type: 'CommentLine' };
 }
 
@@ -217,7 +217,7 @@ export const transform = (
     }
     case 'LiteralMap': {
       const { keys, values } = node as ng.LiteralMap;
-      const tValues = values.map(value => _t<b.Expression>(value));
+      const tValues = values.map((value) => _t<b.Expression>(value));
       const tProperties = keys.map(({ key, quoted }, index) => {
         const tValue = tValues[index];
         const keyStart = _findBackChar(
@@ -473,12 +473,12 @@ export const transform = (
     } as T & RawNGSpan;
     switch (t) {
       case 'Identifier': {
-        const identifier = (newNode as unknown) as b.Identifier;
+        const identifier = newNode as unknown as b.Identifier;
         identifier.loc!.identifierName = identifier.name;
         break;
       }
       case 'NumericLiteral': {
-        const numericLiteral = (newNode as unknown) as b.NumberLiteral;
+        const numericLiteral = newNode as unknown as b.NumberLiteral;
         numericLiteral.extra = {
           ...numericLiteral.extra,
           raw: context.text.slice(numericLiteral.start!, numericLiteral.end!),
@@ -487,7 +487,7 @@ export const transform = (
         break;
       }
       case 'StringLiteral': {
-        const stringLiteral = (newNode as unknown) as b.StringLiteral;
+        const stringLiteral = newNode as unknown as b.StringLiteral;
         stringLiteral.extra = {
           ...stringLiteral.extra,
           raw: context.text.slice(stringLiteral.start!, stringLiteral.end!),
