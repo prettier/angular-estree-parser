@@ -538,7 +538,10 @@ export const transform = (
   }
 
   function _isImplicitThis(n: ng.AST): boolean {
-    return n.span.start >= n.span.end;
+    return (
+      n.span.start >= n.span.end ||
+      /^\s+$/.test(context.text.slice(n.span.start, n.span.end))
+    );
   }
 
   function _isOptionalReceiver(n: OutputNode): boolean {
