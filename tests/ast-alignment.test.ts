@@ -10,9 +10,8 @@ describe.each([
     ParseType.Binding,
     `{
       'btn-success': (dialog$ || async).level === dialogLevelEnum.SUCCESS,
-      'btn-warning': (dialog$ || async).level     ===     dialogLevelEnum.WARNING,
-      'btn-svg': (dialog$ || async).level ===
-dialogLevelEnum.DANGER
+      'btn-warning': (dialog$ || async).level === dialogLevelEnum.WARNING,
+      'btn-svg': (dialog$ || async).level === dialogLevelEnum.DANGER
     }`,
   ],
   [ParseType.Binding, 'onSave($event)'],

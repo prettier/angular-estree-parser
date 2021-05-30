@@ -24,11 +24,14 @@ jobs:
           - "12"
           - "10.13.0"
         angular:
-          - "^11.0.2"
+          - ""
+          - "^11.0.0"
           - "^10.1.0"
           - "~10.0.0"
           - "^9.1.0"
-          - ""
+        exclude:
+          - node: "10.13.0"
+            angular: ""
     name: Node.js ${{ matrix.node }} / angular ${{ matrix.angular }}
     runs-on: ubuntu-latest
     steps:
@@ -36,10 +39,8 @@ jobs:
       - uses: actions/setup-node@v2.1.2
         with:
           node-version: ${{ matrix.node }}
-      - if: matrix.node != '10.13.0'
+      - if: matrix.angular == ''
         run: yarn install --frozen-lockfile
-      - if: matrix.node == '10.13.0'
-        run: yarn install --frozen-lockfile --ignore-engines
       - if: matrix.angular != ''
         run: yarn upgrade @angular/compiler@${{ matrix.angular }}
       - run: yarn run test
