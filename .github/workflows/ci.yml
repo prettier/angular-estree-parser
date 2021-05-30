@@ -19,13 +19,19 @@ jobs:
       fail-fast: false
       matrix:
         node:
+          - "16"
           - "14"
+          - "12"
           - "10.13.0"
         angular:
           - ""
-          - "^9.1.0"
-          - "~10.0.0"
+          - "^11.0.0"
           - "^10.1.0"
+          - "~10.0.0"
+          - "^9.1.0"
+        exclude:
+          - node: "10.13.0"
+            angular: ""
     name: Node.js ${{ matrix.node }} / angular ${{ matrix.angular }}
     runs-on: ubuntu-latest
     steps:
@@ -33,7 +39,8 @@ jobs:
       - uses: actions/setup-node@v2.1.2
         with:
           node-version: ${{ matrix.node }}
-      - run: yarn install --frozen-lockfile
+      - if: matrix.angular == ''
+        run: yarn install --frozen-lockfile
       - if: matrix.angular != ''
         run: yarn upgrade @angular/compiler@${{ matrix.angular }}
       - run: yarn run test
