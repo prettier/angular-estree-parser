@@ -3,7 +3,7 @@ const NG_VERSION = require('@angular/compiler').VERSION.full;
 module.exports = {
   globals: {
     'ts-jest': {
-      diagnostics: !/^(?:[67]|8\.[01])\./.test(NG_VERSION),
+      diagnostics: !/^(?:9|10|11|12\.0)\./.test(NG_VERSION),
     }
   },
   testEnvironment: 'node',
