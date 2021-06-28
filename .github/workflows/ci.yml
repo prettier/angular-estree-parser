@@ -22,7 +22,7 @@ jobs:
           - "16"
           - "14"
           - "12"
-          - "10.13.0"
+          - "10.14.2"
         angular:
           - ""
           - "^11.0.0"
@@ -30,7 +30,7 @@ jobs:
           - "~10.0.0"
           - "^9.1.0"
         exclude:
-          - node: "10.13.0"
+          - node: "10.14.2"
             angular: ""
     name: Node.js ${{ matrix.node }} / angular ${{ matrix.angular }}
     runs-on: ubuntu-latest
