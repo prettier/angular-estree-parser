@@ -4,7 +4,7 @@ module.exports = {
   globals: {
     'ts-jest': {
       diagnostics: !/^(?:[67]|8\.[01])\./.test(NG_VERSION),
-    }
+    },
   },
   testEnvironment: 'node',
   moduleFileExtensions: ['ts', 'js', 'json'],
