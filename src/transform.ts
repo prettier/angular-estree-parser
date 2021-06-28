@@ -191,10 +191,10 @@ export const transform = (
       });
     }
     case 'KeyedRead': {
-      const { obj, key } = node as ng.KeyedRead;
+      const { receiver, key } = node as ng.KeyedRead;
       const tKey = _t<b.Expression>(key);
       return _transformReceiverAndName(
-        obj,
+        receiver,
         tKey,
         {
           computed: true,
@@ -384,11 +384,11 @@ export const transform = (
       );
     }
     case 'KeyedWrite': {
-      const { obj, key, value } = node as ng.KeyedWrite;
+      const { receiver, key, value } = node as ng.KeyedWrite;
       const tKey = _t<b.Expression>(key);
       const tValue = _t<b.Expression>(value);
       const tReceiverAndName = _transformReceiverAndName(
-        obj,
+        receiver,
         tKey,
         {
           computed: true,
