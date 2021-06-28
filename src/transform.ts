@@ -192,6 +192,7 @@ export const transform = (
     }
     case 'KeyedRead': {
       const { key } = node as ng.KeyedRead;
+      /* istanbul ignore next */
       const receiver = Object.prototype.hasOwnProperty.call(node, 'receiver')
         ? (node as ng.KeyedRead).receiver
         : (node as any).obj;
@@ -388,6 +389,7 @@ export const transform = (
     }
     case 'KeyedWrite': {
       const { key, value } = node as ng.KeyedWrite;
+      /* istanbul ignore next */
       const receiver = Object.prototype.hasOwnProperty.call(node, 'receiver')
         ? (node as ng.KeyedRead).receiver
         : (node as any).obj;
