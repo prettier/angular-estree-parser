@@ -1,6 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`" a " 1`] = `
+exports[` 1`] = `
+NGMicrosyntax { body: [] }
+> 1 | 
+    | ^
+`;
+
+exports[` a  1`] = `
 NGMicrosyntax { body: ["NGMicrosyntaxExpression"] }
 > 1 |  a 
     |  ^
@@ -14,7 +20,7 @@ Identifier { name: "a" }
     |  ^
 `;
 
-exports[`" a , b " 1`] = `
+exports[` a , b  1`] = `
 NGMicrosyntax { body: ["NGMicrosyntaxExpression", "NGMicrosyntaxKey"] }
 > 1 |  a , b 
     |  ^^^^^
@@ -32,7 +38,7 @@ NGMicrosyntaxKey { name: "b" }
     |      ^
 `;
 
-exports[`" a ; b " 1`] = `
+exports[` a ; b  1`] = `
 NGMicrosyntax { body: ["NGMicrosyntaxExpression", "NGMicrosyntaxKey"] }
 > 1 |  a ; b 
     |  ^^^^^
@@ -50,7 +56,7 @@ NGMicrosyntaxKey { name: "b" }
     |      ^
 `;
 
-exports[`" a ; b : c " 1`] = `
+exports[` a ; b : c  1`] = `
 NGMicrosyntax { body: ["NGMicrosyntaxExpression", "NGMicrosyntaxKeyedExpression"] }
 > 1 |  a ; b : c 
     |  ^^^^^^^^^
@@ -80,7 +86,7 @@ Identifier { name: "c" }
     |          ^
 `;
 
-exports[`" a ; b : c as d " 1`] = `
+exports[` a ; b : c as d  1`] = `
 NGMicrosyntax { body: ["NGMicrosyntaxExpression", "NGMicrosyntaxKeyedExpression"] }
 > 1 |  a ; b : c as d 
     |  ^^^^^^^^^^^^^^
@@ -114,7 +120,7 @@ NGMicrosyntaxKey { name: "d" }
     |               ^
 `;
 
-exports[`" a ; b as c " 1`] = `
+exports[` a ; b as c  1`] = `
 NGMicrosyntax { body: ["NGMicrosyntaxExpression", "NGMicrosyntaxAs"] }
 > 1 |  a ; b as c 
     |  ^^^^^^^^^^
@@ -140,7 +146,7 @@ NGMicrosyntaxKey { name: "c" }
     |           ^
 `;
 
-exports[`" a ; b c " 1`] = `
+exports[` a ; b c  1`] = `
 NGMicrosyntax { body: ["NGMicrosyntaxExpression", "NGMicrosyntaxKeyedExpression"] }
 > 1 |  a ; b c 
     |  ^^^^^^^
@@ -170,7 +176,7 @@ Identifier { name: "c" }
     |        ^
 `;
 
-exports[`" a as b " 1`] = `
+exports[` a as b  1`] = `
 NGMicrosyntax { body: ["NGMicrosyntaxExpression"] }
 > 1 |  a as b 
     |  ^^^^^^
@@ -188,7 +194,7 @@ NGMicrosyntaxKey { name: "b" }
     |       ^
 `;
 
-exports[`" as b " 1`] = `
+exports[` as b  1`] = `
 NGMicrosyntax { body: ["NGMicrosyntaxAs"] }
 > 1 |  as b 
     |  ^^^^
@@ -206,7 +212,7 @@ NGMicrosyntaxKey { name: "b" }
     |     ^
 `;
 
-exports[`" let \\"\\\\\\"\\" " 1`] = `
+exports[` let "\\""  1`] = `
 NGMicrosyntax { body: ["NGMicrosyntaxLet"] }
 > 1 |  let "\\"" 
     |  ^^^^^^^^
@@ -220,7 +226,7 @@ NGMicrosyntaxKey { name: '"' }
     |      ^^^^
 `;
 
-exports[`" let \\"a\\" = \\"b\\" ; \\"c\\" as \\"d\\" " 1`] = `
+exports[` let "a" = "b" ; "c" as "d"  1`] = `
 NGMicrosyntax { body: ["NGMicrosyntaxLet", "NGMicrosyntaxAs"] }
 > 1 |  let "a" = "b" ; "c" as "d" 
     |  ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -250,7 +256,7 @@ NGMicrosyntaxKey { name: "d" }
     |                         ^^^
 `;
 
-exports[`" let hero " 1`] = `
+exports[` let hero  1`] = `
 NGMicrosyntax { body: ["NGMicrosyntaxLet"] }
 > 1 |  let hero 
     |  ^^^^^^^^
@@ -264,7 +270,7 @@ NGMicrosyntaxKey { name: "hero" }
     |      ^^^^
 `;
 
-exports[`" let hero ; of : heroes " 1`] = `
+exports[` let hero ; of : heroes  1`] = `
 NGMicrosyntax { body: ["NGMicrosyntaxLet", "NGMicrosyntaxKeyedExpression"] }
 > 1 |  let hero ; of : heroes 
     |  ^^^^^^^^^^^^^^^^^^^^^^
@@ -294,7 +300,7 @@ Identifier { name: "heroes" }
     |                  ^^^^^^
 `;
 
-exports[`" let hero = hello " 1`] = `
+exports[` let hero = hello  1`] = `
 NGMicrosyntax { body: ["NGMicrosyntaxLet"] }
 > 1 |  let hero = hello 
     |  ^^^^^^^^^^^^^^^^
@@ -312,7 +318,7 @@ NGMicrosyntaxKey { name: "hello" }
     |             ^^^^^
 `;
 
-exports[`" let hero of heroes " 1`] = `
+exports[` let hero of heroes  1`] = `
 NGMicrosyntax { body: ["NGMicrosyntaxLet", "NGMicrosyntaxKeyedExpression"] }
 > 1 |  let hero of heroes 
     |  ^^^^^^^^^^^^^^^^^^
@@ -340,10 +346,4 @@ NGMicrosyntaxExpression { expression: "Identifier", alias: null }
 Identifier { name: "heroes" }
 > 1 |  let hero of heroes 
     |              ^^^^^^
-`;
-
-exports[`"" 1`] = `
-NGMicrosyntax { body: [] }
-> 1 | 
-    | ^
 `;

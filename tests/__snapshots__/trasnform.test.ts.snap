@@ -1,6 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`" a ; b " ("Chain" -> "NGChainedExpression") ast 1`] = `
+exports[` (EmptyExpr -> NGEmptyExpression) ast 1`] = `
+NGEmptyExpression { comments: [] }
+> 1 | 
+    | ^
+`;
+
+exports[` a ; b  (Chain -> NGChainedExpression) ast 1`] = `
 NGChainedExpression { expressions: ["Identifier", "Identifier"], comments: [] }
 > 1 |  a ; b 
     |  ^^^^^
@@ -14,7 +20,7 @@ Identifier { name: "b" }
     |      ^
 `;
 
-exports[`" a | b " ("BindingPipe" -> "NGPipeExpression") ast 1`] = `
+exports[` a | b  (BindingPipe -> NGPipeExpression) ast 1`] = `
 NGPipeExpression { left: "Identifier", right: "Identifier", arguments: [], comments: [] }
 > 1 |  a | b 
     |  ^^^^^
@@ -28,7 +34,7 @@ Identifier { name: "b" }
     |      ^
 `;
 
-exports[`" a | b : c " ("BindingPipe" -> "NGPipeExpression") ast 1`] = `
+exports[` a | b : c  (BindingPipe -> NGPipeExpression) ast 1`] = `
 NGPipeExpression {
   left: "Identifier",
   right: "Identifier",
@@ -51,14 +57,8 @@ Identifier { name: "c" }
     |          ^
 `;
 
-exports[`" javascript : void(0) " ("Quote" -> "NGQuotedExpression") ast 1`] = `
+exports[` javascript : void(0)  (Quote -> NGQuotedExpression) ast 1`] = `
 NGQuotedExpression { prefix: "javascript", value: " void(0) ", comments: [] }
 > 1 |  javascript : void(0) 
     |  ^^^^^^^^^^^^^^^^^^^^
-`;
-
-exports[`"" ("EmptyExpr" -> "NGEmptyExpression") ast 1`] = `
-NGEmptyExpression { comments: [] }
-> 1 | 
-    | ^
 `;
