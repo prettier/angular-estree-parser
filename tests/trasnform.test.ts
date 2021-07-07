@@ -69,7 +69,7 @@ describe.each`
   ${'Quote'}            | ${'NGQuotedExpression'}       | ${' javascript : void(0) '} | ${false} | ${true}  | ${true}  | ${false}
   ${'SafeMethodCall'}   | ${'OptionalCallExpression'}   | ${' a ?. b ( ) '}           | ${true}  | ${true}  | ${true}  | ${true}
   ${'SafePropertyRead'} | ${'OptionalMemberExpression'} | ${' a ?. b '}               | ${true}  | ${true}  | ${true}  | ${true}
-`('$input ($beforeType -> $afterType)', fields => {
+`('$input ($beforeType -> $afterType)', (fields) => {
   const { beforeType, afterType, input } = fields;
 
   let beforeNode: ng.AST | null = null;

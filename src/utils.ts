@@ -69,7 +69,7 @@ export function parseNgInterpolation(input: string) {
   assertAstErrors(errors);
   const ast = (rawAst as ng.Interpolation).expressions[0];
   const visited = new Set();
-  visitSpan(ast, span => {
+  visitSpan(ast, (span) => {
     if (!visited.has(span)) {
       span.start -= prefix.length;
       span.end -= prefix.length;
@@ -85,7 +85,7 @@ function visitSpan(ast: any, fn: (span: ng.ParseSpan) => void): void {
   }
 
   if (Array.isArray(ast)) {
-    return ast.forEach(value => visitSpan(value, fn));
+    return ast.forEach((value) => visitSpan(value, fn));
   }
 
   for (const key of Object.keys(ast)) {

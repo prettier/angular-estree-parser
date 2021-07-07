@@ -14,7 +14,8 @@ export type NGNode = { comments?: b.CommentLine[] } & (
   | NGEmptyExpression
   | NGPipeExpression
   | NGQuotedExpression
-  | NGChainedExpression);
+  | NGChainedExpression
+);
 
 export interface NGEmptyExpression extends NGBaseNode {
   type: 'NGEmptyExpression';
