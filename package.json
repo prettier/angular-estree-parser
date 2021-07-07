@@ -1,6 +1,6 @@
 {
   "name": "angular-estree-parser",
-  "version": "2.4.0",
+  "version": "2.5.0",
   "description": "A parser that converts Angular source code into an ESTree-compatible form",
   "keywords": [],
   "main": "lib/index.js",
@@ -26,7 +26,7 @@
     "tslib": "^2.0.3"
   },
   "devDependencies": {
-    "@angular/compiler": "12.0.2",
+    "@angular/compiler": "12.1.0",
     "@babel/code-frame": "7.8.3",
     "@babel/parser": "7.6.4",
     "@babel/types": "7.1.5",

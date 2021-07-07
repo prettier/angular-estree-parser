@@ -191,10 +191,14 @@ export const transform = (
       });
     }
     case 'KeyedRead': {
-      const { obj, key } = node as ng.KeyedRead;
+      const { key } = node as ng.KeyedRead;
+      /* istanbul ignore next */
+      const receiver = Object.prototype.hasOwnProperty.call(node, 'receiver')
+        ? (node as ng.KeyedRead).receiver
+        : (node as any).obj;
       const tKey = _t<b.Expression>(key);
       return _transformReceiverAndName(
-        obj,
+        receiver,
         tKey,
         {
           computed: true,
@@ -384,11 +388,15 @@ export const transform = (
       );
     }
     case 'KeyedWrite': {
-      const { obj, key, value } = node as ng.KeyedWrite;
+      const { key, value } = node as ng.KeyedWrite;
+      /* istanbul ignore next */
+      const receiver = Object.prototype.hasOwnProperty.call(node, 'receiver')
+        ? (node as ng.KeyedRead).receiver
+        : (node as any).obj;
       const tKey = _t<b.Expression>(key);
       const tValue = _t<b.Expression>(value);
       const tReceiverAndName = _transformReceiverAndName(
-        obj,
+        receiver,
         tKey,
         {
           computed: true,
