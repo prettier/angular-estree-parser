@@ -25,6 +25,7 @@ jobs:
           - "10.17.0"
         angular:
           - ""
+          - "~12.0.0"
           - "^11.0.0"
           - "^10.1.0"
           - "~10.0.0"
@@ -42,7 +43,7 @@ jobs:
       - if: matrix.angular == ''
         run: yarn install --frozen-lockfile
       - if: matrix.angular != ''
-        run: yarn upgrade @angular/compiler@${{ matrix.angular }}
+        run: yarn upgrade @angular/compiler@${{ matrix.angular }} --ignore-engines
       - run: yarn run test
         env:
           ENABLE_COVERAGE: ${{ matrix.angular == '' && '1' || '' }}

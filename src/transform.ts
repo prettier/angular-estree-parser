@@ -191,10 +191,14 @@ export const transform = (
       });
     }
     case 'KeyedRead': {
-      const { obj, key } = node as ng.KeyedRead;
+      const { key } = node as ng.KeyedRead;
+      /* istanbul ignore next */
+      const receiver = Object.prototype.hasOwnProperty.call(node, 'receiver')
+        ? (node as ng.KeyedRead).receiver
+        : (node as any).obj;
       const tKey = _t<b.Expression>(key);
       return _transformReceiverAndName(
-        obj,
+        receiver,
         tKey,
         {
           computed: true,
@@ -217,7 +221,7 @@ export const transform = (
     }
     case 'LiteralMap': {
       const { keys, values } = node as ng.LiteralMap;
-      const tValues = values.map(value => _t<b.Expression>(value));
+      const tValues = values.map((value) => _t<b.Expression>(value));
       const tProperties = keys.map(({ key, quoted }, index) => {
         const tValue = tValues[index];
         const keyStart = _findBackChar(
@@ -384,11 +388,15 @@ export const transform = (
       );
     }
     case 'KeyedWrite': {
-      const { obj, key, value } = node as ng.KeyedWrite;
+      const { key, value } = node as ng.KeyedWrite;
+      /* istanbul ignore next */
+      const receiver = Object.prototype.hasOwnProperty.call(node, 'receiver')
+        ? (node as ng.KeyedRead).receiver
+        : (node as any).obj;
       const tKey = _t<b.Expression>(key);
       const tValue = _t<b.Expression>(value);
       const tReceiverAndName = _transformReceiverAndName(
-        obj,
+        receiver,
         tKey,
         {
           computed: true,
@@ -473,12 +481,12 @@ export const transform = (
     } as T & RawNGSpan;
     switch (t) {
       case 'Identifier': {
-        const identifier = (newNode as unknown) as b.Identifier;
+        const identifier = newNode as unknown as b.Identifier;
         identifier.loc!.identifierName = identifier.name;
         break;
       }
       case 'NumericLiteral': {
-        const numericLiteral = (newNode as unknown) as b.NumberLiteral;
+        const numericLiteral = newNode as unknown as b.NumberLiteral;
         numericLiteral.extra = {
           ...numericLiteral.extra,
           raw: context.text.slice(numericLiteral.start!, numericLiteral.end!),
@@ -487,7 +495,7 @@ export const transform = (
         break;
       }
       case 'StringLiteral': {
-        const stringLiteral = (newNode as unknown) as b.StringLiteral;
+        const stringLiteral = newNode as unknown as b.StringLiteral;
         stringLiteral.extra = {
           ...stringLiteral.extra,
           raw: context.text.slice(stringLiteral.start!, stringLiteral.end!),

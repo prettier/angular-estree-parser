@@ -39,7 +39,7 @@ NGPipeExpression {
   left: "Identifier",
   right: "Identifier",
   arguments: ["Identifier"],
-  comments: []
+  comments: [],
 }
 > 1 |  a | b : c 
     |  ^^^^^^^^^

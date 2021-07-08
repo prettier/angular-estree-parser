@@ -52,7 +52,7 @@ export function massageAst(ast: any): any {
 export function snapshotAst(ast: any, source: string) {
   const snapshots: string[] = [];
   const isNode = (x: any) => x && x.type;
-  visitAst(ast, node => {
+  visitAst(ast, (node) => {
     const props = Object.keys(node).reduce((reduced: any, key) => {
       const value = node[key];
       switch (key) {
@@ -64,7 +64,7 @@ export function snapshotAst(ast: any, source: string) {
         default:
           reduced[key] =
             Array.isArray(value) && value.some(isNode)
-              ? value.map(x => x.type)
+              ? value.map((x) => x.type)
               : isNode(value)
               ? value.type
               : value;
@@ -95,7 +95,7 @@ function visitAst(ast: any, fn: (node: any) => void) {
   }
 
   if (Array.isArray(ast)) {
-    ast.forEach(value => visitAst(value, fn));
+    ast.forEach((value) => visitAst(value, fn));
     return;
   }
 
@@ -103,5 +103,5 @@ function visitAst(ast: any, fn: (node: any) => void) {
     fn(ast);
   }
 
-  Object.keys(ast).forEach(key => visitAst(ast[key], fn));
+  Object.keys(ast).forEach((key) => visitAst(ast[key], fn));
 }
