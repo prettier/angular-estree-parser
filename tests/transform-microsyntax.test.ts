@@ -28,15 +28,20 @@ test.each`
   expect(ast.body.map((node) => node.type)).toEqual(types);
 });
 
-const major = Number(angularVersion.major);
-const minor = Number(angularVersion.minor);
-if (major > 12 || (major === 12 && minor >= 1)) {
-  test('Shorthand', () => {
-    const ast = parseTemplateBindings('someTmpl; context: {app}');
+test('Shorthand', () => {
+  const major = Number(angularVersion.major);
+  const minor = Number(angularVersion.minor);
+  const code = 'someTmpl; context: {app}';
+  if (major > 12 || (major === 12 && minor > 0)) {
+    const ast = parseTemplateBindings(code);
     const secondExpression = ast.body[1] as NGMicrosyntaxKeyedExpression;
     const objectExpression = secondExpression.expression
       .expression as b.ObjectExpression;
     const firstProperty = objectExpression.properties[0] as b.ObjectProperty;
     expect(firstProperty.shorthand).toBe(true);
-  });
-}
+  } else {
+    expect(() => {
+      parseTemplateBindings(code);
+    }).toThrow(SyntaxError);
+  }
+});
