@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "lines-and-columns": "^1.1.6",
-    "tslib": "^2.0.3"
+    "tslib": "^2.3.0"
   },
   "devDependencies": {
     "@angular/compiler": "12.1.0",
@@ -32,24 +32,24 @@
     "@babel/types": "7.1.5",
     "@types/babel-types": "7.0.4",
     "@types/babel__code-frame": "7.0.1",
-    "@types/jest": "23.3.14",
+    "@types/jest": "26.0.23",
     "@types/prettier": "2.3.0",
-    "jest": "23.6.0",
-    "jest-snapshot-serializer-raw": "1.1.0",
+    "jest": "27.0.5",
+    "jest-snapshot-serializer-raw": "1.2.0",
     "prettier": "2.3.2",
     "prettier-config-ikatyang": "1.1.1",
     "standard-version": "4.4.0",
-    "ts-jest": "23.10.5",
+    "ts-jest": "27.0.3",
     "tslint": "5.20.1",
     "tslint-config-prettier": "1.18.0",
     "tslint-plugin-prettier": "2.3.0",
-    "typescript": "4.1.2"
+    "typescript": "4.3.4"
   },
   "peerDependencies": {
     "@angular/compiler": "^9.1.0 || ^10.0.0 || ^11.0.0 || ^12.0.0"
   },
   "engines": {
-    "node": ">= 10.13.0"
+    "node": ">= 10.17.0"
   },
   "files": [
     "/lib/**/*"
