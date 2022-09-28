@@ -27,11 +27,18 @@ export function massageAst(ast: any): any {
     return ast.map(massageAst);
   }
 
-  return Object.keys(ast).reduce((reduced: any, key) => {
+  const massaged = Object.keys(ast).reduce((reduced: any, key) => {
     switch (key) {
       case 'trailingComments':
         // do nothing
         break;
+      case 'loc': {
+        const loc = massageAst(ast[key]);
+        delete loc.filename;
+        delete loc.identifierName
+        reduced[key] = loc;
+        break;
+      }
       case 'extra': {
         const extra = massageAst(ast[key]);
         // we added a custom `parenEnd` field for positioning
@@ -47,6 +54,12 @@ export function massageAst(ast: any): any {
     }
     return reduced;
   }, {});
+
+  if (Array.isArray(massaged.errors) && massaged.errors.length === 0) {
+    delete massaged.errors
+  }
+
+  return massaged;
 }
 
 export function snapshotAst(ast: any, source: string) {
