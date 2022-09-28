@@ -1,4 +1,7 @@
+import { VERSION as angularVersion } from '@angular/compiler';
+import * as b from '@babel/types';
 import { parseTemplateBindings } from '../src/index';
+import type { NGMicrosyntaxKeyedExpression } from '../src/types';
 import { snapshotAst } from './helpers';
 
 test.each`
@@ -23,4 +26,22 @@ test.each`
   const ast = parseTemplateBindings(input);
   expect(snapshotAst(ast, input)).toMatchSnapshot();
   expect(ast.body.map((node) => node.type)).toEqual(types);
+});
+
+test('Shorthand', () => {
+  const major = Number(angularVersion.major);
+  const minor = Number(angularVersion.minor);
+  const code = 'someTmpl; context: {app}';
+  if (major > 12 || (major === 12 && minor > 0)) {
+    const ast = parseTemplateBindings(code);
+    const secondExpression = ast.body[1] as NGMicrosyntaxKeyedExpression;
+    const objectExpression = secondExpression.expression
+      .expression as b.ObjectExpression;
+    const firstProperty = objectExpression.properties[0] as b.ObjectProperty;
+    expect(firstProperty.shorthand).toBe(true);
+  } else {
+    expect(() => {
+      parseTemplateBindings(code);
+    }).toThrow(SyntaxError);
+  }
 });

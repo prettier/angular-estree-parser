@@ -239,13 +239,15 @@ export const transform = (
         const tKey = quoted
           ? _c<b.StringLiteral>('StringLiteral', { value: key }, keySpan)
           : _c<b.Identifier>('Identifier', { name: key }, keySpan);
+        const shorthand = tKey.end < tKey.start;
+
         return _c<b.ObjectProperty>(
           'ObjectProperty',
           {
             key: tKey,
             value: tValue,
             method: false,
-            shorthand: false,
+            shorthand,
             computed: false,
           },
           { start: _getOuterStart(tKey), end: _getOuterEnd(tValue) },
@@ -513,7 +515,7 @@ export const transform = (
     props: { computed: boolean; optional: boolean },
     { end = _getOuterEnd(tName), hasParentParens = false } = {},
   ) {
-    if (_isImplicitThis(receiver)) {
+    if (_isImplicitThis(receiver) || receiver.span.start === tName.start) {
       return tName;
     }
     const tReceiver = _t<b.Expression>(receiver);
