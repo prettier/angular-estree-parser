@@ -53,6 +53,7 @@ describe.each`
   ${'MethodCall'}       | ${'CallExpression'}           | ${' a ( b) '}               | ${true}  | ${true}  | ${true}  | ${true}
   ${'MethodCall'}       | ${'CallExpression'}           | ${' a . b ( 1 , 2 ) '}      | ${true}  | ${true}  | ${true}  | ${true}
   ${'MethodCall'}       | ${'CallExpression'}           | ${' a ( 1 , 2 ) '}          | ${true}  | ${true}  | ${true}  | ${true}
+  ${'MethodCall'}       | ${'CallExpression'}           | ${' a ( { b : 1 } ) '}      | ${true}  | ${true}  | ${true}  | ${true}
   ${'MethodCall'}       | ${'OptionalCallExpression'}   | ${' a ?. b . c ( ) '}       | ${true}  | ${true}  | ${true}  | ${true}
   ${'MethodCall'}       | ${'OptionalCallExpression'}   | ${' a ?. b ( ) . c ( ) '}   | ${true}  | ${true}  | ${true}  | ${true}
   ${'NonNullAssert'}    | ${'TSNonNullExpression'}      | ${' x ! '}                  | ${true}  | ${true}  | ${true}  | ${true}
