@@ -1,4 +1,4 @@
-import LineAndColumn from 'lines-and-columns';
+import { LinesAndColumns } from 'lines-and-columns';
 
 export class Context {
   public locator = new Locator(this.text);
@@ -6,12 +6,12 @@ export class Context {
 }
 
 class Locator {
-  private _lineAndColumn: LineAndColumn;
+  private _linesAndColumns: LinesAndColumns;
   constructor(text: string) {
-    this._lineAndColumn = new LineAndColumn(text);
+    this._linesAndColumns = new LinesAndColumns(text);
   }
   public locationForIndex(index: number) {
-    const { line, column } = this._lineAndColumn.locationForIndex(index)!;
+    const { line, column } = this._linesAndColumns.locationForIndex(index)!;
     return { line: line + 1, column };
   }
 }

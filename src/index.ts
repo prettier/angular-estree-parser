@@ -1,4 +1,5 @@
 import * as ng from '@angular/compiler/src/expression_parser/ast';
+import * as b from '@babel/types';
 import { Context } from './context';
 import { InputNode, transform } from './transform';
 import { transformTemplateBindings } from './transform-microsyntax';
@@ -19,7 +20,7 @@ function parse(
   const context = new Context(input);
   const _t = (n: InputNode) => transform(n, context);
   const ast = _t(rawNgAst) as NGNode;
-  ast.comments = comments.map(_t);
+  ast.comments = comments.map((comment) => _t(comment) as b.CommentLine);
   return ast;
 }
 

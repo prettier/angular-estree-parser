@@ -32,9 +32,20 @@ declare module '@babel/types' {
     method: boolean;
   }
   type CommentLine = Pick<
-    b.LineComment,
-    Exclude<keyof b.LineComment, 'type'>
+    b.CommentLine,
+    Exclude<keyof b.CommentLine, 'type'>
   > & { type: 'CommentLine' };
+  interface BaseNode {
+    type: b.Node['type'];
+    leadingComments?: b.Comment[] | null;
+    innerComments?: b.Comment[] | null;
+    trailingComments?: b.Comment[] | null;
+    start?: number | null;
+    end?: number | null;
+    loc?: SourceLocation | null;
+    range?: [number, number];
+    extra?: Record<string, unknown>;
+  }
 }
 
 export type InputNode = ng.AST | RawNGComment;
