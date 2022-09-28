@@ -19,10 +19,9 @@ jobs:
       fail-fast: false
       matrix:
         node:
+          - '18'
           - '16'
           - '14'
-          - '12'
-          - '10.17.0'
         angular:
           - ''
           - '~12.0.0'
@@ -30,9 +29,6 @@ jobs:
           - '^10.1.0'
           - '~10.0.0'
           - '^9.1.0'
-        exclude:
-          - node: '10.17.0'
-            angular: ''
     name: Node.js ${{ matrix.node }} / angular ${{ matrix.angular }}
     runs-on: ubuntu-latest
     steps:
