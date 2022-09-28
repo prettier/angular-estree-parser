@@ -334,13 +334,15 @@ export const transform = (
         optional: isOptionalType,
       });
       const isOptionalReceiver = _isOptionalReceiver(tReceiverAndName);
-      return _c<b.CallExpression | b.OptionalCallExpression>(
-        isOptionalType || isOptionalReceiver
+      const nodeType = isOptionalType || isOptionalReceiver
           ? 'OptionalCallExpression'
-          : 'CallExpression',
+          : 'CallExpression'
+      return _c<b.CallExpression | b.OptionalCallExpression>(
+        nodeType,
         {
           callee: tReceiverAndName,
           arguments: tArgs,
+          optional: nodeType === 'OptionalCallExpression' ? false : undefined,
         },
         {
           start: _getOuterStart(tReceiverAndName),
