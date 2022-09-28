@@ -2,7 +2,7 @@
 
 exports[` (EmptyExpr -> NGEmptyExpression) ast 1`] = `
 NGEmptyExpression { comments: [] }
-> 1 | 
+> 1 |
     | ^
 `;
 
