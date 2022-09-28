@@ -334,9 +334,10 @@ export const transform = (
         optional: isOptionalType,
       });
       const isOptionalReceiver = _isOptionalReceiver(tReceiverAndName);
-      const nodeType = isOptionalType || isOptionalReceiver
+      const nodeType =
+        isOptionalType || isOptionalReceiver
           ? 'OptionalCallExpression'
-          : 'CallExpression'
+          : 'CallExpression';
       return _c<b.CallExpression | b.OptionalCallExpression>(
         nodeType,
         {

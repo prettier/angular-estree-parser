@@ -35,7 +35,7 @@ export function massageAst(ast: any): any {
       case 'loc': {
         const loc = massageAst(ast[key]);
         delete loc.filename;
-        delete loc.identifierName
+        delete loc.identifierName;
         reduced[key] = loc;
         break;
       }
@@ -56,7 +56,7 @@ export function massageAst(ast: any): any {
   }, {});
 
   if (Array.isArray(massaged.errors) && massaged.errors.length === 0) {
-    delete massaged.errors
+    delete massaged.errors;
   }
 
   return massaged;
