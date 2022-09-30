@@ -76,13 +76,13 @@ export interface RawNGSpan {
  */
 export interface NGMicrosyntax extends NGBaseNode {
   type: 'NGMicrosyntax';
-  body: Array<
+  body: (
     | NGMicrosyntaxAs
     | NGMicrosyntaxExpression
     | NGMicrosyntaxKey
     | NGMicrosyntaxKeyedExpression
     | NGMicrosyntaxLet
-  >;
+  )[];
 }
 
 export type NGMicrosyntaxNode =

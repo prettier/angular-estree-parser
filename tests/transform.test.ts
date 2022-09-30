@@ -42,7 +42,7 @@ describe.each`
   ${'ImplicitReceiver'} | ${'ThisExpression'}           | ${' this '}                 | ${true}  | ${true}  | ${true}  | ${true}
   ${'LiteralArray'}     | ${'ArrayExpression'}          | ${' [ 1 ] '}                | ${true}  | ${true}  | ${true}  | ${true}
   ${'LiteralMap'}       | ${'ObjectExpression'}         | ${' { "a" : 1 } '}          | ${true}  | ${true}  | ${true}  | ${true}
-  ${'LiteralMap'}       | ${'ObjectExpression'}         | ${' { a : 1 } '}            | ${true}  | ${true}  | ${true}  | ${true}
+  ${'LiteralMap'}       | ${'ObjectExpression'}         | ${' ( { a : 1 } ) '}        | ${true}  | ${true}  | ${true}  | ${true}
   ${'LiteralPrimitive'} | ${'BooleanLiteral'}           | ${' true '}                 | ${true}  | ${true}  | ${true}  | ${true}
   ${'LiteralPrimitive'} | ${'Identifier'}               | ${' undefined '}            | ${true}  | ${true}  | ${true}  | ${true}
   ${'LiteralPrimitive'} | ${'NullLiteral'}              | ${' null '}                 | ${true}  | ${true}  | ${true}  | ${true}
@@ -53,6 +53,7 @@ describe.each`
   ${'MethodCall'}       | ${'CallExpression'}           | ${' a ( b) '}               | ${true}  | ${true}  | ${true}  | ${true}
   ${'MethodCall'}       | ${'CallExpression'}           | ${' a . b ( 1 , 2 ) '}      | ${true}  | ${true}  | ${true}  | ${true}
   ${'MethodCall'}       | ${'CallExpression'}           | ${' a ( 1 , 2 ) '}          | ${true}  | ${true}  | ${true}  | ${true}
+  ${'MethodCall'}       | ${'CallExpression'}           | ${' a ( { b : 1 } ) '}      | ${true}  | ${true}  | ${true}  | ${true}
   ${'MethodCall'}       | ${'OptionalCallExpression'}   | ${' a ?. b . c ( ) '}       | ${true}  | ${true}  | ${true}  | ${true}
   ${'MethodCall'}       | ${'OptionalCallExpression'}   | ${' a ?. b ( ) . c ( ) '}   | ${true}  | ${true}  | ${true}  | ${true}
   ${'NonNullAssert'}    | ${'TSNonNullExpression'}      | ${' x ! '}                  | ${true}  | ${true}  | ${true}  | ${true}
