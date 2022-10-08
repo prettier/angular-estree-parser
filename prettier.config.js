@@ -1,3 +1,6 @@
-const { jsxBracketSameLine, ...config } = require('prettier-config-ikatyang');
+'use strict';
 
-module.exports = config;
+module.exports = {
+  singleQuote: true,
+  trailingComma: 'all',
+};
