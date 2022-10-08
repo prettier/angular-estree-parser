@@ -1,12 +1,12 @@
 # angular-estree-parser
 
 [![npm](https://img.shields.io/npm/v/angular-estree-parser.svg)](https://www.npmjs.com/package/angular-estree-parser)
-[![build](https://img.shields.io/travis/com/ikatyang/angular-estree-parser/master.svg)](https://travis-ci.com/ikatyang/angular-estree-parser/builds)
-[![coverage](https://img.shields.io/codecov/c/github/ikatyang/angular-estree-parser/master.svg)](https://codecov.io/gh/ikatyang/angular-estree-parser)
+[![build](https://img.shields.io/travis/com/prettier/angular-estree-parser/main.svg)](https://travis-ci.com/prettier/angular-estree-parser/builds)
+[![coverage](https://img.shields.io/codecov/c/github/prettier/angular-estree-parser/main.svg)](https://codecov.io/gh/prettier/angular-estree-parser)
 
 A parser that converts Angular source code into an ESTree-compatible form
 
-[Changelog](https://github.com/ikatyang/angular-estree-parser/blob/master/CHANGELOG.md)
+[Changelog](https://github.com/prettier/angular-estree-parser/blob/main/CHANGELOG.md)
 
 ## Install
 
