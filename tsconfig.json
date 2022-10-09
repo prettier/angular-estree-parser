@@ -4,12 +4,12 @@
     "declaration": true,
     "importHelpers": true,
     "target": "ESNext",
-    "module": "ESNext",
+    "module": "CommonJS",
     "moduleResolution": "Node",
     "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
-      "@angular/compiler/es2015/src/*": [
+      "@angular/compiler/esm2015/src/*": [
         "./node_modules/@angular/compiler/src/*"
       ]
     }
