@@ -14,7 +14,7 @@ module.exports = {
     ],
   },
   moduleNameMapper: {
-    '^(?:\\.{1,2}/.*)\\.js$': '$1',
+    '^(\\.{1,2}/.*)\\.js$': '$1',
   },
   coverageReporters: ['lcov', 'text-summary'],
   collectCoverage: !!process.env.ENABLE_COVERAGE,
