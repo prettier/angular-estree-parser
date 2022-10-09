@@ -1,6 +1,37 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+## [3.0.0](https://github.com/prettier/angular-estree-parser/compare/v1.1.5...v3.0.0) (2022-10-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* switch to ESM (#229)
+
+### Features
+
+* **peer-deps:** support `@angular/compiler@8` ([#151](https://github.com/prettier/angular-estree-parser/issues/151)) ([44ecf5d](https://github.com/prettier/angular-estree-parser/commit/44ecf5d4d11c9a362cf8c993705cb466e3e0e9db))
+* **peer-deps:** support `@angular/compiler@9` ([#181](https://github.com/prettier/angular-estree-parser/issues/181)) ([5ade21e](https://github.com/prettier/angular-estree-parser/commit/5ade21ed27f0663caaf8f51a596a045fd0f17bc2))
+* **peer-deps:** support Angular 10 ([#199](https://github.com/prettier/angular-estree-parser/issues/199)) ([950fe68](https://github.com/prettier/angular-estree-parser/commit/950fe688784980dabd960f4a30f1f0539f0decf7))
+* **peer-deps:** support Angular 11 ([#205](https://github.com/prettier/angular-estree-parser/issues/205)) ([1006533](https://github.com/prettier/angular-estree-parser/commit/1006533708d722022c6be70030616918002e3552))
+* **peer-deps:** support Angular 12 ([#213](https://github.com/prettier/angular-estree-parser/issues/213)) ([089f698](https://github.com/prettier/angular-estree-parser/commit/089f69863a4d334916e194939c91bf9cb368c45c))
+* **peer-deps:** support Angular 9.1 ([#187](https://github.com/prettier/angular-estree-parser/issues/187)) ([f919800](https://github.com/prettier/angular-estree-parser/commit/f9198002614eb8465c71d751e74c9050de14892e))
+* support Angular 12.1 ([#215](https://github.com/prettier/angular-estree-parser/issues/215)) ([c54ccbb](https://github.com/prettier/angular-estree-parser/commit/c54ccbb5b6de1358e2f29c591195f5d5c05af113))
+* switch to ESM ([#229](https://github.com/prettier/angular-estree-parser/issues/229)) ([8e2d457](https://github.com/prettier/angular-estree-parser/commit/8e2d4571b86da0016ad76e2aaf111db2485e8ddb))
+* **types:** export NGNode and NGMicrosyntax ([#203](https://github.com/prettier/angular-estree-parser/issues/203)) ([2755965](https://github.com/prettier/angular-estree-parser/commit/2755965f2eb86e13953621443e0ac625e2d23ff1))
+
+
+### Bug Fixes
+
+* detect shorthand correctly ([#222](https://github.com/prettier/angular-estree-parser/issues/222)) ([66ace4e](https://github.com/prettier/angular-estree-parser/commit/66ace4ef89ddfde81f0715445af2ff5b4ce6e167))
+* **peer-deps:** Angular 9.0.6+ is not supported ([#188](https://github.com/prettier/angular-estree-parser/issues/188)) ([ff1a252](https://github.com/prettier/angular-estree-parser/commit/ff1a2523b39e4762d390dd49b81b1c6e89cca2d0))
+* **peer-deps:** support `@angular/compiler@10.1` ([#204](https://github.com/prettier/angular-estree-parser/issues/204)) ([ebe2679](https://github.com/prettier/angular-estree-parser/commit/ebe2679a6a3ca726cf959641a8f5a92617dc61c5))
+* **transform-microsyntax:** handle implicit `$implicit` correctly ([#200](https://github.com/prettier/angular-estree-parser/issues/200)) ([0970bc7](https://github.com/prettier/angular-estree-parser/commit/0970bc73669696507aebe1a92070ba6169899032))
+* **transform:** correct chained optional expression with computed properties ([#193](https://github.com/prettier/angular-estree-parser/issues/193)) ([73cf46d](https://github.com/prettier/angular-estree-parser/commit/73cf46dd426dcb32a43e822eeee172ff2d7abf6f))
+* **transform:** handle implicit `this` correctly ([#196](https://github.com/prettier/angular-estree-parser/issues/196)) ([ba74505](https://github.com/prettier/angular-estree-parser/commit/ba74505285309a5afcbd0356b5e0180ed27d9ea7))
+* **transform:** handle ThisExpression correctly ([#194](https://github.com/prettier/angular-estree-parser/issues/194)) ([cf89706](https://github.com/prettier/angular-estree-parser/commit/cf897062d953099b2176ff068834efc7061795ca))
+* **utils:** throw errors for unexpected situations ([#197](https://github.com/prettier/angular-estree-parser/issues/197)) ([6b23c28](https://github.com/prettier/angular-estree-parser/commit/6b23c2837558ca2767736d051cb6a5323ed4e038))
 
 <a name="2.5.1"></a>
 ## [2.5.1](https://github.com/ikatyang/angular-estree-parser/compare/v2.5.0...v2.5.1) (2022-06-11)
