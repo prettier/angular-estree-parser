@@ -1,7 +1,7 @@
-import * as ng from '@angular/compiler/src/expression_parser/ast';
+import * as ng from '@angular/compiler/src/expression_parser/ast.js';
 import * as b from '@babel/types';
-import { Context } from './context';
-import {
+import { Context } from './context.js';
+import type {
   NGChainedExpression,
   NGEmptyExpression,
   NGNode,
@@ -16,7 +16,7 @@ import {
   fitSpans,
   getLast,
   getNgType,
-} from './utils';
+} from './utils.js';
 
 declare module '@babel/types' {
   interface SourceLocation {

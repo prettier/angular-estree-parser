@@ -1,16 +1,16 @@
-import * as ng from '@angular/compiler/src/expression_parser/ast';
+import * as ng from '@angular/compiler/src/expression_parser/ast.js';
 import * as b from '@babel/types';
-import { Context } from './context';
-import { InputNode, transform } from './transform';
-import { transformTemplateBindings } from './transform-microsyntax';
-import { NGMicrosyntax, NGNode, RawNGComment } from './types';
+import { Context } from './context.js';
+import { InputNode, transform } from './transform.js';
+import { transformTemplateBindings } from './transform-microsyntax.js';
+import type { NGMicrosyntax, NGNode, RawNGComment } from './types';
 import {
   parseNgAction,
   parseNgBinding,
   parseNgInterpolation,
   parseNgSimpleBinding,
   parseNgTemplateBindings,
-} from './utils';
+} from './utils.js';
 
 function parse(
   input: string,

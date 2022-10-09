@@ -1,6 +1,6 @@
-import * as ng from '@angular/compiler/src/expression_parser/ast';
-import { Context } from './context';
-import { InputNode, OutputNode, transform, transformSpan } from './transform';
+import * as ng from '@angular/compiler/src/expression_parser/ast.js';
+import { Context } from './context.js';
+import { InputNode, OutputNode, transform, transformSpan } from './transform.js';
 import {
   NGMicrosyntax,
   NGMicrosyntaxAs,
