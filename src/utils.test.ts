@@ -1,6 +1,6 @@
 import { codeFrameColumns } from '@babel/code-frame';
 import { wrap } from 'jest-snapshot-serializer-raw';
-import type { RawNGSpan } from './types';
+import type { RawNGSpan } from './types.js';
 import { fitSpans } from './utils.js';
 
 const text = ` ( ( ( 1 ) ) ) `;

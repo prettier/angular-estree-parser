@@ -1,5 +1,5 @@
-import * as ng from '@angular/compiler/esm2015/src/expression_parser/ast';
-import * as b from '@babel/types';
+import type * as ng from '@angular/compiler/src/expression_parser/ast.js';
+import type * as b from '@babel/types';
 
 export interface NGBaseNode {
   type: string;

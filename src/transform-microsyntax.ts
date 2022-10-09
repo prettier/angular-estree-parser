@@ -1,4 +1,4 @@
-import * as ng from '@angular/compiler/esm2015/src/expression_parser/ast.js';
+import * as ng from '@angular/compiler/src/expression_parser/ast.js';
 import { Context } from './context.js';
 import {
   InputNode,
@@ -16,7 +16,7 @@ import {
   NGMicrosyntaxNode,
   NGNode,
   RawNGSpan,
-} from './types';
+} from './types.js';
 import {
   findBackChar,
   NG_PARSE_TEMPLATE_BINDINGS_FAKE_PREFIX,

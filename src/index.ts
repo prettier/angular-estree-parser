@@ -1,9 +1,9 @@
-import * as ng from '@angular/compiler/esm2015/src/expression_parser/ast.js';
-import * as b from '@babel/types';
+import type * as ng from '@angular/compiler/src/expression_parser/ast.js';
+import type * as b from '@babel/types';
 import { Context } from './context.js';
 import { InputNode, transform } from './transform.js';
 import { transformTemplateBindings } from './transform-microsyntax.js';
-import type { NGMicrosyntax, NGNode, RawNGComment } from './types';
+import type { NGMicrosyntax, NGNode, RawNGComment } from './types.js';
 import {
   parseNgAction,
   parseNgBinding,

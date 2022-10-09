@@ -6,13 +6,7 @@
     "target": "ESNext",
     "module": "CommonJS",
     "moduleResolution": "Node",
-    "esModuleInterop": true,
-    "baseUrl": ".",
-    "paths": {
-      "@angular/compiler/esm2015/src/*": [
-        "./node_modules/@angular/compiler/src/*"
-      ]
-    }
+    "esModuleInterop": true
   },
   "include": ["src/**/*.ts", "tests/**/*.ts"]
 }

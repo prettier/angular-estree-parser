@@ -15,7 +15,6 @@ module.exports = {
   },
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1',
-    '^@angular/compiler/esm2015/src/(.*)$': '@angular/compiler/src/$1',
   },
   coverageReporters: ['lcov', 'text-summary'],
   collectCoverage: !!process.env.ENABLE_COVERAGE,

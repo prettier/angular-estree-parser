@@ -1,12 +1,12 @@
-import * as ng from '@angular/compiler/esm2015/src/expression_parser/ast.js';
-import * as b from '@babel/types';
+import type * as ng from '@angular/compiler';
+import type * as b from '@babel/types';
 import {
   parseAction,
   parseBinding,
   parseInterpolation,
   parseSimpleBinding,
 } from '../src/index.js';
-import type { NGNode } from '../src/types';
+import type { NGNode } from '../src/types.js';
 import {
   getNgType,
   parseNgAction,
