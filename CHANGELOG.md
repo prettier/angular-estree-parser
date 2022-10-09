@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.0.2](https://github.com/prettier/angular-estree-parser/compare/v3.0.1...v3.0.2) (2022-10-09)
+
+
+### Bug Fixes
+
+* fix `@angular/compiler` entry ([0bd3cd4](https://github.com/prettier/angular-estree-parser/commit/0bd3cd42515dff59f4ce3ae754b4040956aa1eed))
+
 ### [3.0.1](https://github.com/prettier/angular-estree-parser/compare/v3.0.0...v3.0.1) (2022-10-09)
 
 
