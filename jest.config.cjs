@@ -9,8 +9,12 @@ module.exports = {
       'ts-jest',
       {
         diagnostics: !/^(?:9|10|11|12\.0)\./.test(NG_VERSION),
+        useESM: true,
       },
     ],
+  },
+  moduleNameMapper: {
+    '^(?:\\.{1,2}/.*)\\.js$': '$1',
   },
   coverageReporters: ['lcov', 'text-summary'],
   collectCoverage: !!process.env.ENABLE_COVERAGE,
