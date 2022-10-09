@@ -1,7 +1,7 @@
-import * as ng from '@angular/compiler/src/expression_parser/ast';
-import { Lexer } from '@angular/compiler/src/expression_parser/lexer';
-import { Parser } from '@angular/compiler/src/expression_parser/parser';
-import { RawNGComment, RawNGSpan } from './types';
+import * as ng from '@angular/compiler/src/expression_parser/ast.js';
+import { Lexer } from '@angular/compiler/src/expression_parser/lexer.js';
+import { Parser } from '@angular/compiler/src/expression_parser/parser.js';
+import type { RawNGComment, RawNGSpan } from './types';
 
 const NG_PARSE_FAKE_LOCATION = 'angular-estree-parser';
 export const NG_PARSE_TEMPLATE_BINDINGS_FAKE_PREFIX = 'NgEstreeParser';

@@ -1,5 +1,5 @@
-import { parseBinding } from '../src/index';
-import { massageAst, parseBabelExpression } from './helpers';
+import { parseBinding } from '../src/index.js';
+import { massageAst, parseBabelExpression } from './helpers.js';
 
 enum ParseType {
   Binding = 1 << 0,

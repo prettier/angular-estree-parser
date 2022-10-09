@@ -1,8 +1,12 @@
 import { LinesAndColumns } from 'lines-and-columns';
 
 export class Context {
-  public locator = new Locator(this.text);
-  constructor(public text: string) {}
+  text;
+  locator;
+  constructor(text: string) {
+    this.text = text;
+    this.locator = new Locator(this.text);
+  }
 }
 
 class Locator {

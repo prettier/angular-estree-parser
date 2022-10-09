@@ -1,25 +1,25 @@
-import * as ng from '@angular/compiler/src/expression_parser/ast';
+import * as ng from '@angular/compiler/src/expression_parser/ast.js';
 import * as b from '@babel/types';
 import {
   parseAction,
   parseBinding,
   parseInterpolation,
   parseSimpleBinding,
-} from '../src/index';
-import { NGNode } from '../src/types';
+} from '../src/index.js';
+import type { NGNode } from '../src/types';
 import {
   getNgType,
   parseNgAction,
   parseNgBinding,
   parseNgInterpolation,
   parseNgSimpleBinding,
-} from '../src/utils';
+} from '../src/utils.js';
 import {
   massageAst,
   parseBabel,
   parseBabelExpression,
   snapshotAst,
-} from './helpers';
+} from './helpers.js';
 
 describe.each`
   beforeType            | afterType                     | input                       | action   | binding  | simple   | interpolation
