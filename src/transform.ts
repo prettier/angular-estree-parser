@@ -1,4 +1,4 @@
-import * as ng from '@angular/compiler/src/expression_parser/ast.js';
+import * as ng from '@angular/compiler/es2015/src/expression_parser/ast.js';
 import * as b from '@babel/types';
 import { Context } from './context.js';
 import type {
