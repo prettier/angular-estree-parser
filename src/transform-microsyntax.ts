@@ -21,7 +21,7 @@ import {
   findBackChar,
   NG_PARSE_TEMPLATE_BINDINGS_FAKE_PREFIX,
   toLowerCamelCase,
-} from './utils';
+} from './utils.js';
 
 export function transformTemplateBindings(
   rawTemplateBindings: ng.TemplateBinding[],

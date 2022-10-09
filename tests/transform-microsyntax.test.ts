@@ -2,7 +2,7 @@ import { VERSION as angularVersion } from '@angular/compiler';
 import * as b from '@babel/types';
 import { parseTemplateBindings } from '../src/index';
 import type { NGMicrosyntaxKeyedExpression } from '../src/types';
-import { snapshotAst } from './helpers';
+import { snapshotAst } from './helpers.js';
 
 test.each`
   input                             | types
