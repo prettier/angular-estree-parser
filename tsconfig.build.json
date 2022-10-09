@@ -3,9 +3,6 @@
   "include": ["src/index.ts"],
   "compilerOptions": {
     "rootDir": "src",
-    "outDir": "lib",
-    "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "Node"
+    "outDir": "lib"
   }
 }

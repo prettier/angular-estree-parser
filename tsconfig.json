@@ -6,7 +6,13 @@
     "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "Node",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "baseUrl": ".",
+    "paths": {
+      "@angular/compiler/es2015/src/*": [
+        "./node_modules/@angular/compiler/src/*"
+      ]
+    }
   },
   "include": ["src/**/*.ts", "tests/**/*.ts"]
 }
