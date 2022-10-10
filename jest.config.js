@@ -1,6 +1,6 @@
-const NG_VERSION = require('@angular/compiler').VERSION.full;
+import * as angular from '@angular/compiler';
 
-module.exports = {
+export default {
   testEnvironment: 'node',
   moduleFileExtensions: ['ts', 'js', 'json'],
   testMatch: ['**/*.test.ts'],
@@ -8,7 +8,7 @@ module.exports = {
     '\\.ts$': [
       'ts-jest',
       {
-        diagnostics: !/^(?:9|10|11|12\.0)\./.test(NG_VERSION),
+        diagnostics: !/^(?:9|10|11|12\.0)\./.test(angular.VERSION.full),
         useESM: true,
       },
     ],
