@@ -6,7 +6,6 @@ import type {
   NGEmptyExpression,
   NGNode,
   NGPipeExpression,
-  NGQuotedExpression,
   RawNGComment,
   RawNGSpan,
 } from './types.js';
@@ -83,7 +82,7 @@ export const transform = (
         {
           left: tLeft,
           right: tRight,
-          // @ts-ignore
+          // @ts-expect-error `operation` is operator for LogicalExpression or BinaryExpression
           operator: operation,
         },
         { start: _getOuterStart(tLeft), end: _getOuterEnd(tRight) },
@@ -419,7 +418,6 @@ export const transform = (
     const newNode = {
       type: t,
       ...transformSpan(span, context, processSpan, hasParentParens),
-      // @ts-ignore
       ...n,
     } as T & RawNGSpan;
     switch (t) {
@@ -511,16 +509,13 @@ export const transform = (
       !_isParenthesized(n)
     );
   }
-  function _isParenthesized(n: OutputNode): boolean {
-    // @ts-ignore
+  function _isParenthesized(n: OutputNode & { extra?: any }): boolean {
     return n.extra && n.extra.parenthesized;
   }
-  function _getOuterStart(n: OutputNode): number {
-    // @ts-ignore
+  function _getOuterStart(n: OutputNode & { extra?: any }): number {
     return _isParenthesized(n) ? n.extra.parenStart : n.start;
   }
-  function _getOuterEnd(n: OutputNode): number {
-    // @ts-ignore
+  function _getOuterEnd(n: OutputNode & { extra?: any }): number {
     return _isParenthesized(n) ? n.extra.parenEnd : n.end;
   }
 };

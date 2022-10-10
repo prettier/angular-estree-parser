@@ -112,7 +112,7 @@ function extractComments(
   input: string,
   ngParser: Parser,
 ): { astInput: string; comments: RawNGComment[] } {
-  // @ts-ignore
+  // @ts-expect-error need to call private _commentStart
   const commentStart: number | null = ngParser._commentStart(input);
   return commentStart === null
     ? { astInput: input, comments: [] }
