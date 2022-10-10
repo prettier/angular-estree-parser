@@ -1,4 +1,4 @@
-import type * as ng from '@angular/compiler/src/expression_parser/ast.js';
+import type * as ng from '@angular/compiler';
 import type * as b from '@babel/types';
 import { Context } from './context.js';
 import type {
@@ -176,26 +176,6 @@ export const transform = (
       return _c<NGEmptyExpression>('NGEmptyExpression', {}, node.span, {
         hasParentParens: isInParentParens,
       });
-    case 'FunctionCall': {
-      const { target, args } = node as ng.FunctionCall;
-      const tArgs =
-        args.length === 1
-          ? [_transformHasParentParens<b.Expression>(args[0])]
-          : args.map<b.Expression>(_t);
-      const tTarget = _t<b.Expression>(target!);
-      return _c<b.CallExpression>(
-        'CallExpression',
-        {
-          callee: tTarget,
-          arguments: tArgs,
-        },
-        {
-          start: _getOuterStart(tTarget),
-          end: node.span.end, // )
-        },
-        { hasParentParens: isInParentParens },
-      );
-    }
     case 'ImplicitReceiver': {
       return _c<b.ThisExpression>('ThisExpression', {}, node.span, {
         hasParentParens: isInParentParens,
@@ -303,6 +283,26 @@ export const transform = (
             `Unexpected LiteralPrimitive value type ${typeof value}`,
           );
       }
+    }
+    case 'FunctionCall': {
+      const { target, args } = node as ng.FunctionCall;
+      const tArgs =
+        args.length === 1
+          ? [_transformHasParentParens<b.Expression>(args[0])]
+          : args.map<b.Expression>(_t);
+      const tTarget = _t<b.Expression>(target!);
+      return _c<b.CallExpression>(
+        'CallExpression',
+        {
+          callee: tTarget,
+          arguments: tArgs,
+        },
+        {
+          start: _getOuterStart(tTarget),
+          end: node.span.end, // )
+        },
+        { hasParentParens: isInParentParens },
+      );
     }
     case 'MethodCall':
     case 'SafeMethodCall': {

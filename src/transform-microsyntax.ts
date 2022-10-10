@@ -1,4 +1,8 @@
-import * as ng from '@angular/compiler/src/expression_parser/ast.js';
+import type * as ng from '@angular/compiler';
+import {
+  ExpressionBinding as NGExpressionBinding,
+  VariableBinding as NGVariableBinding,
+} from '@angular/compiler/src/expression_parser/ast.js';
 import { Context } from './context.js';
 import {
   InputNode,
@@ -205,13 +209,13 @@ export function transformTemplateBindings(
   function isExpressionBinding(
     templateBinding: ng.TemplateBinding,
   ): templateBinding is ng.ExpressionBinding {
-    return templateBinding instanceof ng.ExpressionBinding;
+    return templateBinding instanceof NGExpressionBinding;
   }
 
   function isVariableBinding(
     templateBinding: ng.TemplateBinding,
   ): templateBinding is ng.VariableBinding {
-    return templateBinding instanceof ng.VariableBinding;
+    return templateBinding instanceof NGVariableBinding;
   }
 
   function fixTemplateBindingSpan(templateBinding: ng.TemplateBinding) {

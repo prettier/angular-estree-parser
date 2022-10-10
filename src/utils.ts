@@ -1,7 +1,7 @@
 import * as ng from '@angular/compiler/src/expression_parser/ast.js';
 import { Lexer } from '@angular/compiler/src/expression_parser/lexer.js';
 import { Parser } from '@angular/compiler/src/expression_parser/parser.js';
-import type { RawNGComment, RawNGSpan } from './types';
+import type { RawNGComment, RawNGSpan } from './types.js';
 
 const NG_PARSE_FAKE_LOCATION = 'angular-estree-parser';
 export const NG_PARSE_TEMPLATE_BINDINGS_FAKE_PREFIX = 'NgEstreeParser';
@@ -136,7 +136,6 @@ export function getNgType(node: (ng.AST | RawNGComment) & { type?: string }) {
   if (node instanceof ng.Chain) { return "Chain"; }
   if (node instanceof ng.Conditional) { return "Conditional"; }
   if (node instanceof ng.EmptyExpr) { return "EmptyExpr"; }
-  if (node instanceof ng.FunctionCall) { return "FunctionCall"; }
   if (node instanceof ng.ImplicitReceiver) { return "ImplicitReceiver"; }
   if (node instanceof ng.KeyedRead) { return "KeyedRead"; }
   if (node instanceof ng.KeyedWrite) { return "KeyedWrite"; }
@@ -149,6 +148,7 @@ export function getNgType(node: (ng.AST | RawNGComment) & { type?: string }) {
   if (node instanceof ng.PropertyRead) { return "PropertyRead"; }
   if (node instanceof ng.PropertyWrite) { return "PropertyWrite"; }
   if (node instanceof ng.Quote) { return "Quote"; }
+  if (node instanceof ng.FunctionCall) { return "FunctionCall"; }
   if (node instanceof ng.SafeMethodCall) { return "SafeMethodCall"; }
   if (node instanceof ng.SafePropertyRead) { return "SafePropertyRead"; }
   return node.type;
