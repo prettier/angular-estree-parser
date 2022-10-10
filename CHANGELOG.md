@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.0](https://github.com/prettier/angular-estree-parser/compare/v3.0.3...v4.0.0) (2022-10-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* support for `@angular/compiler@14`, drop support for `@angular/compiler<14` (#233)
+
+### Features
+
+* support for `@angular/compiler@14`, drop support for `@angular/compiler<14` ([#233](https://github.com/prettier/angular-estree-parser/issues/233)) ([ce31031](https://github.com/prettier/angular-estree-parser/commit/ce31031fe7df73007b0de39b20e10c94c1e431ef))
+
+
+### Bug Fixes
+
+* fix shorthand object property detection ([#235](https://github.com/prettier/angular-estree-parser/issues/235)) ([5ebb640](https://github.com/prettier/angular-estree-parser/commit/5ebb64041b0e48ae0fba6580b68bff0bff4f7026))
+
 ### [3.0.3](https://github.com/prettier/angular-estree-parser/compare/v3.0.2...v3.0.3) (2022-10-09)
 
 
