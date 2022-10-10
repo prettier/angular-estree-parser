@@ -1,4 +1,3 @@
-import type * as ng from '@angular/compiler';
 import type * as b from '@babel/types';
 
 export interface NGBaseNode {

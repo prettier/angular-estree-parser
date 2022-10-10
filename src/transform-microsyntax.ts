@@ -64,7 +64,6 @@ export function transformTemplateBindings(
         templateBinding.key.span,
       );
       const updateSpanEnd = <T extends NGNode>(node: T, end: number): T => ({
-        // @ts-ignore
         ...node,
         ...transformSpan({ start: node.start!, end }, context),
       });
@@ -192,12 +191,11 @@ export function transformTemplateBindings(
     t: T['type'],
     n: Partial<T>,
     span: RawNGSpan,
-    stripSpaces: boolean = true,
+    stripSpaces = true,
   ) {
     return {
       type: t,
       ...transformSpan(span, context, stripSpaces),
-      // @ts-ignore
       ...n,
     } as T & RawNGSpan;
   }
