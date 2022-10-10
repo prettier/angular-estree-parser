@@ -67,7 +67,7 @@ describe.each`
   ${'PropertyRead'}     | ${'OptionalMemberExpression'} | ${' a ?. b ( ) . c '}       | ${true}  | ${true}  | ${true}  | ${true}
   ${'PropertyWrite'}    | ${'AssignmentExpression'}     | ${' a . b = 1 '}            | ${true}  | ${false} | ${false} | ${false}
   ${'PropertyWrite'}    | ${'AssignmentExpression'}     | ${' a = 1 '}                | ${true}  | ${false} | ${false} | ${false}
-  ${'SafeMethodCall'}   | ${'OptionalCallExpression'}   | ${' a ?. b ( ) '}           | ${true}  | ${true}  | ${true}  | ${true}
+  ${'Call'}             | ${'OptionalCallExpression'}   | ${' a ?. b ( ) '}           | ${true}  | ${true}  | ${true}  | ${true}
   ${'SafePropertyRead'} | ${'OptionalMemberExpression'} | ${' a ?. b '}               | ${true}  | ${true}  | ${true}  | ${true}
 `('$input ($beforeType -> $afterType)', (fields) => {
   const { beforeType, afterType, input } = fields;
