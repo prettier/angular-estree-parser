@@ -191,6 +191,9 @@ export const transform = (
       const tValues = values.map((value) => _t<b.Expression>(value));
       const tProperties = keys.map(({ key, quoted }, index) => {
         const tValue = tValues[index];
+        const valueStart = _getOuterStart(tValue);
+        const valueEnd = _getOuterEnd(tValue);
+
         const keyStart = _findBackChar(
           /\S/,
           index === 0
@@ -198,15 +201,14 @@ export const transform = (
             : _findBackChar(/,/, _getOuterEnd(tValues[index - 1])) + 1,
         );
         const keyEnd =
-          _findFrontChar(
-            /\S/,
-            _findFrontChar(/:/, _getOuterStart(tValue) - 1) - 1,
-          ) + 1;
+          valueStart === keyStart
+            ? valueEnd
+            : _findFrontChar(/\S/, _findFrontChar(/:/, valueStart - 1) - 1) + 1;
         const keySpan = { start: keyStart, end: keyEnd };
         const tKey = quoted
           ? _c<b.StringLiteral>('StringLiteral', { value: key }, keySpan)
           : _c<b.Identifier>('Identifier', { name: key }, keySpan);
-        const shorthand = tKey.end < tKey.start;
+        const shorthand = tKey.end < tKey.start || keyStart === valueStart;
 
         return _c<b.ObjectProperty>(
           'ObjectProperty',
@@ -217,7 +219,7 @@ export const transform = (
             shorthand,
             computed: false,
           },
-          { start: _getOuterStart(tKey), end: _getOuterEnd(tValue) },
+          { start: _getOuterStart(tKey), end: valueEnd },
         );
       });
       return _c<b.ObjectExpression>(
@@ -442,6 +444,15 @@ export const transform = (
           raw: context.text.slice(stringLiteral.start!, stringLiteral.end!),
           rawValue: stringLiteral.value,
         };
+        break;
+      }
+      case 'ObjectProperty': {
+        const objectProperty = newNode as unknown as b.ObjectProperty;
+        if (objectProperty.shorthand)
+          objectProperty.extra = {
+            ...objectProperty.extra,
+            shorthand: objectProperty.shorthand,
+          };
         break;
       }
     }

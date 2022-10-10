@@ -48,7 +48,9 @@ describe.each`
   ${'LiteralMap'}       | ${'ObjectExpression'}         | ${' ( { a : 1 } ) '}        | ${true}  | ${true}  | ${true}  | ${true}
   ${'Call'}             | ${'CallExpression'}           | ${' f ( { a : 1 } ) '}      | ${true}  | ${true}  | ${true}  | ${true}
   ${'LiteralMap'}       | ${'ObjectExpression'}         | ${' ( {a, b: 2} ) '}        | ${true}  | ${true}  | ${true}  | ${true}
-  ${'Call'}             | ${'ObjectExpression'}         | ${' f ( {a, b: 2} ) '}      | ${true}  | ${true}  | ${true}  | ${true}
+  ${'Call'}             | ${'CallExpression'}           | ${' f ( {a, b: 2} ) '}      | ${true}  | ${true}  | ${true}  | ${true}
+  ${'LiteralMap'}       | ${'ObjectExpression'}         | ${' ( {a, b} ) '}           | ${true}  | ${true}  | ${true}  | ${true}
+  ${'LiteralMap'}       | ${'ObjectExpression'}         | ${' ( { a, b} ) '}          | ${true}  | ${true}  | ${true}  | ${true}
   ${'LiteralPrimitive'} | ${'BooleanLiteral'}           | ${' true '}                 | ${true}  | ${true}  | ${true}  | ${true}
   ${'LiteralPrimitive'} | ${'Identifier'}               | ${' undefined '}            | ${true}  | ${true}  | ${true}  | ${true}
   ${'LiteralPrimitive'} | ${'NullLiteral'}              | ${' null '}                 | ${true}  | ${true}  | ${true}  | ${true}
