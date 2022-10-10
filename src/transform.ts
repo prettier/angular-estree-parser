@@ -6,7 +6,6 @@ import type {
   NGEmptyExpression,
   NGNode,
   NGPipeExpression,
-  NGQuotedExpression,
   RawNGComment,
   RawNGSpan,
 } from './types.js';
