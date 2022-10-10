@@ -2,7 +2,7 @@ import type * as ng from '@angular/compiler';
 import {
   ExpressionBinding as NGExpressionBinding,
   VariableBinding as NGVariableBinding,
-} from '@angular/compiler/src/expression_parser/ast.js';
+} from '@angular/compiler';
 import { Context } from './context.js';
 import {
   InputNode,
@@ -10,7 +10,7 @@ import {
   transform,
   transformSpan,
 } from './transform.js';
-import {
+import type {
   NGMicrosyntax,
   NGMicrosyntaxAs,
   NGMicrosyntaxExpression,

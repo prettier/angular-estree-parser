@@ -285,6 +285,7 @@ export const transform = (
       }
     }
     case 'FunctionCall': {
+      // @ts-ignore: removed in `@angular/compiler@14`
       const { target, args } = node as ng.FunctionCall;
       const tArgs =
         args.length === 1
@@ -307,13 +308,15 @@ export const transform = (
     case 'MethodCall':
     case 'SafeMethodCall': {
       const isOptionalType = type === 'SafeMethodCall';
-      const { receiver, name, args } = node as
+      const { receiver, name, args } =
+        node as // @ts-ignore: removed in `@angular/compiler@14`
         | ng.MethodCall
-        | ng.SafeMethodCall;
+          // @ts-ignore: removed in `@angular/compiler@14`
+          | ng.SafeMethodCall;
       const tArgs =
         args.length === 1
           ? [_transformHasParentParens<b.Expression>(args[0])]
-          : args.map<b.Expression>(_t);
+          : (args as any[]).map<b.Expression>(_t);
       const nameEnd =
         _findFrontChar(
           /\S/,
@@ -460,6 +463,7 @@ export const transform = (
       );
     }
     case 'Quote': {
+      // @ts-ignore: removed in `@angular/compiler@14`
       const { prefix, uninterpretedExpression } = node as ng.Quote;
       return _c<NGQuotedExpression>(
         'NGQuotedExpression',
