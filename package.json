@@ -1,6 +1,6 @@
 {
   "name": "angular-estree-parser",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "A parser that converts Angular source code into an ESTree-compatible form",
   "keywords": [],
   "main": "lib/index.js",
