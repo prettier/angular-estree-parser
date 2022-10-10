@@ -169,6 +169,8 @@ export function getNgType(node: (ng.AST | RawNGComment) & { type?: string }) {
   if (node instanceof ng.PropertyWrite) { return "PropertyWrite"; }
   // @ts-ignore: removed in `@angular/compiler@14`
   if (ng.Quote && node instanceof ng.Quote) { return "Quote"; }
+  // @ts-ignore: there is no `Call` in `@angular/compiler@<14`
+  if (ng.SafeCall && node instanceof ng.SafeCall) { return "SafeCall"; }
   // @ts-ignore: removed in `@angular/compiler@14`
   if (ng.SafeMethodCall && node instanceof ng.SafeMethodCall) { return "SafeMethodCall"; }
   if (node instanceof ng.SafePropertyRead) { return "SafePropertyRead"; }
