@@ -41,10 +41,12 @@ export function massageAst(ast: any): any {
       }
       case 'extra': {
         const extra = massageAst(ast[key]);
-        // we added a custom `parenEnd` field for positioning
-        delete extra.parenEnd;
-        if (Object.keys(extra).length !== 0) {
-          reduced[key] = extra;
+        if (extra) {
+          // we added a custom `parenEnd` field for positioning
+          delete extra.parenEnd;
+          if (Object.keys(extra).length !== 0) {
+            reduced[key] = extra;
+          }
         }
         break;
       }

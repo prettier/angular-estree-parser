@@ -46,6 +46,11 @@ describe.each`
   ${'LiteralArray'}     | ${'ArrayExpression'}          | ${' [ 1 ] '}                | ${true}  | ${true}  | ${true}  | ${true}
   ${'LiteralMap'}       | ${'ObjectExpression'}         | ${' { "a" : 1 } '}          | ${true}  | ${true}  | ${true}  | ${true}
   ${'LiteralMap'}       | ${'ObjectExpression'}         | ${' ( { a : 1 } ) '}        | ${true}  | ${true}  | ${true}  | ${true}
+  ${'Call'}             | ${'CallExpression'}           | ${' f ( { a : 1 } ) '}      | ${true}  | ${true}  | ${true}  | ${true}
+  ${'LiteralMap'}       | ${'ObjectExpression'}         | ${' ( {a, b: 2} ) '}        | ${true}  | ${true}  | ${true}  | ${true}
+  ${'Call'}             | ${'CallExpression'}           | ${' f ( {a, b: 2} ) '}      | ${true}  | ${true}  | ${true}  | ${true}
+  ${'LiteralMap'}       | ${'ObjectExpression'}         | ${' ( {a, b} ) '}           | ${true}  | ${true}  | ${true}  | ${true}
+  ${'LiteralMap'}       | ${'ObjectExpression'}         | ${' ( { a, b} ) '}          | ${true}  | ${true}  | ${true}  | ${true}
   ${'LiteralPrimitive'} | ${'BooleanLiteral'}           | ${' true '}                 | ${true}  | ${true}  | ${true}  | ${true}
   ${'LiteralPrimitive'} | ${'Identifier'}               | ${' undefined '}            | ${true}  | ${true}  | ${true}  | ${true}
   ${'LiteralPrimitive'} | ${'NullLiteral'}              | ${' null '}                 | ${true}  | ${true}  | ${true}  | ${true}
@@ -60,8 +65,6 @@ describe.each`
   ${'SafeCall'}         | ${'OptionalCallExpression'}   | ${' a . b ?.( 1 , 2 ) '}    | ${true}  | ${true}  | ${true}  | ${true}
   ${'Call'}             | ${'CallExpression'}           | ${' a ( 1 , 2 ) '}          | ${true}  | ${true}  | ${true}  | ${true}
   ${'SafeCall'}         | ${'OptionalCallExpression'}   | ${' a ?. ( 1 , 2 ) '}       | ${true}  | ${true}  | ${true}  | ${true}
-  ${'Call'}             | ${'CallExpression'}           | ${' a ( { b : 1 } ) '}      | ${true}  | ${true}  | ${true}  | ${true}
-  ${'SafeCall'}         | ${'OptionalCallExpression'}   | ${' a ?. ( { b : 1 } ) '}   | ${true}  | ${true}  | ${true}  | ${true}
   ${'Call'}             | ${'OptionalCallExpression'}   | ${' a ?. b . c ( ) '}       | ${true}  | ${true}  | ${true}  | ${true}
   ${'SafeCall'}         | ${'OptionalCallExpression'}   | ${' a ?. b . c ?. ( ) '}    | ${true}  | ${true}  | ${true}  | ${true}
   ${'Call'}             | ${'OptionalCallExpression'}   | ${' a ?. b ( ) . c ( ) '}   | ${true}  | ${true}  | ${true}  | ${true}
