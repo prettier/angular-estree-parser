@@ -396,19 +396,6 @@ export const transform = (
         { hasParentParens: isInParentParens },
       );
     }
-    case 'Quote': {
-      // @ts-ignore: removed in `@angular/compiler@14`
-      const { prefix, uninterpretedExpression } = node as ng.Quote;
-      return _c<NGQuotedExpression>(
-        'NGQuotedExpression',
-        {
-          prefix,
-          value: uninterpretedExpression,
-        },
-        node.span,
-        { hasParentParens: isInParentParens },
-      );
-    }
     // istanbul ignore next
     default:
       throw new Error(`Unexpected node ${type}`);
