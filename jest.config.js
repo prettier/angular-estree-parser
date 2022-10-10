@@ -1,5 +1,3 @@
-import * as angular from '@angular/compiler';
-
 export default {
   testEnvironment: 'node',
   moduleFileExtensions: ['ts', 'js', 'json'],
@@ -9,7 +7,7 @@ export default {
     '\\.ts$': [
       'ts-jest',
       {
-        diagnostics: false && !/^(?:9|10|11|12)\./.test(angular.VERSION.full),
+        diagnostics: true,
         useESM: true,
       },
     ],

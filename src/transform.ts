@@ -263,7 +263,7 @@ export const transform = (
     case 'Call':
     case 'SafeCall': {
       const isOptionalType = type === 'SafeCall';
-      const {receiver, args} = node as ng.Call;
+      const { receiver, args } = node as ng.Call;
       const tArgs =
         args.length === 1
           ? [_transformHasParentParens<b.Expression>(args[0])]
@@ -279,7 +279,8 @@ export const transform = (
         {
           callee: tReceiver,
           arguments: tArgs,
-          optional: nodeType === 'OptionalCallExpression' ? isOptionalType : undefined,
+          optional:
+            nodeType === 'OptionalCallExpression' ? isOptionalType : undefined,
         },
         {
           start: _getOuterStart(tReceiver),

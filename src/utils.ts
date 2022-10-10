@@ -38,13 +38,6 @@ export function parseNgSimpleBinding(input: string) {
 }
 
 export function parseNgAction(input: string) {
-  if (Number(ng.VERSION.major) < 14) {
-    return parseNg(input, (astInput, ngParser) =>
-      // @ts-ignore: `isAssignmentEvent` added in `@angular/compiler@14`
-      ngParser.parseAction(astInput, ...NG_PARSE_SHARED_PARAMS),
-    );
-  }
-
   return parseNg(input, (astInput, ngParser) =>
     ngParser.parseAction(astInput, false, ...NG_PARSE_SHARED_PARAMS),
   );
@@ -69,18 +62,11 @@ export function parseNgInterpolation(input: string) {
   const prefix = '{{';
   const suffix = '}}';
 
-  const { ast: rawAst, errors } =
-    Number(ng.VERSION.major) < 14
-      ? // @ts-ignore: `interpolatedTokens` added in `@angular/compiler@14`
-        ngParser.parseInterpolation(
-          prefix + astInput + suffix,
-          ...NG_PARSE_SHARED_PARAMS,
-        )!
-      : ngParser.parseInterpolation(
-          prefix + astInput + suffix,
-          ...NG_PARSE_SHARED_PARAMS,
-          null,
-        )!;
+  const { ast: rawAst, errors } = ngParser.parseInterpolation(
+    prefix + astInput + suffix,
+    ...NG_PARSE_SHARED_PARAMS,
+    null,
+  )!;
   assertAstErrors(errors);
   const ast = (rawAst as ng.Interpolation).expressions[0];
   const visited = new Set();
