@@ -56,9 +56,3 @@ Identifier { name: "c" }
 > 1 |  a | b : c 
     |          ^
 `;
-
-exports[` javascript : void(0)  (Quote -> NGQuotedExpression) ast 1`] = `
-NGQuotedExpression { prefix: "javascript", value: " void(0) ", comments: [] }
-> 1 |  javascript : void(0) 
-    |  ^^^^^^^^^^^^^^^^^^^^
-`;

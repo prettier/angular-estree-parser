@@ -17,7 +17,7 @@
     "prepublish": "yarn run build",
     "fix": "yarn prettier . --write",
     "lint": "yarn prettier . --check && tslint -p ./tsconfig.json",
-    "test": "jest",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "prebuild": "rm -rf ./lib",
     "build": "tsc -p ./tsconfig.build.json",
     "release": "standard-version"
@@ -27,7 +27,7 @@
     "tslib": "^2.4.0"
   },
   "devDependencies": {
-    "@angular/compiler": "12.1.0",
+    "@angular/compiler": "14.2.5",
     "@babel/code-frame": "7.18.6",
     "@babel/parser": "7.19.3",
     "@babel/types": "7.19.3",
@@ -46,7 +46,7 @@
     "typescript": "4.8.4"
   },
   "peerDependencies": {
-    "@angular/compiler": "^9.1.0 || ^10.0.0 || ^11.0.0 || ^12.0.0"
+    "@angular/compiler": "^14.0.0"
   },
   "engines": {
     "node": ">= 14"

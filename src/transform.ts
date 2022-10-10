@@ -1,4 +1,4 @@
-import type * as ng from '@angular/compiler/src/expression_parser/ast.js';
+import type * as ng from '@angular/compiler';
 import type * as b from '@babel/types';
 import { Context } from './context.js';
 import type {
@@ -59,7 +59,6 @@ export const transform = (
   const type = getNgType(node);
   switch (type) {
     case 'Unary': {
-      // @ts-ignore: there is no `Unary` in `@angular/compiler@<10.1.0`
       const { operator, expr } = node as ng.Unary;
       const tArgument = _t<b.Expression>(expr);
       return _c<b.UnaryExpression>(
@@ -75,29 +74,6 @@ export const transform = (
     }
     case 'Binary': {
       const { left, operation, right } = node as ng.Binary;
-      const isPrefixAdd = right.span.start === right.span.end; // +1 === 1 - 0
-      const isPrefixMinus = left.span.start === left.span.end; // -1 === 0 - 1
-      // `@angular/compiler` changed this to `Unary` since `v10.1.0`
-      // istanbul ignore next
-      if (isPrefixAdd || isPrefixMinus) {
-        const tArgument =
-          left.span.start === left.span.end
-            ? _t<b.Expression>(right)
-            : _t<b.Expression>(left);
-        return _c<b.UnaryExpression>(
-          'UnaryExpression',
-          {
-            prefix: true,
-            argument: tArgument,
-            operator: isPrefixAdd ? '+' : '-',
-          },
-          {
-            start: node.span.start, // operator
-            end: _getOuterEnd(tArgument),
-          },
-          { hasParentParens: isInParentParens },
-        );
-      }
       const tLeft = _t<b.Expression>(left);
       const tRight = _t<b.Expression>(right);
       return _c<b.LogicalExpression | b.BinaryExpression>(
@@ -176,26 +152,6 @@ export const transform = (
       return _c<NGEmptyExpression>('NGEmptyExpression', {}, node.span, {
         hasParentParens: isInParentParens,
       });
-    case 'FunctionCall': {
-      const { target, args } = node as ng.FunctionCall;
-      const tArgs =
-        args.length === 1
-          ? [_transformHasParentParens<b.Expression>(args[0])]
-          : args.map<b.Expression>(_t);
-      const tTarget = _t<b.Expression>(target!);
-      return _c<b.CallExpression>(
-        'CallExpression',
-        {
-          callee: tTarget,
-          arguments: tArgs,
-        },
-        {
-          start: _getOuterStart(tTarget),
-          end: node.span.end, // )
-        },
-        { hasParentParens: isInParentParens },
-      );
-    }
     case 'ImplicitReceiver': {
       return _c<b.ThisExpression>('ThisExpression', {}, node.span, {
         hasParentParens: isInParentParens,
@@ -304,36 +260,16 @@ export const transform = (
           );
       }
     }
-    case 'MethodCall':
-    case 'SafeMethodCall': {
-      const isOptionalType = type === 'SafeMethodCall';
-      const { receiver, name, args } = node as
-        | ng.MethodCall
-        | ng.SafeMethodCall;
+    case 'Call':
+    case 'SafeCall': {
+      const isOptionalType = type === 'SafeCall';
+      const { receiver, args } = node as ng.Call;
       const tArgs =
         args.length === 1
           ? [_transformHasParentParens<b.Expression>(args[0])]
-          : args.map<b.Expression>(_t);
-      const nameEnd =
-        _findFrontChar(
-          /\S/,
-          _findFrontChar(
-            /\(/,
-            (tArgs.length === 0
-              ? _findFrontChar(/\)/, node.span.end - 1)
-              : _getOuterStart(tArgs[0])) - 1,
-          ) - 1,
-        ) + 1;
-      const tName = _c<b.Identifier>(
-        'Identifier',
-        { name },
-        { start: nameEnd - name.length, end: nameEnd },
-      );
-      const tReceiverAndName = _transformReceiverAndName(receiver, tName, {
-        computed: false,
-        optional: isOptionalType,
-      });
-      const isOptionalReceiver = _isOptionalReceiver(tReceiverAndName);
+          : (args as ng.AST[]).map<b.Expression>(_t);
+      const tReceiver = _t<b.Expression>(receiver!);
+      const isOptionalReceiver = _isOptionalReceiver(tReceiver);
       const nodeType =
         isOptionalType || isOptionalReceiver
           ? 'OptionalCallExpression'
@@ -341,12 +277,13 @@ export const transform = (
       return _c<b.CallExpression | b.OptionalCallExpression>(
         nodeType,
         {
-          callee: tReceiverAndName,
+          callee: tReceiver,
           arguments: tArgs,
-          optional: nodeType === 'OptionalCallExpression' ? false : undefined,
+          optional:
+            nodeType === 'OptionalCallExpression' ? isOptionalType : undefined,
         },
         {
-          start: _getOuterStart(tReceiverAndName),
+          start: _getOuterStart(tReceiver),
           end: node.span.end, // )
         },
         { hasParentParens: isInParentParens },
@@ -456,18 +393,6 @@ export const transform = (
           right: tValue,
         },
         { start: _getOuterStart(tReceiverAndName), end: _getOuterEnd(tValue) },
-        { hasParentParens: isInParentParens },
-      );
-    }
-    case 'Quote': {
-      const { prefix, uninterpretedExpression } = node as ng.Quote;
-      return _c<NGQuotedExpression>(
-        'NGQuotedExpression',
-        {
-          prefix,
-          value: uninterpretedExpression,
-        },
-        node.span,
         { hasParentParens: isInParentParens },
       );
     }

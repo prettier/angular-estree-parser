@@ -1,4 +1,4 @@
-import type * as ng from '@angular/compiler/src/expression_parser/ast.js';
+import type * as ng from '@angular/compiler';
 import type * as b from '@babel/types';
 
 export interface NGBaseNode {
