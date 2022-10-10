@@ -267,7 +267,7 @@ export const transform = (
       const tArgs =
         args.length === 1
           ? [_transformHasParentParens<b.Expression>(args[0])]
-          : (args as any[]).map<b.Expression>(_t);
+          : (args as ng.AST[]).map<b.Expression>(_t);
       const tReceiver = _t<b.Expression>(receiver!);
       const isOptionalReceiver = _isOptionalReceiver(tReceiver);
       const nodeType =
