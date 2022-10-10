@@ -17,7 +17,7 @@
     "prepublish": "yarn run build",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "lint": "run-p lint:*",
-    "lint:eslint": "eslint --ext=.ts .",
+    "lint:eslint": "eslint --ext=.ts,.js,.cjs .",
     "lint:prettier": "prettier --check src",
     "fix": "run-s fix:*",
     "fix:eslint": "yarn lint:eslint --fix",
