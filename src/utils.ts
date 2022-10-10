@@ -144,6 +144,8 @@ function extractComments(
 
 // prettier-ignore
 export function getNgType(node: (ng.AST | RawNGComment) & { type?: string }) {
+  // @ts-ignore: there is no `Unary` in `@angular/compiler@<10.1.0`
+  if (ng.Unary && node instanceof ng.Unary) { return 'Unary'; }
   if (node instanceof ng.Binary) { return 'Binary'; }
   if (node instanceof ng.BindingPipe) { return "BindingPipe"; }
   // @ts-ignore: there is no `Call` in `@angular/compiler@<14`
@@ -170,8 +172,6 @@ export function getNgType(node: (ng.AST | RawNGComment) & { type?: string }) {
   // @ts-ignore: removed in `@angular/compiler@14`
   if (ng.SafeMethodCall && node instanceof ng.SafeMethodCall) { return "SafeMethodCall"; }
   if (node instanceof ng.SafePropertyRead) { return "SafePropertyRead"; }
-  // @ts-ignore: there is no `Unary` in `@angular/compiler@<10.1.0`
-  if (ng.Unary && node instanceof ng.Unary) { return 'Unary'; }
   return node.type;
 }
 
