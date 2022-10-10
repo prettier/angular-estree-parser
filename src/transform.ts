@@ -284,6 +284,26 @@ export const transform = (
           );
       }
     }
+    case 'Call': {
+      const {receiver, args} = node as ng.Call;
+      const tArgs =
+        args.length === 1
+          ? [_transformHasParentParens<b.Expression>(args[0])]
+          : (args as any[]).map<b.Expression>(_t);
+      const tReceiver = _t<b.Expression>(receiver!);
+      return _c<b.CallExpression>(
+        'CallExpression',
+        {
+          callee: tReceiver,
+          arguments: tArgs,
+        },
+        {
+          start: _getOuterStart(tReceiver),
+          end: node.span.end, // )
+        },
+        { hasParentParens: isInParentParens },
+      );
+    }
     case 'FunctionCall': {
       // @ts-ignore: removed in `@angular/compiler@14`
       const { target, args } = node as ng.FunctionCall;

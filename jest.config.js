@@ -9,7 +9,7 @@ export default {
     '\\.ts$': [
       'ts-jest',
       {
-        diagnostics: !/^(?:9|10|11|12)\./.test(angular.VERSION.full),
+        diagnostics: false && !/^(?:9|10|11|12)\./.test(angular.VERSION.full),
         useESM: true,
       },
     ],
