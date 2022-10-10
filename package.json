@@ -20,7 +20,7 @@
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "prebuild": "rm -rf ./lib",
     "build": "tsc -p ./tsconfig.build.json",
-    "release": "standard-version"
+    "release": "yarn build && standard-version"
   },
   "dependencies": {
     "lines-and-columns": "^2.0.3",
