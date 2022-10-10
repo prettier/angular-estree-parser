@@ -68,11 +68,19 @@ export function parseNgInterpolation(input: string) {
   const { astInput, comments } = extractComments(input, ngParser);
   const prefix = '{{';
   const suffix = '}}';
-  const { ast: rawAst, errors } = ngParser.parseInterpolation(
-    prefix + astInput + suffix,
-    ...NG_PARSE_SHARED_PARAMS,
-    null
-  )!;
+
+  const { ast: rawAst, errors } =
+    Number(ng.VERSION.major) < 14
+      ? // @ts-ignore: `interpolatedTokens` added in `@angular/compiler@14`
+        ngParser.parseInterpolation(
+          prefix + astInput + suffix,
+          ...NG_PARSE_SHARED_PARAMS,
+        )!
+      : ngParser.parseInterpolation(
+          prefix + astInput + suffix,
+          ...NG_PARSE_SHARED_PARAMS,
+          null,
+        )!;
   assertAstErrors(errors);
   const ast = (rawAst as ng.Interpolation).expressions[0];
   const visited = new Set();

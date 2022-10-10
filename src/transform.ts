@@ -308,11 +308,10 @@ export const transform = (
     case 'MethodCall':
     case 'SafeMethodCall': {
       const isOptionalType = type === 'SafeMethodCall';
-      const { receiver, name, args } =
-        node as // @ts-ignore: removed in `@angular/compiler@14`
+      const { receiver, name, args } = node as  // @ts-ignore: removed in `@angular/compiler@14`
         | ng.MethodCall
-          // @ts-ignore: removed in `@angular/compiler@14`
-          | ng.SafeMethodCall;
+        // @ts-ignore: removed in `@angular/compiler@14`
+        | ng.SafeMethodCall;
       const tArgs =
         args.length === 1
           ? [_transformHasParentParens<b.Expression>(args[0])]
