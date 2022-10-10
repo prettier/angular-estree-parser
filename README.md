@@ -1,7 +1,7 @@
 # angular-estree-parser
 
 [![npm](https://img.shields.io/npm/v/angular-estree-parser.svg)](https://www.npmjs.com/package/angular-estree-parser)
-[![build](https://img.shields.io/travis/com/prettier/angular-estree-parser/main.svg)](https://travis-ci.com/prettier/angular-estree-parser/builds)
+[![build](https://img.shields.io/github/workflow/status/prettier/angular-estree-parser/CI)](https://github.com/prettier/angular-estree-parser/actions?query=workflow%3ACI+branch%3Amain)
 [![coverage](https://img.shields.io/codecov/c/github/prettier/angular-estree-parser/main.svg)](https://codecov.io/gh/prettier/angular-estree-parser)
 
 A parser that converts Angular source code into an ESTree-compatible form
@@ -21,7 +21,7 @@ yarn add angular-estree-parser @angular/compiler
 ## Usage
 
 ```js
-const ngEstreeParser = require('angular-estree-parser');
+import * as ngEstreeParser from 'angular-estree-parser';
 
 const ast = ngEstreeParser.parseBinding('a | b:c');
 //=> { type: "NGPipeExpression", ... }
