@@ -102,12 +102,7 @@ describe.each`
     expect(beforeNode).not.toEqual(null);
     expect(afterNode).not.toEqual(null);
 
-    // `Unary` was `Binary` in `@angular/compiler@<10.1.0"`
-    if (beforeType === 'Unary') {
-      expect(['Binary', 'Unary']).toContain(getNgType(beforeNode!));
-    } else {
-      expect(getNgType(beforeNode!)).toEqual(beforeType);
-    }
+    expect(getNgType(beforeNode!)).toEqual(beforeType);
     expect(afterNode!.type).toEqual(afterType);
 
     if (afterNode!.type.startsWith('NG')) {
