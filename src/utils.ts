@@ -136,32 +136,34 @@ function extractComments(
 
 // prettier-ignore
 export function getNgType(node: (ng.AST | RawNGComment) & { type?: string }) {
-  if (node instanceof ng.Unary) { return 'Unary'; }
   if (node instanceof ng.Binary) { return 'Binary'; }
   if (node instanceof ng.BindingPipe) { return "BindingPipe"; }
+  // @ts-ignore: there is no `Call` in `@angular/compiler@<14`
+  if (ng.Call && node instanceof ng.Call) { return "Call"; }
   if (node instanceof ng.Chain) { return "Chain"; }
   if (node instanceof ng.Conditional) { return "Conditional"; }
   if (node instanceof ng.EmptyExpr) { return "EmptyExpr"; }
+  // @ts-ignore: removed in `@angular/compiler@14`
+  if (ng.FunctionCall && node instanceof ng.FunctionCall) { return "FunctionCall"; }
   if (node instanceof ng.ImplicitReceiver) { return "ImplicitReceiver"; }
   if (node instanceof ng.KeyedRead) { return "KeyedRead"; }
   if (node instanceof ng.KeyedWrite) { return "KeyedWrite"; }
   if (node instanceof ng.LiteralArray) { return "LiteralArray"; }
   if (node instanceof ng.LiteralMap) { return "LiteralMap"; }
   if (node instanceof ng.LiteralPrimitive) { return "LiteralPrimitive"; }
+  // @ts-ignore: removed in `@angular/compiler@14`
+  if (ng.MethodCall && node instanceof ng.MethodCall) { return "MethodCall"; }
   if (node instanceof ng.NonNullAssert) { return "NonNullAssert"; }
   if (node instanceof ng.PrefixNot) { return "PrefixNot"; }
   if (node instanceof ng.PropertyRead) { return "PropertyRead"; }
   if (node instanceof ng.PropertyWrite) { return "PropertyWrite"; }
-  if (node instanceof ng.Call) { return "Call"; }
   // @ts-ignore: removed in `@angular/compiler@14`
-  if (node instanceof ng.Quote) { return "Quote"; }
+  if (ng.Quote && node instanceof ng.Quote) { return "Quote"; }
   // @ts-ignore: removed in `@angular/compiler@14`
-  if (node instanceof ng.MethodCall) { return "MethodCall"; }
-  // @ts-ignore: removed in `@angular/compiler@14`
-  if (node instanceof ng.FunctionCall) { return "FunctionCall"; }
-  // @ts-ignore: removed in `@angular/compiler@14`
-  if (node instanceof ng.SafeMethodCall) { return "SafeMethodCall"; }
+  if (ng.SafeMethodCall && node instanceof ng.SafeMethodCall) { return "SafeMethodCall"; }
   if (node instanceof ng.SafePropertyRead) { return "SafePropertyRead"; }
+  // @ts-ignore: there is no `Unary` in `@angular/compiler@<10.1.0`
+  if (ng.Unary && node instanceof ng.Unary) { return 'Unary'; }
   return node.type;
 }
 
