@@ -22,7 +22,7 @@
     "fix": "run-s fix:*",
     "fix:eslint": "yarn lint:eslint --fix",
     "fix:prettier": "yarn lint:prettier --write",
-    "prebuild": "rm -rf ./lib",
+    "prebuild": "del-cli ./lib",
     "build": "tsc -p ./tsconfig.build.json",
     "release": "yarn build && standard-version"
   },
@@ -41,6 +41,7 @@
     "@types/prettier": "2.7.1",
     "@typescript-eslint/eslint-plugin": "5.43.0",
     "@typescript-eslint/parser": "5.43.0",
+    "del-cli": "^5.0.0",
     "eslint": "8.28.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-import": "2.26.0",
