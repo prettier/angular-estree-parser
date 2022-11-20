@@ -3,8 +3,8 @@
   "version": "5.0.0",
   "description": "A parser that converts Angular source code into an ESTree-compatible form",
   "keywords": [],
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "repository": "https://github.com/prettier/angular-estree-parser",
   "homepage": "https://github.com/prettier/angular-estree-parser#readme",
   "author": {
@@ -14,7 +14,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "prepublish": "yarn run build",
+    "prepare": "yarn run build",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "lint": "run-p lint:*",
     "lint:eslint": "eslint --ext=.ts,.js,.cjs .",
@@ -60,7 +60,11 @@
     "node": ">= 14"
   },
   "files": [
-    "/lib/**/*"
+    "lib/**/*"
   ],
-  "type": "module"
+  "type": "module",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
 }
