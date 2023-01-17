@@ -76,7 +76,7 @@ export const transform = (
       const tLeft = _t<b.Expression>(left);
       const tRight = _t<b.Expression>(right);
       return _c<b.LogicalExpression | b.BinaryExpression>(
-        operation === '&&' || operation === '||'
+        operation === '&&' || operation === '||' || operation === '??'
           ? 'LogicalExpression'
           : 'BinaryExpression',
         {
