@@ -64,39 +64,13 @@ export function parseNgInterpolation(input: string) {
 
   const { ast: rawAst, errors } = ngParser.parseInterpolation(
     prefix + astInput + suffix,
-    ...NG_PARSE_SHARED_PARAMS,
+    NG_PARSE_FAKE_LOCATION,
+    -prefix.length,
     null,
   )!;
   assertAstErrors(errors);
   const ast = (rawAst as ng.Interpolation).expressions[0];
-  const visited = new Set();
-  visitSourceSpan(ast, (span) => {
-    if (!visited.has(span)) {
-      span.start -= prefix.length;
-      span.end -= prefix.length;
-      visited.add(span);
-    }
-  });
   return { ast, comments };
-}
-
-function visitSourceSpan(ast: any, fn: (span: ng.ParseSpan) => void): void {
-  if (!ast || typeof ast !== 'object') {
-    return;
-  }
-
-  if (Array.isArray(ast)) {
-    return ast.forEach((value) => visitSourceSpan(value, fn));
-  }
-
-  for (const key of Object.keys(ast)) {
-    const value = ast[key];
-    if (key === 'sourceSpan') {
-      fn(value);
-    } else {
-      visitSourceSpan(value, fn);
-    }
-  }
 }
 
 function assertAstErrors(errors: ng.ParserError[]) {

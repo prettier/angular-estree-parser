@@ -232,21 +232,36 @@ export const transform = (
       const { value } = node as ng.LiteralPrimitive;
       switch (typeof value) {
         case 'boolean':
-          return _c<b.BooleanLiteral>('BooleanLiteral', { value }, node.sourceSpan, {
-            hasParentParens: isInParentParens,
-          });
+          return _c<b.BooleanLiteral>(
+            'BooleanLiteral',
+            { value },
+            node.sourceSpan,
+            {
+              hasParentParens: isInParentParens,
+            },
+          );
         case 'number':
-          return _c<b.NumericLiteral>('NumericLiteral', { value }, node.sourceSpan, {
-            hasParentParens: isInParentParens,
-          });
+          return _c<b.NumericLiteral>(
+            'NumericLiteral',
+            { value },
+            node.sourceSpan,
+            {
+              hasParentParens: isInParentParens,
+            },
+          );
         case 'object':
           return _c<b.NullLiteral>('NullLiteral', {}, node.sourceSpan, {
             hasParentParens: isInParentParens,
           });
         case 'string':
-          return _c<b.StringLiteral>('StringLiteral', { value }, node.sourceSpan, {
-            hasParentParens: isInParentParens,
-          });
+          return _c<b.StringLiteral>(
+            'StringLiteral',
+            { value },
+            node.sourceSpan,
+            {
+              hasParentParens: isInParentParens,
+            },
+          );
         case 'undefined':
           return _c<b.Identifier>(
             'Identifier',
@@ -463,7 +478,10 @@ export const transform = (
     props: { computed: boolean; optional: boolean },
     { end = _getOuterEnd(tName), hasParentParens = false } = {},
   ) {
-    if (_isImplicitThis(receiver) || receiver.sourceSpan.start === tName.start) {
+    if (
+      _isImplicitThis(receiver) ||
+      receiver.sourceSpan.start === tName.start
+    ) {
       return tName;
     }
     const tReceiver = _t<b.Expression>(receiver);
