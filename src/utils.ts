@@ -70,7 +70,7 @@ export function parseNgInterpolation(input: string) {
   assertAstErrors(errors);
   const ast = (rawAst as ng.Interpolation).expressions[0];
   const visited = new Set();
-  visitSpan(ast, (span) => {
+  visitSourceSpan(ast, (span) => {
     if (!visited.has(span)) {
       span.start -= prefix.length;
       span.end -= prefix.length;
@@ -80,21 +80,21 @@ export function parseNgInterpolation(input: string) {
   return { ast, comments };
 }
 
-function visitSpan(ast: any, fn: (span: ng.ParseSpan) => void): void {
+function visitSourceSpan(ast: any, fn: (span: ng.ParseSpan) => void): void {
   if (!ast || typeof ast !== 'object') {
     return;
   }
 
   if (Array.isArray(ast)) {
-    return ast.forEach((value) => visitSpan(value, fn));
+    return ast.forEach((value) => visitSourceSpan(value, fn));
   }
 
   for (const key of Object.keys(ast)) {
     const value = ast[key];
-    if (key === 'span') {
+    if (key === 'sourceSpan') {
       fn(value);
     } else {
-      visitSpan(value, fn);
+      visitSourceSpan(value, fn);
     }
   }
 }
@@ -122,7 +122,7 @@ function extractComments(
           {
             type: 'Comment',
             value: input.slice(commentStart + '//'.length),
-            span: { start: commentStart, end: input.length },
+            sourceSpan: { start: commentStart, end: input.length },
           },
         ],
       };

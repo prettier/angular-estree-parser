@@ -67,7 +67,7 @@ export const transform = (
           argument: tArgument,
           operator: operator as '-' | '+',
         },
-        node.span,
+        node.sourceSpan,
         { hasParentParens: isInParentParens },
       );
     }
@@ -121,13 +121,13 @@ export const transform = (
       return _c<NGChainedExpression>(
         'NGChainedExpression',
         { expressions: expressions.map<b.Expression>(_t) },
-        node.span,
+        node.sourceSpan,
         { hasParentParens: isInParentParens },
       );
     }
     case 'Comment': {
       const { value } = node as RawNGComment;
-      return _c<b.CommentLine>('CommentLine', { value }, node.span, {
+      return _c<b.CommentLine>('CommentLine', { value }, node.sourceSpan, {
         processSpan: false,
       });
     }
@@ -148,11 +148,11 @@ export const transform = (
       );
     }
     case 'EmptyExpr':
-      return _c<NGEmptyExpression>('NGEmptyExpression', {}, node.span, {
+      return _c<NGEmptyExpression>('NGEmptyExpression', {}, node.sourceSpan, {
         hasParentParens: isInParentParens,
       });
     case 'ImplicitReceiver': {
-      return _c<b.ThisExpression>('ThisExpression', {}, node.span, {
+      return _c<b.ThisExpression>('ThisExpression', {}, node.sourceSpan, {
         hasParentParens: isInParentParens,
       });
     }
@@ -171,7 +171,7 @@ export const transform = (
           optional: false,
         },
         {
-          end: node.span.end, // ]
+          end: node.sourceSpan.end, // ]
           hasParentParens: isInParentParens,
         },
       );
@@ -181,7 +181,7 @@ export const transform = (
       return _c<b.ArrayExpression>(
         'ArrayExpression',
         { elements: expressions.map<b.Expression>(_t) },
-        node.span,
+        node.sourceSpan,
         { hasParentParens: isInParentParens },
       );
     }
@@ -196,7 +196,7 @@ export const transform = (
         const keyStart = _findBackChar(
           /\S/,
           index === 0
-            ? node.span.start + 1 // {
+            ? node.sourceSpan.start + 1 // {
             : _findBackChar(/,/, _getOuterEnd(tValues[index - 1])) + 1,
         );
         const keyEnd =
@@ -224,7 +224,7 @@ export const transform = (
       return _c<b.ObjectExpression>(
         'ObjectExpression',
         { properties: tProperties },
-        node.span,
+        node.sourceSpan,
         { hasParentParens: isInParentParens },
       );
     }
@@ -232,26 +232,26 @@ export const transform = (
       const { value } = node as ng.LiteralPrimitive;
       switch (typeof value) {
         case 'boolean':
-          return _c<b.BooleanLiteral>('BooleanLiteral', { value }, node.span, {
+          return _c<b.BooleanLiteral>('BooleanLiteral', { value }, node.sourceSpan, {
             hasParentParens: isInParentParens,
           });
         case 'number':
-          return _c<b.NumericLiteral>('NumericLiteral', { value }, node.span, {
+          return _c<b.NumericLiteral>('NumericLiteral', { value }, node.sourceSpan, {
             hasParentParens: isInParentParens,
           });
         case 'object':
-          return _c<b.NullLiteral>('NullLiteral', {}, node.span, {
+          return _c<b.NullLiteral>('NullLiteral', {}, node.sourceSpan, {
             hasParentParens: isInParentParens,
           });
         case 'string':
-          return _c<b.StringLiteral>('StringLiteral', { value }, node.span, {
+          return _c<b.StringLiteral>('StringLiteral', { value }, node.sourceSpan, {
             hasParentParens: isInParentParens,
           });
         case 'undefined':
           return _c<b.Identifier>(
             'Identifier',
             { name: 'undefined' },
-            node.span,
+            node.sourceSpan,
             { hasParentParens: isInParentParens },
           );
         // istanbul ignore next
@@ -285,7 +285,7 @@ export const transform = (
         },
         {
           start: _getOuterStart(tReceiver),
-          end: node.span.end, // )
+          end: node.sourceSpan.end, // )
         },
         { hasParentParens: isInParentParens },
       );
@@ -298,7 +298,7 @@ export const transform = (
         { expression: tExpression },
         {
           start: _getOuterStart(tExpression),
-          end: node.span.end, // !
+          end: node.sourceSpan.end, // !
         },
         { hasParentParens: isInParentParens },
       );
@@ -314,7 +314,7 @@ export const transform = (
           argument: tExpression,
         },
         {
-          start: node.span.start, // !
+          start: node.sourceSpan.start, // !
           end: _getOuterEnd(tExpression),
         },
         { hasParentParens: isInParentParens },
@@ -324,7 +324,7 @@ export const transform = (
     case 'SafePropertyRead': {
       const isOptionalType = type === 'SafePropertyRead';
       const { receiver, name } = node as ng.PropertyRead | ng.SafePropertyRead;
-      const nameEnd = _findFrontChar(/\S/, node.span.end - 1) + 1;
+      const nameEnd = _findFrontChar(/\S/, node.sourceSpan.end - 1) + 1;
       const tName = _c<b.Identifier>(
         'Identifier',
         { name },
@@ -463,7 +463,7 @@ export const transform = (
     props: { computed: boolean; optional: boolean },
     { end = _getOuterEnd(tName), hasParentParens = false } = {},
   ) {
-    if (_isImplicitThis(receiver) || receiver.span.start === tName.start) {
+    if (_isImplicitThis(receiver) || receiver.sourceSpan.start === tName.start) {
       return tName;
     }
     const tReceiver = _t<b.Expression>(receiver);
@@ -497,8 +497,8 @@ export const transform = (
 
   function _isImplicitThis(n: ng.AST): boolean {
     return (
-      n.span.start >= n.span.end ||
-      /^\s+$/.test(context.text.slice(n.span.start, n.span.end))
+      n.sourceSpan.start >= n.sourceSpan.end ||
+      /^\s+$/.test(context.text.slice(n.sourceSpan.start, n.sourceSpan.end))
     );
   }
 
