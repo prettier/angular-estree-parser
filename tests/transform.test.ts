@@ -32,7 +32,7 @@ describe.each`
   ${'BindingPipe'}      | ${'NGPipeExpression'}         | ${' a | b : c '}            | ${false} | ${true}  | ${false} | ${true}
   ${'Chain'}            | ${'NGChainedExpression'}      | ${' a ; b '}                | ${true}  | ${false} | ${false} | ${false}
   ${'Conditional'}      | ${'ConditionalExpression'}    | ${' a ? 1 : 2 '}            | ${true}  | ${true}  | ${true}  | ${true}
-  ${'EmptyExpr'}        | ${'NGEmptyExpression'}        | ${''}                       | ${true}  | ${true}  | ${true}  | ${false}
+  ${'EmptyExpr'}        | ${'NGEmptyExpression'}        | ${''}                       | ${true}  | ${true}  | ${true}  | ${true}
   ${'Call'}             | ${'CallExpression'}           | ${' ( a . b ) ( 1 , 2 ) '}  | ${true}  | ${true}  | ${true}  | ${true}
   ${'SafeCall'}         | ${'OptionalCallExpression'}   | ${' ( a . b )?.( 1 , 2 ) '} | ${true}  | ${true}  | ${true}  | ${true}
   ${'Call'}             | ${'CallExpression'}           | ${' ( a ) ( 1 , 2 ) '}      | ${true}  | ${true}  | ${true}  | ${true}
