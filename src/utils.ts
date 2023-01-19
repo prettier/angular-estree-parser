@@ -16,7 +16,10 @@ function createNgParser() {
 
 function parseNg(
   input: string,
-  parse: (astInput: string, ngParser: Parser) => ng.ASTWithSource,
+  parse: (
+    astInput: string,
+    ngParser: Parser,
+  ) => Pick<ng.ASTWithSource, 'ast' | 'errors'>,
 ) {
   const ngParser = createNgParser();
   const { astInput, comments } = extractComments(input, ngParser);
@@ -57,20 +60,18 @@ export function parseNgTemplateBindings(input: string) {
 }
 
 export function parseNgInterpolation(input: string) {
-  const ngParser = createNgParser();
-  const { astInput, comments } = extractComments(input, ngParser);
-  const prefix = '{{';
-  const suffix = '}}';
-
-  const { ast: rawAst, errors } = ngParser.parseInterpolation(
-    prefix + astInput + suffix,
-    NG_PARSE_FAKE_LOCATION,
-    -prefix.length,
-    null,
-  )!;
-  assertAstErrors(errors);
-  const ast = (rawAst as ng.Interpolation).expressions[0];
-  return { ast, comments };
+  return parseNg(input, (astInput, ngParser) => {
+    const { DEFAULT_INTERPOLATION_CONFIG } = ng;
+    const { start, end } = DEFAULT_INTERPOLATION_CONFIG;
+    const { ast, errors } = ngParser.parseInterpolation(
+      start + astInput + end,
+      NG_PARSE_FAKE_LOCATION,
+      -start.length,
+      null,
+      DEFAULT_INTERPOLATION_CONFIG,
+    )!;
+    return { ast: (ast as ng.Interpolation).expressions[0], errors };
+  });
 }
 
 function assertAstErrors(errors: ng.ParserError[]) {
