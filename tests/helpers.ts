@@ -1,11 +1,9 @@
 import { codeFrameColumns } from '@babel/code-frame';
 import * as babelParser from '@babel/parser';
 import { wrap } from 'jest-snapshot-serializer-raw';
-import * as prettier from 'prettier';
 
 const babelParserOptions: babelParser.ParserOptions = {
   plugins: [
-    'optionalChaining', // SafeMethodCall, SafePropertyRead
     'typescript', // NonNullAssert
   ],
 };
@@ -91,14 +89,12 @@ export function snapshotAst(ast: any, source: string) {
       line: p.line,
       column: p.column + 1,
     });
-    const codeframe = codeFrameColumns(source, {
+    const codeFrame = codeFrameColumns(source, {
       start: fixColumn(node.loc.start),
       end: fixColumn(node.loc.end),
     });
-    const propsString = prettier.format(JSON.stringify(props), {
-      parser: 'json5',
-    });
-    snapshots.push(`${node.type} ${propsString}${codeframe}`);
+    const propsString = JSON.stringify(props, undefined, 2);
+    snapshots.push(`${node.type} ${propsString}\n${codeFrame}`);
   });
 
   return wrap(snapshots.join(`\n${'-'.repeat(80)}\n`));

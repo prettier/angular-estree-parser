@@ -1,349 +1,573 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-NGMicrosyntax { body: [] }
+NGMicrosyntax {
+  "body": []
+}
 > 1 |
     | ^
 `;
 
 exports[` a  1`] = `
-NGMicrosyntax { body: ["NGMicrosyntaxExpression"] }
+NGMicrosyntax {
+  "body": [
+    "NGMicrosyntaxExpression"
+  ]
+}
 > 1 |  a 
     |  ^
 --------------------------------------------------------------------------------
-NGMicrosyntaxExpression { expression: "Identifier", alias: null }
+NGMicrosyntaxExpression {
+  "expression": "Identifier",
+  "alias": null
+}
 > 1 |  a 
     |  ^
 --------------------------------------------------------------------------------
-Identifier { name: "a" }
+Identifier {
+  "name": "a"
+}
 > 1 |  a 
     |  ^
 `;
 
 exports[` a , b  1`] = `
-NGMicrosyntax { body: ["NGMicrosyntaxExpression", "NGMicrosyntaxKey"] }
+NGMicrosyntax {
+  "body": [
+    "NGMicrosyntaxExpression",
+    "NGMicrosyntaxKey"
+  ]
+}
 > 1 |  a , b 
     |  ^^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxExpression { expression: "Identifier", alias: null }
+NGMicrosyntaxExpression {
+  "expression": "Identifier",
+  "alias": null
+}
 > 1 |  a , b 
     |  ^
 --------------------------------------------------------------------------------
-Identifier { name: "a" }
+Identifier {
+  "name": "a"
+}
 > 1 |  a , b 
     |  ^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKey { name: "b" }
+NGMicrosyntaxKey {
+  "name": "b"
+}
 > 1 |  a , b 
     |      ^
 `;
 
 exports[` a ; b  1`] = `
-NGMicrosyntax { body: ["NGMicrosyntaxExpression", "NGMicrosyntaxKey"] }
+NGMicrosyntax {
+  "body": [
+    "NGMicrosyntaxExpression",
+    "NGMicrosyntaxKey"
+  ]
+}
 > 1 |  a ; b 
     |  ^^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxExpression { expression: "Identifier", alias: null }
+NGMicrosyntaxExpression {
+  "expression": "Identifier",
+  "alias": null
+}
 > 1 |  a ; b 
     |  ^
 --------------------------------------------------------------------------------
-Identifier { name: "a" }
+Identifier {
+  "name": "a"
+}
 > 1 |  a ; b 
     |  ^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKey { name: "b" }
+NGMicrosyntaxKey {
+  "name": "b"
+}
 > 1 |  a ; b 
     |      ^
 `;
 
 exports[` a ; b : c  1`] = `
-NGMicrosyntax { body: ["NGMicrosyntaxExpression", "NGMicrosyntaxKeyedExpression"] }
+NGMicrosyntax {
+  "body": [
+    "NGMicrosyntaxExpression",
+    "NGMicrosyntaxKeyedExpression"
+  ]
+}
 > 1 |  a ; b : c 
     |  ^^^^^^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxExpression { expression: "Identifier", alias: null }
+NGMicrosyntaxExpression {
+  "expression": "Identifier",
+  "alias": null
+}
 > 1 |  a ; b : c 
     |  ^
 --------------------------------------------------------------------------------
-Identifier { name: "a" }
+Identifier {
+  "name": "a"
+}
 > 1 |  a ; b : c 
     |  ^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKeyedExpression { key: "NGMicrosyntaxKey", expression: "NGMicrosyntaxExpression" }
+NGMicrosyntaxKeyedExpression {
+  "key": "NGMicrosyntaxKey",
+  "expression": "NGMicrosyntaxExpression"
+}
 > 1 |  a ; b : c 
     |      ^^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKey { name: "b" }
+NGMicrosyntaxKey {
+  "name": "b"
+}
 > 1 |  a ; b : c 
     |      ^
 --------------------------------------------------------------------------------
-NGMicrosyntaxExpression { expression: "Identifier", alias: null }
+NGMicrosyntaxExpression {
+  "expression": "Identifier",
+  "alias": null
+}
 > 1 |  a ; b : c 
     |          ^
 --------------------------------------------------------------------------------
-Identifier { name: "c" }
+Identifier {
+  "name": "c"
+}
 > 1 |  a ; b : c 
     |          ^
 `;
 
 exports[` a ; b : c as d  1`] = `
-NGMicrosyntax { body: ["NGMicrosyntaxExpression", "NGMicrosyntaxKeyedExpression"] }
+NGMicrosyntax {
+  "body": [
+    "NGMicrosyntaxExpression",
+    "NGMicrosyntaxKeyedExpression"
+  ]
+}
 > 1 |  a ; b : c as d 
     |  ^^^^^^^^^^^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxExpression { expression: "Identifier", alias: null }
+NGMicrosyntaxExpression {
+  "expression": "Identifier",
+  "alias": null
+}
 > 1 |  a ; b : c as d 
     |  ^
 --------------------------------------------------------------------------------
-Identifier { name: "a" }
+Identifier {
+  "name": "a"
+}
 > 1 |  a ; b : c as d 
     |  ^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKeyedExpression { key: "NGMicrosyntaxKey", expression: "NGMicrosyntaxExpression" }
+NGMicrosyntaxKeyedExpression {
+  "key": "NGMicrosyntaxKey",
+  "expression": "NGMicrosyntaxExpression"
+}
 > 1 |  a ; b : c as d 
     |      ^^^^^^^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKey { name: "b" }
+NGMicrosyntaxKey {
+  "name": "b"
+}
 > 1 |  a ; b : c as d 
     |      ^
 --------------------------------------------------------------------------------
-NGMicrosyntaxExpression { expression: "Identifier", alias: "NGMicrosyntaxKey" }
+NGMicrosyntaxExpression {
+  "expression": "Identifier",
+  "alias": "NGMicrosyntaxKey"
+}
 > 1 |  a ; b : c as d 
     |          ^^^^^^
 --------------------------------------------------------------------------------
-Identifier { name: "c" }
+Identifier {
+  "name": "c"
+}
 > 1 |  a ; b : c as d 
     |          ^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKey { name: "d" }
+NGMicrosyntaxKey {
+  "name": "d"
+}
 > 1 |  a ; b : c as d 
     |               ^
 `;
 
 exports[` a ; b as c  1`] = `
-NGMicrosyntax { body: ["NGMicrosyntaxExpression", "NGMicrosyntaxAs"] }
+NGMicrosyntax {
+  "body": [
+    "NGMicrosyntaxExpression",
+    "NGMicrosyntaxAs"
+  ]
+}
 > 1 |  a ; b as c 
     |  ^^^^^^^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxExpression { expression: "Identifier", alias: null }
+NGMicrosyntaxExpression {
+  "expression": "Identifier",
+  "alias": null
+}
 > 1 |  a ; b as c 
     |  ^
 --------------------------------------------------------------------------------
-Identifier { name: "a" }
+Identifier {
+  "name": "a"
+}
 > 1 |  a ; b as c 
     |  ^
 --------------------------------------------------------------------------------
-NGMicrosyntaxAs { key: "NGMicrosyntaxKey", alias: "NGMicrosyntaxKey" }
+NGMicrosyntaxAs {
+  "key": "NGMicrosyntaxKey",
+  "alias": "NGMicrosyntaxKey"
+}
 > 1 |  a ; b as c 
     |      ^^^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKey { name: "b" }
+NGMicrosyntaxKey {
+  "name": "b"
+}
 > 1 |  a ; b as c 
     |      ^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKey { name: "c" }
+NGMicrosyntaxKey {
+  "name": "c"
+}
 > 1 |  a ; b as c 
     |           ^
 `;
 
 exports[` a ; b c  1`] = `
-NGMicrosyntax { body: ["NGMicrosyntaxExpression", "NGMicrosyntaxKeyedExpression"] }
+NGMicrosyntax {
+  "body": [
+    "NGMicrosyntaxExpression",
+    "NGMicrosyntaxKeyedExpression"
+  ]
+}
 > 1 |  a ; b c 
     |  ^^^^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxExpression { expression: "Identifier", alias: null }
+NGMicrosyntaxExpression {
+  "expression": "Identifier",
+  "alias": null
+}
 > 1 |  a ; b c 
     |  ^
 --------------------------------------------------------------------------------
-Identifier { name: "a" }
+Identifier {
+  "name": "a"
+}
 > 1 |  a ; b c 
     |  ^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKeyedExpression { key: "NGMicrosyntaxKey", expression: "NGMicrosyntaxExpression" }
+NGMicrosyntaxKeyedExpression {
+  "key": "NGMicrosyntaxKey",
+  "expression": "NGMicrosyntaxExpression"
+}
 > 1 |  a ; b c 
     |      ^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKey { name: "b" }
+NGMicrosyntaxKey {
+  "name": "b"
+}
 > 1 |  a ; b c 
     |      ^
 --------------------------------------------------------------------------------
-NGMicrosyntaxExpression { expression: "Identifier", alias: null }
+NGMicrosyntaxExpression {
+  "expression": "Identifier",
+  "alias": null
+}
 > 1 |  a ; b c 
     |        ^
 --------------------------------------------------------------------------------
-Identifier { name: "c" }
+Identifier {
+  "name": "c"
+}
 > 1 |  a ; b c 
     |        ^
 `;
 
 exports[` a as b  1`] = `
-NGMicrosyntax { body: ["NGMicrosyntaxExpression"] }
+NGMicrosyntax {
+  "body": [
+    "NGMicrosyntaxExpression"
+  ]
+}
 > 1 |  a as b 
     |  ^^^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxExpression { expression: "Identifier", alias: "NGMicrosyntaxKey" }
+NGMicrosyntaxExpression {
+  "expression": "Identifier",
+  "alias": "NGMicrosyntaxKey"
+}
 > 1 |  a as b 
     |  ^^^^^^
 --------------------------------------------------------------------------------
-Identifier { name: "a" }
+Identifier {
+  "name": "a"
+}
 > 1 |  a as b 
     |  ^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKey { name: "b" }
+NGMicrosyntaxKey {
+  "name": "b"
+}
 > 1 |  a as b 
     |       ^
 `;
 
 exports[` as b  1`] = `
-NGMicrosyntax { body: ["NGMicrosyntaxAs"] }
+NGMicrosyntax {
+  "body": [
+    "NGMicrosyntaxAs"
+  ]
+}
 > 1 |  as b 
     |  ^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxAs { key: "NGMicrosyntaxKey", alias: "NGMicrosyntaxKey" }
+NGMicrosyntaxAs {
+  "key": "NGMicrosyntaxKey",
+  "alias": "NGMicrosyntaxKey"
+}
 > 1 |  as b 
     |  ^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKey { name: "$implicit" }
+NGMicrosyntaxKey {
+  "name": "$implicit"
+}
 > 1 |  as b 
     |  ^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKey { name: "b" }
+NGMicrosyntaxKey {
+  "name": "b"
+}
 > 1 |  as b 
     |     ^
 `;
 
 exports[` let "\\""  1`] = `
-NGMicrosyntax { body: ["NGMicrosyntaxLet"] }
+NGMicrosyntax {
+  "body": [
+    "NGMicrosyntaxLet"
+  ]
+}
 > 1 |  let "\\"" 
     |  ^^^^^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxLet { key: "NGMicrosyntaxKey", value: null }
+NGMicrosyntaxLet {
+  "key": "NGMicrosyntaxKey",
+  "value": null
+}
 > 1 |  let "\\"" 
     |  ^^^^^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKey { name: '"' }
+NGMicrosyntaxKey {
+  "name": "\\""
+}
 > 1 |  let "\\"" 
     |      ^^^^
 `;
 
 exports[` let "a" = "b" ; "c" as "d"  1`] = `
-NGMicrosyntax { body: ["NGMicrosyntaxLet", "NGMicrosyntaxAs"] }
+NGMicrosyntax {
+  "body": [
+    "NGMicrosyntaxLet",
+    "NGMicrosyntaxAs"
+  ]
+}
 > 1 |  let "a" = "b" ; "c" as "d" 
     |  ^^^^^^^^^^^^^^^^^^^^^^^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxLet { key: "NGMicrosyntaxKey", value: "NGMicrosyntaxKey" }
+NGMicrosyntaxLet {
+  "key": "NGMicrosyntaxKey",
+  "value": "NGMicrosyntaxKey"
+}
 > 1 |  let "a" = "b" ; "c" as "d" 
     |  ^^^^^^^^^^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKey { name: "a" }
+NGMicrosyntaxKey {
+  "name": "a"
+}
 > 1 |  let "a" = "b" ; "c" as "d" 
     |      ^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKey { name: "b" }
+NGMicrosyntaxKey {
+  "name": "b"
+}
 > 1 |  let "a" = "b" ; "c" as "d" 
     |            ^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxAs { key: "NGMicrosyntaxKey", alias: "NGMicrosyntaxKey" }
+NGMicrosyntaxAs {
+  "key": "NGMicrosyntaxKey",
+  "alias": "NGMicrosyntaxKey"
+}
 > 1 |  let "a" = "b" ; "c" as "d" 
     |                  ^^^^^^^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKey { name: "c" }
+NGMicrosyntaxKey {
+  "name": "c"
+}
 > 1 |  let "a" = "b" ; "c" as "d" 
     |                  ^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKey { name: "d" }
+NGMicrosyntaxKey {
+  "name": "d"
+}
 > 1 |  let "a" = "b" ; "c" as "d" 
     |                         ^^^
 `;
 
 exports[` let hero  1`] = `
-NGMicrosyntax { body: ["NGMicrosyntaxLet"] }
+NGMicrosyntax {
+  "body": [
+    "NGMicrosyntaxLet"
+  ]
+}
 > 1 |  let hero 
     |  ^^^^^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxLet { key: "NGMicrosyntaxKey", value: null }
+NGMicrosyntaxLet {
+  "key": "NGMicrosyntaxKey",
+  "value": null
+}
 > 1 |  let hero 
     |  ^^^^^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKey { name: "hero" }
+NGMicrosyntaxKey {
+  "name": "hero"
+}
 > 1 |  let hero 
     |      ^^^^
 `;
 
 exports[` let hero ; of : heroes  1`] = `
-NGMicrosyntax { body: ["NGMicrosyntaxLet", "NGMicrosyntaxKeyedExpression"] }
+NGMicrosyntax {
+  "body": [
+    "NGMicrosyntaxLet",
+    "NGMicrosyntaxKeyedExpression"
+  ]
+}
 > 1 |  let hero ; of : heroes 
     |  ^^^^^^^^^^^^^^^^^^^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxLet { key: "NGMicrosyntaxKey", value: null }
+NGMicrosyntaxLet {
+  "key": "NGMicrosyntaxKey",
+  "value": null
+}
 > 1 |  let hero ; of : heroes 
     |  ^^^^^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKey { name: "hero" }
+NGMicrosyntaxKey {
+  "name": "hero"
+}
 > 1 |  let hero ; of : heroes 
     |      ^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKeyedExpression { key: "NGMicrosyntaxKey", expression: "NGMicrosyntaxExpression" }
+NGMicrosyntaxKeyedExpression {
+  "key": "NGMicrosyntaxKey",
+  "expression": "NGMicrosyntaxExpression"
+}
 > 1 |  let hero ; of : heroes 
     |             ^^^^^^^^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKey { name: "of" }
+NGMicrosyntaxKey {
+  "name": "of"
+}
 > 1 |  let hero ; of : heroes 
     |             ^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxExpression { expression: "Identifier", alias: null }
+NGMicrosyntaxExpression {
+  "expression": "Identifier",
+  "alias": null
+}
 > 1 |  let hero ; of : heroes 
     |                  ^^^^^^
 --------------------------------------------------------------------------------
-Identifier { name: "heroes" }
+Identifier {
+  "name": "heroes"
+}
 > 1 |  let hero ; of : heroes 
     |                  ^^^^^^
 `;
 
 exports[` let hero = hello  1`] = `
-NGMicrosyntax { body: ["NGMicrosyntaxLet"] }
+NGMicrosyntax {
+  "body": [
+    "NGMicrosyntaxLet"
+  ]
+}
 > 1 |  let hero = hello 
     |  ^^^^^^^^^^^^^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxLet { key: "NGMicrosyntaxKey", value: "NGMicrosyntaxKey" }
+NGMicrosyntaxLet {
+  "key": "NGMicrosyntaxKey",
+  "value": "NGMicrosyntaxKey"
+}
 > 1 |  let hero = hello 
     |  ^^^^^^^^^^^^^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKey { name: "hero" }
+NGMicrosyntaxKey {
+  "name": "hero"
+}
 > 1 |  let hero = hello 
     |      ^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKey { name: "hello" }
+NGMicrosyntaxKey {
+  "name": "hello"
+}
 > 1 |  let hero = hello 
     |             ^^^^^
 `;
 
 exports[` let hero of heroes  1`] = `
-NGMicrosyntax { body: ["NGMicrosyntaxLet", "NGMicrosyntaxKeyedExpression"] }
+NGMicrosyntax {
+  "body": [
+    "NGMicrosyntaxLet",
+    "NGMicrosyntaxKeyedExpression"
+  ]
+}
 > 1 |  let hero of heroes 
     |  ^^^^^^^^^^^^^^^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxLet { key: "NGMicrosyntaxKey", value: null }
+NGMicrosyntaxLet {
+  "key": "NGMicrosyntaxKey",
+  "value": null
+}
 > 1 |  let hero of heroes 
     |  ^^^^^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKey { name: "hero" }
+NGMicrosyntaxKey {
+  "name": "hero"
+}
 > 1 |  let hero of heroes 
     |      ^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKeyedExpression { key: "NGMicrosyntaxKey", expression: "NGMicrosyntaxExpression" }
+NGMicrosyntaxKeyedExpression {
+  "key": "NGMicrosyntaxKey",
+  "expression": "NGMicrosyntaxExpression"
+}
 > 1 |  let hero of heroes 
     |           ^^^^^^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKey { name: "of" }
+NGMicrosyntaxKey {
+  "name": "of"
+}
 > 1 |  let hero of heroes 
     |           ^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxExpression { expression: "Identifier", alias: null }
+NGMicrosyntaxExpression {
+  "expression": "Identifier",
+  "alias": null
+}
 > 1 |  let hero of heroes 
     |              ^^^^^^
 --------------------------------------------------------------------------------
-Identifier { name: "heroes" }
+Identifier {
+  "name": "heroes"
+}
 > 1 |  let hero of heroes 
     |              ^^^^^^
 `;

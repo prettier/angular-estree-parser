@@ -1,58 +1,87 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` (EmptyExpr -> NGEmptyExpression) ast 1`] = `
-NGEmptyExpression { comments: [] }
+NGEmptyExpression {
+  "comments": []
+}
 > 1 |
     | ^
 `;
 
 exports[` a ; b  (Chain -> NGChainedExpression) ast 1`] = `
-NGChainedExpression { expressions: ["Identifier", "Identifier"], comments: [] }
+NGChainedExpression {
+  "expressions": [
+    "Identifier",
+    "Identifier"
+  ],
+  "comments": []
+}
 > 1 |  a ; b 
     |  ^^^^^
 --------------------------------------------------------------------------------
-Identifier { name: "a" }
+Identifier {
+  "name": "a"
+}
 > 1 |  a ; b 
     |  ^
 --------------------------------------------------------------------------------
-Identifier { name: "b" }
+Identifier {
+  "name": "b"
+}
 > 1 |  a ; b 
     |      ^
 `;
 
 exports[` a | b  (BindingPipe -> NGPipeExpression) ast 1`] = `
-NGPipeExpression { left: "Identifier", right: "Identifier", arguments: [], comments: [] }
+NGPipeExpression {
+  "left": "Identifier",
+  "right": "Identifier",
+  "arguments": [],
+  "comments": []
+}
 > 1 |  a | b 
     |  ^^^^^
 --------------------------------------------------------------------------------
-Identifier { name: "a" }
+Identifier {
+  "name": "a"
+}
 > 1 |  a | b 
     |  ^
 --------------------------------------------------------------------------------
-Identifier { name: "b" }
+Identifier {
+  "name": "b"
+}
 > 1 |  a | b 
     |      ^
 `;
 
 exports[` a | b : c  (BindingPipe -> NGPipeExpression) ast 1`] = `
 NGPipeExpression {
-  left: "Identifier",
-  right: "Identifier",
-  arguments: ["Identifier"],
-  comments: [],
+  "left": "Identifier",
+  "right": "Identifier",
+  "arguments": [
+    "Identifier"
+  ],
+  "comments": []
 }
 > 1 |  a | b : c 
     |  ^^^^^^^^^
 --------------------------------------------------------------------------------
-Identifier { name: "a" }
+Identifier {
+  "name": "a"
+}
 > 1 |  a | b : c 
     |  ^
 --------------------------------------------------------------------------------
-Identifier { name: "b" }
+Identifier {
+  "name": "b"
+}
 > 1 |  a | b : c 
     |      ^
 --------------------------------------------------------------------------------
-Identifier { name: "c" }
+Identifier {
+  "name": "c"
+}
 > 1 |  a | b : c 
     |          ^
 `;
