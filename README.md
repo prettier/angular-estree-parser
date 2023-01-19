@@ -31,7 +31,7 @@ const ast = ngEstreeParser.parseBinding('a | b:c');
 
 - `parseAction(input: string): AST` for `(target)="input"`
 - `parseBinding(input: string): AST` for `[target]="input"`
-- `parseInterpolation(input: string): AST` for `{{input}}`
+- `parseInterpolationExpression(input: string): AST` for `{{input}}`
 - `parseTemplateBindings(input: string): AST` for `*directive="input"`
 
 ## Development
