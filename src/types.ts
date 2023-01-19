@@ -41,7 +41,7 @@ export interface NGChainedExpression extends NGBaseNode {
 export interface RawNGComment {
   type: 'Comment';
   value: string;
-  span: RawNGSpan;
+  sourceSpan: RawNGSpan;
 }
 
 export interface RawNGSpan {
