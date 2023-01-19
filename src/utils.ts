@@ -44,9 +44,14 @@ export function parseNgAction(input: string) {
 }
 
 export function parseNgInterpolationExpression(input: string) {
-  return parseNg(input, (astInput, ngParser) =>
-    ngParser.parseInterpolationExpression(astInput, ...NG_PARSE_SHARED_PARAMS),
-  );
+  return parseNg(input, (astInput, ngParser) => {
+    const result = ngParser.parseInterpolationExpression(
+      astInput,
+      ...NG_PARSE_SHARED_PARAMS,
+    );
+    result.ast = (result.ast as ng.Interpolation).expressions[0];
+    return result;
+  });
 }
 
 export function parseNgTemplateBindings(input: string) {
