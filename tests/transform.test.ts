@@ -3,7 +3,7 @@ import type * as b from '@babel/types';
 import {
   parseAction,
   parseBinding,
-  parseInterpolation,
+  parseInterpolationExpression,
   parseSimpleBinding,
 } from '../src/index.js';
 import type { NGNode } from '../src/types.js';
@@ -11,7 +11,7 @@ import {
   getNgType,
   parseNgAction,
   parseNgBinding,
-  parseNgInterpolation,
+  parseNgInterpolationExpression,
   parseNgSimpleBinding,
 } from '../src/utils.js';
 import {
@@ -32,7 +32,7 @@ describe.each`
   ${'BindingPipe'}      | ${'NGPipeExpression'}         | ${' a | b : c '}            | ${false} | ${true}  | ${false} | ${true}
   ${'Chain'}            | ${'NGChainedExpression'}      | ${' a ; b '}                | ${true}  | ${false} | ${false} | ${false}
   ${'Conditional'}      | ${'ConditionalExpression'}    | ${' a ? 1 : 2 '}            | ${true}  | ${true}  | ${true}  | ${true}
-  ${'EmptyExpr'}        | ${'NGEmptyExpression'}        | ${''}                       | ${true}  | ${true}  | ${true}  | ${false}
+  ${'EmptyExpr'}        | ${'NGEmptyExpression'}        | ${''}                       | ${true}  | ${true}  | ${true}  | ${true}
   ${'Call'}             | ${'CallExpression'}           | ${' ( a . b ) ( 1 , 2 ) '}  | ${true}  | ${true}  | ${true}  | ${true}
   ${'SafeCall'}         | ${'OptionalCallExpression'}   | ${' ( a . b )?.( 1 , 2 ) '} | ${true}  | ${true}  | ${true}  | ${true}
   ${'Call'}             | ${'CallExpression'}           | ${' ( a ) ( 1 , 2 ) '}      | ${true}  | ${true}  | ${true}  | ${true}
@@ -111,7 +111,11 @@ describe.each`
   testSection('action', parseNgAction, parseAction);
   testSection('binding', parseNgBinding, parseBinding);
   testSection('simple', parseNgSimpleBinding, parseSimpleBinding);
-  testSection('interpolation', parseNgInterpolation, parseInterpolation);
+  testSection(
+    'interpolation',
+    parseNgInterpolationExpression,
+    parseInterpolationExpression,
+  );
 
   test('ast', () => {
     expect(beforeNode).not.toEqual(null);

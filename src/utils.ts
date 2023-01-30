@@ -43,6 +43,17 @@ export function parseNgAction(input: string) {
   );
 }
 
+export function parseNgInterpolationExpression(input: string) {
+  return parseNg(input, (astInput, ngParser) => {
+    const result = ngParser.parseInterpolationExpression(
+      astInput,
+      ...NG_PARSE_SHARED_PARAMS,
+    );
+    result.ast = (result.ast as ng.Interpolation).expressions[0];
+    return result;
+  });
+}
+
 export function parseNgTemplateBindings(input: string) {
   const ngParser = createNgParser();
   const { templateBindings: ast, errors } = ngParser.parseTemplateBindings(
@@ -54,23 +65,6 @@ export function parseNgTemplateBindings(input: string) {
   );
   assertAstErrors(errors);
   return ast;
-}
-
-export function parseNgInterpolation(input: string) {
-  const ngParser = createNgParser();
-  const { astInput, comments } = extractComments(input, ngParser);
-  const prefix = '{{';
-  const suffix = '}}';
-
-  const { ast: rawAst, errors } = ngParser.parseInterpolation(
-    prefix + astInput + suffix,
-    NG_PARSE_FAKE_LOCATION,
-    -prefix.length,
-    null,
-  )!;
-  assertAstErrors(errors);
-  const ast = (rawAst as ng.Interpolation).expressions[0];
-  return { ast, comments };
 }
 
 function assertAstErrors(errors: ng.ParserError[]) {

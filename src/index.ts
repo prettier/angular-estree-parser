@@ -7,7 +7,7 @@ import type { NGMicrosyntax, NGNode, RawNGComment } from './types.js';
 import {
   parseNgAction,
   parseNgBinding,
-  parseNgInterpolation,
+  parseNgInterpolationExpression,
   parseNgSimpleBinding,
   parseNgTemplateBindings,
 } from './utils.js';
@@ -34,8 +34,8 @@ export function parseSimpleBinding(input: string): NGNode {
   return parse(input, parseNgSimpleBinding);
 }
 
-export function parseInterpolation(input: string): NGNode {
-  return parse(input, parseNgInterpolation);
+export function parseInterpolationExpression(input: string): NGNode {
+  return parse(input, parseNgInterpolationExpression);
 }
 
 export function parseAction(input: string): NGNode {
@@ -48,3 +48,6 @@ export function parseTemplateBindings(input: string): NGMicrosyntax {
     new Context(input),
   );
 }
+
+// TODO: Remove this in next major
+export const parseInterpolation = parseInterpolationExpression;
