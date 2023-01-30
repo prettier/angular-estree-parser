@@ -4,16 +4,24 @@ on:
   - push
   - pull_request
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   lint:
     name: Lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2.3.4
-      - uses: actions/setup-node@v2.1.2
-      - run: yarn install --frozen-lockfile
-      - run: yarn run lint:eslint
-      - run: yarn run lint:prettier
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          cache: "yarn"
+      - run: yarn install --immutable
+      - run: yarn run lint
 
   test:
     strategy:
@@ -26,11 +34,12 @@ jobs:
     name: Node.js ${{ matrix.node }} / angular ${{ matrix.angular }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2.3.4
-      - uses: actions/setup-node@v2.1.2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node }}
-      - run: yarn install --frozen-lockfile
+          cache: "yarn"
+      - run: yarn install --immutable
       - run: yarn run test
         env:
           ENABLE_COVERAGE: 1
