@@ -14,16 +14,16 @@
   },
   "license": "MIT",
   "scripts": {
+    "clean": "del-cli ./lib",
     "prepare": "yarn run build",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
-    "lint": "run-p lint:*",
+    "lint": "run-p \"lint:*\"",
     "lint:eslint": "eslint --ext=.ts,.js,.cjs .",
     "lint:prettier": "prettier --check src",
-    "fix": "run-s fix:*",
+    "fix": "run-s \"fix:*\"",
     "fix:eslint": "yarn lint:eslint --fix",
     "fix:prettier": "yarn lint:prettier --write",
-    "prebuild": "del-cli ./lib",
-    "build": "tsc -p ./tsconfig.build.json",
+    "build": "yarn clean && tsc -p ./tsconfig.build.json",
     "release": "yarn build && standard-version"
   },
   "dependencies": {
