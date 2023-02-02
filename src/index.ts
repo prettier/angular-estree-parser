@@ -1,7 +1,7 @@
 import type * as ng from '@angular/compiler';
 import type * as b from '@babel/types';
 import { Context } from './context.js';
-import { InputNode, transform } from './transform.js';
+import { type InputNode, transform } from './transform.js';
 import { transformTemplateBindings } from './transform-microsyntax.js';
 import type { NGMicrosyntax, NGNode, RawNGComment } from './types.js';
 import {

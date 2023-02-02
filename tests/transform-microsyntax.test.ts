@@ -1,4 +1,4 @@
-import * as b from '@babel/types';
+import type * as b from '@babel/types';
 import { parseTemplateBindings } from '../src/index.js';
 import type { NGMicrosyntaxKeyedExpression } from '../src/types.js';
 import { snapshotAst } from './helpers.js';

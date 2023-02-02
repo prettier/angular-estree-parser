@@ -1,6 +1,6 @@
 import type * as ng from '@angular/compiler';
 import type * as b from '@babel/types';
-import { Context } from './context.js';
+import { type Context } from './context.js';
 import type {
   NGChainedExpression,
   NGEmptyExpression,
