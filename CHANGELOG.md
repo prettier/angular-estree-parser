@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.1.0](https://github.com/prettier/angular-estree-parser/compare/v5.0.1...v6.1.0) (2023-03-14)
+
+
+### Features
+
+* add `parseInterpolationExpression`, deprecate `parseInterpolation` ([#241](https://github.com/prettier/angular-estree-parser/issues/241)) ([817b64a](https://github.com/prettier/angular-estree-parser/commit/817b64a6ac3467d100e369408d0740b88e0ef3ee))
+
+
+### Bug Fixes
+
+* fix files field ([506ba72](https://github.com/prettier/angular-estree-parser/commit/506ba72b1de3e9e4f05c45f790474fad94f5a595))
+* type of ?? expression node ([#238](https://github.com/prettier/angular-estree-parser/issues/238)) ([8b94458](https://github.com/prettier/angular-estree-parser/commit/8b9445856091df9ce7260c9deb31fbaa392c8ad0))
+
 ## [6.0.0](https://github.com/prettier/angular-estree-parser/compare/v4.0.1...v6.0.0) (2023-01-30)
 
 
