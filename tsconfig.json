@@ -4,7 +4,7 @@
     "declaration": true,
     "importHelpers": true,
     "target": "ESNext",
-    "module": "CommonJS",
+    "module": "NodeNext",
     "moduleResolution": "Node",
     "esModuleInterop": true
   },
