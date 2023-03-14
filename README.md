@@ -1,8 +1,18 @@
 # angular-estree-parser
 
-[![npm](https://img.shields.io/npm/v/angular-estree-parser.svg)](https://www.npmjs.com/package/angular-estree-parser)
-[![build](https://img.shields.io/github/workflow/status/prettier/angular-estree-parser/CI)](https://github.com/prettier/angular-estree-parser/actions?query=workflow%3ACI+branch%3Amain)
-[![coverage](https://img.shields.io/codecov/c/github/prettier/angular-estree-parser/main.svg)](https://codecov.io/gh/prettier/angular-estree-parser)
+[![Build Status][github_actions_badge]][github_actions_link]
+[![Coverage][coverage_badge]][coverage_link]
+[![Npm Version][package_version_badge]][package_link]
+[![MIT License][license_badge]][license_link]
+
+[github_actions_badge]: https://img.shields.io/github/actions/workflow/status/prettier/angular-estree-parser/ci.yml
+[github_actions_link]: https://github.com/prettier/angular-estree-parser/actions?query=workflow%3ACI+branch%3Amain
+[coverage_badge]: https://img.shields.io/codecov/c/github/prettier/angular-estree-parser/main.svg
+[coverage_link]: https://codecov.io/gh/prettier/angular-estree-parser
+[license_badge]: https://img.shields.io/npm/l/angular-estree-parser.svg
+[license_link]: https://github.com/prettier/angular-estree-parser/blob/main/LICENSE
+[package_version_badge]: https://img.shields.io/npm/v/angular-estree-parser.svg
+[package_link]: https://www.npmjs.com/package/angular-estree-parser
 
 A parser that converts Angular source code into an ESTree-compatible form
 
