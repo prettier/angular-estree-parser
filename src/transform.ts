@@ -17,36 +17,6 @@ import {
   getNgType,
 } from './utils.js';
 
-declare module '@babel/types' {
-  interface SourceLocation {
-    identifierName?: string;
-  }
-  interface NumericLiteral {
-    extra: { raw: string; rawValue: number };
-  }
-  interface StringLiteral {
-    extra: { raw: string; rawValue: string };
-  }
-  interface ObjectProperty {
-    method: boolean;
-  }
-  type CommentLine = Pick<
-    b.CommentLine,
-    Exclude<keyof b.CommentLine, 'type'>
-  > & { type: 'CommentLine' };
-  interface BaseNode {
-    type: b.Node['type'];
-    leadingComments?: b.Comment[] | null;
-    innerComments?: b.Comment[] | null;
-    trailingComments?: b.Comment[] | null;
-    start?: number | null;
-    end?: number | null;
-    loc?: SourceLocation | null;
-    range?: [number, number];
-    extra?: Record<string, unknown>;
-  }
-}
-
 export type InputNode = ng.AST | RawNGComment;
 export type OutputNode = NGNode | b.CommentLine;
 
@@ -214,7 +184,6 @@ export const transform = (
           {
             key: tKey,
             value: tValue,
-            method: false,
             shorthand,
             computed: false,
           },
@@ -436,11 +405,6 @@ export const transform = (
       ...n,
     } as T & RawNGSpan;
     switch (t) {
-      case 'Identifier': {
-        const identifier = newNode as unknown as b.Identifier;
-        identifier.loc!.identifierName = identifier.name;
-        break;
-      }
       case 'NumericLiteral': {
         const numericLiteral = newNode as unknown as b.NumberLiteral;
         numericLiteral.extra = {
@@ -544,9 +508,9 @@ export function transformSpan(
   processSpan = false,
   hasParentParens = false,
 ): {
-  start: NonNullable<b.BaseNode['start']>;
-  end: NonNullable<b.BaseNode['end']>;
-  loc: NonNullable<b.BaseNode['loc']>;
+  start: NonNullable<b.Node['start']>;
+  end: NonNullable<b.Node['end']>;
+  loc: NonNullable<b.Node['loc']>;
 } {
   if (!processSpan) {
     const { start, end } = span;

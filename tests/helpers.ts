@@ -25,6 +25,16 @@ export function massageAst(ast: any): any {
     return ast.map(massageAst);
   }
 
+  // Not exists in types, but exists in node.
+  if (ast.type === 'ObjectProperty') {
+    if (ast.method !== undefined && ast.method !== false) {
+      throw new Error(
+        `Unexpected "method: ${ast.method}" in "ObjectProperty".`,
+      );
+    }
+    delete ast.method;
+  }
+
   const massaged = Object.keys(ast).reduce((reduced: any, key) => {
     switch (key) {
       case 'trailingComments':
