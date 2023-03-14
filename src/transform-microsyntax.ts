@@ -3,10 +3,10 @@ import {
   ExpressionBinding as NGExpressionBinding,
   VariableBinding as NGVariableBinding,
 } from '@angular/compiler';
-import { Context } from './context.js';
+import { type Context } from './context.js';
 import {
-  InputNode,
-  OutputNode,
+  type InputNode,
+  type OutputNode,
   transform,
   transformSpan,
 } from './transform.js';
