@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.2.0](https://github.com/prettier/angular-estree-parser/compare/v6.1.0...v6.2.0) (2023-04-03)
+
+
+### Features
+
+* support computed optional member expression ([#247](https://github.com/prettier/angular-estree-parser/issues/247)) ([91a9bf5](https://github.com/prettier/angular-estree-parser/commit/91a9bf58f853e90ad3e7581ab64a8427cf04b928))
+
 ## [6.1.0](https://github.com/prettier/angular-estree-parser/compare/v5.0.1...v6.1.0) (2023-03-14)
 
 
