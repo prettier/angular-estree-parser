@@ -107,6 +107,7 @@ export function getNgType(node: (ng.AST | RawNGComment) & { type?: string }) {
   if (node instanceof ng.EmptyExpr) { return "EmptyExpr"; }
   if (node instanceof ng.ImplicitReceiver) { return "ImplicitReceiver"; }
   if (node instanceof ng.KeyedRead) { return "KeyedRead"; }
+  if (node instanceof ng.SafeKeyedRead) { return "SafeKeyedRead"; }
   if (node instanceof ng.KeyedWrite) { return "KeyedWrite"; }
   if (node instanceof ng.LiteralArray) { return "LiteralArray"; }
   if (node instanceof ng.LiteralMap) { return "LiteralMap"; }
