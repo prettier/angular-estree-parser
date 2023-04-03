@@ -126,8 +126,10 @@ export const transform = (
         hasParentParens: isInParentParens,
       });
     }
-    case 'KeyedRead': {
-      const { key } = node as ng.KeyedRead;
+    case 'KeyedRead':
+    case 'SafeKeyedRead': {
+      const isOptionalType = type === 'SafeKeyedRead';
+      const { key } = node as ng.KeyedRead | ng.SafeKeyedRead;
       /* istanbul ignore next */
       const receiver = Object.prototype.hasOwnProperty.call(node, 'receiver')
         ? (node as ng.KeyedRead).receiver
@@ -138,7 +140,7 @@ export const transform = (
         tKey,
         {
           computed: true,
-          optional: false,
+          optional: isOptionalType,
         },
         {
           end: node.sourceSpan.end, // ]
@@ -248,7 +250,7 @@ export const transform = (
     case 'Call':
     case 'SafeCall': {
       const isOptionalType = type === 'SafeCall';
-      const { receiver, args } = node as ng.Call;
+      const { receiver, args } = node as ng.Call | ng.SafeCall;
       const tArgs =
         args.length === 1
           ? [_transformHasParentParens<b.Expression>(args[0])]
