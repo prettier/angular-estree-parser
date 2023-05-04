@@ -28,9 +28,9 @@ jobs:
       fail-fast: false
       matrix:
         node:
+          - '20'
           - '18'
           - '16'
-          - '14'
     name: Node.js ${{ matrix.node }}
     runs-on: ubuntu-latest
     steps:
