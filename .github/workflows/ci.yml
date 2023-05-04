@@ -19,7 +19,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          cache: "yarn"
+          cache: 'yarn'
       - run: yarn install --immutable
       - run: yarn run lint
 
@@ -28,17 +28,17 @@ jobs:
       fail-fast: false
       matrix:
         node:
+          - '20'
           - '18'
           - '16'
-          - '14'
-    name: Node.js ${{ matrix.node }} / angular ${{ matrix.angular }}
+    name: Node.js ${{ matrix.node }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node }}
-          cache: "yarn"
+          cache: 'yarn'
       - run: yarn install --immutable
       - run: yarn run test
         env:
