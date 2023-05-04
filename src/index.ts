@@ -48,6 +48,3 @@ export function parseTemplateBindings(input: string): NGMicrosyntax {
     new Context(input),
   );
 }
-
-// TODO: Remove this in next major
-export const parseInterpolation = parseInterpolationExpression;
