@@ -7,6 +7,9 @@ on:
 permissions:
   contents: read
 
+env:
+  - YARN_IGNORE_NODE: 1
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
