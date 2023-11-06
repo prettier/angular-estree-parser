@@ -48,7 +48,7 @@ describe.each`
   ${'KeyedWrite'}       | ${'AssignmentExpression'}     | ${' a [ b ] = 1 '}          | ${true}  | ${true}  | ${true}  | ${true}
   ${'ImplicitReceiver'} | ${'ThisExpression'}           | ${' this '}                 | ${true}  | ${true}  | ${true}  | ${true}
   ${'LiteralArray'}     | ${'ArrayExpression'}          | ${' [ 1 ] '}                | ${true}  | ${true}  | ${true}  | ${true}
-  ${'LiteralMap'}       | ${'ObjectExpression'}         | ${' { "a" : 1 } '}          | ${true}  | ${true}  | ${true}  | ${true}
+  ${'LiteralMap'}       | ${'ObjectExpression'}         | ${' ( { "a" : 1 } )'}       | ${true}  | ${true}  | ${true}  | ${true}
   ${'LiteralMap'}       | ${'ObjectExpression'}         | ${' ( { a : 1 } ) '}        | ${true}  | ${true}  | ${true}  | ${true}
   ${'Call'}             | ${'CallExpression'}           | ${' f ( { a : 1 } ) '}      | ${true}  | ${true}  | ${true}  | ${true}
   ${'LiteralMap'}       | ${'ObjectExpression'}         | ${' ( {a, b: 2} ) '}        | ${true}  | ${true}  | ${true}  | ${true}
@@ -60,7 +60,7 @@ describe.each`
   ${'LiteralPrimitive'} | ${'NullLiteral'}              | ${' null '}                 | ${true}  | ${true}  | ${true}  | ${true}
   ${'LiteralPrimitive'} | ${'NumericLiteral'}           | ${' ( 1 ) '}                | ${true}  | ${true}  | ${true}  | ${true}
   ${'LiteralPrimitive'} | ${'NumericLiteral'}           | ${' 1 '}                    | ${true}  | ${true}  | ${true}  | ${true}
-  ${'LiteralPrimitive'} | ${'StringLiteral'}            | ${' "hello" '}              | ${true}  | ${true}  | ${true}  | ${true}
+  ${'LiteralPrimitive'} | ${'StringLiteral'}            | ${' ( "hello" ) '}          | ${true}  | ${true}  | ${true}  | ${true}
   ${'Call'}             | ${'CallExpression'}           | ${' a ( this ) '}           | ${true}  | ${true}  | ${true}  | ${true}
   ${'SafeCall'}         | ${'OptionalCallExpression'}   | ${' a ?.( this ) '}         | ${true}  | ${true}  | ${true}  | ${true}
   ${'Call'}             | ${'CallExpression'}           | ${' a ( b) '}               | ${true}  | ${true}  | ${true}  | ${true}
