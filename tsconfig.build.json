@@ -4,6 +4,11 @@
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "lib",
-    "module": "ESNext"
+    "strict": true,
+    "declaration": true,
+    "importHelpers": true,
+    "target": "ESNext",
+    "module": "NodeNext",
+    "esModuleInterop": true
   }
 }
