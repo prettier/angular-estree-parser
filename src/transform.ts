@@ -520,6 +520,8 @@ export function transformSpan(
       start,
       end,
       loc: {
+        filename: '',
+        identifierName: '',
         start: context.locator.locationForIndex(start),
         end: context.locator.locationForIndex(end),
       },
@@ -535,6 +537,8 @@ export function transformSpan(
     start: innerSpan.start,
     end: innerSpan.end,
     loc: {
+      filename: '',
+      identifierName: '',
       start: context.locator.locationForIndex(innerSpan.start),
       end: context.locator.locationForIndex(innerSpan.end),
     },
