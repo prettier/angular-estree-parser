@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.0.0](https://github.com/prettier/angular-estree-parser/compare/v6.2.0...v8.0.0) (2023-11-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* support @angular/compiler@17.0.0-rc.2 (#253)
+* update dependencies, require `@angular/compiler` v16, require Node.js v16 (#249)
+
+### Features
+
+* support @angular/compiler@17.0.0-rc.2 ([#253](https://github.com/prettier/angular-estree-parser/issues/253)) ([9c23188](https://github.com/prettier/angular-estree-parser/commit/9c23188e0827364092b7258fc65f39fc9c102c2e))
+
+
+### Bug Fixes
+
+* remove deprecated `parseInterpolation` ([#250](https://github.com/prettier/angular-estree-parser/issues/250)) ([b63e555](https://github.com/prettier/angular-estree-parser/commit/b63e5555e5829b82467f9528aeb9bca7f07d1633))
+
+
+* update dependencies, require `@angular/compiler` v16, require Node.js v16 ([#249](https://github.com/prettier/angular-estree-parser/issues/249)) ([a863a6a](https://github.com/prettier/angular-estree-parser/commit/a863a6a91edf99d79c969aa533cc03b3a21f0d7b))
+
 ## [7.0.0](https://github.com/prettier/angular-estree-parser/compare/v6.0.0...v7.0.0) (2023-05-04)
 
 
