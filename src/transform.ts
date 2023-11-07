@@ -57,8 +57,8 @@ export const transform = (
       const { exp, name, args } = node as ng.BindingPipe;
       const tExp = _t<b.Expression>(exp);
       const nameStart = _findBackChar(
-        /\S/,
-        _findBackChar(/\|/, _getOuterEnd(tExp)) + 1,
+        /\S/g,
+        _findBackChar(/\|/g, _getOuterEnd(tExp)) + 1,
       );
       const tName = _c<b.Identifier>(
         'Identifier',
@@ -160,15 +160,15 @@ export const transform = (
         const valueEnd = _getOuterEnd(tValue);
 
         const keyStart = _findBackChar(
-          /\S/,
+          /\S/g,
           index === 0
             ? node.sourceSpan.start + 1 // {
-            : _findBackChar(/,/, _getOuterEnd(tValues[index - 1])) + 1,
+            : _findBackChar(/,/g, _getOuterEnd(tValues[index - 1])) + 1,
         );
         const keyEnd =
           valueStart === keyStart
             ? valueEnd
-            : _findFrontChar(/\S/, _findFrontChar(/:/, valueStart - 1) - 1) + 1;
+            : _findFrontChar(/\S/g, _findFrontChar(/:/g, valueStart - 1) - 1) + 1;
         const keySpan = { start: keyStart, end: keyEnd };
         const tKey = quoted
           ? _c<b.StringLiteral>('StringLiteral', { value: key }, keySpan)
@@ -304,7 +304,7 @@ export const transform = (
     case 'SafePropertyRead': {
       const isOptionalType = type === 'SafePropertyRead';
       const { receiver, name } = node as ng.PropertyRead | ng.SafePropertyRead;
-      const nameEnd = _findFrontChar(/\S/, node.sourceSpan.end - 1) + 1;
+      const nameEnd = _findFrontChar(/\S/g, node.sourceSpan.end - 1) + 1;
       const tName = _c<b.Identifier>(
         'Identifier',
         { name },
@@ -336,7 +336,7 @@ export const transform = (
           computed: true,
           optional: false,
         },
-        { end: _findBackChar(/\]/, _getOuterEnd(tKey)) + 1 },
+        { end: _findBackChar(/\]/g, _getOuterEnd(tKey)) + 1 },
       );
       return _c<b.AssignmentExpression>(
         'AssignmentExpression',
@@ -354,8 +354,8 @@ export const transform = (
       const tValue = _t<b.Expression>(value);
       const nameEnd =
         _findFrontChar(
-          /\S/,
-          _findFrontChar(/=/, _getOuterStart(tValue) - 1) - 1,
+          /\S/g,
+          _findFrontChar(/=/g, _getOuterStart(tValue) - 1) - 1,
         ) + 1;
       const tName = _c<b.Identifier>(
         'Identifier',

@@ -205,6 +205,10 @@ export function fitSpans(
 }
 
 export function findFrontChar(text: string, regex: RegExp, index: number) {
+  if (!regex.global) {
+    throw new TypeError('findFrontChar called with a non-global RegExp argument')
+  }
+
   let i = index;
   while (!regex.test(text[i])) {
     // istanbul ignore next
@@ -220,6 +224,10 @@ export function findFrontChar(text: string, regex: RegExp, index: number) {
 }
 
 export function findBackChar(text: string, regex: RegExp, index: number) {
+  if (!regex.global) {
+    throw new TypeError('findBackChar called with a non-global RegExp argument')
+  }
+
   let i = index;
   while (!regex.test(text[i])) {
     // istanbul ignore next

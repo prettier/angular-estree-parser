@@ -266,7 +266,7 @@ export function transformTemplateBindings(
 
     const index = findBackChar(
       context.text,
-      /\S/,
+      /\S/g,
       variableBinding.sourceSpan.start,
     );
     return {
