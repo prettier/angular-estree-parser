@@ -894,13 +894,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/babel-types@npm:7.0.14":
-  version: 7.0.14
-  resolution: "@types/babel-types@npm:7.0.14"
-  checksum: cdaaaa978260e8cbde42b2172efa9f56bbe981b5779d340324f4ca9f5bcbe58bc67fd1d949e687dac2b5e003dcb6c7305b393c39985ef1c8968f5bed9e5c27a0
-  languageName: node
-  linkType: hard
-
 "@types/babel__code-frame@npm:7.0.6":
   version: 7.0.6
   resolution: "@types/babel__code-frame@npm:7.0.6"
@@ -1025,15 +1018,6 @@ __metadata:
   version: 2.4.1
   resolution: "@types/normalize-package-data@npm:2.4.1"
   checksum: e87bccbf11f95035c89a132b52b79ce69a1e3652fe55962363063c9c0dae0fe2477ebc585e03a9652adc6f381d24ba5589cc5e51849df4ced3d3e004a7d40ed5
-  languageName: node
-  linkType: hard
-
-"@types/prettier@npm:3.0.0":
-  version: 3.0.0
-  resolution: "@types/prettier@npm:3.0.0"
-  dependencies:
-    prettier: "npm:*"
-  checksum: a2a512d304e5bcf78f38089dc88ad19215e6ab871d435a17aef3ce538a63b07c0e359c18db23989dc1ed9fff96d99eee1f680416080184df5c7e0e3bf767e165
   languageName: node
   linkType: hard
 
@@ -1300,10 +1284,8 @@ __metadata:
     "@babel/code-frame": "npm:7.22.13"
     "@babel/parser": "npm:7.23.0"
     "@babel/types": "npm:7.23.0"
-    "@types/babel-types": "npm:7.0.14"
     "@types/babel__code-frame": "npm:7.0.6"
     "@types/jest": "npm:29.5.7"
-    "@types/prettier": "npm:3.0.0"
     "@typescript-eslint/eslint-plugin": "npm:6.10.0"
     "@typescript-eslint/parser": "npm:6.10.0"
     del-cli: "npm:5.1.0"
@@ -5382,7 +5364,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:*, prettier@npm:3.0.3":
+"prettier@npm:3.0.3":
   version: 3.0.3
   resolution: "prettier@npm:3.0.3"
   bin:
