@@ -237,10 +237,3 @@ export function findBackChar(regex: RegExp, index: number, text: string) {
 export function toLowerCamelCase(str: string) {
   return str.slice(0, 1).toLowerCase() + str.slice(1);
 }
-
-export function getLast<T>(array: T[]): T | undefined {
-  return array.length === 0
-    ? // istanbul ignore next
-      undefined
-    : array[array.length - 1];
-}

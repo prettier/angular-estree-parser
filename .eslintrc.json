@@ -9,7 +9,7 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["@typescript-eslint", "import"],
+  "plugins": ["@typescript-eslint", "import", "unicorn"],
   "env": { "node": true },
   "rules": {
     "@typescript-eslint/no-namespace": "off",
@@ -20,6 +20,7 @@
       { "fixStyle": "inline-type-imports" }
     ],
     "no-constant-condition": ["error", { "checkLoops": false }],
-    "import/extensions": ["error", "always"]
+    "import/extensions": ["error", "always"],
+    "unicorn/prefer-at": "error"
   }
 }

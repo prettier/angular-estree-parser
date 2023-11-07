@@ -9,13 +9,7 @@ import type {
   RawNGComment,
   RawNGSpan,
 } from './types.js';
-import {
-  findBackChar,
-  findFrontChar,
-  fitSpans,
-  getLast,
-  getNgType,
-} from './utils.js';
+import { findBackChar, findFrontChar, fitSpans, getNgType } from './utils.js';
 
 export type InputNode = ng.AST | RawNGComment;
 export type OutputNode = NGNode | b.CommentLine;
@@ -81,7 +75,7 @@ export const transform = (
         },
         {
           start: _getOuterStart(tExp),
-          end: _getOuterEnd(tArgs.length === 0 ? tName : getLast(tArgs)!),
+          end: _getOuterEnd(tArgs.length === 0 ? tName : tArgs.at(-1)!),
         },
         { hasParentParens: isInParentParens },
       );
