@@ -204,7 +204,11 @@ export function fitSpans(
   };
 }
 
-export function getCharacterLastIndex(text: string, regex: RegExp, fromIndex: number) {
+export function getCharacterLastIndex(
+  text: string,
+  regex: RegExp,
+  fromIndex: number,
+) {
   if (!regex.global) {
     throw new TypeError(
       'getCharacterLastIndex called with a non-global RegExp argument',
@@ -226,7 +230,11 @@ export function getCharacterLastIndex(text: string, regex: RegExp, fromIndex: nu
   );
 }
 
-export function getCharacterIndex(text: string, regex: RegExp, fromIndex: number) {
+export function getCharacterIndex(
+  text: string,
+  regex: RegExp,
+  fromIndex: number,
+) {
   if (!regex.global) {
     throw new TypeError(
       'getCharacterIndex called with a non-global RegExp argument',
