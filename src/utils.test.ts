@@ -37,4 +37,11 @@ describe('fitSpans', () => {
 describe('findFrontChar', () => {
   expect(findFrontChar('foobar', /o/, 6)).toBe(2)
   expect(findFrontChar('foobar', /o/, 2)).toBe(2)
+  expect(() => findFrontChar('foobar', /_/, 6)).toThrow()
+})
+
+describe('findBackChar', () => {
+  expect(findBackChar('foobar', /o/, 0)).toBe(1)
+  expect(findBackChar('foobar', /o/, 1)).toBe(1)
+  expect(() => findBackChar('foobar', /_/, 0)).toThrow()
 })
