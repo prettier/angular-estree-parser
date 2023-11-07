@@ -168,7 +168,8 @@ export const transform = (
         const keyEnd =
           valueStart === keyStart
             ? valueEnd
-            : _findFrontChar(/\S/g, _findFrontChar(/:/g, valueStart - 1) - 1) + 1;
+            : _findFrontChar(/\S/g, _findFrontChar(/:/g, valueStart - 1) - 1) +
+              1;
         const keySpan = { start: keyStart, end: keyEnd };
         const tKey = quoted
           ? _c<b.StringLiteral>('StringLiteral', { value: key }, keySpan)
@@ -466,11 +467,11 @@ export const transform = (
   }
 
   function _findFrontChar(regex: RegExp, index: number) {
-    return findFrontChar(context.text, regex, index, );
+    return findFrontChar(context.text, regex, index);
   }
 
   function _findBackChar(regex: RegExp, index: number) {
-    return findBackChar( context.text, regex, index,);
+    return findBackChar(context.text, regex, index);
   }
 
   function _isImplicitThis(n: ng.AST): boolean {

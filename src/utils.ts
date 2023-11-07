@@ -204,42 +204,48 @@ export function fitSpans(
   };
 }
 
-export function findFrontChar(text: string, regex: RegExp, index: number) {
+export function findFrontChar(text: string, regex: RegExp, fromIndex: number) {
   if (!regex.global) {
-    throw new TypeError('findFrontChar called with a non-global RegExp argument')
+    throw new TypeError(
+      'findFrontChar called with a non-global RegExp argument',
+    );
   }
 
-  let i = index;
-  while (!regex.test(text[i])) {
-    // istanbul ignore next
-    if (--i < 0) {
-      throw new Error(
-        `Cannot find front char ${regex} from index ${index} in ${JSON.stringify(
-          text,
-        )}`,
-      );
+  for (let index = fromIndex; index >= 0; index--) {
+    const character = text[index];
+
+    if (regex.test(character)) {
+      return index;
     }
   }
-  return i;
+
+  throw new Error(
+    `Cannot find front char ${regex} from index ${fromIndex} in ${JSON.stringify(
+      text,
+    )}`,
+  );
 }
 
-export function findBackChar(text: string, regex: RegExp, index: number) {
+export function findBackChar(text: string, regex: RegExp, fromIndex: number) {
   if (!regex.global) {
-    throw new TypeError('findBackChar called with a non-global RegExp argument')
+    throw new TypeError(
+      'findBackChar called with a non-global RegExp argument',
+    );
   }
 
-  let i = index;
-  while (!regex.test(text[i])) {
-    // istanbul ignore next
-    if (++i >= text.length) {
-      throw new Error(
-        `Cannot find back char ${regex} from index ${index} in ${JSON.stringify(
-          text,
-        )}`,
-      );
+  for (let index = fromIndex; index < text.length; index++) {
+    const character = text[index];
+
+    if (regex.test(character)) {
+      return index;
     }
   }
-  return i;
+
+  throw new Error(
+    `Cannot find back char ${regex} from index ${fromIndex} in ${JSON.stringify(
+      text,
+    )}`,
+  );
 }
 
 export function toLowerCamelCase(str: string) {
