@@ -15,7 +15,7 @@ class Locator {
     this._linesAndColumns = new LinesAndColumns(text);
   }
   public locationForIndex(index: number) {
-    const { line, column } = this._linesAndColumns.locationForIndex(index)!
+    const { line, column } = this._linesAndColumns.locationForIndex(index)!;
     return { line: line + 1, column, index };
   }
 }
