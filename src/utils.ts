@@ -204,10 +204,10 @@ export function fitSpans(
   };
 }
 
-export function findFrontChar(text: string, regex: RegExp, fromIndex: number) {
+export function getCharacterLastIndex(text: string, regex: RegExp, fromIndex: number) {
   if (!regex.global) {
     throw new TypeError(
-      'findFrontChar called with a non-global RegExp argument',
+      'getCharacterLastIndex called with a non-global RegExp argument',
     );
   }
 
@@ -226,10 +226,10 @@ export function findFrontChar(text: string, regex: RegExp, fromIndex: number) {
   );
 }
 
-export function findBackChar(text: string, regex: RegExp, fromIndex: number) {
+export function getCharacterIndex(text: string, regex: RegExp, fromIndex: number) {
   if (!regex.global) {
     throw new TypeError(
-      'findBackChar called with a non-global RegExp argument',
+      'getCharacterIndex called with a non-global RegExp argument',
     );
   }
 
@@ -242,7 +242,7 @@ export function findBackChar(text: string, regex: RegExp, fromIndex: number) {
   }
 
   throw new Error(
-    `Cannot find back char ${regex} from index ${fromIndex} in ${JSON.stringify(
+    `Cannot find character ${regex} from index ${fromIndex} in ${JSON.stringify(
       text,
     )}`,
   );

@@ -9,7 +9,7 @@ import type {
   RawNGComment,
   RawNGSpan,
 } from './types.js';
-import { findBackChar, findFrontChar, fitSpans, getNgType } from './utils.js';
+import { getCharacterIndex, getCharacterLastIndex, fitSpans, getNgType } from './utils.js';
 
 export type InputNode = ng.AST | RawNGComment;
 export type OutputNode = NGNode | b.CommentLine;
@@ -467,11 +467,11 @@ export const transform = (
   }
 
   function _findFrontChar(regex: RegExp, index: number) {
-    return findFrontChar(context.text, regex, index);
+    return getCharacterLastIndex(context.text, regex, index);
   }
 
   function _findBackChar(regex: RegExp, index: number) {
-    return findBackChar(context.text, regex, index);
+    return getCharacterIndex(context.text, regex, index);
   }
 
   function _isImplicitThis(n: ng.AST): boolean {
