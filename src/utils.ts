@@ -204,7 +204,7 @@ export function fitSpans(
   };
 }
 
-export function findFrontChar(regex: RegExp, index: number, text: string) {
+export function findFrontChar(text: string, regex: RegExp, index: number) {
   let i = index;
   while (!regex.test(text[i])) {
     // istanbul ignore next
@@ -219,7 +219,7 @@ export function findFrontChar(regex: RegExp, index: number, text: string) {
   return i;
 }
 
-export function findBackChar(regex: RegExp, index: number, text: string) {
+export function findBackChar(text: string, regex: RegExp, index: number) {
   let i = index;
   while (!regex.test(text[i])) {
     // istanbul ignore next

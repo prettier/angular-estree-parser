@@ -265,9 +265,9 @@ export function transformTemplateBindings(
     }
 
     const index = findBackChar(
+      context.text,
       /\S/,
       variableBinding.sourceSpan.start,
-      context.text,
     );
     return {
       source: '$implicit',

@@ -1,7 +1,7 @@
 import { codeFrameColumns } from '@babel/code-frame';
 import { wrap } from 'jest-snapshot-serializer-raw';
 import type { RawNGSpan } from './types.js';
-import { fitSpans } from './utils.js';
+import { fitSpans, findBackChar, findFrontChar } from './utils.js';
 
 const text = ` ( ( ( 1 ) ) ) `;
 const length = Math.floor(text.length / 2);
@@ -33,3 +33,8 @@ describe('fitSpans', () => {
     });
   }
 });
+
+describe('findFrontChar', () => {
+  expect(findFrontChar('foobar', /o/, 6)).toBe(2)
+  expect(findFrontChar('foobar', /o/, 2)).toBe(2)
+})

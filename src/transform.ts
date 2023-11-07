@@ -466,11 +466,11 @@ export const transform = (
   }
 
   function _findFrontChar(regex: RegExp, index: number) {
-    return findFrontChar(regex, index, context.text);
+    return findFrontChar(context.text, regex, index, );
   }
 
   function _findBackChar(regex: RegExp, index: number) {
-    return findBackChar(regex, index, context.text);
+    return findBackChar( context.text, regex, index,);
   }
 
   function _isImplicitThis(n: ng.AST): boolean {
