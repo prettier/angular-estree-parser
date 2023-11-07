@@ -22,7 +22,6 @@ import type {
   RawNGSpan,
 } from './types.js';
 import {
-  getCharacterIndex,
   NG_PARSE_TEMPLATE_BINDINGS_FAKE_PREFIX,
   toLowerCamelCase,
 } from './utils.js';
@@ -264,8 +263,7 @@ export function transformTemplateBindings(
       return variableBinding.value;
     }
 
-    const index = getCharacterIndex(
-      context.text,
+    const index = context.getCharacterIndex(
       /\S/g,
       variableBinding.sourceSpan.start,
     );
