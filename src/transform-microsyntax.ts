@@ -94,7 +94,7 @@ export function transformTemplateBindings(
     { body },
     body.length === 0
       ? rawTemplateBindings[0].sourceSpan
-      : { start: body[0].start, end: body.at(-1).end },
+      : { start: body[0].start, end: body.at(-1)!.end },
   );
 
   function transformTemplateBinding(
