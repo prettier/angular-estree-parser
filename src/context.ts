@@ -15,12 +15,12 @@ export class Context {
     return { line: line + 1, column, index };
   }
 
-  getCharacterIndex(regex: RegExp, index: number) {
-    return getCharacterIndex(this.text, regex, index);
+  getCharacterIndex(pattern: RegExp | string, index: number) {
+    return getCharacterIndex(this.text, pattern, index);
   }
 
-  getCharacterLastIndex(regex: RegExp, index: number) {
-    return getCharacterLastIndex(this.text, regex, index);
+  getCharacterLastIndex(pattern: RegExp | string, index: number) {
+    return getCharacterLastIndex(this.text, pattern, index);
   }
 }
 

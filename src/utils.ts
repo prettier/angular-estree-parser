@@ -204,27 +204,35 @@ export function fitSpans(
   };
 }
 
+function getCharacterSearchTestFunction(pattern: RegExp | string) {
+  if (typeof pattern === 'string') {
+    return (character: string) => character === pattern;
+  }
+
+  if (!pattern.global) {
+    throw new TypeError('a non-global RegExp argument is not supported');
+  }
+
+  return (character: string) => pattern.test(character);
+}
+
 export function getCharacterLastIndex(
   text: string,
-  regex: RegExp,
+  pattern: RegExp | string,
   fromIndex: number,
 ) {
-  if (!regex.global) {
-    throw new TypeError(
-      'getCharacterLastIndex called with a non-global RegExp argument',
-    );
-  }
+  const test = getCharacterSearchTestFunction(pattern);
 
   for (let index = fromIndex; index >= 0; index--) {
     const character = text[index];
 
-    if (regex.test(character)) {
+    if (test(character)) {
       return index;
     }
   }
 
   throw new Error(
-    `Cannot find front char ${regex} from index ${fromIndex} in ${JSON.stringify(
+    `Cannot find front char ${pattern} from index ${fromIndex} in ${JSON.stringify(
       text,
     )}`,
   );
@@ -232,25 +240,21 @@ export function getCharacterLastIndex(
 
 export function getCharacterIndex(
   text: string,
-  regex: RegExp,
+  pattern: RegExp | string,
   fromIndex: number,
 ) {
-  if (!regex.global) {
-    throw new TypeError(
-      'getCharacterIndex called with a non-global RegExp argument',
-    );
-  }
+  const test = getCharacterSearchTestFunction(pattern);
 
   for (let index = fromIndex; index < text.length; index++) {
     const character = text[index];
 
-    if (regex.test(character)) {
+    if (test(character)) {
       return index;
     }
   }
 
   throw new Error(
-    `Cannot find character ${regex} from index ${fromIndex} in ${JSON.stringify(
+    `Cannot find character ${pattern} from index ${fromIndex} in ${JSON.stringify(
       text,
     )}`,
   );

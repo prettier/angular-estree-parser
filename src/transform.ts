@@ -58,7 +58,7 @@ export const transform = (
       const tExp = _t<b.Expression>(exp);
       const nameStart = context.getCharacterIndex(
         /\S/g,
-        context.getCharacterIndex(/\|/g, _getOuterEnd(tExp)) + 1,
+        context.getCharacterIndex('|', _getOuterEnd(tExp)) + 1,
       );
       const tName = _c<b.Identifier>(
         'Identifier',
@@ -163,17 +163,15 @@ export const transform = (
           /\S/g,
           index === 0
             ? node.sourceSpan.start + 1 // {
-            : context.getCharacterIndex(
-                /,/g,
-                _getOuterEnd(tValues[index - 1]),
-              ) + 1,
+            : context.getCharacterIndex(',', _getOuterEnd(tValues[index - 1])) +
+                1,
         );
         const keyEnd =
           valueStart === keyStart
             ? valueEnd
             : context.getCharacterLastIndex(
                 /\S/g,
-                context.getCharacterLastIndex(/:/g, valueStart - 1) - 1,
+                context.getCharacterLastIndex(':', valueStart - 1) - 1,
               ) + 1;
         const keySpan = { start: keyStart, end: keyEnd };
         const tKey = quoted
@@ -343,7 +341,7 @@ export const transform = (
           computed: true,
           optional: false,
         },
-        { end: context.getCharacterIndex(/\]/g, _getOuterEnd(tKey)) + 1 },
+        { end: context.getCharacterIndex(']', _getOuterEnd(tKey)) + 1 },
       );
       return _c<b.AssignmentExpression>(
         'AssignmentExpression',
@@ -362,7 +360,7 @@ export const transform = (
       const nameEnd =
         context.getCharacterLastIndex(
           /\S/g,
-          context.getCharacterLastIndex(/=/g, _getOuterStart(tValue) - 1) - 1,
+          context.getCharacterLastIndex('=', _getOuterStart(tValue) - 1) - 1,
         ) + 1;
       const tName = _c<b.Identifier>(
         'Identifier',
