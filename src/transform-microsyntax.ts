@@ -22,7 +22,6 @@ import type {
   RawNGSpan,
 } from './types.js';
 import {
-  findBackChar,
   NG_PARSE_TEMPLATE_BINDINGS_FAKE_PREFIX,
   toLowerCamelCase,
 } from './utils.js';
@@ -264,10 +263,9 @@ export function transformTemplateBindings(
       return variableBinding.value;
     }
 
-    const index = findBackChar(
-      /\S/,
+    const index = context.getCharacterIndex(
+      /\S/g,
       variableBinding.sourceSpan.start,
-      context.text,
     );
     return {
       source: '$implicit',

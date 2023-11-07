@@ -1,7 +1,7 @@
 import { codeFrameColumns } from '@babel/code-frame';
 import { wrap } from 'jest-snapshot-serializer-raw';
 import type { RawNGSpan } from './types.js';
-import { fitSpans } from './utils.js';
+import { fitSpans, getCharacterIndex, getCharacterLastIndex } from './utils.js';
 
 const text = ` ( ( ( 1 ) ) ) `;
 const length = Math.floor(text.length / 2);
@@ -32,4 +32,20 @@ describe('fitSpans', () => {
       expect(wrap(snapshot)).toMatchSnapshot();
     });
   }
+});
+
+describe('getCharacterIndex', () => {
+  expect(getCharacterIndex('foobar', /o/g, 0)).toBe(1);
+  expect(getCharacterIndex('foobar', /o/g, 1)).toBe(1);
+  expect(getCharacterIndex('foobar', 'o', 0)).toBe(1);
+  expect(() => getCharacterIndex('foobar', /_/g, 0)).toThrow();
+  expect(() => getCharacterIndex('foobar', /o/, 0)).toThrow();
+});
+
+describe('getCharacterLastIndex', () => {
+  expect(getCharacterLastIndex('foobar', /o/g, 6)).toBe(2);
+  expect(getCharacterLastIndex('foobar', /o/g, 2)).toBe(2);
+  expect(getCharacterLastIndex('foobar', 'o', 6)).toBe(2);
+  expect(() => getCharacterLastIndex('foobar', /_/g, 6)).toThrow();
+  expect(() => getCharacterLastIndex('foobar', /o/, 6)).toThrow();
 });

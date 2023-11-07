@@ -204,34 +204,60 @@ export function fitSpans(
   };
 }
 
-export function findFrontChar(regex: RegExp, index: number, text: string) {
-  let i = index;
-  while (!regex.test(text[i])) {
-    // istanbul ignore next
-    if (--i < 0) {
-      throw new Error(
-        `Cannot find front char ${regex} from index ${index} in ${JSON.stringify(
-          text,
-        )}`,
-      );
-    }
+function getCharacterSearchTestFunction(pattern: RegExp | string) {
+  if (typeof pattern === 'string') {
+    return (character: string) => character === pattern;
   }
-  return i;
+
+  if (!pattern.global) {
+    throw new TypeError('a non-global RegExp argument is not supported');
+  }
+
+  return (character: string) => pattern.test(character);
 }
 
-export function findBackChar(regex: RegExp, index: number, text: string) {
-  let i = index;
-  while (!regex.test(text[i])) {
-    // istanbul ignore next
-    if (++i >= text.length) {
-      throw new Error(
-        `Cannot find back char ${regex} from index ${index} in ${JSON.stringify(
-          text,
-        )}`,
-      );
+export function getCharacterLastIndex(
+  text: string,
+  pattern: RegExp | string,
+  fromIndex: number,
+) {
+  const test = getCharacterSearchTestFunction(pattern);
+
+  for (let index = fromIndex; index >= 0; index--) {
+    const character = text[index];
+
+    if (test(character)) {
+      return index;
     }
   }
-  return i;
+
+  throw new Error(
+    `Cannot find front char ${pattern} from index ${fromIndex} in ${JSON.stringify(
+      text,
+    )}`,
+  );
+}
+
+export function getCharacterIndex(
+  text: string,
+  pattern: RegExp | string,
+  fromIndex: number,
+) {
+  const test = getCharacterSearchTestFunction(pattern);
+
+  for (let index = fromIndex; index < text.length; index++) {
+    const character = text[index];
+
+    if (test(character)) {
+      return index;
+    }
+  }
+
+  throw new Error(
+    `Cannot find character ${pattern} from index ${fromIndex} in ${JSON.stringify(
+      text,
+    )}`,
+  );
 }
 
 export function toLowerCamelCase(str: string) {

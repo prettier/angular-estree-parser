@@ -9,7 +9,7 @@ import type {
   RawNGComment,
   RawNGSpan,
 } from './types.js';
-import { findBackChar, findFrontChar, fitSpans, getNgType } from './utils.js';
+import { fitSpans, getNgType } from './utils.js';
 
 export type InputNode = ng.AST | RawNGComment;
 export type OutputNode = NGNode | b.CommentLine;
@@ -56,9 +56,9 @@ export const transform = (
     case 'BindingPipe': {
       const { exp, name, args } = node as ng.BindingPipe;
       const tExp = _t<b.Expression>(exp);
-      const nameStart = _findBackChar(
-        /\S/,
-        _findBackChar(/\|/, _getOuterEnd(tExp)) + 1,
+      const nameStart = context.getCharacterIndex(
+        /\S/g,
+        context.getCharacterIndex('|', _getOuterEnd(tExp)) + 1,
       );
       const tName = _c<b.Identifier>(
         'Identifier',
@@ -159,16 +159,20 @@ export const transform = (
         const valueStart = _getOuterStart(tValue);
         const valueEnd = _getOuterEnd(tValue);
 
-        const keyStart = _findBackChar(
-          /\S/,
+        const keyStart = context.getCharacterIndex(
+          /\S/g,
           index === 0
             ? node.sourceSpan.start + 1 // {
-            : _findBackChar(/,/, _getOuterEnd(tValues[index - 1])) + 1,
+            : context.getCharacterIndex(',', _getOuterEnd(tValues[index - 1])) +
+                1,
         );
         const keyEnd =
           valueStart === keyStart
             ? valueEnd
-            : _findFrontChar(/\S/, _findFrontChar(/:/, valueStart - 1) - 1) + 1;
+            : context.getCharacterLastIndex(
+                /\S/g,
+                context.getCharacterLastIndex(':', valueStart - 1) - 1,
+              ) + 1;
         const keySpan = { start: keyStart, end: keyEnd };
         const tKey = quoted
           ? _c<b.StringLiteral>('StringLiteral', { value: key }, keySpan)
@@ -304,7 +308,8 @@ export const transform = (
     case 'SafePropertyRead': {
       const isOptionalType = type === 'SafePropertyRead';
       const { receiver, name } = node as ng.PropertyRead | ng.SafePropertyRead;
-      const nameEnd = _findFrontChar(/\S/, node.sourceSpan.end - 1) + 1;
+      const nameEnd =
+        context.getCharacterLastIndex(/\S/g, node.sourceSpan.end - 1) + 1;
       const tName = _c<b.Identifier>(
         'Identifier',
         { name },
@@ -336,7 +341,7 @@ export const transform = (
           computed: true,
           optional: false,
         },
-        { end: _findBackChar(/\]/, _getOuterEnd(tKey)) + 1 },
+        { end: context.getCharacterIndex(']', _getOuterEnd(tKey)) + 1 },
       );
       return _c<b.AssignmentExpression>(
         'AssignmentExpression',
@@ -353,9 +358,9 @@ export const transform = (
       const { receiver, name, value } = node as ng.PropertyWrite;
       const tValue = _t<b.Expression>(value);
       const nameEnd =
-        _findFrontChar(
-          /\S/,
-          _findFrontChar(/=/, _getOuterStart(tValue) - 1) - 1,
+        context.getCharacterLastIndex(
+          /\S/g,
+          context.getCharacterLastIndex('=', _getOuterStart(tValue) - 1) - 1,
         ) + 1;
       const tName = _c<b.Identifier>(
         'Identifier',
@@ -463,14 +468,6 @@ export const transform = (
       { start: _getOuterStart(tReceiver), end },
       { hasParentParens },
     );
-  }
-
-  function _findFrontChar(regex: RegExp, index: number) {
-    return findFrontChar(regex, index, context.text);
-  }
-
-  function _findBackChar(regex: RegExp, index: number) {
-    return findBackChar(regex, index, context.text);
   }
 
   function _isImplicitThis(n: ng.AST): boolean {
