@@ -1,4 +1,3 @@
-// @ts-expect-error -- Can't work
 import { LinesAndColumns } from 'lines-and-columns';
 
 export class Context {
@@ -16,10 +15,7 @@ class Locator {
     this._linesAndColumns = new LinesAndColumns(text);
   }
   public locationForIndex(index: number) {
-    const { line, column } = this._linesAndColumns.locationForIndex(index)! as {
-      line: number;
-      column: number;
-    };
+    const { line, column } = this._linesAndColumns.locationForIndex(index)!;
     return { line: line + 1, column, index };
   }
 }
