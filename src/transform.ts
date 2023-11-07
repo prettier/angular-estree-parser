@@ -1,6 +1,6 @@
 import type * as ng from '@angular/compiler';
 import type * as b from '@babel/types';
-import { type Context } from './context.js';
+import type Context from './context.js';
 import type {
   NGChainedExpression,
   NGEmptyExpression,
@@ -522,8 +522,8 @@ export function transformSpan(
       loc: {
         filename: '',
         identifierName: '',
-        start: context.locator.locationForIndex(start),
-        end: context.locator.locationForIndex(end),
+        start: context.locationForIndex(start),
+        end: context.locationForIndex(end),
       },
     };
   }
@@ -539,8 +539,8 @@ export function transformSpan(
     loc: {
       filename: '',
       identifierName: '',
-      start: context.locator.locationForIndex(innerSpan.start),
-      end: context.locator.locationForIndex(innerSpan.end),
+      start: context.locationForIndex(innerSpan.start),
+      end: context.locationForIndex(innerSpan.end),
     },
     ...(hasParens && {
       extra: {
