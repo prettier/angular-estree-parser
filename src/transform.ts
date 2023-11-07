@@ -407,7 +407,7 @@ export const transform = (
     } as T & RawNGSpan;
     switch (t) {
       case 'NumericLiteral': {
-        const numericLiteral = newNode as unknown as b.NumberLiteral;
+        const numericLiteral = newNode as unknown as b.NumericLiteral;
         numericLiteral.extra = {
           ...numericLiteral.extra,
           raw: context.text.slice(numericLiteral.start!, numericLiteral.end!),

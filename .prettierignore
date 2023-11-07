@@ -3,3 +3,5 @@ lib/
 !/**/.eslintrc.js
 **/.yarn/**
 **/.pnp.*
+CHANGELOG.md
+.yarnrc.yml

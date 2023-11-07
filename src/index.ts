@@ -34,4 +34,4 @@ export const parseInterpolationExpression = createParser(
 export const parseAction = createParser(parseNgAction);
 export const parseTemplateBindings = (input: string): NGMicrosyntax =>
   transformTemplateBindings(parseNgTemplateBindings(input), new Context(input));
-export type { NGMicrosyntax, NGNode }
+export type { NGMicrosyntax, NGNode };

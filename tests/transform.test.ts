@@ -100,13 +100,13 @@ describe.each`
   ) => {
     if (fields[section]) {
       test(`allowed in ${section}`, () => {
-        expect(() => (beforeNode = parseBefore(input).ast)).not.toThrowError();
-        expect(() => (afterNode = parseAfter(input))).not.toThrowError();
+        expect(() => (beforeNode = parseBefore(input).ast)).not.toThrow();
+        expect(() => (afterNode = parseAfter(input))).not.toThrow();
       });
     } else {
       test(`disallowed in ${section}`, () => {
-        expect(() => parseBefore(input)).toThrowError();
-        expect(() => parseAfter(input)).toThrowError();
+        expect(() => parseBefore(input)).toThrow();
+        expect(() => parseAfter(input)).toThrow();
       });
     }
   };

@@ -1146,7 +1146,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/utils@npm:6.10.0":
+"@typescript-eslint/utils@npm:6.10.0, @typescript-eslint/utils@npm:^6.0.0":
   version: 6.10.0
   resolution: "@typescript-eslint/utils@npm:6.10.0"
   dependencies:
@@ -1291,6 +1291,7 @@ __metadata:
     del-cli: "npm:5.1.0"
     eslint: "npm:8.53.0"
     eslint-config-prettier: "npm:9.0.0"
+    eslint-plugin-deprecation: "npm:2.0.0"
     eslint-plugin-import: "npm:2.29.0"
     eslint-plugin-unicorn: "npm:49.0.0"
     jest: "npm:29.7.0"
@@ -2612,6 +2613,20 @@ __metadata:
     eslint:
       optional: true
   checksum: a9a7ed93eb858092e3cdc797357d4ead2b3ea06959b0eada31ab13862d46a59eb064b9cb82302214232e547980ce33618c2992f6821138a4934e65710ed9cc29
+  languageName: node
+  linkType: hard
+
+"eslint-plugin-deprecation@npm:2.0.0":
+  version: 2.0.0
+  resolution: "eslint-plugin-deprecation@npm:2.0.0"
+  dependencies:
+    "@typescript-eslint/utils": "npm:^6.0.0"
+    tslib: "npm:^2.3.1"
+    tsutils: "npm:^3.21.0"
+  peerDependencies:
+    eslint: ^7.0.0 || ^8.0.0
+    typescript: ^4.2.4 || ^5.0.0
+  checksum: 810276afa258155a35c863bb2138ebd2132447c3ed219e360915b0e7b4c6e77e09ae2931583d200b1f23e19040a27ad81c0927538a46392334bb4c3c4a2038b4
   languageName: node
   linkType: hard
 
@@ -6370,10 +6385,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.3.0, tslib@npm:^2.6.2":
+"tslib@npm:^1.8.1":
+  version: 1.14.1
+  resolution: "tslib@npm:1.14.1"
+  checksum: 7dbf34e6f55c6492637adb81b555af5e3b4f9cc6b998fb440dac82d3b42bdc91560a35a5fb75e20e24a076c651438234da6743d139e4feabf0783f3cdfe1dddb
+  languageName: node
+  linkType: hard
+
+"tslib@npm:^2.3.0, tslib@npm:^2.3.1, tslib@npm:^2.6.2":
   version: 2.6.2
   resolution: "tslib@npm:2.6.2"
   checksum: bd26c22d36736513980091a1e356378e8b662ded04204453d353a7f34a4c21ed0afc59b5f90719d4ba756e581a162ecbf93118dc9c6be5acf70aa309188166ca
+  languageName: node
+  linkType: hard
+
+"tsutils@npm:^3.21.0":
+  version: 3.21.0
+  resolution: "tsutils@npm:3.21.0"
+  dependencies:
+    tslib: "npm:^1.8.1"
+  peerDependencies:
+    typescript: ">=2.8.0 || >= 3.2.0-dev || >= 3.3.0-dev || >= 3.4.0-dev || >= 3.5.0-dev || >= 3.6.0-dev || >= 3.6.0-beta || >= 3.7.0-dev || >= 3.7.0-beta"
+  checksum: ea036bec1dd024e309939ffd49fda7a351c0e87a1b8eb049570dd119d447250e2c56e0e6c00554e8205760e7417793fdebff752a46e573fbe07d4f375502a5b2
   languageName: node
   linkType: hard
 
