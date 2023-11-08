@@ -22,17 +22,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/compiler@npm:17.0.0-rc.3":
-  version: 17.0.0-rc.3
-  resolution: "@angular/compiler@npm:17.0.0-rc.3"
+"@angular/compiler@npm:17.0.1":
+  version: 17.0.1
+  resolution: "@angular/compiler@npm:17.0.1"
   dependencies:
     tslib: "npm:^2.3.0"
   peerDependencies:
-    "@angular/core": 17.0.0-rc.3
+    "@angular/core": 17.0.1
   peerDependenciesMeta:
     "@angular/core":
       optional: true
-  checksum: 771f16b28c59dcce9bebdb4fa9eca35f6b3bae3fb00b41c5e33dea87d2c413e1c2fb9dbf8f38ef93ac1d1bb2161d9502bc187a0ac97335fba2408da308fec66e
+  checksum: 7522bc9dc5fdfd7ceae815aa33bee4148353093b7ec8ea7e110d45aad80955a1309ef7a43c117e3a61e9c5751aa36c4f75b609bea956a91e291b3a6730288c7b
   languageName: node
   linkType: hard
 
@@ -1280,7 +1280,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "angular-estree-parser@workspace:."
   dependencies:
-    "@angular/compiler": "npm:17.0.0-rc.3"
+    "@angular/compiler": "npm:17.0.1"
     "@babel/code-frame": "npm:7.22.13"
     "@babel/parser": "npm:7.23.0"
     "@babel/types": "npm:7.23.0"
@@ -1775,14 +1775,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ci-info@npm:^3.2.0":
-  version: 3.8.0
-  resolution: "ci-info@npm:3.8.0"
-  checksum: b00e9313c1f7042ca8b1297c157c920d6d69f0fbad7b867910235676df228c4b4f4df33d06cacae37f9efba7a160b0a167c6be85492b419ef71d85660e60606b
-  languageName: node
-  linkType: hard
-
-"ci-info@npm:^3.8.0":
+"ci-info@npm:^3.2.0, ci-info@npm:^3.8.0":
   version: 3.9.0
   resolution: "ci-info@npm:3.9.0"
   checksum: 75bc67902b4d1c7b435497adeb91598f6d52a3389398e44294f6601b20cfef32cf2176f7be0eb961d9e085bb333a8a5cae121cb22f81cf238ae7f58eb80e9397
