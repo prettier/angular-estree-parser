@@ -414,14 +414,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/types@npm:7.23.0, @babel/types@npm:^7.0.0, @babel/types@npm:^7.18.6, @babel/types@npm:^7.20.2, @babel/types@npm:^7.20.7, @babel/types@npm:^7.21.0, @babel/types@npm:^7.21.2, @babel/types@npm:^7.3.0, @babel/types@npm:^7.3.3, @babel/types@npm:^7.8.3":
-  version: 7.23.0
-  resolution: "@babel/types@npm:7.23.0"
+"@babel/types@npm:7.23.3, @babel/types@npm:^7.0.0, @babel/types@npm:^7.18.6, @babel/types@npm:^7.20.2, @babel/types@npm:^7.20.7, @babel/types@npm:^7.21.0, @babel/types@npm:^7.21.2, @babel/types@npm:^7.3.0, @babel/types@npm:^7.3.3, @babel/types@npm:^7.8.3":
+  version: 7.23.3
+  resolution: "@babel/types@npm:7.23.3"
   dependencies:
     "@babel/helper-string-parser": "npm:^7.22.5"
     "@babel/helper-validator-identifier": "npm:^7.22.20"
     to-fast-properties: "npm:^2.0.0"
-  checksum: ca5b896a26c91c5672254725c4c892a35567d2122afc47bd5331d1611a7f9230c19fc9ef591a5a6f80bf0d80737e104a9ac205c96447c74bee01d4319db58001
+  checksum: 05ec1527d0468aa6f3e30fa821625322794055fb572c131aaa8befdf24d174407e2e5954c2b0a292a5456962e23383e36cf9d7cbb01318146d6140ce2128d000
   languageName: node
   linkType: hard
 
@@ -1283,7 +1283,7 @@ __metadata:
     "@angular/compiler": "npm:17.0.1"
     "@babel/code-frame": "npm:7.22.13"
     "@babel/parser": "npm:7.23.3"
-    "@babel/types": "npm:7.23.0"
+    "@babel/types": "npm:7.23.3"
     "@types/babel__code-frame": "npm:7.0.6"
     "@types/jest": "npm:29.5.8"
     "@typescript-eslint/eslint-plugin": "npm:6.10.0"
