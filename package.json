@@ -54,7 +54,7 @@
     "typescript": "5.2.2"
   },
   "peerDependencies": {
-    "@angular/compiler": "^17.0.0-rc.3"
+    "@angular/compiler": "^17.0.0"
   },
   "engines": {
     "node": ">= 16"
