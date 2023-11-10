@@ -57,7 +57,7 @@ export const transform = (
       const { exp, name, args } = node as ng.BindingPipe;
       const tExp = _t<b.Expression>(exp);
       const nameStart = context.getCharacterIndex(
-        /\S/g,
+        /\S/,
         context.getCharacterIndex('|', _getOuterEnd(tExp)) + 1,
       );
       const tName = _c<b.Identifier>(
@@ -160,7 +160,7 @@ export const transform = (
         const valueEnd = _getOuterEnd(tValue);
 
         const keyStart = context.getCharacterIndex(
-          /\S/g,
+          /\S/,
           index === 0
             ? node.sourceSpan.start + 1 // {
             : context.getCharacterIndex(',', _getOuterEnd(tValues[index - 1])) +
@@ -170,7 +170,7 @@ export const transform = (
           valueStart === keyStart
             ? valueEnd
             : context.getCharacterLastIndex(
-                /\S/g,
+                /\S/,
                 context.getCharacterLastIndex(':', valueStart - 1) - 1,
               ) + 1;
         const keySpan = { start: keyStart, end: keyEnd };
@@ -309,7 +309,7 @@ export const transform = (
       const isOptionalType = type === 'SafePropertyRead';
       const { receiver, name } = node as ng.PropertyRead | ng.SafePropertyRead;
       const nameEnd =
-        context.getCharacterLastIndex(/\S/g, node.sourceSpan.end - 1) + 1;
+        context.getCharacterLastIndex(/\S/, node.sourceSpan.end - 1) + 1;
       const tName = _c<b.Identifier>(
         'Identifier',
         { name },
@@ -359,7 +359,7 @@ export const transform = (
       const tValue = _t<b.Expression>(value);
       const nameEnd =
         context.getCharacterLastIndex(
-          /\S/g,
+          /\S/,
           context.getCharacterLastIndex('=', _getOuterStart(tValue) - 1) - 1,
         ) + 1;
       const tName = _c<b.Identifier>(

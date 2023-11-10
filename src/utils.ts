@@ -209,10 +209,6 @@ function getCharacterSearchTestFunction(pattern: RegExp | string) {
     return (character: string) => character === pattern;
   }
 
-  if (!pattern.global) {
-    throw new TypeError('a non-global RegExp argument is not supported');
-  }
-
   return (character: string) => pattern.test(character);
 }
 

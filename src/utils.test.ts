@@ -35,17 +35,15 @@ describe('fitSpans', () => {
 });
 
 describe('getCharacterIndex', () => {
-  expect(getCharacterIndex('foobar', /o/g, 0)).toBe(1);
-  expect(getCharacterIndex('foobar', /o/g, 1)).toBe(1);
+  expect(getCharacterIndex('foobar', /o/, 0)).toBe(1);
+  expect(getCharacterIndex('foobar', /o/, 1)).toBe(1);
   expect(getCharacterIndex('foobar', 'o', 0)).toBe(1);
-  expect(() => getCharacterIndex('foobar', /_/g, 0)).toThrow();
-  expect(() => getCharacterIndex('foobar', /o/, 0)).toThrow();
+  expect(() => getCharacterIndex('foobar', '_', 0)).toThrow();
 });
 
 describe('getCharacterLastIndex', () => {
-  expect(getCharacterLastIndex('foobar', /o/g, 6)).toBe(2);
-  expect(getCharacterLastIndex('foobar', /o/g, 2)).toBe(2);
+  expect(getCharacterLastIndex('foobar', /o/, 6)).toBe(2);
+  expect(getCharacterLastIndex('foobar', /o/, 2)).toBe(2);
   expect(getCharacterLastIndex('foobar', 'o', 6)).toBe(2);
-  expect(() => getCharacterLastIndex('foobar', /_/g, 6)).toThrow();
-  expect(() => getCharacterLastIndex('foobar', /o/, 6)).toThrow();
+  expect(() => getCharacterLastIndex('foobar', '_', 6)).toThrow();
 });
