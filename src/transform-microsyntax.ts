@@ -264,7 +264,7 @@ export function transformTemplateBindings(
     }
 
     const index = context.getCharacterIndex(
-      /\S/g,
+      /\S/,
       variableBinding.sourceSpan.start,
     );
     return {
