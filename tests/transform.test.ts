@@ -2,7 +2,7 @@ import type * as ng from '@angular/compiler';
 import type * as b from '@babel/types';
 import * as estreeParser from '../src/index.js';
 import type { NGNode } from '../src/types.js';
-import { getNgType } from '../src/utils.js';
+import { getAngularNodeType } from '../src/utils.js';
 import * as angularParser from '../src/parser.js';
 import {
   massageAst,
@@ -118,7 +118,7 @@ describe.each`
     expect(angularNode).not.toEqual(null);
     expect(estreeNode).not.toEqual(null);
 
-    expect(getNgType(angularNode!)).toEqual(angularType);
+    expect(getAngularNodeType(angularNode!)).toEqual(angularType);
     expect(estreeNode!.type).toEqual(estreeType);
 
     if (estreeNode!.type.startsWith('NG')) {

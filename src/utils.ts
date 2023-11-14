@@ -2,7 +2,7 @@ import * as ng from '@angular/compiler';
 import type { RawNGComment, RawNGSpan, LocationInformation } from './types.js';
 
 // prettier-ignore
-export function getNgType(node: (ng.AST | RawNGComment) & { type?: string }) {
+export function getAngularNodeType(node: (ng.AST | RawNGComment) & { type?: string }) {
   if (node instanceof ng.Unary) { return 'Unary'; }
   if (node instanceof ng.Binary) { return 'Binary'; }
   if (node instanceof ng.BindingPipe) { return "BindingPipe"; }
@@ -23,6 +23,7 @@ export function getNgType(node: (ng.AST | RawNGComment) & { type?: string }) {
   if (node instanceof ng.PropertyWrite) { return "PropertyWrite"; }
   if (node instanceof ng.SafeCall) { return "SafeCall"; }
   if (node instanceof ng.SafePropertyRead) { return "SafePropertyRead"; }
+  // istanbul ignore next
   return node.type;
 }
 

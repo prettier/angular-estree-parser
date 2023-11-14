@@ -9,7 +9,7 @@ import type {
   NGPipeExpression,
   RawNGSpan,
 } from './types.js';
-import { transformSpan, getNgType } from './utils.js';
+import { transformSpan, getAngularNodeType } from './utils.js';
 
 function createNode<T extends NGNode>(
   context: Context,
@@ -72,7 +72,7 @@ function transform(
   context: Context,
   isInParentParens = false,
 ): NGNode {
-  const type = getNgType(node);
+  const type = getAngularNodeType(node);
   switch (type) {
     case 'Unary': {
       const { operator, expr } = node as ng.Unary;

@@ -15,7 +15,7 @@ export default {
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1',
   },
-  coverageReporters: ['lcov', 'text-summary'],
+  coverageReporters: ['text','lcov', 'text-summary'],
   collectCoverage: !!process.env.ENABLE_COVERAGE,
   collectCoverageFrom: ['src/**/*.ts'],
   coverageThreshold: {
