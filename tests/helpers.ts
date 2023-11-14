@@ -1,4 +1,5 @@
 import { codeFrameColumns } from '@babel/code-frame';
+import type * as b from '@babel/types';
 import * as babelParser from '@babel/parser';
 import { LinesAndColumns } from 'lines-and-columns';
 import { wrap } from 'jest-snapshot-serializer-raw';
@@ -10,18 +11,29 @@ const babelParserOptions: babelParser.ParserOptions = {
   ranges: true,
 };
 
-export function parseBabelExpression(input: string) {
-  return babelParser.parseExpression(input, babelParserOptions);
-}
-
-export function parseBabel(input: string) {
-  const ast = babelParser.parse(input, babelParserOptions);
+function fixBabelCommentsRange(
+  ast: (
+    | ReturnType<typeof babelParser.parse>
+    | ReturnType<typeof babelParser.parseExpression>
+  ) & { comments?: b.Comment[] | null },
+) {
   // https://github.com/babel/babel/issues/15115
   for (const comment of ast.comments!) {
     // @ts-expect-error -- missing types
     comment.range ??= [comment.start, comment.end];
   }
+
   return ast;
+}
+
+export function parseBabelExpression(input: string) {
+  return fixBabelCommentsRange(
+    babelParser.parseExpression(input, babelParserOptions),
+  );
+}
+
+export function parseBabel(input: string) {
+  return fixBabelCommentsRange(babelParser.parse(input, babelParserOptions));
 }
 
 export function massageAst(ast: any): any {
