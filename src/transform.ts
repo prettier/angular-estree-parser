@@ -462,8 +462,8 @@ export const transform = (
         ...(props.optional
           ? { optional: true }
           : isOptionalReceiver
-          ? { optional: false }
-          : null),
+            ? { optional: false }
+            : null),
       },
       { start: _getOuterStart(tReceiver), end },
       { hasParentParens },

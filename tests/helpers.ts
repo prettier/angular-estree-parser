@@ -93,8 +93,8 @@ export function snapshotAst(ast: any, source: string) {
             Array.isArray(value) && value.some(isNode)
               ? value.map((x) => x.type)
               : isNode(value)
-              ? value.type
-              : value;
+                ? value.type
+                : value;
           break;
       }
       return reduced;
