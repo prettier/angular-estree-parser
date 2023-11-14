@@ -196,7 +196,7 @@ export function transformTemplateBindings(
       type: t,
       ...transformSpan(span, context, stripSpaces),
       ...n,
-    } as T & RawNGSpan;
+    } as T & { start: number; end: number; range: [number, number] };
   }
 
   function removePrefix(string: string) {

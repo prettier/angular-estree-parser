@@ -1,11 +1,13 @@
 import { codeFrameColumns } from '@babel/code-frame';
 import * as babelParser from '@babel/parser';
+import { LinesAndColumns } from 'lines-and-columns';
 import { wrap } from 'jest-snapshot-serializer-raw';
 
 const babelParserOptions: babelParser.ParserOptions = {
   plugins: [
     'typescript', // NonNullAssert
   ],
+  ranges: true,
 };
 
 export function parseBabelExpression(input: string) {
@@ -13,7 +15,13 @@ export function parseBabelExpression(input: string) {
 }
 
 export function parseBabel(input: string) {
-  return babelParser.parse(input, babelParserOptions);
+  const ast = babelParser.parse(input, babelParserOptions);
+  // https://github.com/babel/babel/issues/15115
+  for (const comment of ast.comments!) {
+    // @ts-expect-error -- missing types
+    comment.range ??= [comment.start, comment.end];
+  }
+  return ast;
 }
 
 export function massageAst(ast: any): any {
@@ -35,18 +43,13 @@ export function massageAst(ast: any): any {
     delete ast.method;
   }
 
+  delete ast.loc;
+
   const massaged = Object.keys(ast).reduce((reduced: any, key) => {
     switch (key) {
       case 'trailingComments':
         // do nothing
         break;
-      case 'loc': {
-        const loc = massageAst(ast[key]);
-        delete loc.filename;
-        delete loc.identifierName;
-        reduced[key] = loc;
-        break;
-      }
       case 'extra': {
         const extra = massageAst(ast[key]);
         if (extra) {
@@ -75,12 +78,13 @@ export function massageAst(ast: any): any {
 export function snapshotAst(ast: any, source: string) {
   const snapshots: string[] = [];
   const isNode = (x: any) => x && x.type;
+  const linesAndColumns = new LinesAndColumns(source);
   visitAst(ast, (node) => {
     const props = Object.keys(node).reduce((reduced: any, key) => {
       const value = node[key];
       switch (key) {
         case 'type':
-        case 'loc':
+        case 'range':
         case 'start':
         case 'end':
           break;
@@ -96,13 +100,13 @@ export function snapshotAst(ast: any, source: string) {
       return reduced;
     }, {});
     const fixColumn = (p: { line: number; column: number }) => ({
-      line: p.line,
+      line: p.line + 1,
       column: p.column + 1,
     });
-    const codeFrame = codeFrameColumns(source, {
-      start: fixColumn(node.loc.start),
-      end: fixColumn(node.loc.end),
-    });
+    const [start, end] = [node.start, node.end].map((index) =>
+      fixColumn(linesAndColumns.locationForIndex(index)!),
+    );
+    const codeFrame = codeFrameColumns(source, { start, end });
     const propsString = JSON.stringify(props, undefined, 2);
     snapshots.push(`${node.type} ${propsString}\n${codeFrame}`);
   });

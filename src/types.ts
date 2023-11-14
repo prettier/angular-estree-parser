@@ -4,7 +4,7 @@ export interface NGBaseNode {
   type: string;
   start: number;
   end: number;
-  loc: b.SourceLocation;
+  range: [number, number];
 }
 
 export type NGNode = { comments?: b.CommentLine[] } & (

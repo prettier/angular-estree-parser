@@ -404,7 +404,7 @@ export const transform = (
       type: t,
       ...transformSpan(span, context, processSpan, hasParentParens),
       ...n,
-    } as T & RawNGSpan;
+    } as T & { start: number; end: number; range: [number, number] };
     switch (t) {
       case 'NumericLiteral': {
         const numericLiteral = newNode as unknown as b.NumericLiteral;
@@ -503,36 +503,26 @@ export function transformSpan(
 ): {
   start: NonNullable<b.Node['start']>;
   end: NonNullable<b.Node['end']>;
-  loc: NonNullable<b.Node['loc']>;
+  range: NonNullable<b.Node['range']>;
 } {
   if (!processSpan) {
     const { start, end } = span;
     return {
       start,
       end,
-      loc: {
-        filename: '',
-        identifierName: '',
-        start: context.locationForIndex(start),
-        end: context.locationForIndex(end),
-      },
+      range: [start, end],
     };
   }
 
-  const { outerSpan, innerSpan, hasParens } = fitSpans(
-    span,
-    context.text,
-    hasParentParens,
-  );
+  const {
+    outerSpan,
+    innerSpan: { start, end },
+    hasParens,
+  } = fitSpans(span, context.text, hasParentParens);
   return {
-    start: innerSpan.start,
-    end: innerSpan.end,
-    loc: {
-      filename: '',
-      identifierName: '',
-      start: context.locationForIndex(innerSpan.start),
-      end: context.locationForIndex(innerSpan.end),
-    },
+    start,
+    end,
+    range: [start, end],
     ...(hasParens && {
       extra: {
         parenthesized: true,
