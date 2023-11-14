@@ -62,6 +62,11 @@ function isOptionalObjectOrCallee(node: NGNode): boolean {
   );
 }
 
+function isImplicitThis(node: ng.AST, text: string): boolean {
+  const { start, end } = node.sourceSpan;
+  return start >= end || /^\s+$/.test(text.slice(start, end));
+}
+
 function transform(
   node: ng.AST,
   context: Context,
@@ -152,7 +157,7 @@ function transform(
           arguments: argumentNodes,
           start,
           end: getOuterEnd(
-            // TODO[@fisker]: End seems not correct
+            // TODO[@fisker]: End seems not correct, since there should be `()`
             argumentNodes.length === 0 ? right : argumentNodes.at(-1)!,
           ),
         },
@@ -381,7 +386,9 @@ function transform(
           start: nameEnd - name.length,
           end: nameEnd,
         },
-        _isImplicitThis(receiver) ? { hasParentParens: isInParentParens } : {},
+        isImplicitThis(receiver, context.text)
+          ? { hasParentParens: isInParentParens }
+          : {},
       );
       return _transformReceiverAndName(
         receiver,
@@ -474,7 +481,7 @@ function transform(
     { end = getOuterEnd(tName), hasParentParens = false } = {},
   ) {
     if (
-      _isImplicitThis(receiver) ||
+      isImplicitThis(receiver, context.text) ||
       receiver.sourceSpan.start === tName.start
     ) {
       return tName;
@@ -499,13 +506,6 @@ function transform(
         end,
       },
       { hasParentParens },
-    );
-  }
-
-  function _isImplicitThis(n: ng.AST): boolean {
-    return (
-      n.sourceSpan.start >= n.sourceSpan.end ||
-      /^\s+$/.test(context.text.slice(n.sourceSpan.start, n.sourceSpan.end))
     );
   }
 }
