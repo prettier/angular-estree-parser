@@ -14,6 +14,7 @@ import { transformSpan, getAngularNodeType } from './utils.js';
 function createNode<T extends NGNode>(
   context: Context,
   properties: Partial<T> & { type: T['type'] } & RawNGSpan,
+  // istanbul ignore next
   { processSpan = true, hasParentParens = false } = {},
 ) {
   const { type, start, end } = properties;
