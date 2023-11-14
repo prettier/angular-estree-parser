@@ -10,14 +10,17 @@ NGMicrosyntax {
 
 exports[` 2`] = `
 {
-  "body": [],
-  "end": 0,
-  "range": [
-    0,
-    0,
-  ],
-  "start": 0,
-  "type": "NGMicrosyntax",
+  "ast": {
+    "body": [],
+    "end": 0,
+    "range": [
+      0,
+      0,
+    ],
+    "start": 0,
+    "type": "NGMicrosyntax",
+  },
+  "text": "",
 }
 `;
 
@@ -39,25 +42,28 @@ Identifier {
 
 exports[` a  2`] = `
 {
-  "body": [
-    {
-      "end": 2,
-      "name": "a",
-      "range": [
-        1,
-        2,
-      ],
-      "start": 1,
-      "type": "Identifier",
-    },
-  ],
-  "end": 2,
-  "range": [
-    1,
-    2,
-  ],
-  "start": 1,
-  "type": "NGMicrosyntax",
+  "ast": {
+    "body": [
+      {
+        "end": 2,
+        "name": "a",
+        "range": [
+          1,
+          2,
+        ],
+        "start": 1,
+        "type": "Identifier",
+      },
+    ],
+    "end": 2,
+    "range": [
+      1,
+      2,
+    ],
+    "start": 1,
+    "type": "NGMicrosyntax",
+  },
+  "text": " a ",
 }
 `;
 
@@ -86,35 +92,38 @@ Identifier {
 
 exports[` a , b  2`] = `
 {
-  "body": [
-    {
-      "end": 2,
-      "name": "a",
-      "range": [
-        1,
-        2,
-      ],
-      "start": 1,
-      "type": "Identifier",
-    },
-    {
-      "end": 6,
-      "name": "B",
-      "range": [
-        5,
-        6,
-      ],
-      "start": 5,
-      "type": "Identifier",
-    },
-  ],
-  "end": 6,
-  "range": [
-    1,
-    6,
-  ],
-  "start": 1,
-  "type": "NGMicrosyntax",
+  "ast": {
+    "body": [
+      {
+        "end": 2,
+        "name": "a",
+        "range": [
+          1,
+          2,
+        ],
+        "start": 1,
+        "type": "Identifier",
+      },
+      {
+        "end": 6,
+        "name": "B",
+        "range": [
+          5,
+          6,
+        ],
+        "start": 5,
+        "type": "Identifier",
+      },
+    ],
+    "end": 6,
+    "range": [
+      1,
+      6,
+    ],
+    "start": 1,
+    "type": "NGMicrosyntax",
+  },
+  "text": " a , b ",
 }
 `;
 
@@ -143,35 +152,38 @@ Identifier {
 
 exports[` a ; b  2`] = `
 {
-  "body": [
-    {
-      "end": 2,
-      "name": "a",
-      "range": [
-        1,
-        2,
-      ],
-      "start": 1,
-      "type": "Identifier",
-    },
-    {
-      "end": 6,
-      "name": "B",
-      "range": [
-        5,
-        6,
-      ],
-      "start": 5,
-      "type": "Identifier",
-    },
-  ],
-  "end": 6,
-  "range": [
-    1,
-    6,
-  ],
-  "start": 1,
-  "type": "NGMicrosyntax",
+  "ast": {
+    "body": [
+      {
+        "end": 2,
+        "name": "a",
+        "range": [
+          1,
+          2,
+        ],
+        "start": 1,
+        "type": "Identifier",
+      },
+      {
+        "end": 6,
+        "name": "B",
+        "range": [
+          5,
+          6,
+        ],
+        "start": 5,
+        "type": "Identifier",
+      },
+    ],
+    "end": 6,
+    "range": [
+      1,
+      6,
+    ],
+    "start": 1,
+    "type": "NGMicrosyntax",
+  },
+  "text": " a ; b ",
 }
 `;
 
@@ -213,54 +225,57 @@ Identifier {
 
 exports[` a ; b : c  2`] = `
 {
-  "body": [
-    {
-      "end": 2,
-      "name": "a",
-      "range": [
-        1,
-        2,
-      ],
-      "start": 1,
-      "type": "Identifier",
-    },
-    {
-      "end": 10,
-      "expression": {
-        "end": 10,
-        "name": "c",
+  "ast": {
+    "body": [
+      {
+        "end": 2,
+        "name": "a",
         "range": [
-          9,
-          10,
+          1,
+          2,
         ],
-        "start": 9,
+        "start": 1,
         "type": "Identifier",
       },
-      "key": {
-        "end": 6,
-        "name": "B",
+      {
+        "end": 10,
+        "expression": {
+          "end": 10,
+          "name": "c",
+          "range": [
+            9,
+            10,
+          ],
+          "start": 9,
+          "type": "Identifier",
+        },
+        "key": {
+          "end": 6,
+          "name": "B",
+          "range": [
+            5,
+            6,
+          ],
+          "start": 5,
+          "type": "Identifier",
+        },
         "range": [
           5,
-          6,
+          10,
         ],
         "start": 5,
-        "type": "Identifier",
+        "type": "NGMicrosyntaxKeyedExpression",
       },
-      "range": [
-        5,
-        10,
-      ],
-      "start": 5,
-      "type": "NGMicrosyntaxKeyedExpression",
-    },
-  ],
-  "end": 10,
-  "range": [
-    1,
-    10,
-  ],
-  "start": 1,
-  "type": "NGMicrosyntax",
+    ],
+    "end": 10,
+    "range": [
+      1,
+      10,
+    ],
+    "start": 1,
+    "type": "NGMicrosyntax",
+  },
+  "text": " a ; b : c ",
 }
 `;
 
@@ -322,83 +337,86 @@ Identifier {
 
 exports[` a ; b : c as d  2`] = `
 {
-  "body": [
-    {
-      "end": 2,
-      "name": "a",
-      "range": [
-        1,
-        2,
-      ],
-      "start": 1,
-      "type": "Identifier",
-    },
-    {
-      "end": 10,
-      "expression": {
-        "end": 10,
-        "name": "c",
+  "ast": {
+    "body": [
+      {
+        "end": 2,
+        "name": "a",
         "range": [
-          9,
+          1,
+          2,
+        ],
+        "start": 1,
+        "type": "Identifier",
+      },
+      {
+        "end": 10,
+        "expression": {
+          "end": 10,
+          "name": "c",
+          "range": [
+            9,
+            10,
+          ],
+          "start": 9,
+          "type": "Identifier",
+        },
+        "key": {
+          "end": 6,
+          "name": "B",
+          "range": [
+            5,
+            6,
+          ],
+          "start": 5,
+          "type": "Identifier",
+        },
+        "range": [
+          5,
           10,
         ],
-        "start": 9,
-        "type": "Identifier",
+        "start": 5,
+        "type": "NGMicrosyntaxKeyedExpression",
       },
-      "key": {
-        "end": 6,
-        "name": "B",
+      {
+        "alias": {
+          "end": 15,
+          "name": "d",
+          "range": [
+            14,
+            15,
+          ],
+          "start": 14,
+          "type": "Identifier",
+        },
+        "end": 15,
+        "expression": {
+          "end": 6,
+          "name": "B",
+          "range": [
+            5,
+            6,
+          ],
+          "start": 5,
+          "type": "Identifier",
+        },
         "range": [
           5,
-          6,
-        ],
-        "start": 5,
-        "type": "Identifier",
-      },
-      "range": [
-        5,
-        10,
-      ],
-      "start": 5,
-      "type": "NGMicrosyntaxKeyedExpression",
-    },
-    {
-      "alias": {
-        "end": 15,
-        "name": "d",
-        "range": [
-          14,
           15,
         ],
-        "start": 14,
-        "type": "Identifier",
-      },
-      "end": 15,
-      "expression": {
-        "end": 6,
-        "name": "B",
-        "range": [
-          5,
-          6,
-        ],
         "start": 5,
-        "type": "Identifier",
+        "type": "NGMicrosyntaxAsExpression",
       },
-      "range": [
-        5,
-        15,
-      ],
-      "start": 5,
-      "type": "NGMicrosyntaxAsExpression",
-    },
-  ],
-  "end": 15,
-  "range": [
-    1,
-    15,
-  ],
-  "start": 1,
-  "type": "NGMicrosyntax",
+    ],
+    "end": 15,
+    "range": [
+      1,
+      15,
+    ],
+    "start": 1,
+    "type": "NGMicrosyntax",
+  },
+  "text": " a ; b : c as d ",
 }
 `;
 
@@ -440,54 +458,57 @@ Identifier {
 
 exports[` a ; b as c  2`] = `
 {
-  "body": [
-    {
-      "end": 2,
-      "name": "a",
-      "range": [
-        1,
-        2,
-      ],
-      "start": 1,
-      "type": "Identifier",
-    },
-    {
-      "alias": {
-        "end": 11,
-        "name": "c",
+  "ast": {
+    "body": [
+      {
+        "end": 2,
+        "name": "a",
         "range": [
-          10,
-          11,
+          1,
+          2,
         ],
-        "start": 10,
+        "start": 1,
         "type": "Identifier",
       },
-      "end": 11,
-      "expression": {
-        "end": 6,
-        "name": "b",
+      {
+        "alias": {
+          "end": 11,
+          "name": "c",
+          "range": [
+            10,
+            11,
+          ],
+          "start": 10,
+          "type": "Identifier",
+        },
+        "end": 11,
+        "expression": {
+          "end": 6,
+          "name": "b",
+          "range": [
+            5,
+            6,
+          ],
+          "start": 5,
+          "type": "Identifier",
+        },
         "range": [
           5,
-          6,
+          11,
         ],
         "start": 5,
-        "type": "Identifier",
+        "type": "NGMicrosyntaxAsExpression",
       },
-      "range": [
-        5,
-        11,
-      ],
-      "start": 5,
-      "type": "NGMicrosyntaxAsExpression",
-    },
-  ],
-  "end": 11,
-  "range": [
-    1,
-    11,
-  ],
-  "start": 1,
-  "type": "NGMicrosyntax",
+    ],
+    "end": 11,
+    "range": [
+      1,
+      11,
+    ],
+    "start": 1,
+    "type": "NGMicrosyntax",
+  },
+  "text": " a ; b as c ",
 }
 `;
 
@@ -529,54 +550,57 @@ Identifier {
 
 exports[` a ; b c  2`] = `
 {
-  "body": [
-    {
-      "end": 2,
-      "name": "a",
-      "range": [
-        1,
-        2,
-      ],
-      "start": 1,
-      "type": "Identifier",
-    },
-    {
-      "end": 8,
-      "expression": {
-        "end": 8,
-        "name": "c",
+  "ast": {
+    "body": [
+      {
+        "end": 2,
+        "name": "a",
         "range": [
-          7,
-          8,
+          1,
+          2,
         ],
-        "start": 7,
+        "start": 1,
         "type": "Identifier",
       },
-      "key": {
-        "end": 6,
-        "name": "B",
+      {
+        "end": 8,
+        "expression": {
+          "end": 8,
+          "name": "c",
+          "range": [
+            7,
+            8,
+          ],
+          "start": 7,
+          "type": "Identifier",
+        },
+        "key": {
+          "end": 6,
+          "name": "B",
+          "range": [
+            5,
+            6,
+          ],
+          "start": 5,
+          "type": "Identifier",
+        },
         "range": [
           5,
-          6,
+          8,
         ],
         "start": 5,
-        "type": "Identifier",
+        "type": "NGMicrosyntaxKeyedExpression",
       },
-      "range": [
-        5,
-        8,
-      ],
-      "start": 5,
-      "type": "NGMicrosyntaxKeyedExpression",
-    },
-  ],
-  "end": 8,
-  "range": [
-    1,
-    8,
-  ],
-  "start": 1,
-  "type": "NGMicrosyntax",
+    ],
+    "end": 8,
+    "range": [
+      1,
+      8,
+    ],
+    "start": 1,
+    "type": "NGMicrosyntax",
+  },
+  "text": " a ; b c ",
 }
 `;
 
@@ -618,54 +642,57 @@ Identifier {
 
 exports[` a as b  2`] = `
 {
-  "body": [
-    {
-      "end": 2,
-      "name": "a",
-      "range": [
-        1,
-        2,
-      ],
-      "start": 1,
-      "type": "Identifier",
-    },
-    {
-      "alias": {
-        "end": 7,
-        "name": "b",
+  "ast": {
+    "body": [
+      {
+        "end": 2,
+        "name": "a",
         "range": [
-          6,
+          1,
+          2,
+        ],
+        "start": 1,
+        "type": "Identifier",
+      },
+      {
+        "alias": {
+          "end": 7,
+          "name": "b",
+          "range": [
+            6,
+            7,
+          ],
+          "start": 6,
+          "type": "Identifier",
+        },
+        "end": 7,
+        "expression": {
+          "end": 0,
+          "name": "",
+          "range": [
+            0,
+            0,
+          ],
+          "start": 0,
+          "type": "Identifier",
+        },
+        "range": [
+          1,
           7,
         ],
-        "start": 6,
-        "type": "Identifier",
+        "start": 1,
+        "type": "NGMicrosyntaxAsExpression",
       },
-      "end": 7,
-      "expression": {
-        "end": 0,
-        "name": "",
-        "range": [
-          0,
-          0,
-        ],
-        "start": 0,
-        "type": "Identifier",
-      },
-      "range": [
-        1,
-        7,
-      ],
-      "start": 1,
-      "type": "NGMicrosyntaxAsExpression",
-    },
-  ],
-  "end": 7,
-  "range": [
-    1,
-    7,
-  ],
-  "start": 1,
-  "type": "NGMicrosyntax",
+    ],
+    "end": 7,
+    "range": [
+      1,
+      7,
+    ],
+    "start": 1,
+    "type": "NGMicrosyntax",
+  },
+  "text": " a as b ",
 }
 `;
 
@@ -700,44 +727,47 @@ Identifier {
 
 exports[` as b  2`] = `
 {
-  "body": [
-    {
-      "alias": {
+  "ast": {
+    "body": [
+      {
+        "alias": {
+          "end": 5,
+          "name": "b",
+          "range": [
+            4,
+            5,
+          ],
+          "start": 4,
+          "type": "Identifier",
+        },
         "end": 5,
-        "name": "b",
+        "expression": {
+          "end": 0,
+          "name": "",
+          "range": [
+            0,
+            0,
+          ],
+          "start": 0,
+          "type": "Identifier",
+        },
         "range": [
-          4,
+          1,
           5,
         ],
-        "start": 4,
-        "type": "Identifier",
+        "start": 1,
+        "type": "NGMicrosyntaxAsExpression",
       },
-      "end": 5,
-      "expression": {
-        "end": 0,
-        "name": "",
-        "range": [
-          0,
-          0,
-        ],
-        "start": 0,
-        "type": "Identifier",
-      },
-      "range": [
-        1,
-        5,
-      ],
-      "start": 1,
-      "type": "NGMicrosyntaxAsExpression",
-    },
-  ],
-  "end": 5,
-  "range": [
-    1,
-    5,
-  ],
-  "start": 1,
-  "type": "NGMicrosyntax",
+    ],
+    "end": 5,
+    "range": [
+      1,
+      5,
+    ],
+    "start": 1,
+    "type": "NGMicrosyntax",
+  },
+  "text": " as b ",
 }
 `;
 
@@ -792,73 +822,76 @@ Identifier {
 
 exports[` item of items; track item  2`] = `
 {
-  "body": [
-    {
-      "end": 5,
-      "left": {
+  "ast": {
+    "body": [
+      {
         "end": 5,
-        "name": "item",
+        "left": {
+          "end": 5,
+          "name": "item",
+          "range": [
+            1,
+            5,
+          ],
+          "start": 1,
+          "type": "Identifier",
+        },
         "range": [
           1,
           5,
         ],
+        "right": {
+          "end": 14,
+          "name": "items",
+          "range": [
+            9,
+            14,
+          ],
+          "start": 9,
+          "type": "Identifier",
+        },
         "start": 1,
-        "type": "Identifier",
+        "type": "NGMicrosyntaxOfExpression",
       },
-      "range": [
-        1,
-        5,
-      ],
-      "right": {
-        "end": 14,
-        "name": "items",
-        "range": [
-          9,
-          14,
-        ],
-        "start": 9,
-        "type": "Identifier",
-      },
-      "start": 1,
-      "type": "NGMicrosyntaxOfExpression",
-    },
-    {
-      "end": 26,
-      "expression": {
+      {
         "end": 26,
-        "name": "item",
-        "range": [
-          22,
-          26,
-        ],
-        "start": 22,
-        "type": "Identifier",
-      },
-      "key": {
-        "end": 21,
-        "name": "Track",
+        "expression": {
+          "end": 26,
+          "name": "item",
+          "range": [
+            22,
+            26,
+          ],
+          "start": 22,
+          "type": "Identifier",
+        },
+        "key": {
+          "end": 21,
+          "name": "Track",
+          "range": [
+            16,
+            21,
+          ],
+          "start": 16,
+          "type": "Identifier",
+        },
         "range": [
           16,
-          21,
+          26,
         ],
         "start": 16,
-        "type": "Identifier",
+        "type": "NGMicrosyntaxKeyedExpression",
       },
-      "range": [
-        16,
-        26,
-      ],
-      "start": 16,
-      "type": "NGMicrosyntaxKeyedExpression",
-    },
-  ],
-  "end": 26,
-  "range": [
-    1,
-    26,
-  ],
-  "start": 1,
-  "type": "NGMicrosyntax",
+    ],
+    "end": 26,
+    "range": [
+      1,
+      26,
+    ],
+    "start": 1,
+    "type": "NGMicrosyntax",
+  },
+  "text": " item of items; track item ",
 }
 `;
 
@@ -933,102 +966,105 @@ Identifier {
 
 exports[` item of items;index as i; trackBy: trackByFn 2`] = `
 {
-  "body": [
-    {
-      "end": 5,
-      "left": {
+  "ast": {
+    "body": [
+      {
         "end": 5,
-        "name": "item",
+        "left": {
+          "end": 5,
+          "name": "item",
+          "range": [
+            1,
+            5,
+          ],
+          "start": 1,
+          "type": "Identifier",
+        },
         "range": [
           1,
           5,
         ],
+        "right": {
+          "end": 14,
+          "name": "items",
+          "range": [
+            9,
+            14,
+          ],
+          "start": 9,
+          "type": "Identifier",
+        },
         "start": 1,
-        "type": "Identifier",
+        "type": "NGMicrosyntaxOfExpression",
       },
-      "range": [
-        1,
-        5,
-      ],
-      "right": {
-        "end": 14,
-        "name": "items",
-        "range": [
-          9,
-          14,
-        ],
-        "start": 9,
-        "type": "Identifier",
-      },
-      "start": 1,
-      "type": "NGMicrosyntaxOfExpression",
-    },
-    {
-      "alias": {
+      {
+        "alias": {
+          "end": 25,
+          "name": "i",
+          "range": [
+            24,
+            25,
+          ],
+          "start": 24,
+          "type": "Identifier",
+        },
         "end": 25,
-        "name": "i",
-        "range": [
-          24,
-          25,
-        ],
-        "start": 24,
-        "type": "Identifier",
-      },
-      "end": 25,
-      "expression": {
-        "end": 20,
-        "name": "index",
+        "expression": {
+          "end": 20,
+          "name": "index",
+          "range": [
+            15,
+            20,
+          ],
+          "start": 15,
+          "type": "Identifier",
+        },
         "range": [
           15,
-          20,
+          25,
         ],
         "start": 15,
-        "type": "Identifier",
+        "type": "NGMicrosyntaxAsExpression",
       },
-      "range": [
-        15,
-        25,
-      ],
-      "start": 15,
-      "type": "NGMicrosyntaxAsExpression",
-    },
-    {
-      "end": 45,
-      "expression": {
+      {
         "end": 45,
-        "name": "trackByFn",
-        "range": [
-          36,
-          45,
-        ],
-        "start": 36,
-        "type": "Identifier",
-      },
-      "key": {
-        "end": 34,
-        "name": "TrackBy",
+        "expression": {
+          "end": 45,
+          "name": "trackByFn",
+          "range": [
+            36,
+            45,
+          ],
+          "start": 36,
+          "type": "Identifier",
+        },
+        "key": {
+          "end": 34,
+          "name": "TrackBy",
+          "range": [
+            27,
+            34,
+          ],
+          "start": 27,
+          "type": "Identifier",
+        },
         "range": [
           27,
-          34,
+          45,
         ],
         "start": 27,
-        "type": "Identifier",
+        "type": "NGMicrosyntaxKeyedExpression",
       },
-      "range": [
-        27,
-        45,
-      ],
-      "start": 27,
-      "type": "NGMicrosyntaxKeyedExpression",
-    },
-  ],
-  "end": 45,
-  "range": [
-    1,
-    45,
-  ],
-  "start": 1,
-  "type": "NGMicrosyntax",
+    ],
+    "end": 45,
+    "range": [
+      1,
+      45,
+    ],
+    "start": 1,
+    "type": "NGMicrosyntax",
+  },
+  "text": " item of items;index as i; trackBy: trackByFn",
 }
 `;
 
@@ -1066,47 +1102,50 @@ Identifier {
 
 exports[` let "\\""  2`] = `
 {
-  "body": [
-    {
-      "declarations": [
-        {
-          "end": 9,
-          "id": {
+  "ast": {
+    "body": [
+      {
+        "declarations": [
+          {
             "end": 9,
-            "name": """,
+            "id": {
+              "end": 9,
+              "name": """,
+              "range": [
+                5,
+                9,
+              ],
+              "start": 5,
+              "type": "Identifier",
+            },
+            "init": null,
             "range": [
-              5,
+              1,
               9,
             ],
-            "start": 5,
-            "type": "Identifier",
+            "start": 1,
+            "type": "VariableDeclarator",
           },
-          "init": null,
-          "range": [
-            1,
-            9,
-          ],
-          "start": 1,
-          "type": "VariableDeclarator",
-        },
-      ],
-      "end": 9,
-      "kind": "let",
-      "range": [
-        1,
-        9,
-      ],
-      "start": 1,
-      "type": "VariableDeclaration",
-    },
-  ],
-  "end": 9,
-  "range": [
-    1,
-    9,
-  ],
-  "start": 1,
-  "type": "NGMicrosyntax",
+        ],
+        "end": 9,
+        "kind": "let",
+        "range": [
+          1,
+          9,
+        ],
+        "start": 1,
+        "type": "VariableDeclaration",
+      },
+    ],
+    "end": 9,
+    "range": [
+      1,
+      9,
+    ],
+    "start": 1,
+    "type": "NGMicrosyntax",
+  },
+  "text": " let "\\"" ",
 }
 `;
 
@@ -1170,85 +1209,88 @@ Identifier {
 
 exports[` let "a" = "b" ; "c" as "d"  2`] = `
 {
-  "body": [
-    {
-      "declarations": [
-        {
-          "end": 16,
-          "id": {
-            "end": 8,
-            "name": "a",
+  "ast": {
+    "body": [
+      {
+        "declarations": [
+          {
+            "end": 16,
+            "id": {
+              "end": 8,
+              "name": "a",
+              "range": [
+                5,
+                8,
+              ],
+              "start": 5,
+              "type": "Identifier",
+            },
+            "init": {
+              "end": 14,
+              "name": "b",
+              "range": [
+                11,
+                14,
+              ],
+              "start": 11,
+              "type": "Identifier",
+            },
             "range": [
-              5,
-              8,
+              1,
+              16,
             ],
-            "start": 5,
-            "type": "Identifier",
+            "start": 1,
+            "type": "VariableDeclarator",
           },
-          "init": {
-            "end": 14,
-            "name": "b",
-            "range": [
-              11,
-              14,
-            ],
-            "start": 11,
-            "type": "Identifier",
-          },
-          "range": [
-            1,
-            16,
-          ],
-          "start": 1,
-          "type": "VariableDeclarator",
-        },
-      ],
-      "end": 16,
-      "kind": "let",
-      "range": [
-        1,
-        16,
-      ],
-      "start": 1,
-      "type": "VariableDeclaration",
-    },
-    {
-      "alias": {
-        "end": 27,
-        "name": "d",
-        "range": [
-          24,
-          27,
         ],
-        "start": 24,
-        "type": "Identifier",
+        "end": 16,
+        "kind": "let",
+        "range": [
+          1,
+          16,
+        ],
+        "start": 1,
+        "type": "VariableDeclaration",
       },
-      "end": 27,
-      "expression": {
-        "end": 20,
-        "name": "c",
+      {
+        "alias": {
+          "end": 27,
+          "name": "d",
+          "range": [
+            24,
+            27,
+          ],
+          "start": 24,
+          "type": "Identifier",
+        },
+        "end": 27,
+        "expression": {
+          "end": 20,
+          "name": "c",
+          "range": [
+            17,
+            20,
+          ],
+          "start": 17,
+          "type": "Identifier",
+        },
         "range": [
           17,
-          20,
+          27,
         ],
         "start": 17,
-        "type": "Identifier",
+        "type": "NGMicrosyntaxAsExpression",
       },
-      "range": [
-        17,
-        27,
-      ],
-      "start": 17,
-      "type": "NGMicrosyntaxAsExpression",
-    },
-  ],
-  "end": 27,
-  "range": [
-    1,
-    27,
-  ],
-  "start": 1,
-  "type": "NGMicrosyntax",
+    ],
+    "end": 27,
+    "range": [
+      1,
+      27,
+    ],
+    "start": 1,
+    "type": "NGMicrosyntax",
+  },
+  "text": " let "a" = "b" ; "c" as "d" ",
 }
 `;
 
@@ -1286,47 +1328,50 @@ Identifier {
 
 exports[` let hero  2`] = `
 {
-  "body": [
-    {
-      "declarations": [
-        {
-          "end": 9,
-          "id": {
+  "ast": {
+    "body": [
+      {
+        "declarations": [
+          {
             "end": 9,
-            "name": "hero",
+            "id": {
+              "end": 9,
+              "name": "hero",
+              "range": [
+                5,
+                9,
+              ],
+              "start": 5,
+              "type": "Identifier",
+            },
+            "init": null,
             "range": [
-              5,
+              1,
               9,
             ],
-            "start": 5,
-            "type": "Identifier",
+            "start": 1,
+            "type": "VariableDeclarator",
           },
-          "init": null,
-          "range": [
-            1,
-            9,
-          ],
-          "start": 1,
-          "type": "VariableDeclarator",
-        },
-      ],
-      "end": 9,
-      "kind": "let",
-      "range": [
-        1,
-        9,
-      ],
-      "start": 1,
-      "type": "VariableDeclaration",
-    },
-  ],
-  "end": 9,
-  "range": [
-    1,
-    9,
-  ],
-  "start": 1,
-  "type": "NGMicrosyntax",
+        ],
+        "end": 9,
+        "kind": "let",
+        "range": [
+          1,
+          9,
+        ],
+        "start": 1,
+        "type": "VariableDeclaration",
+      },
+    ],
+    "end": 9,
+    "range": [
+      1,
+      9,
+    ],
+    "start": 1,
+    "type": "NGMicrosyntax",
+  },
+  "text": " let hero ",
 }
 `;
 
@@ -1384,76 +1429,79 @@ Identifier {
 
 exports[` let hero ; of : heroes  2`] = `
 {
-  "body": [
-    {
-      "declarations": [
-        {
-          "end": 11,
-          "id": {
-            "end": 9,
-            "name": "hero",
+  "ast": {
+    "body": [
+      {
+        "declarations": [
+          {
+            "end": 11,
+            "id": {
+              "end": 9,
+              "name": "hero",
+              "range": [
+                5,
+                9,
+              ],
+              "start": 5,
+              "type": "Identifier",
+            },
+            "init": null,
             "range": [
-              5,
-              9,
+              1,
+              11,
             ],
-            "start": 5,
-            "type": "Identifier",
+            "start": 1,
+            "type": "VariableDeclarator",
           },
-          "init": null,
-          "range": [
-            1,
-            11,
-          ],
-          "start": 1,
-          "type": "VariableDeclarator",
-        },
-      ],
-      "end": 11,
-      "kind": "let",
-      "range": [
-        1,
-        11,
-      ],
-      "start": 1,
-      "type": "VariableDeclaration",
-    },
-    {
-      "end": 23,
-      "expression": {
-        "end": 23,
-        "name": "heroes",
-        "range": [
-          17,
-          23,
         ],
-        "start": 17,
-        "type": "Identifier",
+        "end": 11,
+        "kind": "let",
+        "range": [
+          1,
+          11,
+        ],
+        "start": 1,
+        "type": "VariableDeclaration",
       },
-      "key": {
-        "end": 14,
-        "name": "Of",
+      {
+        "end": 23,
+        "expression": {
+          "end": 23,
+          "name": "heroes",
+          "range": [
+            17,
+            23,
+          ],
+          "start": 17,
+          "type": "Identifier",
+        },
+        "key": {
+          "end": 14,
+          "name": "Of",
+          "range": [
+            12,
+            14,
+          ],
+          "start": 12,
+          "type": "Identifier",
+        },
         "range": [
           12,
-          14,
+          23,
         ],
         "start": 12,
-        "type": "Identifier",
+        "type": "NGMicrosyntaxKeyedExpression",
       },
-      "range": [
-        12,
-        23,
-      ],
-      "start": 12,
-      "type": "NGMicrosyntaxKeyedExpression",
-    },
-  ],
-  "end": 23,
-  "range": [
-    1,
-    23,
-  ],
-  "start": 1,
-  "type": "NGMicrosyntax",
+    ],
+    "end": 23,
+    "range": [
+      1,
+      23,
+    ],
+    "start": 1,
+    "type": "NGMicrosyntax",
+  },
+  "text": " let hero ; of : heroes ",
 }
 `;
 
@@ -1497,56 +1545,59 @@ Identifier {
 
 exports[` let hero = hello  2`] = `
 {
-  "body": [
-    {
-      "declarations": [
-        {
-          "end": 17,
-          "id": {
-            "end": 9,
-            "name": "hero",
-            "range": [
-              5,
-              9,
-            ],
-            "start": 5,
-            "type": "Identifier",
-          },
-          "init": {
+  "ast": {
+    "body": [
+      {
+        "declarations": [
+          {
             "end": 17,
-            "name": "hello",
+            "id": {
+              "end": 9,
+              "name": "hero",
+              "range": [
+                5,
+                9,
+              ],
+              "start": 5,
+              "type": "Identifier",
+            },
+            "init": {
+              "end": 17,
+              "name": "hello",
+              "range": [
+                12,
+                17,
+              ],
+              "start": 12,
+              "type": "Identifier",
+            },
             "range": [
-              12,
+              1,
               17,
             ],
-            "start": 12,
-            "type": "Identifier",
+            "start": 1,
+            "type": "VariableDeclarator",
           },
-          "range": [
-            1,
-            17,
-          ],
-          "start": 1,
-          "type": "VariableDeclarator",
-        },
-      ],
-      "end": 17,
-      "kind": "let",
-      "range": [
-        1,
-        17,
-      ],
-      "start": 1,
-      "type": "VariableDeclaration",
-    },
-  ],
-  "end": 17,
-  "range": [
-    1,
-    17,
-  ],
-  "start": 1,
-  "type": "NGMicrosyntax",
+        ],
+        "end": 17,
+        "kind": "let",
+        "range": [
+          1,
+          17,
+        ],
+        "start": 1,
+        "type": "VariableDeclaration",
+      },
+    ],
+    "end": 17,
+    "range": [
+      1,
+      17,
+    ],
+    "start": 1,
+    "type": "NGMicrosyntax",
+  },
+  "text": " let hero = hello ",
 }
 `;
 
@@ -1597,66 +1648,69 @@ Identifier {
 
 exports[` let hero of heroes  2`] = `
 {
-  "body": [
-    {
-      "end": 9,
-      "left": {
-        "declarations": [
-          {
-            "end": 9,
-            "id": {
+  "ast": {
+    "body": [
+      {
+        "end": 9,
+        "left": {
+          "declarations": [
+            {
               "end": 9,
-              "name": "hero",
+              "id": {
+                "end": 9,
+                "name": "hero",
+                "range": [
+                  5,
+                  9,
+                ],
+                "start": 5,
+                "type": "Identifier",
+              },
+              "init": null,
               "range": [
-                5,
+                1,
                 9,
               ],
-              "start": 5,
-              "type": "Identifier",
+              "start": 1,
+              "type": "VariableDeclarator",
             },
-            "init": null,
-            "range": [
-              1,
-              9,
-            ],
-            "start": 1,
-            "type": "VariableDeclarator",
-          },
-        ],
-        "end": 9,
-        "kind": "let",
+          ],
+          "end": 9,
+          "kind": "let",
+          "range": [
+            1,
+            9,
+          ],
+          "start": 1,
+          "type": "VariableDeclaration",
+        },
         "range": [
           1,
           9,
         ],
+        "right": {
+          "end": 19,
+          "name": "heroes",
+          "range": [
+            13,
+            19,
+          ],
+          "start": 13,
+          "type": "Identifier",
+        },
         "start": 1,
-        "type": "VariableDeclaration",
+        "type": "NGMicrosyntaxOfExpression",
       },
-      "range": [
-        1,
-        9,
-      ],
-      "right": {
-        "end": 19,
-        "name": "heroes",
-        "range": [
-          13,
-          19,
-        ],
-        "start": 13,
-        "type": "Identifier",
-      },
-      "start": 1,
-      "type": "NGMicrosyntaxOfExpression",
-    },
-  ],
-  "end": 19,
-  "range": [
-    1,
-    19,
-  ],
-  "start": 1,
-  "type": "NGMicrosyntax",
+    ],
+    "end": 19,
+    "range": [
+      1,
+      19,
+    ],
+    "start": 1,
+    "type": "NGMicrosyntax",
+  },
+  "text": " let hero of heroes ",
 }
 `;
 
@@ -1747,123 +1801,126 @@ Identifier {
 
 exports[` let item of items; index as i; trackBy: trackByFn 2`] = `
 {
-  "body": [
-    {
-      "end": 9,
-      "left": {
-        "declarations": [
-          {
-            "end": 9,
-            "id": {
+  "ast": {
+    "body": [
+      {
+        "end": 9,
+        "left": {
+          "declarations": [
+            {
               "end": 9,
-              "name": "item",
+              "id": {
+                "end": 9,
+                "name": "item",
+                "range": [
+                  5,
+                  9,
+                ],
+                "start": 5,
+                "type": "Identifier",
+              },
+              "init": null,
               "range": [
-                5,
+                1,
                 9,
               ],
-              "start": 5,
-              "type": "Identifier",
+              "start": 1,
+              "type": "VariableDeclarator",
             },
-            "init": null,
-            "range": [
-              1,
-              9,
-            ],
-            "start": 1,
-            "type": "VariableDeclarator",
-          },
-        ],
-        "end": 9,
-        "kind": "let",
+          ],
+          "end": 9,
+          "kind": "let",
+          "range": [
+            1,
+            9,
+          ],
+          "start": 1,
+          "type": "VariableDeclaration",
+        },
         "range": [
           1,
           9,
         ],
+        "right": {
+          "end": 18,
+          "name": "items",
+          "range": [
+            13,
+            18,
+          ],
+          "start": 13,
+          "type": "Identifier",
+        },
         "start": 1,
-        "type": "VariableDeclaration",
+        "type": "NGMicrosyntaxOfExpression",
       },
-      "range": [
-        1,
-        9,
-      ],
-      "right": {
-        "end": 18,
-        "name": "items",
-        "range": [
-          13,
-          18,
-        ],
-        "start": 13,
-        "type": "Identifier",
-      },
-      "start": 1,
-      "type": "NGMicrosyntaxOfExpression",
-    },
-    {
-      "alias": {
+      {
+        "alias": {
+          "end": 30,
+          "name": "i",
+          "range": [
+            29,
+            30,
+          ],
+          "start": 29,
+          "type": "Identifier",
+        },
         "end": 30,
-        "name": "i",
-        "range": [
-          29,
-          30,
-        ],
-        "start": 29,
-        "type": "Identifier",
-      },
-      "end": 30,
-      "expression": {
-        "end": 25,
-        "name": "index",
+        "expression": {
+          "end": 25,
+          "name": "index",
+          "range": [
+            20,
+            25,
+          ],
+          "start": 20,
+          "type": "Identifier",
+        },
         "range": [
           20,
-          25,
+          30,
         ],
         "start": 20,
-        "type": "Identifier",
+        "type": "NGMicrosyntaxAsExpression",
       },
-      "range": [
-        20,
-        30,
-      ],
-      "start": 20,
-      "type": "NGMicrosyntaxAsExpression",
-    },
-    {
-      "end": 50,
-      "expression": {
+      {
         "end": 50,
-        "name": "trackByFn",
-        "range": [
-          41,
-          50,
-        ],
-        "start": 41,
-        "type": "Identifier",
-      },
-      "key": {
-        "end": 39,
-        "name": "TrackBy",
+        "expression": {
+          "end": 50,
+          "name": "trackByFn",
+          "range": [
+            41,
+            50,
+          ],
+          "start": 41,
+          "type": "Identifier",
+        },
+        "key": {
+          "end": 39,
+          "name": "TrackBy",
+          "range": [
+            32,
+            39,
+          ],
+          "start": 32,
+          "type": "Identifier",
+        },
         "range": [
           32,
-          39,
+          50,
         ],
         "start": 32,
-        "type": "Identifier",
+        "type": "NGMicrosyntaxKeyedExpression",
       },
-      "range": [
-        32,
-        50,
-      ],
-      "start": 32,
-      "type": "NGMicrosyntaxKeyedExpression",
-    },
-  ],
-  "end": 50,
-  "range": [
-    1,
-    50,
-  ],
-  "start": 1,
-  "type": "NGMicrosyntax",
+    ],
+    "end": 50,
+    "range": [
+      1,
+      50,
+    ],
+    "start": 1,
+    "type": "NGMicrosyntax",
+  },
+  "text": " let item of items; index as i; trackBy: trackByFn",
 }
 `;
