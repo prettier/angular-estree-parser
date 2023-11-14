@@ -19,10 +19,13 @@ import type {
 import { NG_PARSE_TEMPLATE_BINDINGS_FAKE_PREFIX } from './parser.js';
 import { toLowerCamelCase } from './utils.js';
 
-export function transformTemplateBindings(
-  rawTemplateBindings: ng.TemplateBinding[],
-  context: Context,
-): NGMicrosyntax {
+function transformTemplateBindings({
+  expressions: rawTemplateBindings,
+  context,
+}: {
+  expressions: ng.TemplateBinding[];
+  context: Context;
+}): NGMicrosyntax {
   rawTemplateBindings.forEach(fixTemplateBindingSpan);
 
   const [firstTemplateBinding] = rawTemplateBindings;
@@ -266,3 +269,5 @@ export function transformTemplateBindings(
     };
   }
 }
+
+export { transformTemplateBindings };

@@ -1,5 +1,4 @@
 import type * as ng from '@angular/compiler';
-import { Context } from './context.js';
 import {
   transformNode,
   transformComment,
@@ -7,13 +6,17 @@ import {
 } from './transform.js';
 import type { NGNode, RawNGComment, NGMicrosyntax } from './types.js';
 import * as angularParser from './parser.js';
+import { type default as Context } from './context.js';
 
 function createParser(
-  parse: (input: string) => { ast: ng.AST; comments: RawNGComment[] },
+  parse: (text: string) => {
+    ast: ng.AST;
+    comments: RawNGComment[];
+    context: Context;
+  },
 ) {
-  return (input: string) => {
-    const { ast: rawNgAst, comments } = parse(input);
-    const context = new Context(input);
+  return (text: string) => {
+    const { ast: rawNgAst, comments, context } = parse(text);
     const ast = transformNode(rawNgAst, context);
     ast.comments = comments.map((comment) => transformComment(comment));
     return ast;
@@ -28,9 +31,6 @@ export const parseInterpolationExpression = createParser(
   angularParser.parseInterpolationExpression,
 );
 export const parseAction = createParser(angularParser.parseAction);
-export const parseTemplateBindings = (input: string): NGMicrosyntax =>
-  transformTemplateBindings(
-    angularParser.parseTemplateBindings(input),
-    new Context(input),
-  );
+export const parseTemplateBindings = (text: string): NGMicrosyntax =>
+  transformTemplateBindings(angularParser.parseTemplateBindings(text));
 export type { NGMicrosyntax, NGNode };
