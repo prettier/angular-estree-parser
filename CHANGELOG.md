@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.0.0](https://github.com/prettier/angular-estree-parser/compare/v8.0.3...v9.0.0) (2023-11-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove `loc` from node, added `range` (#271)
+
+* remove `loc` from node, added `range` ([#271](https://github.com/prettier/angular-estree-parser/issues/271)) ([069199b](https://github.com/prettier/angular-estree-parser/commit/069199b74549ba8af1f84dfab41ad57aa253b09c))
+
 ### [8.0.3](https://github.com/prettier/angular-estree-parser/compare/v8.0.2...v8.0.3) (2023-11-10)
 
 ### [8.0.2](https://github.com/prettier/angular-estree-parser/compare/v8.0.1...v8.0.2) (2023-11-09)
