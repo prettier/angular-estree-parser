@@ -76,12 +76,12 @@ function transform(
   switch (type) {
     case 'Unary': {
       const { operator, expr } = node as ng.Unary;
-      const tArgument = _t<b.Expression>(expr);
+      const argumentNode = _t<b.Expression>(expr);
       return _c<b.UnaryExpression>(
         {
           type: 'UnaryExpression',
           prefix: true,
-          argument: tArgument,
+          argument: argumentNode,
           operator: operator as '-' | '+',
           ...node.sourceSpan,
         },
@@ -96,10 +96,6 @@ function transform(
       } = node as ng.Binary;
       const left = _t<b.Expression>(originalLeft);
       const right = _t<b.Expression>(originalRight);
-      const type =
-        operator === '&&' || operator === '||' || operator === '??'
-          ? 'LogicalExpression'
-          : 'BinaryExpression';
       const start = getOuterStart(left);
       const end = getOuterEnd(right);
       const properties = {
@@ -109,11 +105,11 @@ function transform(
         end,
       };
 
-      if (type === 'LogicalExpression') {
+      if (operator === '&&' || operator === '||' || operator === '??') {
         return _c<b.LogicalExpression>(
           {
             ...properties,
-            type,
+            type: 'LogicalExpression',
             operator: operator as b.LogicalExpression['operator'],
           },
           { hasParentParens: isInParentParens },
@@ -123,7 +119,7 @@ function transform(
       return _c<b.BinaryExpression>(
         {
           ...properties,
-          type,
+          type: 'BinaryExpression',
           operator: operator as b.BinaryExpression['operator'],
         },
         { hasParentParens: isInParentParens },
@@ -208,18 +204,12 @@ function transform(
       const isOptionalType = type === 'SafeKeyedRead';
       const { key, receiver } = node as ng.KeyedRead | ng.SafeKeyedRead;
       const tKey = _t<b.Expression>(key);
-      return _transformReceiverAndName(
-        receiver,
-        tKey,
-        {
-          computed: true,
-          optional: isOptionalType,
-        },
-        {
-          end: node.sourceSpan.end, // ]
-          hasParentParens: isInParentParens,
-        },
-      );
+      return _transformReceiverAndName(receiver, tKey, {
+        computed: true,
+        optional: isOptionalType,
+        end: node.sourceSpan.end, // ]
+        hasParentParens: isInParentParens,
+      });
     }
     case 'LiteralArray': {
       const { expressions } = node as ng.LiteralArray;
@@ -390,29 +380,21 @@ function transform(
           ? { hasParentParens: isInParentParens }
           : {},
       );
-      return _transformReceiverAndName(
-        receiver,
-        tName,
-        {
-          computed: false,
-          optional: isOptionalType,
-        },
-        { hasParentParens: isInParentParens },
-      );
+      return _transformReceiverAndName(receiver, tName, {
+        computed: false,
+        optional: isOptionalType,
+        hasParentParens: isInParentParens,
+      });
     }
     case 'KeyedWrite': {
       const { key, value, receiver } = node as ng.KeyedWrite;
       const tKey = _t<b.Expression>(key);
       const right = _t<b.Expression>(value);
-      const left = _transformReceiverAndName(
-        receiver,
-        tKey,
-        {
-          computed: true,
-          optional: false,
-        },
-        { end: context.getCharacterIndex(']', getOuterEnd(tKey)) + 1 },
-      );
+      const left = _transformReceiverAndName(receiver, tKey, {
+        computed: true,
+        optional: false,
+        end: context.getCharacterIndex(']', getOuterEnd(tKey)) + 1,
+      });
       return _c<b.AssignmentExpression>(
         {
           type: 'AssignmentExpression',
@@ -476,28 +458,37 @@ function transform(
 
   function _transformReceiverAndName(
     receiver: ng.AST,
-    tName: b.Expression,
-    props: { computed: boolean; optional: boolean },
-    { end = getOuterEnd(tName), hasParentParens = false } = {},
+    property: b.Expression,
+    {
+      computed,
+      optional,
+      end = getOuterEnd(property),
+      hasParentParens = false,
+    }: {
+      computed: boolean;
+      optional: boolean;
+      end?: number;
+      hasParentParens?: boolean;
+    },
   ) {
     if (
       isImplicitThis(receiver, context.text) ||
-      receiver.sourceSpan.start === tName.start
+      receiver.sourceSpan.start === property.start
     ) {
-      return tName;
+      return property;
     }
     const object = _t<b.Expression>(receiver);
     const isOptionalObject = isOptionalObjectOrCallee(object);
     return _c<b.OptionalMemberExpression | b.MemberExpression>(
       {
         type:
-          props.optional || isOptionalObject
+          optional || isOptionalObject
             ? 'OptionalMemberExpression'
             : 'MemberExpression',
         object,
-        property: tName,
-        computed: props.computed,
-        ...(props.optional
+        property,
+        computed: computed,
+        ...(optional
           ? { optional: true }
           : isOptionalObject
             ? { optional: false }
