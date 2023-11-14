@@ -4,12 +4,7 @@ import {
   VariableBinding as NGVariableBinding,
 } from '@angular/compiler';
 import { type Context } from './context.js';
-import {
-  type InputNode,
-  type OutputNode,
-  transform,
-  transformSpan,
-} from './transform.js';
+import transformNode from './transform-node.js';
 import type {
   NGMicrosyntax,
   NGMicrosyntaxAs,
@@ -22,12 +17,15 @@ import type {
   RawNGSpan,
 } from './types.js';
 import { NG_PARSE_TEMPLATE_BINDINGS_FAKE_PREFIX } from './parser.js';
-import { toLowerCamelCase } from './utils.js';
+import { toLowerCamelCase, transformSpan } from './utils.js';
 
-export function transformTemplateBindings(
-  rawTemplateBindings: ng.TemplateBinding[],
-  context: Context,
-): NGMicrosyntax {
+function transformTemplateBindings({
+  expressions: rawTemplateBindings,
+  context,
+}: {
+  expressions: ng.TemplateBinding[];
+  context: Context;
+}): NGMicrosyntax {
   rawTemplateBindings.forEach(fixTemplateBindingSpan);
 
   const [firstTemplateBinding] = rawTemplateBindings;
@@ -62,7 +60,7 @@ export function transformTemplateBindings(
       );
       const updateSpanEnd = <T extends NGNode>(node: T, end: number): T => ({
         ...node,
-        ...transformSpan({ start: node.start!, end }, context),
+        ...transformSpan({ start: node.start!, end }, context.text),
       });
       const updateExpressionAlias = (expression: NGMicrosyntaxExpression) => ({
         ...updateSpanEnd(expression, alias.end),
@@ -180,11 +178,11 @@ export function transformTemplateBindings(
     }
   }
 
-  function _t<T extends OutputNode>(n: InputNode) {
-    return transform(n, context) as T & RawNGSpan;
+  function _t<T extends NGNode>(n: ng.AST) {
+    return transformNode(n, context) as T;
   }
 
-  function _c<T extends OutputNode>(
+  function _c<T extends NGNode>(
     t: T['type'],
     n: Partial<T>,
     span: RawNGSpan,
@@ -192,9 +190,9 @@ export function transformTemplateBindings(
   ) {
     return {
       type: t,
-      ...transformSpan(span, context, stripSpaces),
+      ...transformSpan(span, context.text, { processSpan: stripSpaces }),
       ...n,
-    } as T & { start: number; end: number; range: [number, number] };
+    } as T;
   }
 
   function removePrefix(string: string) {
@@ -271,3 +269,5 @@ export function transformTemplateBindings(
     };
   }
 }
+
+export { transformTemplateBindings };

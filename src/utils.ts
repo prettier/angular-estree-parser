@@ -1,8 +1,8 @@
 import * as ng from '@angular/compiler';
-import type { RawNGComment, RawNGSpan } from './types.js';
+import type { RawNGComment, RawNGSpan, LocationInformation } from './types.js';
 
 // prettier-ignore
-export function getNgType(node: (ng.AST | RawNGComment) & { type?: string }) {
+export function getAngularNodeType(node: (ng.AST | RawNGComment) & { type?: string }) {
   if (node instanceof ng.Unary) { return 'Unary'; }
   if (node instanceof ng.Binary) { return 'Binary'; }
   if (node instanceof ng.BindingPipe) { return "BindingPipe"; }
@@ -23,6 +23,7 @@ export function getNgType(node: (ng.AST | RawNGComment) & { type?: string }) {
   if (node instanceof ng.PropertyWrite) { return "PropertyWrite"; }
   if (node instanceof ng.SafeCall) { return "SafeCall"; }
   if (node instanceof ng.SafePropertyRead) { return "SafePropertyRead"; }
+  // istanbul ignore next
   return node.type;
 }
 
@@ -163,4 +164,41 @@ export function getCharacterIndex(
 
 export function toLowerCamelCase(str: string) {
   return str.slice(0, 1).toLowerCase() + str.slice(1);
+}
+
+export function sourceSpanToLocationInformation(
+  span: RawNGSpan,
+): LocationInformation {
+  const { start, end } = span;
+  return {
+    start,
+    end,
+    range: [start, end],
+  };
+}
+
+export function transformSpan(
+  span: RawNGSpan,
+  text: string,
+  { processSpan = false, hasParentParens = false } = {},
+): LocationInformation {
+  if (!processSpan) {
+    return sourceSpanToLocationInformation(span);
+  }
+
+  const { outerSpan, innerSpan, hasParens } = fitSpans(
+    span,
+    text,
+    hasParentParens,
+  );
+  const locationInformation = sourceSpanToLocationInformation(innerSpan);
+  if (hasParens) {
+    locationInformation.extra = {
+      parenthesized: true,
+      parenStart: outerSpan.start,
+      parenEnd: outerSpan.end,
+    };
+  }
+
+  return locationInformation;
 }

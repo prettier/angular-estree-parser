@@ -6,6 +6,7 @@ import {
   type ParserError,
 } from '@angular/compiler';
 import { type RawNGComment } from './types.js';
+import { Context } from './context.js';
 
 const NG_PARSE_FAKE_LOCATION = 'angular-estree-parser';
 const NG_PARSE_TEMPLATE_BINDINGS_FAKE_PREFIX = 'NgEstreeParser';
@@ -23,11 +24,12 @@ function parse(
   text: string,
   parse: (text: string, parser: Parser) => ASTWithSource,
 ) {
+  const context = new Context(text);
   const parser = createParser();
   const { text: textToParse, comments } = extractComments(text, parser);
   const { ast, errors } = parse(textToParse, parser);
   assertAstErrors(errors);
-  return { ast, comments };
+  return { ast, comments, context };
 }
 
 function parseBinding(text: string) {
@@ -60,16 +62,18 @@ function parseInterpolationExpression(text: string) {
 }
 
 function parseTemplateBindings(text: string) {
+  const context = new Context(text);
   const parser = createParser();
-  const { templateBindings: ast, errors } = parser.parseTemplateBindings(
-    NG_PARSE_TEMPLATE_BINDINGS_FAKE_PREFIX,
-    text,
-    NG_PARSE_FAKE_LOCATION,
-    NG_PARSE_FAKE_ABSOLUTE_OFFSET,
-    NG_PARSE_FAKE_ABSOLUTE_OFFSET,
-  );
+  const { templateBindings: expressions, errors } =
+    parser.parseTemplateBindings(
+      NG_PARSE_TEMPLATE_BINDINGS_FAKE_PREFIX,
+      text,
+      NG_PARSE_FAKE_LOCATION,
+      NG_PARSE_FAKE_ABSOLUTE_OFFSET,
+      NG_PARSE_FAKE_ABSOLUTE_OFFSET,
+    );
   assertAstErrors(errors);
-  return ast;
+  return { expressions, context };
 }
 
 function assertAstErrors(errors: ParserError[]) {

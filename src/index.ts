@@ -1,21 +1,27 @@
 import type * as ng from '@angular/compiler';
-import type * as b from '@babel/types';
-import { Context } from './context.js';
-import { transform } from './transform.js';
+import transformComment from './transform-comment.js';
+import transformNode from './transform-node.js';
 import { transformTemplateBindings } from './transform-microsyntax.js';
-import type { NGNode, RawNGComment, NGMicrosyntax } from './types.js';
+import type {
+  NGNode,
+  RawNGComment,
+  NGMicrosyntax,
+  ParseResult,
+} from './types.js';
 import * as angularParser from './parser.js';
+import { type Context } from './context.js';
 
 function createParser(
-  parse: (input: string) => { ast: ng.AST; comments: RawNGComment[] },
+  parse: (text: string) => {
+    ast: ng.AST;
+    comments: RawNGComment[];
+    context: Context;
+  },
 ) {
-  return (input: string) => {
-    const { ast: rawNgAst, comments } = parse(input);
-    const context = new Context(input);
-    const ast = transform(rawNgAst, context) as NGNode;
-    ast.comments = comments.map((comment) =>
-      transform(comment, context),
-    ) as b.CommentLine[];
+  return (text: string) => {
+    const { ast: angularNode, comments, context } = parse(text);
+    const ast = transformNode(angularNode, context) as ParseResult;
+    ast.comments = comments.map((comment) => transformComment(comment));
     return ast;
   };
 }
@@ -28,9 +34,6 @@ export const parseInterpolationExpression = createParser(
   angularParser.parseInterpolationExpression,
 );
 export const parseAction = createParser(angularParser.parseAction);
-export const parseTemplateBindings = (input: string): NGMicrosyntax =>
-  transformTemplateBindings(
-    angularParser.parseTemplateBindings(input),
-    new Context(input),
-  );
+export const parseTemplateBindings = (text: string): NGMicrosyntax =>
+  transformTemplateBindings(angularParser.parseTemplateBindings(text));
 export type { NGMicrosyntax, NGNode };
