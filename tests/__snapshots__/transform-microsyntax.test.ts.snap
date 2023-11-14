@@ -1333,18 +1333,12 @@ exports[` let hero  2`] = `
 exports[` let hero ; of : heroes  1`] = `
 NGMicrosyntax {
   "body": [
-    "NGMicrosyntaxOfExpression"
+    "VariableDeclaration",
+    "NGMicrosyntaxKeyedExpression"
   ]
 }
 > 1 |  let hero ; of : heroes 
     |  ^^^^^^^^^^^^^^^^^^^^^^
---------------------------------------------------------------------------------
-NGMicrosyntaxOfExpression {
-  "left": "VariableDeclaration",
-  "right": "Identifier"
-}
-> 1 |  let hero ; of : heroes 
-    |  ^^^^^^^^^^
 --------------------------------------------------------------------------------
 VariableDeclaration {
   "kind": "let",
@@ -1368,6 +1362,19 @@ Identifier {
 > 1 |  let hero ; of : heroes 
     |      ^^^^
 --------------------------------------------------------------------------------
+NGMicrosyntaxKeyedExpression {
+  "key": "Identifier",
+  "expression": "Identifier"
+}
+> 1 |  let hero ; of : heroes 
+    |             ^^^^^^^^^^^
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "Of"
+}
+> 1 |  let hero ; of : heroes 
+    |             ^^
+--------------------------------------------------------------------------------
 Identifier {
   "name": "heroes"
 }
@@ -1379,44 +1386,40 @@ exports[` let hero ; of : heroes  2`] = `
 {
   "body": [
     {
-      "end": 11,
-      "left": {
-        "declarations": [
-          {
-            "end": 11,
-            "id": {
-              "end": 9,
-              "name": "hero",
-              "range": [
-                5,
-                9,
-              ],
-              "start": 5,
-              "type": "Identifier",
-            },
-            "init": null,
+      "declarations": [
+        {
+          "end": 11,
+          "id": {
+            "end": 9,
+            "name": "hero",
             "range": [
-              1,
-              11,
+              5,
+              9,
             ],
-            "start": 1,
-            "type": "VariableDeclarator",
+            "start": 5,
+            "type": "Identifier",
           },
-        ],
-        "end": 11,
-        "kind": "let",
-        "range": [
-          1,
-          11,
-        ],
-        "start": 1,
-        "type": "VariableDeclaration",
-      },
+          "init": null,
+          "range": [
+            1,
+            11,
+          ],
+          "start": 1,
+          "type": "VariableDeclarator",
+        },
+      ],
+      "end": 11,
+      "kind": "let",
       "range": [
         1,
         11,
       ],
-      "right": {
+      "start": 1,
+      "type": "VariableDeclaration",
+    },
+    {
+      "end": 23,
+      "expression": {
         "end": 23,
         "name": "heroes",
         "range": [
@@ -1426,8 +1429,22 @@ exports[` let hero ; of : heroes  2`] = `
         "start": 17,
         "type": "Identifier",
       },
-      "start": 1,
-      "type": "NGMicrosyntaxOfExpression",
+      "key": {
+        "end": 14,
+        "name": "Of",
+        "range": [
+          12,
+          14,
+        ],
+        "start": 12,
+        "type": "Identifier",
+      },
+      "range": [
+        12,
+        23,
+      ],
+      "start": 12,
+      "type": "NGMicrosyntaxKeyedExpression",
     },
   ],
   "end": 23,

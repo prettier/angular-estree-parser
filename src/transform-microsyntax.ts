@@ -191,7 +191,10 @@ function transformTemplateBindings({
     return (
       isExpressionBinding(node) &&
       node.key.source === 'Of' &&
-      node.value instanceof ng.ASTWithSource
+      node.value instanceof ng.ASTWithSource &&
+      context.text
+        .slice(node.key.span.end, node.value.sourceSpan.start)
+        .trim() === ''
     );
   }
 
