@@ -1,5 +1,5 @@
 import * as ng from '@angular/compiler';
-import type { RawNGComment, RawNGSpan } from './types.js';
+import type { RawNGComment, RawNGSpan, LocationInformation } from './types.js';
 
 // prettier-ignore
 export function getNgType(node: (ng.AST | RawNGComment) & { type?: string }) {
@@ -163,4 +163,15 @@ export function getCharacterIndex(
 
 export function toLowerCamelCase(str: string) {
   return str.slice(0, 1).toLowerCase() + str.slice(1);
+}
+
+export function sourceSpanToLocationInformation(
+  span: RawNGSpan,
+): LocationInformation {
+  const { start, end } = span;
+  return {
+    start,
+    end,
+    range: [start, end],
+  };
 }

@@ -4,12 +4,7 @@ import {
   VariableBinding as NGVariableBinding,
 } from '@angular/compiler';
 import { type Context } from './context.js';
-import {
-  type InputNode,
-  type OutputNode,
-  transform,
-  transformSpan,
-} from './transform.js';
+import { transformNode, transformSpan } from './transform.js';
 import type {
   NGMicrosyntax,
   NGMicrosyntaxAs,
@@ -180,11 +175,11 @@ export function transformTemplateBindings(
     }
   }
 
-  function _t<T extends OutputNode>(n: InputNode) {
-    return transform(n, context) as T & RawNGSpan;
+  function _t<T extends NGNode>(n: ng.AST) {
+    return transformNode(n, context) as T;
   }
 
-  function _c<T extends OutputNode>(
+  function _c<T extends NGNode>(
     t: T['type'],
     n: Partial<T>,
     span: RawNGSpan,
@@ -194,7 +189,7 @@ export function transformTemplateBindings(
       type: t,
       ...transformSpan(span, context, stripSpaces),
       ...n,
-    } as T & { start: number; end: number; range: [number, number] };
+    } as T;
   }
 
   function removePrefix(string: string) {

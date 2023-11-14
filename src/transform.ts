@@ -2,6 +2,7 @@ import type * as ng from '@angular/compiler';
 import type * as b from '@babel/types';
 import type Context from './context.js';
 import type {
+  LocationInformation,
   NGChainedExpression,
   NGEmptyExpression,
   NGNode,
@@ -9,16 +10,17 @@ import type {
   RawNGComment,
   RawNGSpan,
 } from './types.js';
-import { fitSpans, getNgType } from './utils.js';
+import {
+  fitSpans,
+  getNgType,
+  sourceSpanToLocationInformation,
+} from './utils.js';
 
-export type InputNode = ng.AST | RawNGComment;
-export type OutputNode = NGNode | b.CommentLine;
-
-export const transform = (
-  node: InputNode,
+export function transformNode(
+  node: ng.AST,
   context: Context,
   isInParentParens = false,
-): OutputNode => {
+): NGNode {
   const type = getNgType(node);
   switch (type) {
     case 'Unary': {
@@ -88,12 +90,6 @@ export const transform = (
         node.sourceSpan,
         { hasParentParens: isInParentParens },
       );
-    }
-    case 'Comment': {
-      const { value } = node as RawNGComment;
-      return _c<b.CommentLine>('CommentLine', { value }, node.sourceSpan, {
-        processSpan: false,
-      });
     }
     case 'Conditional': {
       const { condition, trueExp, falseExp } = node as ng.Conditional;
@@ -387,14 +383,14 @@ export const transform = (
       throw new Error(`Unexpected node ${type}`);
   }
 
-  function _t<T extends OutputNode>(n: InputNode) {
-    return transform(n, context) as T & RawNGSpan;
+  function _t<T extends NGNode>(n: ng.AST) {
+    return transformNode(n, context) as T;
   }
-  function _transformHasParentParens<T extends OutputNode>(n: InputNode) {
-    return transform(n, context, true) as T & RawNGSpan;
+  function _transformHasParentParens<T extends NGNode>(n: ng.AST) {
+    return transformNode(n, context, true) as T;
   }
 
-  function _c<T extends OutputNode>(
+  function _c<T extends NGNode>(
     t: T['type'],
     n: Partial<T>,
     span: RawNGSpan,
@@ -462,8 +458,8 @@ export const transform = (
         ...(props.optional
           ? { optional: true }
           : isOptionalReceiver
-            ? { optional: false }
-            : null),
+          ? { optional: false }
+          : null),
       },
       { start: _getOuterStart(tReceiver), end },
       { hasParentParens },
@@ -477,52 +473,50 @@ export const transform = (
     );
   }
 
-  function _isOptionalReceiver(n: OutputNode): boolean {
+  function _isOptionalReceiver(n: NGNode): boolean {
     return (
       (n.type === 'OptionalCallExpression' ||
         n.type === 'OptionalMemberExpression') &&
       !_isParenthesized(n)
     );
   }
-  function _isParenthesized(n: OutputNode & { extra?: any }): boolean {
+  function _isParenthesized(n: NGNode & { extra?: any }): boolean {
     return n.extra && n.extra.parenthesized;
   }
-  function _getOuterStart(n: OutputNode & { extra?: any }): number {
+  function _getOuterStart(n: NGNode & { extra?: any }): number {
     return _isParenthesized(n) ? n.extra.parenStart : n.start;
   }
-  function _getOuterEnd(n: OutputNode & { extra?: any }): number {
+  function _getOuterEnd(n: NGNode & { extra?: any }): number {
     return _isParenthesized(n) ? n.extra.parenEnd : n.end;
   }
-};
+}
+
+export function transformComment(comment: RawNGComment): b.CommentLine {
+  const { value, sourceSpan } = comment;
+  return {
+    type: 'CommentLine',
+    value,
+    ...sourceSpanToLocationInformation(sourceSpan),
+  };
+}
 
 export function transformSpan(
   span: RawNGSpan,
   context: Context,
   processSpan = false,
   hasParentParens = false,
-): {
-  start: NonNullable<b.Node['start']>;
-  end: NonNullable<b.Node['end']>;
-  range: NonNullable<b.Node['range']>;
-} {
+): LocationInformation {
   if (!processSpan) {
-    const { start, end } = span;
-    return {
-      start,
-      end,
-      range: [start, end],
-    };
+    return sourceSpanToLocationInformation(span);
   }
 
-  const {
-    outerSpan,
-    innerSpan: { start, end },
-    hasParens,
-  } = fitSpans(span, context.text, hasParentParens);
+  const { outerSpan, innerSpan, hasParens } = fitSpans(
+    span,
+    context.text,
+    hasParentParens,
+  );
   return {
-    start,
-    end,
-    range: [start, end],
+    ...sourceSpanToLocationInformation(innerSpan),
     ...(hasParens && {
       extra: {
         parenthesized: true,
@@ -532,3 +526,5 @@ export function transformSpan(
     }),
   };
 }
+
+export { transformTemplateBindings } from './transform-microsyntax.js';
