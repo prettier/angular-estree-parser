@@ -1,4 +1,4 @@
-import type * as ng from '@angular/compiler';
+import * as ng from '@angular/compiler';
 import type * as b from '@babel/types';
 import type Context from './context.js';
 import type {
@@ -11,7 +11,49 @@ import type {
 } from './types.js';
 import { transformSpan, getNgType } from './utils.js';
 
-export function transform(
+function createNode<T extends NGNode>(
+  context: Context,
+  type: T['type'],
+  properties: Partial<T>,
+  span: RawNGSpan,
+  { processSpan = true, hasParentParens = false } = {},
+) {
+  const node = {
+    type,
+    ...transformSpan(span, context.text, { processSpan, hasParentParens }),
+    ...properties,
+  } as T & LocationInformation;
+  switch (type) {
+    case 'NumericLiteral':
+    case 'StringLiteral': {
+      const raw = context.text.slice(node.start, node.end);
+      const { value } = node as unknown as b.NumericLiteral | b.StringLiteral;
+      node.extra = { ...node.extra, raw, rawValue: value };
+      break;
+    }
+    case 'ObjectProperty': {
+      const { shorthand } = node as unknown as b.ObjectProperty;
+      if (shorthand) {
+        node.extra = { ...node.extra, shorthand };
+      }
+      break;
+    }
+  }
+
+  return node;
+}
+
+function isParenthesized(node: NGNode) {
+  return Boolean(node.extra?.parenthesized);
+}
+function getOuterStart(node: NGNode): number {
+  return isParenthesized(node) ? node.extra.parenStart : node.start;
+}
+function getOuterEnd(node: NGNode): number {
+  return isParenthesized(node) ? node.extra.parenEnd : node.end;
+}
+
+function transform(
   node: ng.AST,
   context: Context,
   isInParentParens = false,
@@ -46,7 +88,7 @@ export function transform(
           // @ts-expect-error `operation` is operator for LogicalExpression or BinaryExpression
           operator: operation,
         },
-        { start: _getOuterStart(tLeft), end: _getOuterEnd(tRight) },
+        { start: getOuterStart(tLeft), end: getOuterEnd(tRight) },
         { hasParentParens: isInParentParens },
       );
     }
@@ -55,7 +97,7 @@ export function transform(
       const tExp = _t<b.Expression>(exp);
       const nameStart = context.getCharacterIndex(
         /\S/,
-        context.getCharacterIndex('|', _getOuterEnd(tExp)) + 1,
+        context.getCharacterIndex('|', getOuterEnd(tExp)) + 1,
       );
       const tName = _c<b.Identifier>(
         'Identifier',
@@ -71,8 +113,8 @@ export function transform(
           arguments: tArgs,
         },
         {
-          start: _getOuterStart(tExp),
-          end: _getOuterEnd(tArgs.length === 0 ? tName : tArgs.at(-1)!),
+          start: getOuterStart(tExp),
+          end: getOuterEnd(tArgs.length === 0 ? tName : tArgs.at(-1)!),
         },
         { hasParentParens: isInParentParens },
       );
@@ -98,7 +140,7 @@ export function transform(
           consequent: tTrueExp,
           alternate: tFalseExp,
         },
-        { start: _getOuterStart(tCondition), end: _getOuterEnd(tFalseExp) },
+        { start: getOuterStart(tCondition), end: getOuterEnd(tFalseExp) },
         { hasParentParens: isInParentParens },
       );
     }
@@ -147,14 +189,14 @@ export function transform(
       const tValues = values.map((value) => _t<b.Expression>(value));
       const tProperties = keys.map(({ key, quoted }, index) => {
         const tValue = tValues[index];
-        const valueStart = _getOuterStart(tValue);
-        const valueEnd = _getOuterEnd(tValue);
+        const valueStart = getOuterStart(tValue);
+        const valueEnd = getOuterEnd(tValue);
 
         const keyStart = context.getCharacterIndex(
           /\S/,
           index === 0
             ? node.sourceSpan.start + 1 // {
-            : context.getCharacterIndex(',', _getOuterEnd(tValues[index - 1])) +
+            : context.getCharacterIndex(',', getOuterEnd(tValues[index - 1])) +
                 1,
         );
         const keyEnd =
@@ -178,7 +220,7 @@ export function transform(
             shorthand,
             computed: false,
           },
-          { start: _getOuterStart(tKey), end: valueEnd },
+          { start: getOuterStart(tKey), end: valueEnd },
         );
       });
       return _c<b.ObjectExpression>(
@@ -259,7 +301,7 @@ export function transform(
             nodeType === 'OptionalCallExpression' ? isOptionalType : undefined,
         },
         {
-          start: _getOuterStart(tReceiver),
+          start: getOuterStart(tReceiver),
           end: node.sourceSpan.end, // )
         },
         { hasParentParens: isInParentParens },
@@ -272,7 +314,7 @@ export function transform(
         'TSNonNullExpression',
         { expression: tExpression },
         {
-          start: _getOuterStart(tExpression),
+          start: getOuterStart(tExpression),
           end: node.sourceSpan.end, // !
         },
         { hasParentParens: isInParentParens },
@@ -290,7 +332,7 @@ export function transform(
         },
         {
           start: node.sourceSpan.start, // !
-          end: _getOuterEnd(tExpression),
+          end: getOuterEnd(tExpression),
         },
         { hasParentParens: isInParentParens },
       );
@@ -332,7 +374,7 @@ export function transform(
           computed: true,
           optional: false,
         },
-        { end: context.getCharacterIndex(']', _getOuterEnd(tKey)) + 1 },
+        { end: context.getCharacterIndex(']', getOuterEnd(tKey)) + 1 },
       );
       return _c<b.AssignmentExpression>(
         'AssignmentExpression',
@@ -341,7 +383,7 @@ export function transform(
           operator: '=',
           right: tValue,
         },
-        { start: _getOuterStart(tReceiverAndName), end: _getOuterEnd(tValue) },
+        { start: getOuterStart(tReceiverAndName), end: getOuterEnd(tValue) },
         { hasParentParens: isInParentParens },
       );
     }
@@ -351,7 +393,7 @@ export function transform(
       const nameEnd =
         context.getCharacterLastIndex(
           /\S/,
-          context.getCharacterLastIndex('=', _getOuterStart(tValue) - 1) - 1,
+          context.getCharacterLastIndex('=', getOuterStart(tValue) - 1) - 1,
         ) + 1;
       const tName = _c<b.Identifier>(
         'Identifier',
@@ -369,7 +411,7 @@ export function transform(
           operator: '=',
           right: tValue,
         },
-        { start: _getOuterStart(tReceiverAndName), end: _getOuterEnd(tValue) },
+        { start: getOuterStart(tReceiverAndName), end: getOuterEnd(tValue) },
         { hasParentParens: isInParentParens },
       );
     }
@@ -386,53 +428,22 @@ export function transform(
   }
 
   function _c<T extends NGNode>(
-    t: T['type'],
-    n: Partial<T>,
+    type: T['type'],
+    properties: Partial<T>,
     span: RawNGSpan,
     { processSpan = true, hasParentParens = false } = {},
   ) {
-    const newNode = {
-      type: t,
-      ...transformSpan(span, context.text, { processSpan, hasParentParens }),
-      ...n,
-    } as T & LocationInformation;
-    switch (t) {
-      case 'NumericLiteral': {
-        const numericLiteral = newNode as unknown as b.NumericLiteral;
-        numericLiteral.extra = {
-          ...numericLiteral.extra,
-          raw: context.text.slice(numericLiteral.start!, numericLiteral.end!),
-          rawValue: numericLiteral.value,
-        };
-        break;
-      }
-      case 'StringLiteral': {
-        const stringLiteral = newNode as unknown as b.StringLiteral;
-        stringLiteral.extra = {
-          ...stringLiteral.extra,
-          raw: context.text.slice(stringLiteral.start!, stringLiteral.end!),
-          rawValue: stringLiteral.value,
-        };
-        break;
-      }
-      case 'ObjectProperty': {
-        const objectProperty = newNode as unknown as b.ObjectProperty;
-        if (objectProperty.shorthand)
-          objectProperty.extra = {
-            ...objectProperty.extra,
-            shorthand: objectProperty.shorthand,
-          };
-        break;
-      }
-    }
-    return newNode;
+    return createNode<T>(context, type, properties, span, {
+      processSpan,
+      hasParentParens,
+    });
   }
 
   function _transformReceiverAndName(
     receiver: ng.AST,
     tName: b.Expression,
     props: { computed: boolean; optional: boolean },
-    { end = _getOuterEnd(tName), hasParentParens = false } = {},
+    { end = getOuterEnd(tName), hasParentParens = false } = {},
   ) {
     if (
       _isImplicitThis(receiver) ||
@@ -453,10 +464,10 @@ export function transform(
         ...(props.optional
           ? { optional: true }
           : isOptionalReceiver
-          ? { optional: false }
-          : null),
+            ? { optional: false }
+            : null),
       },
-      { start: _getOuterStart(tReceiver), end },
+      { start: getOuterStart(tReceiver), end },
       { hasParentParens },
     );
   }
@@ -468,21 +479,12 @@ export function transform(
     );
   }
 
-  function _isOptionalReceiver(n: NGNode): boolean {
+  function _isOptionalReceiver(node: NGNode): boolean {
     return (
-      (n.type === 'OptionalCallExpression' ||
-        n.type === 'OptionalMemberExpression') &&
-      !_isParenthesized(n)
+      (node.type === 'OptionalCallExpression' ||
+        node.type === 'OptionalMemberExpression') &&
+      !isParenthesized(node)
     );
-  }
-  function _isParenthesized(n: NGNode & { extra?: any }): boolean {
-    return n.extra && n.extra.parenthesized;
-  }
-  function _getOuterStart(n: NGNode & { extra?: any }): number {
-    return _isParenthesized(n) ? n.extra.parenStart : n.start;
-  }
-  function _getOuterEnd(n: NGNode & { extra?: any }): number {
-    return _isParenthesized(n) ? n.extra.parenEnd : n.end;
   }
 }
 
