@@ -2,48 +2,13 @@ import type * as ng from '@angular/compiler';
 import type * as b from '@babel/types';
 import type Context from './context.js';
 import type {
-  LocationInformation,
   NGChainedExpression,
   NGEmptyExpression,
   NGNode,
   NGPipeExpression,
   RawNGSpan,
 } from './types.js';
-import { transformSpan, getAngularNodeType } from './utils.js';
-
-function createNode<T extends NGNode>(
-  context: Context,
-  properties: Partial<T> & { type: T['type'] } & RawNGSpan,
-  // istanbul ignore next
-  { processSpan = true, hasParentParens = false } = {},
-) {
-  const { type, start, end } = properties;
-  const node = {
-    ...properties,
-    ...transformSpan({ start, end }, context.text, {
-      processSpan,
-      hasParentParens,
-    }),
-  } as T & LocationInformation;
-  switch (type) {
-    case 'NumericLiteral':
-    case 'StringLiteral': {
-      const raw = context.text.slice(node.start, node.end);
-      const { value } = node as unknown as b.NumericLiteral | b.StringLiteral;
-      node.extra = { ...node.extra, raw, rawValue: value };
-      break;
-    }
-    case 'ObjectProperty': {
-      const { shorthand } = node as unknown as b.ObjectProperty;
-      if (shorthand) {
-        node.extra = { ...node.extra, shorthand };
-      }
-      break;
-    }
-  }
-
-  return node;
-}
+import { getAngularNodeType, createNode } from './utils.js';
 
 function isParenthesized(node: NGNode) {
   return Boolean(node.extra?.parenthesized);
@@ -452,9 +417,9 @@ function transform(
 
   function _c<T extends NGNode>(
     properties: Partial<T> & { type: T['type'] } & RawNGSpan,
-    { processSpan = true, hasParentParens = false } = {},
+    { stripSpaces = true, hasParentParens = false } = {},
   ) {
-    return createNode<T>(context, properties, { processSpan, hasParentParens });
+    return createNode<T>(context, properties, { stripSpaces, hasParentParens });
   }
 
   function _transformReceiverAndName(

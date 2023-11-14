@@ -1,5 +1,12 @@
 import * as ng from '@angular/compiler';
-import type { RawNGComment, RawNGSpan, LocationInformation } from './types.js';
+import type {
+  RawNGComment,
+  RawNGSpan,
+  LocationInformation,
+  NGNode,
+} from './types.js';
+import type * as b from '@babel/types';
+import type Context from './context.js';
 
 // prettier-ignore
 export function getAngularNodeType(node: (ng.AST | RawNGComment) & { type?: string }) {
@@ -180,9 +187,9 @@ export function sourceSpanToLocationInformation(
 export function transformSpan(
   span: RawNGSpan,
   text: string,
-  { processSpan = false, hasParentParens = false } = {},
+  { stripSpaces = false, hasParentParens = false } = {},
 ): LocationInformation {
-  if (!processSpan) {
+  if (!stripSpaces) {
     return sourceSpanToLocationInformation(span);
   }
 
@@ -201,4 +208,39 @@ export function transformSpan(
   }
 
   return locationInformation;
+}
+
+export function createNode<T extends NGNode>(
+  context: Context,
+  properties: Partial<T> & { type: T['type'] } & RawNGSpan,
+  // istanbul ignore next
+  { stripSpaces = true, hasParentParens = false } = {},
+) {
+  const { type, start, end } = properties;
+  const node = {
+    ...properties,
+    ...transformSpan({ start, end }, context.text, {
+      stripSpaces,
+      hasParentParens,
+    }),
+  } as T & LocationInformation;
+
+  switch (type) {
+    case 'NumericLiteral':
+    case 'StringLiteral': {
+      const raw = context.text.slice(node.start, node.end);
+      const { value } = node as unknown as b.NumericLiteral | b.StringLiteral;
+      node.extra = { ...node.extra, raw, rawValue: value };
+      break;
+    }
+    case 'ObjectProperty': {
+      const { shorthand } = node as unknown as b.ObjectProperty;
+      if (shorthand) {
+        node.extra = { ...node.extra, shorthand };
+      }
+      break;
+    }
+  }
+
+  return node;
 }
