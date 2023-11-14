@@ -4,7 +4,7 @@ import {
   VariableBinding as NGVariableBinding,
 } from '@angular/compiler';
 import { type Context } from './context.js';
-import { transformNode, transformSpan } from './transform.js';
+import { transformNode } from './transform.js';
 import type {
   NGMicrosyntax,
   NGMicrosyntaxAs,
@@ -17,7 +17,7 @@ import type {
   RawNGSpan,
 } from './types.js';
 import { NG_PARSE_TEMPLATE_BINDINGS_FAKE_PREFIX } from './parser.js';
-import { toLowerCamelCase } from './utils.js';
+import { toLowerCamelCase, transformSpan } from './utils.js';
 
 function transformTemplateBindings({
   expressions: rawTemplateBindings,
@@ -60,7 +60,7 @@ function transformTemplateBindings({
       );
       const updateSpanEnd = <T extends NGNode>(node: T, end: number): T => ({
         ...node,
-        ...transformSpan({ start: node.start!, end }, context),
+        ...transformSpan({ start: node.start!, end }, context.text),
       });
       const updateExpressionAlias = (expression: NGMicrosyntaxExpression) => ({
         ...updateSpanEnd(expression, alias.end),
@@ -190,7 +190,7 @@ function transformTemplateBindings({
   ) {
     return {
       type: t,
-      ...transformSpan(span, context, stripSpaces),
+      ...transformSpan(span, context.text, { processSpan: stripSpaces }),
       ...n,
     } as T;
   }

@@ -9,11 +9,7 @@ import type {
   NGPipeExpression,
   RawNGSpan,
 } from './types.js';
-import {
-  fitSpans,
-  getNgType,
-  sourceSpanToLocationInformation,
-} from './utils.js';
+import { transformSpan, getNgType } from './utils.js';
 
 export function transformNode(
   node: ng.AST,
@@ -397,9 +393,9 @@ export function transformNode(
   ) {
     const newNode = {
       type: t,
-      ...transformSpan(span, context, processSpan, hasParentParens),
+      ...transformSpan(span, context.text, { processSpan, hasParentParens }),
       ...n,
-    } as T & { start: number; end: number; range: [number, number] };
+    } as T & LocationInformation;
     switch (t) {
       case 'NumericLiteral': {
         const numericLiteral = newNode as unknown as b.NumericLiteral;
@@ -489,32 +485,3 @@ export function transformNode(
     return _isParenthesized(n) ? n.extra.parenEnd : n.end;
   }
 }
-
-export function transformSpan(
-  span: RawNGSpan,
-  context: Context,
-  processSpan = false,
-  hasParentParens = false,
-): LocationInformation {
-  if (!processSpan) {
-    return sourceSpanToLocationInformation(span);
-  }
-
-  const { outerSpan, innerSpan, hasParens } = fitSpans(
-    span,
-    context.text,
-    hasParentParens,
-  );
-  return {
-    ...sourceSpanToLocationInformation(innerSpan),
-    ...(hasParens && {
-      extra: {
-        parenthesized: true,
-        parenStart: outerSpan.start,
-        parenEnd: outerSpan.end,
-      },
-    }),
-  };
-}
-
-export { transformTemplateBindings } from './transform-microsyntax.js';

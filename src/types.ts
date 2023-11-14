@@ -4,20 +4,22 @@ export interface LocationInformation {
   start: number;
   end: number;
   range: [number, number];
+  extra?: any;
 }
 
 export interface NGBaseNode extends LocationInformation {
   type: string;
 }
 
-export type NGNode = { comments?: b.CommentLine[] } & (
+export type NGNode =
   | b.Node
   | NGMicrosyntaxNode
   | NGEmptyExpression
   | NGPipeExpression
   | NGQuotedExpression
-  | NGChainedExpression
-);
+  | NGChainedExpression;
+
+export type ParseResult = NGNode & { comments: b.CommentLine[] };
 
 export interface NGEmptyExpression extends NGBaseNode {
   type: 'NGEmptyExpression';

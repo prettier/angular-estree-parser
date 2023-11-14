@@ -4,9 +4,14 @@ import {
   transformComment,
   transformTemplateBindings,
 } from './transform.js';
-import type { NGNode, RawNGComment, NGMicrosyntax } from './types.js';
+import type {
+  NGNode,
+  RawNGComment,
+  NGMicrosyntax,
+  ParseResult,
+} from './types.js';
 import * as angularParser from './parser.js';
-import { type default as Context } from './context.js';
+import { type Context } from './context.js';
 
 function createParser(
   parse: (text: string) => {
@@ -16,8 +21,8 @@ function createParser(
   },
 ) {
   return (text: string) => {
-    const { ast: rawNgAst, comments, context } = parse(text);
-    const ast = transformNode(rawNgAst, context);
+    const { ast: angularNode, comments, context } = parse(text);
+    const ast = transformNode(angularNode, context) as ParseResult;
     ast.comments = comments.map((comment) => transformComment(comment));
     return ast;
   };
