@@ -26,9 +26,6 @@
     "build": "yarn clean && tsc -p ./tsconfig.build.json",
     "release": "yarn build && standard-version"
   },
-  "dependencies": {
-    "tslib": "^2.6.2"
-  },
   "devDependencies": {
     "@angular/compiler": "17.0.2",
     "@babel/code-frame": "7.22.13",
