@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` (EmptyExpr -> NGEmptyExpression) ast 1`] = `
+exports[` (EmptyExpr -> NGEmptyExpression) parseAction("") 1`] = `
 NGEmptyExpression {
   "comments": []
 }
@@ -8,7 +8,31 @@ NGEmptyExpression {
     | ^
 `;
 
-exports[` a ; b  (Chain -> NGChainedExpression) ast 1`] = `
+exports[` (EmptyExpr -> NGEmptyExpression) parseBinding("") 1`] = `
+NGEmptyExpression {
+  "comments": []
+}
+> 1 |
+    | ^
+`;
+
+exports[` (EmptyExpr -> NGEmptyExpression) parseInterpolationExpression("") 1`] = `
+NGEmptyExpression {
+  "comments": []
+}
+> 1 |
+    | ^
+`;
+
+exports[` (EmptyExpr -> NGEmptyExpression) parseSimpleBinding("") 1`] = `
+NGEmptyExpression {
+  "comments": []
+}
+> 1 |
+    | ^
+`;
+
+exports[` a ; b  (Chain -> NGChainedExpression) parseAction(" a ; b ") 1`] = `
 NGChainedExpression {
   "expressions": [
     "Identifier",
@@ -32,7 +56,7 @@ Identifier {
     |      ^
 `;
 
-exports[` a | b  (BindingPipe -> NGPipeExpression) ast 1`] = `
+exports[` a | b  (BindingPipe -> NGPipeExpression) parseBinding(" a | b ") 1`] = `
 NGPipeExpression {
   "left": "Identifier",
   "right": "Identifier",
@@ -55,7 +79,61 @@ Identifier {
     |      ^
 `;
 
-exports[` a | b : c  (BindingPipe -> NGPipeExpression) ast 1`] = `
+exports[` a | b  (BindingPipe -> NGPipeExpression) parseInterpolationExpression(" a | b ") 1`] = `
+NGPipeExpression {
+  "left": "Identifier",
+  "right": "Identifier",
+  "arguments": [],
+  "comments": []
+}
+> 1 |  a | b 
+    |  ^^^^^
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "a"
+}
+> 1 |  a | b 
+    |  ^
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "b"
+}
+> 1 |  a | b 
+    |      ^
+`;
+
+exports[` a | b : c  (BindingPipe -> NGPipeExpression) parseBinding(" a | b : c ") 1`] = `
+NGPipeExpression {
+  "left": "Identifier",
+  "right": "Identifier",
+  "arguments": [
+    "Identifier"
+  ],
+  "comments": []
+}
+> 1 |  a | b : c 
+    |  ^^^^^^^^^
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "a"
+}
+> 1 |  a | b : c 
+    |  ^
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "b"
+}
+> 1 |  a | b : c 
+    |      ^
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "c"
+}
+> 1 |  a | b : c 
+    |          ^
+`;
+
+exports[` a | b : c  (BindingPipe -> NGPipeExpression) parseInterpolationExpression(" a | b : c ") 1`] = `
 NGPipeExpression {
   "left": "Identifier",
   "right": "Identifier",
