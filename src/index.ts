@@ -1,9 +1,7 @@
 import type * as ng from '@angular/compiler';
-import {
-  transformNode,
-  transformComment,
-  transformTemplateBindings,
-} from './transform.js';
+import transformComment from './transform-comment.js';
+import transformNode from './transform-node.js';
+import { transformTemplateBindings } from './transform-microsyntax.js';
 import type {
   NGNode,
   RawNGComment,

@@ -11,7 +11,7 @@ import type {
 } from './types.js';
 import { transformSpan, getNgType } from './utils.js';
 
-export function transformNode(
+export function transform(
   node: ng.AST,
   context: Context,
   isInParentParens = false,
@@ -379,10 +379,10 @@ export function transformNode(
   }
 
   function _t<T extends NGNode>(n: ng.AST) {
-    return transformNode(n, context) as T;
+    return transform(n, context) as T;
   }
   function _transformHasParentParens<T extends NGNode>(n: ng.AST) {
-    return transformNode(n, context, true) as T;
+    return transform(n, context, true) as T;
   }
 
   function _c<T extends NGNode>(
@@ -485,3 +485,5 @@ export function transformNode(
     return _isParenthesized(n) ? n.extra.parenEnd : n.end;
   }
 }
+
+export default transform;

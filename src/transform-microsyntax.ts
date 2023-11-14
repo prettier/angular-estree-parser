@@ -4,7 +4,7 @@ import {
   VariableBinding as NGVariableBinding,
 } from '@angular/compiler';
 import { type Context } from './context.js';
-import { transformNode } from './transform.js';
+import transformNode from './transform-node.js';
 import type {
   NGMicrosyntax,
   NGMicrosyntaxAs,
