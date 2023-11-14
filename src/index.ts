@@ -4,13 +4,7 @@ import { Context } from './context.js';
 import { transform } from './transform.js';
 import { transformTemplateBindings } from './transform-microsyntax.js';
 import type { NGNode, RawNGComment, NGMicrosyntax } from './types.js';
-import {
-  parseNgAction,
-  parseNgBinding,
-  parseNgInterpolationExpression,
-  parseNgSimpleBinding,
-  parseNgTemplateBindings,
-} from './utils.js';
+import * as angularParser from './parser.js';
 
 function createParser(
   parse: (input: string) => { ast: ng.AST; comments: RawNGComment[] },
@@ -26,12 +20,17 @@ function createParser(
   };
 }
 
-export const parseBinding = createParser(parseNgBinding);
-export const parseSimpleBinding = createParser(parseNgSimpleBinding);
-export const parseInterpolationExpression = createParser(
-  parseNgInterpolationExpression,
+export const parseBinding = createParser(angularParser.parseBinding);
+export const parseSimpleBinding = createParser(
+  angularParser.parseSimpleBinding,
 );
-export const parseAction = createParser(parseNgAction);
+export const parseInterpolationExpression = createParser(
+  angularParser.parseInterpolationExpression,
+);
+export const parseAction = createParser(angularParser.parseAction);
 export const parseTemplateBindings = (input: string): NGMicrosyntax =>
-  transformTemplateBindings(parseNgTemplateBindings(input), new Context(input));
+  transformTemplateBindings(
+    angularParser.parseTemplateBindings(input),
+    new Context(input),
+  );
 export type { NGMicrosyntax, NGNode };

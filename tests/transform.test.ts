@@ -1,19 +1,9 @@
 import type * as ng from '@angular/compiler';
 import type * as b from '@babel/types';
-import {
-  parseAction,
-  parseBinding,
-  parseInterpolationExpression,
-  parseSimpleBinding,
-} from '../src/index.js';
+import * as estreeParser from '../src/index.js';
 import type { NGNode } from '../src/types.js';
-import {
-  getNgType,
-  parseNgAction,
-  parseNgBinding,
-  parseNgInterpolationExpression,
-  parseNgSimpleBinding,
-} from '../src/utils.js';
+import { getNgType } from '../src/utils.js';
+import * as angularParser from '../src/parser.js';
 import {
   massageAst,
   parseBabel,
@@ -22,7 +12,7 @@ import {
 } from './helpers.js';
 
 describe.each`
-  beforeType            | afterType                     | input                       | action   | binding  | simple   | interpolation
+  angularType           | estreeType                    | input                       | action   | binding  | simple   | interpolation
   ${'Binary'}           | ${'BinaryExpression'}         | ${' 0 - 1 '}                | ${true}  | ${true}  | ${true}  | ${true}
   ${'Binary'}           | ${'LogicalExpression'}        | ${' a && b '}               | ${true}  | ${true}  | ${true}  | ${true}
   ${'Binary'}           | ${'LogicalExpression'}        | ${' a ?? b '}               | ${true}  | ${true}  | ${true}  | ${true}
@@ -87,56 +77,60 @@ describe.each`
   ${'Call'}             | ${'OptionalCallExpression'}   | ${' a ?. b ( ) '}           | ${true}  | ${true}  | ${true}  | ${true}
   ${'SafeCall'}         | ${'OptionalCallExpression'}   | ${' a ?. b ?. ( ) '}        | ${true}  | ${true}  | ${true}  | ${true}
   ${'SafePropertyRead'} | ${'OptionalMemberExpression'} | ${' a ?. b '}               | ${true}  | ${true}  | ${true}  | ${true}
-`('$input ($beforeType -> $afterType)', (fields) => {
-  const { beforeType, afterType, input } = fields;
+`('$input ($angularType -> $estreeType)', (fields) => {
+  const { angularType, estreeType, input } = fields;
 
-  let beforeNode: ng.AST | null = null;
-  let afterNode: NGNode | null = null;
+  let angularNode: ng.AST | null = null;
+  let estreeNode: NGNode | null = null;
 
   const testSection = (
     section: Extract<keyof typeof fields, string>,
-    parseBefore: (input: string) => { ast: ng.AST },
-    parseAfter: (input: string) => NGNode,
+    parseAngular: (input: string) => { ast: ng.AST },
+    parseEstree: (input: string) => NGNode,
   ) => {
     if (fields[section]) {
       test(`allowed in ${section}`, () => {
-        expect(() => (beforeNode = parseBefore(input).ast)).not.toThrow();
-        expect(() => (afterNode = parseAfter(input))).not.toThrow();
+        expect(() => (angularNode = parseAngular(input).ast)).not.toThrow();
+        expect(() => (estreeNode = parseEstree(input))).not.toThrow();
       });
     } else {
       test(`disallowed in ${section}`, () => {
-        expect(() => parseBefore(input)).toThrow();
-        expect(() => parseAfter(input)).toThrow();
+        expect(() => parseAngular(input)).toThrow();
+        expect(() => parseEstree(input)).toThrow();
       });
     }
   };
 
-  testSection('action', parseNgAction, parseAction);
-  testSection('binding', parseNgBinding, parseBinding);
-  testSection('simple', parseNgSimpleBinding, parseSimpleBinding);
+  testSection('action', angularParser.parseAction, estreeParser.parseAction);
+  testSection('binding', angularParser.parseBinding, estreeParser.parseBinding);
+  testSection(
+    'simple',
+    angularParser.parseSimpleBinding,
+    estreeParser.parseSimpleBinding,
+  );
   testSection(
     'interpolation',
-    parseNgInterpolationExpression,
-    parseInterpolationExpression,
+    angularParser.parseInterpolationExpression,
+    estreeParser.parseInterpolationExpression,
   );
 
   test('ast', () => {
-    expect(beforeNode).not.toEqual(null);
-    expect(afterNode).not.toEqual(null);
+    expect(angularNode).not.toEqual(null);
+    expect(estreeNode).not.toEqual(null);
 
-    expect(getNgType(beforeNode!)).toEqual(beforeType);
-    expect(afterNode!.type).toEqual(afterType);
+    expect(getNgType(angularNode!)).toEqual(angularType);
+    expect(estreeNode!.type).toEqual(estreeType);
 
-    if (afterNode!.type.startsWith('NG')) {
-      expect(snapshotAst(afterNode, input)).toMatchSnapshot();
+    if (estreeNode!.type.startsWith('NG')) {
+      expect(snapshotAst(estreeNode, input)).toMatchSnapshot();
     } else {
       try {
-        expect(afterNode).toEqual(massageAst(parseBabelExpression(input)));
+        expect(estreeNode).toEqual(massageAst(parseBabelExpression(input)));
       } catch {
         const { comments, program } = parseBabel(input);
         const statement = program.body[0] as b.ExpressionStatement;
         expect(statement.type).toEqual('ExpressionStatement');
-        expect(massageAst(afterNode)).toEqual(
+        expect(massageAst(estreeNode)).toEqual(
           massageAst({ ...statement.expression, comments }),
         );
       }

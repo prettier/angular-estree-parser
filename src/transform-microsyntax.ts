@@ -21,10 +21,8 @@ import type {
   NGNode,
   RawNGSpan,
 } from './types.js';
-import {
-  NG_PARSE_TEMPLATE_BINDINGS_FAKE_PREFIX,
-  toLowerCamelCase,
-} from './utils.js';
+import { NG_PARSE_TEMPLATE_BINDINGS_FAKE_PREFIX } from './parser.js';
+import { toLowerCamelCase } from './utils.js';
 
 export function transformTemplateBindings(
   rawTemplateBindings: ng.TemplateBinding[],
