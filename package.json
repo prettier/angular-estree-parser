@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "@angular/compiler": "17.0.2",
-    "@babel/code-frame": "7.22.13",
+    "@babel/code-frame": "7.23.5",
     "@babel/parser": "7.23.3",
     "@babel/types": "7.23.3",
     "@types/babel__code-frame": "7.0.6",
