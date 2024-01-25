@@ -179,10 +179,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/helper-string-parser@npm:^7.22.5":
-  version: 7.22.5
-  resolution: "@babel/helper-string-parser@npm:7.22.5"
-  checksum: 7f275a7f1a9504da06afc33441e219796352a4a3d0288a961bc14d1e30e06833a71621b33c3e60ee3ac1ff3c502d55e392bcbc0665f6f9d2629809696fab7cdd
+"@babel/helper-string-parser@npm:^7.23.4":
+  version: 7.23.4
+  resolution: "@babel/helper-string-parser@npm:7.23.4"
+  checksum: c352082474a2ee1d2b812bd116a56b2e8b38065df9678a32a535f151ec6f58e54633cc778778374f10544b930703cca6ddf998803888a636afa27e2658068a9c
   languageName: node
   linkType: hard
 
@@ -414,14 +414,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/types@npm:7.23.3, @babel/types@npm:^7.0.0, @babel/types@npm:^7.18.6, @babel/types@npm:^7.20.2, @babel/types@npm:^7.20.7, @babel/types@npm:^7.21.0, @babel/types@npm:^7.21.2, @babel/types@npm:^7.3.0, @babel/types@npm:^7.3.3, @babel/types@npm:^7.8.3":
-  version: 7.23.3
-  resolution: "@babel/types@npm:7.23.3"
+"@babel/types@npm:7.23.9, @babel/types@npm:^7.0.0, @babel/types@npm:^7.18.6, @babel/types@npm:^7.20.2, @babel/types@npm:^7.20.7, @babel/types@npm:^7.21.0, @babel/types@npm:^7.21.2, @babel/types@npm:^7.3.0, @babel/types@npm:^7.3.3, @babel/types@npm:^7.8.3":
+  version: 7.23.9
+  resolution: "@babel/types@npm:7.23.9"
   dependencies:
-    "@babel/helper-string-parser": "npm:^7.22.5"
+    "@babel/helper-string-parser": "npm:^7.23.4"
     "@babel/helper-validator-identifier": "npm:^7.22.20"
     to-fast-properties: "npm:^2.0.0"
-  checksum: 05ec1527d0468aa6f3e30fa821625322794055fb572c131aaa8befdf24d174407e2e5954c2b0a292a5456962e23383e36cf9d7cbb01318146d6140ce2128d000
+  checksum: bed9634e5fd0f9dc63c84cfa83316c4cb617192db9fedfea464fca743affe93736d7bf2ebf418ee8358751a9d388e303af87a0c050cb5d87d5870c1b0154f6cb
   languageName: node
   linkType: hard
 
@@ -1283,7 +1283,7 @@ __metadata:
     "@angular/compiler": "npm:17.0.2"
     "@babel/code-frame": "npm:7.22.13"
     "@babel/parser": "npm:7.23.3"
-    "@babel/types": "npm:7.23.3"
+    "@babel/types": "npm:7.23.9"
     "@types/babel__code-frame": "npm:7.0.6"
     "@types/jest": "npm:29.5.8"
     "@typescript-eslint/eslint-plugin": "npm:6.11.0"
