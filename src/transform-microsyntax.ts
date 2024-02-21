@@ -16,7 +16,6 @@ import type {
   NGNode,
   RawNGSpan,
 } from './types.js';
-import { NG_PARSE_TEMPLATE_BINDINGS_FAKE_PREFIX } from './parser.js';
 import { toLowerCamelCase, transformSpan, createNode } from './utils.js';
 
 function isExpressionBinding(
@@ -66,10 +65,7 @@ function getAsVariableBindingValue(
   variableBinding: ng.VariableBinding,
   context: Context,
 ): ng.VariableBinding['value'] {
-  if (
-    !variableBinding.value ||
-    variableBinding.value.source !== NG_PARSE_TEMPLATE_BINDINGS_FAKE_PREFIX
-  ) {
+  if (!variableBinding.value || variableBinding.value.source) {
     return variableBinding.value;
   }
 
