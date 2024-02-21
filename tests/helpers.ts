@@ -144,33 +144,34 @@ function visitAst(ast: any, fn: (node: any) => void) {
   Object.keys(ast).forEach((key) => visitAst(ast[key], fn));
 }
 
-export function getAngularNodeType(node: unknown) {
-  for (const type of [
-    'Unary',
-    'Binary',
-    'BindingPipe',
-    'Call',
-    'Chain',
-    'Conditional',
-    'EmptyExpr',
-    'ImplicitReceiver',
-    'KeyedRead',
-    'SafeKeyedRead',
-    'KeyedWrite',
-    'LiteralArray',
-    'LiteralMap',
-    'LiteralPrimitive',
-    'NonNullAssert',
-    'PrefixNot',
-    'PropertyRead',
-    'PropertyWrite',
-    'SafeCall',
-    'SafePropertyRead',
-  ] as const) {
-    if (node instanceof ng[type]) {
-      return type;
-    }
-  }
+const KNOWN_AST_TYPES = [
+  'ASTWithSource',
+  'Unary',
+  'Binary',
+  'BindingPipe',
+  'Call',
+  'Chain',
+  'Conditional',
+  'EmptyExpr',
+  'ImplicitReceiver',
+  'KeyedRead',
+  'SafeKeyedRead',
+  'KeyedWrite',
+  'LiteralArray',
+  'LiteralMap',
+  'LiteralPrimitive',
+  'NonNullAssert',
+  'PrefixNot',
+  'PropertyRead',
+  'PropertyWrite',
+  'SafeCall',
+  'SafePropertyRead',
+  'ThisReceiver',
+] as const;
 
-  return 'Unknown';
+export function getAngularNodeType(node: ng.AST) {
+  return (
+    KNOWN_AST_TYPES.find((type) => node instanceof ng[type]) ??
+    node.constructor.name
+  );
 }
