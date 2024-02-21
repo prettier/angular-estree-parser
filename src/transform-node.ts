@@ -48,8 +48,7 @@ class Transformer extends Source {
   }
 
   transformNode<T extends NGNode>(node: ng.AST) {
-    return this.#transformNode(node) as T &
-      LocationInformation;
+    return this.#transformNode(node) as T & LocationInformation;
   }
 
   #create<T extends NGNode>(
