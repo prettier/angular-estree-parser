@@ -18,17 +18,6 @@ import type {
 } from './types.js';
 import { lowercaseFirst } from './utils.js';
 
-function fixTemplateBindingSpan(
-  templateBinding: ng.TemplateBinding,
-  text: string,
-) {
-  fixSpan(templateBinding.key.span, text);
-
-  if (isVariableBinding(templateBinding) && templateBinding.value) {
-    fixSpan(templateBinding.value.span, text);
-  }
-}
-
 function isExpressionBinding(
   templateBinding: ng.TemplateBinding,
 ): templateBinding is ng.ExpressionBinding {
@@ -41,34 +30,6 @@ function isVariableBinding(
   return templateBinding instanceof NGVariableBinding;
 }
 
-/**
- * - "a"  (start=0 end=1) -> (start=0 end=3)
- * - '\'' (start=0 end=1) -> (start=0 end=4)
- */
-function fixSpan(span: RawNGSpan, text: string) {
-  if (text[span.start] !== '"' && text[span.start] !== "'") {
-    return;
-  }
-  const quote = text[span.start];
-  let hasBackSlash = false;
-  for (let i = span.start + 1; i < text.length; i++) {
-    switch (text[i]) {
-      case quote:
-        if (!hasBackSlash) {
-          span.end = i + 1;
-          return;
-        }
-      // fall through
-      default:
-        hasBackSlash = false;
-        break;
-      case '\\':
-        hasBackSlash = !hasBackSlash;
-        break;
-    }
-  }
-}
-
 class Transformer extends Context {
   #rawTemplateBindings;
   #text;
@@ -79,7 +40,7 @@ class Transformer extends Context {
     this.#text = text;
 
     for (const expression of rawTemplateBindings) {
-      fixTemplateBindingSpan(expression, text);
+      this.#fixTemplateBindingSpan(expression);
     }
   }
 
@@ -108,6 +69,43 @@ class Transformer extends Context {
 
   #removePrefix(string: string) {
     return lowercaseFirst(string.slice(this.#prefix.source.length));
+  }
+
+  /**
+   * - "a"  (start=0 end=1) -> (start=0 end=3)
+   * - '\'' (start=0 end=1) -> (start=0 end=4)
+   */
+  #fixSpan(span: RawNGSpan) {
+    const text = this.#text;
+    if (text[span.start] !== '"' && text[span.start] !== "'") {
+      return;
+    }
+    const quote = text[span.start];
+    let hasBackSlash = false;
+    for (let i = span.start + 1; i < text.length; i++) {
+      switch (text[i]) {
+        case quote:
+          if (!hasBackSlash) {
+            span.end = i + 1;
+            return;
+          }
+        // fall through
+        default:
+          hasBackSlash = false;
+          break;
+        case '\\':
+          hasBackSlash = !hasBackSlash;
+          break;
+      }
+    }
+  }
+
+  #fixTemplateBindingSpan(templateBinding: ng.TemplateBinding) {
+    this.#fixSpan(templateBinding.key.span);
+
+    if (isVariableBinding(templateBinding) && templateBinding.value) {
+      this.#fixSpan(templateBinding.value.span);
+    }
   }
 
   #transformTemplateBindings(): NGMicrosyntax {
