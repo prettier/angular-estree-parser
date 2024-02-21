@@ -3,8 +3,7 @@ import {
   ExpressionBinding as NGExpressionBinding,
   VariableBinding as NGVariableBinding,
 } from '@angular/compiler';
-import { Source } from './source.js';
-import { transform as transformNode } from './transform-node.js';
+import { Transformer as NodeTransformer } from './transform-node.js';
 import type {
   NGMicrosyntax,
   NGMicrosyntaxAs,
@@ -30,12 +29,13 @@ function isVariableBinding(
   return templateBinding instanceof NGVariableBinding;
 }
 
-class Transformer extends Source {
+class Transformer extends NodeTransformer {
   #rawTemplateBindings;
   #text;
 
   constructor(rawTemplateBindings: ng.TemplateBinding[], text: string) {
-    super(text);
+    super(undefined, text);
+
     this.#rawTemplateBindings = rawTemplateBindings;
     this.#text = text;
 
@@ -60,7 +60,7 @@ class Transformer extends Source {
   }
 
   #transform<T extends NGNode>(node: ng.AST) {
-    return transformNode(node, this.#text) as T;
+    return this.transformNode(node) as T;
   }
 
   #removePrefix(string: string) {

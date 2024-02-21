@@ -37,14 +37,19 @@ class Transformer extends Source {
   #node;
   #text;
 
-  constructor(ast: ng.AST, text: string) {
+  constructor(ast: ng.AST | undefined, text: string) {
     super(text);
     this.#node = ast;
     this.#text = text;
   }
 
   get node() {
-    return this.#transform(this.#node);
+    return this.#transform(this.#node!);
+  }
+
+  transformNode<T extends NGNode>(node: ng.AST) {
+    return this.#transformNode(node) as T &
+      LocationInformation;
   }
 
   #create<T extends NGNode>(
@@ -528,4 +533,4 @@ function transform(node: ng.AST, text: string): NGNode {
   return new Transformer(node, text).node;
 }
 
-export { transform };
+export { transform, Transformer };
