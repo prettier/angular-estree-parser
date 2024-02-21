@@ -1,4 +1,4 @@
-import type { RawNGSpan, LocationInformation,  } from './types.js';
+import type { RawNGSpan, LocationInformation } from './types.js';
 
 function stripSurroundingSpaces(
   { start: startIndex, end: endIndex }: RawNGSpan,
@@ -149,30 +149,3 @@ export function sourceSpanToLocationInformation(
     range: [start, end],
   };
 }
-
-export function transformSpan(
-  span: RawNGSpan,
-  text: string,
-  { stripSpaces = false, hasParentParens = false } = {},
-): LocationInformation {
-  if (!stripSpaces) {
-    return sourceSpanToLocationInformation(span);
-  }
-
-  const { outerSpan, innerSpan, hasParens } = fitSpans(
-    span,
-    text,
-    hasParentParens,
-  );
-  const locationInformation = sourceSpanToLocationInformation(innerSpan);
-  if (hasParens) {
-    locationInformation.extra = {
-      parenthesized: true,
-      parenStart: outerSpan.start,
-      parenEnd: outerSpan.end,
-    };
-  }
-
-  return locationInformation;
-}
-

@@ -16,7 +16,7 @@ import type {
   NGNode,
   RawNGSpan,
 } from './types.js';
-import { lowercaseFirst, transformSpan } from './utils.js';
+import { lowercaseFirst } from './utils.js';
 
 function fixTemplateBindingSpan(
   templateBinding: ng.TemplateBinding,
@@ -142,7 +142,7 @@ class Transformer extends Context {
         });
         const updateSpanEnd = <T extends NGNode>(node: T, end: number): T => ({
           ...node,
-          ...transformSpan({ start: node.start!, end }, this.#text),
+          ...this.transformSpan({ start: node.start!, end }),
         });
         const updateExpressionAlias = (
           expression: NGMicrosyntaxExpression,
