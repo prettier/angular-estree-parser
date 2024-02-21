@@ -167,6 +167,7 @@ const KNOWN_AST_TYPES = [
   'SafeCall',
   'SafePropertyRead',
   'ThisReceiver',
+  'Interpolation',
 ] as const;
 
 export function getAngularNodeType(node: ng.AST) {

@@ -37,11 +37,7 @@ function parseAction(text: string) {
 }
 
 function parseInterpolationExpression(text: string) {
-  return parse(text, (text, parser) => {
-    const result = parser.parseInterpolationExpression(text, '', 0);
-    result.ast = (result.ast as Interpolation).expressions[0];
-    return result;
-  });
+  return parse(text, (text, parser) => parser.parseInterpolationExpression(text, '', 0));
 }
 
 function parseTemplateBindings(text: string) {

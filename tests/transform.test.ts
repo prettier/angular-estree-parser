@@ -131,6 +131,10 @@ function testSection(
 
   beforeAll(() => {
     angularNode = parseAngular(text).ast;
+    if (method === 'parseInterpolationExpression') {
+      angularNode = (angularNode as ng.Interpolation).expressions[0];
+    }
+
     estreeNode = parseEstree(text);
     if (!estreeNode.type.startsWith('NG')) {
       try {

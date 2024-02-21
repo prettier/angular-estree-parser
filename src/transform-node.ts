@@ -60,6 +60,16 @@ function transform(
   context: Context,
   isInParentParens = false,
 ): NGNode {
+  if (node instanceof ng.Interpolation) {
+    const {expressions} = node
+
+    if (expressions.length !== 1) {
+      throw new Error("Unexpected 'Interpolation'")
+    }
+
+    return _t(expressions[0]);
+  }
+
   if (node instanceof ng.Unary) {
     return _c<b.UnaryExpression>(
       {
