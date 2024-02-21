@@ -3,7 +3,7 @@ import {
   ExpressionBinding as NGExpressionBinding,
   VariableBinding as NGVariableBinding,
 } from '@angular/compiler';
-import { Context } from './context.js';
+import { Source } from './source.js';
 import { transform as transformNode } from './transform-node.js';
 import type {
   NGMicrosyntax,
@@ -30,7 +30,7 @@ function isVariableBinding(
   return templateBinding instanceof NGVariableBinding;
 }
 
-class Transformer extends Context {
+class Transformer extends Source {
   #rawTemplateBindings;
   #text;
 

@@ -1,6 +1,6 @@
 import * as ng from '@angular/compiler';
 import type * as b from '@babel/types';
-import Context from './context.js';
+import Source from './source.js';
 import type {
   NGChainedExpression,
   NGEmptyExpression,
@@ -33,7 +33,7 @@ function isImplicitThis(node: ng.AST, text: string): boolean {
   return start >= end || /^\s+$/.test(text.slice(start, end));
 }
 
-class Transformer extends Context {
+class Transformer extends Source {
   #node;
   #text;
 

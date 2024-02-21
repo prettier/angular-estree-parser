@@ -7,7 +7,7 @@ import {
 } from './utils.js';
 import type * as b from '@babel/types';
 
-export class Context {
+export class Source {
   text;
 
   constructor(text: string) {
@@ -85,4 +85,4 @@ export class Context {
   }
 }
 
-export default Context;
+export default Source;
