@@ -44,10 +44,6 @@ class Transformer extends Source {
     }
   }
 
-  static transform(rawTemplateBindings: ng.TemplateBinding[], text: string) {
-    return new Transformer(rawTemplateBindings, text).expressions;
-  }
-
   get expressions() {
     return this.#transformTemplateBindings();
   }
@@ -106,6 +102,27 @@ class Transformer extends Source {
     if (isVariableBinding(templateBinding) && templateBinding.value) {
       this.#fixSpan(templateBinding.value.span);
     }
+  }
+
+  /**
+   * - "as b" (value="NgEstreeParser" key="b") -> (value="$implicit" key="b")
+   */
+  #getAsVariableBindingValue(
+    variableBinding: ng.VariableBinding,
+  ): ng.VariableBinding['value'] {
+    if (!variableBinding.value || variableBinding.value.source) {
+      return variableBinding.value;
+    }
+
+    const index = this.getCharacterIndex(
+      /\S/,
+      variableBinding.sourceSpan.start,
+    );
+
+    return {
+      source: '$implicit',
+      span: { start: index, end: index },
+    };
   }
 
   #transformTemplateBindings(): NGMicrosyntax {
@@ -173,25 +190,6 @@ class Transformer extends Source {
         ? rawTemplateBindings[0].sourceSpan
         : { start: body[0].start, end: body.at(-1)!.end }),
     });
-  }
-  /**
-   * - "as b" (value="NgEstreeParser" key="b") -> (value="$implicit" key="b")
-   */
-  #getAsVariableBindingValue(
-    variableBinding: ng.VariableBinding,
-  ): ng.VariableBinding['value'] {
-    if (!variableBinding.value || variableBinding.value.source) {
-      return variableBinding.value;
-    }
-
-    const index = this.getCharacterIndex(
-      /\S/,
-      variableBinding.sourceSpan.start,
-    );
-    return {
-      source: '$implicit',
-      span: { start: index, end: index },
-    };
   }
 
   #transformTemplateBinding(
@@ -278,7 +276,7 @@ class Transformer extends Source {
 }
 
 function transform(rawTemplateBindings: ng.TemplateBinding[], text: string) {
-  return Transformer.transform(rawTemplateBindings, text);
+  return new Transformer(rawTemplateBindings, text).expressions;
 }
 
 export default transform;

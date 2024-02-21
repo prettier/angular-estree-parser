@@ -43,10 +43,6 @@ class Transformer extends Source {
     this.#text = text;
   }
 
-  static transform(ast: ng.AST, text: string) {
-    return new Transformer(ast, text).node;
-  }
-
   get node() {
     return this.#transform(this.#node);
   }
@@ -529,8 +525,8 @@ class Transformer extends Source {
 // SafeCall
 // EmptyExpr
 // PrefixNot
-function transform(ast: ng.AST, text: string): NGNode {
-  return Transformer.transform(ast, text);
+function transform(node: ng.AST, text: string): NGNode {
+  return new Transformer(node, text).node;
 }
 
 export { transform };
