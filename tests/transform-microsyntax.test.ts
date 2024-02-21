@@ -1,4 +1,5 @@
-import type * as b from '@babel/types';
+import type * as babel from '@babel/types';
+
 import { parseTemplateBindings } from '../src/index.js';
 import type { NGMicrosyntaxKeyedExpression } from '../src/types.js';
 import { snapshotAst } from './helpers.js';
@@ -32,7 +33,7 @@ test('Shorthand', () => {
   const ast = parseTemplateBindings(code);
   const secondExpression = ast.body[1] as NGMicrosyntaxKeyedExpression;
   const objectExpression = secondExpression.expression
-    .expression as b.ObjectExpression;
-  const firstProperty = objectExpression.properties[0] as b.ObjectProperty;
+    .expression as babel.ObjectExpression;
+  const firstProperty = objectExpression.properties[0] as babel.ObjectProperty;
   expect(firstProperty.shorthand).toBe(true);
 });

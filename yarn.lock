@@ -1344,6 +1344,7 @@ __metadata:
     eslint-config-prettier: "npm:9.1.0"
     eslint-plugin-deprecation: "npm:2.0.0"
     eslint-plugin-import: "npm:2.29.1"
+    eslint-plugin-simple-import-sort: "npm:12.0.0"
     eslint-plugin-unicorn: "npm:51.0.1"
     jest: "npm:29.7.0"
     jest-snapshot-serializer-raw: "npm:1.2.0"
@@ -2724,6 +2725,15 @@ __metadata:
   peerDependencies:
     eslint: ^2 || ^3 || ^4 || ^5 || ^6 || ^7.2.0 || ^8
   checksum: 10/5865f05c38552145423c535326ec9a7113ab2305c7614c8b896ff905cfabc859c8805cac21e979c9f6f742afa333e6f62f812eabf891a7e8f5f0b853a32593c1
+  languageName: node
+  linkType: hard
+
+"eslint-plugin-simple-import-sort@npm:12.0.0":
+  version: 12.0.0
+  resolution: "eslint-plugin-simple-import-sort@npm:12.0.0"
+  peerDependencies:
+    eslint: ">=5.0.0"
+  checksum: 10/94d15a6b287b3036c402de4e034f2a4c950dc04be3a85c699f481327344bdecdeb659e86cfdf2dd69861b7044e10a4bef009029c107896ed1cf1c2badd7cdbce
   languageName: node
   linkType: hard
 

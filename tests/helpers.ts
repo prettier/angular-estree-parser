@@ -1,9 +1,9 @@
-import * as ng from '@angular/compiler';
+import * as angular from '@angular/compiler';
 import { codeFrameColumns } from '@babel/code-frame';
-import type * as b from '@babel/types';
 import * as babelParser from '@babel/parser';
-import { LinesAndColumns } from 'lines-and-columns';
+import type * as babel from '@babel/types';
 import { wrap } from 'jest-snapshot-serializer-raw';
+import { LinesAndColumns } from 'lines-and-columns';
 
 const babelParserOptions: babelParser.ParserOptions = {
   plugins: [
@@ -16,7 +16,7 @@ function fixBabelCommentsRange(
   ast: (
     | ReturnType<typeof babelParser.parse>
     | ReturnType<typeof babelParser.parseExpression>
-  ) & { comments?: b.Comment[] | null },
+  ) & { comments?: babel.Comment[] | null },
 ) {
   // https://github.com/babel/babel/issues/15115
   for (const comment of ast.comments!) {
@@ -167,11 +167,12 @@ const KNOWN_AST_TYPES = [
   'SafeCall',
   'SafePropertyRead',
   'ThisReceiver',
+  'Interpolation',
 ] as const;
 
-export function getAngularNodeType(node: ng.AST) {
+export function getAngularNodeType(node: angular.AST) {
   return (
-    KNOWN_AST_TYPES.find((type) => node instanceof ng[type]) ??
+    KNOWN_AST_TYPES.find((type) => node instanceof angular[type]) ??
     node.constructor.name
   );
 }
