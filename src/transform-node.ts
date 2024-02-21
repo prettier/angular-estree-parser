@@ -40,6 +40,9 @@ function transform(
 ): NGNode {
   const type = getAngularNodeType(node);
   switch (type) {
+    case 'ASTWithSource': {
+      return _t((node as ng.ASTWithSource).ast);
+    }
     case 'Unary': {
       const { operator, expr } = node as ng.Unary;
       const argumentNode = _t<b.Expression>(expr);
@@ -405,7 +408,8 @@ function transform(
     }
     // istanbul ignore next
     default:
-      throw new Error(`Unexpected node ${type}`);
+      console.log(node);
+      throw new Error(`Unexpected node`);
   }
 
   function _t<T extends NGNode>(n: ng.AST) {

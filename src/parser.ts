@@ -66,7 +66,7 @@ function parseTemplateBindings(text: string) {
   const parser = createParser();
   const { templateBindings: expressions, errors } =
     parser.parseTemplateBindings(
-      NG_PARSE_TEMPLATE_BINDINGS_FAKE_PREFIX,
+      '',
       text,
       NG_PARSE_FAKE_LOCATION,
       NG_PARSE_FAKE_ABSOLUTE_OFFSET,

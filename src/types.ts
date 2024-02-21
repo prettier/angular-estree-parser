@@ -80,48 +80,34 @@ export interface RawNGSpan {
  */
 export interface NGMicrosyntax extends NGBaseNode {
   type: 'NGMicrosyntax';
-  body: (
-    | NGMicrosyntaxAs
-    | NGMicrosyntaxExpression
-    | NGMicrosyntaxKey
-    | NGMicrosyntaxKeyedExpression
-    | NGMicrosyntaxLet
-  )[];
+  body: NGMicrosyntaxExpression[];
 }
 
 export type NGMicrosyntaxNode =
   | NGMicrosyntax
-  | NGMicrosyntaxAs
-  | NGMicrosyntaxExpression
-  | NGMicrosyntaxKey
-  | NGMicrosyntaxKeyedExpression
-  | NGMicrosyntaxLet;
+  | NGMicrosyntaxOfExpression
+  | NGMicrosyntaxAsExpression
+  | NGMicrosyntaxKeyedExpression;
 
-export interface NGMicrosyntaxKey extends NGBaseNode {
-  type: 'NGMicrosyntaxKey';
-  name: string;
+export type NGMicrosyntaxExpression =
+  | NGMicrosyntaxOfExpression
+  | NGMicrosyntaxAsExpression
+  | NGMicrosyntaxKeyedExpression
+  | NGNode;
+
+export interface NGMicrosyntaxOfExpression extends NGBaseNode {
+  left: b.ForOfStatement['left'] & LocationInformation;
+  right: b.ForOfStatement['right'] & LocationInformation;
 }
 
 export interface NGMicrosyntaxKeyedExpression extends NGBaseNode {
   type: 'NGMicrosyntaxKeyedExpression';
-  key: NGMicrosyntaxKey;
+  key: b.Identifier;
   expression: NGMicrosyntaxExpression;
 }
 
-export interface NGMicrosyntaxExpression extends NGBaseNode {
-  type: 'NGMicrosyntaxExpression';
+export interface NGMicrosyntaxAsExpression extends NGBaseNode {
+  type: 'NGMicrosyntaxAsExpression';
   expression: NGNode;
-  alias: NGMicrosyntaxKey | null;
-}
-
-export interface NGMicrosyntaxAs extends NGBaseNode {
-  type: 'NGMicrosyntaxAs';
-  key: NGMicrosyntaxKey;
-  alias: NGMicrosyntaxKey;
-}
-
-export interface NGMicrosyntaxLet extends NGBaseNode {
-  type: 'NGMicrosyntaxLet';
-  key: NGMicrosyntaxKey;
-  value: NGMicrosyntaxKey | null;
+  alias: b.Identifier;
 }

@@ -30,6 +30,7 @@ export function getAngularNodeType(node: (ng.AST | RawNGComment) & { type?: stri
   if (node instanceof ng.PropertyWrite) { return "PropertyWrite"; }
   if (node instanceof ng.SafeCall) { return "SafeCall"; }
   if (node instanceof ng.SafePropertyRead) { return "SafePropertyRead"; }
+  if (node instanceof ng.ASTWithSource) { return "ASTWithSource"; }
   // istanbul ignore next
   return node.type;
 }

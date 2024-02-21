@@ -8,18 +8,27 @@ NGMicrosyntax {
     | ^
 `;
 
+exports[` 2`] = `
+{
+  "ast": {
+    "body": [],
+    "end": 0,
+    "range": [
+      0,
+      0,
+    ],
+    "start": 0,
+    "type": "NGMicrosyntax",
+  },
+  "text": "",
+}
+`;
+
 exports[` a  1`] = `
 NGMicrosyntax {
   "body": [
-    "NGMicrosyntaxExpression"
+    "Identifier"
   ]
-}
-> 1 |  a 
-    |  ^
---------------------------------------------------------------------------------
-NGMicrosyntaxExpression {
-  "expression": "Identifier",
-  "alias": null
 }
 > 1 |  a 
     |  ^
@@ -29,24 +38,44 @@ Identifier {
 }
 > 1 |  a 
     |  ^
+`;
+
+exports[` a  2`] = `
+{
+  "ast": {
+    "body": [
+      {
+        "end": 2,
+        "name": "a",
+        "range": [
+          1,
+          2,
+        ],
+        "start": 1,
+        "type": "Identifier",
+      },
+    ],
+    "end": 2,
+    "range": [
+      1,
+      2,
+    ],
+    "start": 1,
+    "type": "NGMicrosyntax",
+  },
+  "text": " a ",
+}
 `;
 
 exports[` a , b  1`] = `
 NGMicrosyntax {
   "body": [
-    "NGMicrosyntaxExpression",
-    "NGMicrosyntaxKey"
+    "Identifier",
+    "Identifier"
   ]
 }
 > 1 |  a , b 
     |  ^^^^^
---------------------------------------------------------------------------------
-NGMicrosyntaxExpression {
-  "expression": "Identifier",
-  "alias": null
-}
-> 1 |  a , b 
-    |  ^
 --------------------------------------------------------------------------------
 Identifier {
   "name": "a"
@@ -54,29 +83,59 @@ Identifier {
 > 1 |  a , b 
     |  ^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKey {
-  "name": "b"
+Identifier {
+  "name": "B"
 }
 > 1 |  a , b 
     |      ^
+`;
+
+exports[` a , b  2`] = `
+{
+  "ast": {
+    "body": [
+      {
+        "end": 2,
+        "name": "a",
+        "range": [
+          1,
+          2,
+        ],
+        "start": 1,
+        "type": "Identifier",
+      },
+      {
+        "end": 6,
+        "name": "B",
+        "range": [
+          5,
+          6,
+        ],
+        "start": 5,
+        "type": "Identifier",
+      },
+    ],
+    "end": 6,
+    "range": [
+      1,
+      6,
+    ],
+    "start": 1,
+    "type": "NGMicrosyntax",
+  },
+  "text": " a , b ",
+}
 `;
 
 exports[` a ; b  1`] = `
 NGMicrosyntax {
   "body": [
-    "NGMicrosyntaxExpression",
-    "NGMicrosyntaxKey"
+    "Identifier",
+    "Identifier"
   ]
 }
 > 1 |  a ; b 
     |  ^^^^^
---------------------------------------------------------------------------------
-NGMicrosyntaxExpression {
-  "expression": "Identifier",
-  "alias": null
-}
-> 1 |  a ; b 
-    |  ^
 --------------------------------------------------------------------------------
 Identifier {
   "name": "a"
@@ -84,30 +143,60 @@ Identifier {
 > 1 |  a ; b 
     |  ^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKey {
-  "name": "b"
+Identifier {
+  "name": "B"
 }
 > 1 |  a ; b 
     |      ^
 `;
 
+exports[` a ; b  2`] = `
+{
+  "ast": {
+    "body": [
+      {
+        "end": 2,
+        "name": "a",
+        "range": [
+          1,
+          2,
+        ],
+        "start": 1,
+        "type": "Identifier",
+      },
+      {
+        "end": 6,
+        "name": "B",
+        "range": [
+          5,
+          6,
+        ],
+        "start": 5,
+        "type": "Identifier",
+      },
+    ],
+    "end": 6,
+    "range": [
+      1,
+      6,
+    ],
+    "start": 1,
+    "type": "NGMicrosyntax",
+  },
+  "text": " a ; b ",
+}
+`;
+
 exports[` a ; b : c  1`] = `
 NGMicrosyntax {
   "body": [
-    "NGMicrosyntaxExpression",
+    "Identifier",
     "NGMicrosyntaxKeyedExpression"
   ]
 }
 > 1 |  a ; b : c 
     |  ^^^^^^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxExpression {
-  "expression": "Identifier",
-  "alias": null
-}
-> 1 |  a ; b : c 
-    |  ^
---------------------------------------------------------------------------------
 Identifier {
   "name": "a"
 }
@@ -115,24 +204,17 @@ Identifier {
     |  ^
 --------------------------------------------------------------------------------
 NGMicrosyntaxKeyedExpression {
-  "key": "NGMicrosyntaxKey",
-  "expression": "NGMicrosyntaxExpression"
+  "key": "Identifier",
+  "expression": "Identifier"
 }
 > 1 |  a ; b : c 
     |      ^^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKey {
-  "name": "b"
+Identifier {
+  "name": "B"
 }
 > 1 |  a ; b : c 
     |      ^
---------------------------------------------------------------------------------
-NGMicrosyntaxExpression {
-  "expression": "Identifier",
-  "alias": null
-}
-> 1 |  a ; b : c 
-    |          ^
 --------------------------------------------------------------------------------
 Identifier {
   "name": "c"
@@ -141,22 +223,72 @@ Identifier {
     |          ^
 `;
 
+exports[` a ; b : c  2`] = `
+{
+  "ast": {
+    "body": [
+      {
+        "end": 2,
+        "name": "a",
+        "range": [
+          1,
+          2,
+        ],
+        "start": 1,
+        "type": "Identifier",
+      },
+      {
+        "end": 10,
+        "expression": {
+          "end": 10,
+          "name": "c",
+          "range": [
+            9,
+            10,
+          ],
+          "start": 9,
+          "type": "Identifier",
+        },
+        "key": {
+          "end": 6,
+          "name": "B",
+          "range": [
+            5,
+            6,
+          ],
+          "start": 5,
+          "type": "Identifier",
+        },
+        "range": [
+          5,
+          10,
+        ],
+        "start": 5,
+        "type": "NGMicrosyntaxKeyedExpression",
+      },
+    ],
+    "end": 10,
+    "range": [
+      1,
+      10,
+    ],
+    "start": 1,
+    "type": "NGMicrosyntax",
+  },
+  "text": " a ; b : c ",
+}
+`;
+
 exports[` a ; b : c as d  1`] = `
 NGMicrosyntax {
   "body": [
-    "NGMicrosyntaxExpression",
-    "NGMicrosyntaxKeyedExpression"
+    "Identifier",
+    "NGMicrosyntaxKeyedExpression",
+    "NGMicrosyntaxAsExpression"
   ]
 }
 > 1 |  a ; b : c as d 
     |  ^^^^^^^^^^^^^^
---------------------------------------------------------------------------------
-NGMicrosyntaxExpression {
-  "expression": "Identifier",
-  "alias": null
-}
-> 1 |  a ; b : c as d 
-    |  ^
 --------------------------------------------------------------------------------
 Identifier {
   "name": "a"
@@ -165,24 +297,17 @@ Identifier {
     |  ^
 --------------------------------------------------------------------------------
 NGMicrosyntaxKeyedExpression {
-  "key": "NGMicrosyntaxKey",
-  "expression": "NGMicrosyntaxExpression"
+  "key": "Identifier",
+  "expression": "Identifier"
 }
 > 1 |  a ; b : c as d 
-    |      ^^^^^^^^^^
+    |      ^^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKey {
-  "name": "b"
+Identifier {
+  "name": "B"
 }
 > 1 |  a ; b : c as d 
     |      ^
---------------------------------------------------------------------------------
-NGMicrosyntaxExpression {
-  "expression": "Identifier",
-  "alias": "NGMicrosyntaxKey"
-}
-> 1 |  a ; b : c as d 
-    |          ^^^^^^
 --------------------------------------------------------------------------------
 Identifier {
   "name": "c"
@@ -190,29 +315,120 @@ Identifier {
 > 1 |  a ; b : c as d 
     |          ^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKey {
+NGMicrosyntaxAsExpression {
+  "expression": "Identifier",
+  "alias": "Identifier"
+}
+> 1 |  a ; b : c as d 
+    |      ^^^^^^^^^^
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "B"
+}
+> 1 |  a ; b : c as d 
+    |      ^
+--------------------------------------------------------------------------------
+Identifier {
   "name": "d"
 }
 > 1 |  a ; b : c as d 
     |               ^
 `;
 
+exports[` a ; b : c as d  2`] = `
+{
+  "ast": {
+    "body": [
+      {
+        "end": 2,
+        "name": "a",
+        "range": [
+          1,
+          2,
+        ],
+        "start": 1,
+        "type": "Identifier",
+      },
+      {
+        "end": 10,
+        "expression": {
+          "end": 10,
+          "name": "c",
+          "range": [
+            9,
+            10,
+          ],
+          "start": 9,
+          "type": "Identifier",
+        },
+        "key": {
+          "end": 6,
+          "name": "B",
+          "range": [
+            5,
+            6,
+          ],
+          "start": 5,
+          "type": "Identifier",
+        },
+        "range": [
+          5,
+          10,
+        ],
+        "start": 5,
+        "type": "NGMicrosyntaxKeyedExpression",
+      },
+      {
+        "alias": {
+          "end": 15,
+          "name": "d",
+          "range": [
+            14,
+            15,
+          ],
+          "start": 14,
+          "type": "Identifier",
+        },
+        "end": 15,
+        "expression": {
+          "end": 6,
+          "name": "B",
+          "range": [
+            5,
+            6,
+          ],
+          "start": 5,
+          "type": "Identifier",
+        },
+        "range": [
+          5,
+          15,
+        ],
+        "start": 5,
+        "type": "NGMicrosyntaxAsExpression",
+      },
+    ],
+    "end": 15,
+    "range": [
+      1,
+      15,
+    ],
+    "start": 1,
+    "type": "NGMicrosyntax",
+  },
+  "text": " a ; b : c as d ",
+}
+`;
+
 exports[` a ; b as c  1`] = `
 NGMicrosyntax {
   "body": [
-    "NGMicrosyntaxExpression",
-    "NGMicrosyntaxAs"
+    "Identifier",
+    "NGMicrosyntaxAsExpression"
   ]
 }
 > 1 |  a ; b as c 
     |  ^^^^^^^^^^
---------------------------------------------------------------------------------
-NGMicrosyntaxExpression {
-  "expression": "Identifier",
-  "alias": null
-}
-> 1 |  a ; b as c 
-    |  ^
 --------------------------------------------------------------------------------
 Identifier {
   "name": "a"
@@ -220,43 +436,92 @@ Identifier {
 > 1 |  a ; b as c 
     |  ^
 --------------------------------------------------------------------------------
-NGMicrosyntaxAs {
-  "key": "NGMicrosyntaxKey",
-  "alias": "NGMicrosyntaxKey"
+NGMicrosyntaxAsExpression {
+  "expression": "Identifier",
+  "alias": "Identifier"
 }
 > 1 |  a ; b as c 
     |      ^^^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKey {
+Identifier {
   "name": "b"
 }
 > 1 |  a ; b as c 
     |      ^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKey {
+Identifier {
   "name": "c"
 }
 > 1 |  a ; b as c 
     |           ^
 `;
 
+exports[` a ; b as c  2`] = `
+{
+  "ast": {
+    "body": [
+      {
+        "end": 2,
+        "name": "a",
+        "range": [
+          1,
+          2,
+        ],
+        "start": 1,
+        "type": "Identifier",
+      },
+      {
+        "alias": {
+          "end": 11,
+          "name": "c",
+          "range": [
+            10,
+            11,
+          ],
+          "start": 10,
+          "type": "Identifier",
+        },
+        "end": 11,
+        "expression": {
+          "end": 6,
+          "name": "b",
+          "range": [
+            5,
+            6,
+          ],
+          "start": 5,
+          "type": "Identifier",
+        },
+        "range": [
+          5,
+          11,
+        ],
+        "start": 5,
+        "type": "NGMicrosyntaxAsExpression",
+      },
+    ],
+    "end": 11,
+    "range": [
+      1,
+      11,
+    ],
+    "start": 1,
+    "type": "NGMicrosyntax",
+  },
+  "text": " a ; b as c ",
+}
+`;
+
 exports[` a ; b c  1`] = `
 NGMicrosyntax {
   "body": [
-    "NGMicrosyntaxExpression",
+    "Identifier",
     "NGMicrosyntaxKeyedExpression"
   ]
 }
 > 1 |  a ; b c 
     |  ^^^^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxExpression {
-  "expression": "Identifier",
-  "alias": null
-}
-> 1 |  a ; b c 
-    |  ^
---------------------------------------------------------------------------------
 Identifier {
   "name": "a"
 }
@@ -264,24 +529,17 @@ Identifier {
     |  ^
 --------------------------------------------------------------------------------
 NGMicrosyntaxKeyedExpression {
-  "key": "NGMicrosyntaxKey",
-  "expression": "NGMicrosyntaxExpression"
+  "key": "Identifier",
+  "expression": "Identifier"
 }
 > 1 |  a ; b c 
     |      ^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKey {
-  "name": "b"
+Identifier {
+  "name": "B"
 }
 > 1 |  a ; b c 
     |      ^
---------------------------------------------------------------------------------
-NGMicrosyntaxExpression {
-  "expression": "Identifier",
-  "alias": null
-}
-> 1 |  a ; b c 
-    |        ^
 --------------------------------------------------------------------------------
 Identifier {
   "name": "c"
@@ -290,18 +548,68 @@ Identifier {
     |        ^
 `;
 
+exports[` a ; b c  2`] = `
+{
+  "ast": {
+    "body": [
+      {
+        "end": 2,
+        "name": "a",
+        "range": [
+          1,
+          2,
+        ],
+        "start": 1,
+        "type": "Identifier",
+      },
+      {
+        "end": 8,
+        "expression": {
+          "end": 8,
+          "name": "c",
+          "range": [
+            7,
+            8,
+          ],
+          "start": 7,
+          "type": "Identifier",
+        },
+        "key": {
+          "end": 6,
+          "name": "B",
+          "range": [
+            5,
+            6,
+          ],
+          "start": 5,
+          "type": "Identifier",
+        },
+        "range": [
+          5,
+          8,
+        ],
+        "start": 5,
+        "type": "NGMicrosyntaxKeyedExpression",
+      },
+    ],
+    "end": 8,
+    "range": [
+      1,
+      8,
+    ],
+    "start": 1,
+    "type": "NGMicrosyntax",
+  },
+  "text": " a ; b c ",
+}
+`;
+
 exports[` a as b  1`] = `
 NGMicrosyntax {
   "body": [
-    "NGMicrosyntaxExpression"
+    "Identifier",
+    "NGMicrosyntaxAsExpression"
   ]
-}
-> 1 |  a as b 
-    |  ^^^^^^
---------------------------------------------------------------------------------
-NGMicrosyntaxExpression {
-  "expression": "Identifier",
-  "alias": "NGMicrosyntaxKey"
 }
 > 1 |  a as b 
     |  ^^^^^^
@@ -312,179 +620,805 @@ Identifier {
 > 1 |  a as b 
     |  ^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKey {
+NGMicrosyntaxAsExpression {
+  "expression": "Identifier",
+  "alias": "Identifier"
+}
+> 1 |  a as b 
+    |  ^^^^^^
+--------------------------------------------------------------------------------
+Identifier {
+  "name": ""
+}
+> 1 |  a as b 
+    | ^
+--------------------------------------------------------------------------------
+Identifier {
   "name": "b"
 }
 > 1 |  a as b 
     |       ^
 `;
 
+exports[` a as b  2`] = `
+{
+  "ast": {
+    "body": [
+      {
+        "end": 2,
+        "name": "a",
+        "range": [
+          1,
+          2,
+        ],
+        "start": 1,
+        "type": "Identifier",
+      },
+      {
+        "alias": {
+          "end": 7,
+          "name": "b",
+          "range": [
+            6,
+            7,
+          ],
+          "start": 6,
+          "type": "Identifier",
+        },
+        "end": 7,
+        "expression": {
+          "end": 0,
+          "name": "",
+          "range": [
+            0,
+            0,
+          ],
+          "start": 0,
+          "type": "Identifier",
+        },
+        "range": [
+          1,
+          7,
+        ],
+        "start": 1,
+        "type": "NGMicrosyntaxAsExpression",
+      },
+    ],
+    "end": 7,
+    "range": [
+      1,
+      7,
+    ],
+    "start": 1,
+    "type": "NGMicrosyntax",
+  },
+  "text": " a as b ",
+}
+`;
+
 exports[` as b  1`] = `
 NGMicrosyntax {
   "body": [
-    "NGMicrosyntaxAs"
+    "NGMicrosyntaxAsExpression"
   ]
 }
 > 1 |  as b 
     |  ^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxAs {
-  "key": "NGMicrosyntaxKey",
-  "alias": "NGMicrosyntaxKey"
+NGMicrosyntaxAsExpression {
+  "expression": "Identifier",
+  "alias": "Identifier"
 }
 > 1 |  as b 
     |  ^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKey {
-  "name": "$implicit"
+Identifier {
+  "name": ""
 }
 > 1 |  as b 
-    |  ^
+    | ^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKey {
+Identifier {
   "name": "b"
 }
 > 1 |  as b 
     |     ^
 `;
 
+exports[` as b  2`] = `
+{
+  "ast": {
+    "body": [
+      {
+        "alias": {
+          "end": 5,
+          "name": "b",
+          "range": [
+            4,
+            5,
+          ],
+          "start": 4,
+          "type": "Identifier",
+        },
+        "end": 5,
+        "expression": {
+          "end": 0,
+          "name": "",
+          "range": [
+            0,
+            0,
+          ],
+          "start": 0,
+          "type": "Identifier",
+        },
+        "range": [
+          1,
+          5,
+        ],
+        "start": 1,
+        "type": "NGMicrosyntaxAsExpression",
+      },
+    ],
+    "end": 5,
+    "range": [
+      1,
+      5,
+    ],
+    "start": 1,
+    "type": "NGMicrosyntax",
+  },
+  "text": " as b ",
+}
+`;
+
+exports[` item of items; track item  1`] = `
+NGMicrosyntax {
+  "body": [
+    "NGMicrosyntaxOfExpression",
+    "NGMicrosyntaxKeyedExpression"
+  ]
+}
+> 1 |  item of items; track item 
+    |  ^^^^^^^^^^^^^^^^^^^^^^^^^
+--------------------------------------------------------------------------------
+NGMicrosyntaxOfExpression {
+  "left": "Identifier",
+  "right": "Identifier"
+}
+> 1 |  item of items; track item 
+    |  ^^^^
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "item"
+}
+> 1 |  item of items; track item 
+    |  ^^^^
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "items"
+}
+> 1 |  item of items; track item 
+    |          ^^^^^
+--------------------------------------------------------------------------------
+NGMicrosyntaxKeyedExpression {
+  "key": "Identifier",
+  "expression": "Identifier"
+}
+> 1 |  item of items; track item 
+    |                 ^^^^^^^^^^
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "Track"
+}
+> 1 |  item of items; track item 
+    |                 ^^^^^
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "item"
+}
+> 1 |  item of items; track item 
+    |                       ^^^^
+`;
+
+exports[` item of items; track item  2`] = `
+{
+  "ast": {
+    "body": [
+      {
+        "end": 5,
+        "left": {
+          "end": 5,
+          "name": "item",
+          "range": [
+            1,
+            5,
+          ],
+          "start": 1,
+          "type": "Identifier",
+        },
+        "range": [
+          1,
+          5,
+        ],
+        "right": {
+          "end": 14,
+          "name": "items",
+          "range": [
+            9,
+            14,
+          ],
+          "start": 9,
+          "type": "Identifier",
+        },
+        "start": 1,
+        "type": "NGMicrosyntaxOfExpression",
+      },
+      {
+        "end": 26,
+        "expression": {
+          "end": 26,
+          "name": "item",
+          "range": [
+            22,
+            26,
+          ],
+          "start": 22,
+          "type": "Identifier",
+        },
+        "key": {
+          "end": 21,
+          "name": "Track",
+          "range": [
+            16,
+            21,
+          ],
+          "start": 16,
+          "type": "Identifier",
+        },
+        "range": [
+          16,
+          26,
+        ],
+        "start": 16,
+        "type": "NGMicrosyntaxKeyedExpression",
+      },
+    ],
+    "end": 26,
+    "range": [
+      1,
+      26,
+    ],
+    "start": 1,
+    "type": "NGMicrosyntax",
+  },
+  "text": " item of items; track item ",
+}
+`;
+
+exports[` item of items;index as i; trackBy: trackByFn 1`] = `
+NGMicrosyntax {
+  "body": [
+    "NGMicrosyntaxOfExpression",
+    "NGMicrosyntaxAsExpression",
+    "NGMicrosyntaxKeyedExpression"
+  ]
+}
+> 1 |  item of items;index as i; trackBy: trackByFn
+    |  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+--------------------------------------------------------------------------------
+NGMicrosyntaxOfExpression {
+  "left": "Identifier",
+  "right": "Identifier"
+}
+> 1 |  item of items;index as i; trackBy: trackByFn
+    |  ^^^^
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "item"
+}
+> 1 |  item of items;index as i; trackBy: trackByFn
+    |  ^^^^
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "items"
+}
+> 1 |  item of items;index as i; trackBy: trackByFn
+    |          ^^^^^
+--------------------------------------------------------------------------------
+NGMicrosyntaxAsExpression {
+  "expression": "Identifier",
+  "alias": "Identifier"
+}
+> 1 |  item of items;index as i; trackBy: trackByFn
+    |                ^^^^^^^^^^
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "index"
+}
+> 1 |  item of items;index as i; trackBy: trackByFn
+    |                ^^^^^
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "i"
+}
+> 1 |  item of items;index as i; trackBy: trackByFn
+    |                         ^
+--------------------------------------------------------------------------------
+NGMicrosyntaxKeyedExpression {
+  "key": "Identifier",
+  "expression": "Identifier"
+}
+> 1 |  item of items;index as i; trackBy: trackByFn
+    |                            ^^^^^^^^^^^^^^^^^^
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "TrackBy"
+}
+> 1 |  item of items;index as i; trackBy: trackByFn
+    |                            ^^^^^^^
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "trackByFn"
+}
+> 1 |  item of items;index as i; trackBy: trackByFn
+    |                                     ^^^^^^^^^
+`;
+
+exports[` item of items;index as i; trackBy: trackByFn 2`] = `
+{
+  "ast": {
+    "body": [
+      {
+        "end": 5,
+        "left": {
+          "end": 5,
+          "name": "item",
+          "range": [
+            1,
+            5,
+          ],
+          "start": 1,
+          "type": "Identifier",
+        },
+        "range": [
+          1,
+          5,
+        ],
+        "right": {
+          "end": 14,
+          "name": "items",
+          "range": [
+            9,
+            14,
+          ],
+          "start": 9,
+          "type": "Identifier",
+        },
+        "start": 1,
+        "type": "NGMicrosyntaxOfExpression",
+      },
+      {
+        "alias": {
+          "end": 25,
+          "name": "i",
+          "range": [
+            24,
+            25,
+          ],
+          "start": 24,
+          "type": "Identifier",
+        },
+        "end": 25,
+        "expression": {
+          "end": 20,
+          "name": "index",
+          "range": [
+            15,
+            20,
+          ],
+          "start": 15,
+          "type": "Identifier",
+        },
+        "range": [
+          15,
+          25,
+        ],
+        "start": 15,
+        "type": "NGMicrosyntaxAsExpression",
+      },
+      {
+        "end": 45,
+        "expression": {
+          "end": 45,
+          "name": "trackByFn",
+          "range": [
+            36,
+            45,
+          ],
+          "start": 36,
+          "type": "Identifier",
+        },
+        "key": {
+          "end": 34,
+          "name": "TrackBy",
+          "range": [
+            27,
+            34,
+          ],
+          "start": 27,
+          "type": "Identifier",
+        },
+        "range": [
+          27,
+          45,
+        ],
+        "start": 27,
+        "type": "NGMicrosyntaxKeyedExpression",
+      },
+    ],
+    "end": 45,
+    "range": [
+      1,
+      45,
+    ],
+    "start": 1,
+    "type": "NGMicrosyntax",
+  },
+  "text": " item of items;index as i; trackBy: trackByFn",
+}
+`;
+
 exports[` let "\\""  1`] = `
 NGMicrosyntax {
   "body": [
-    "NGMicrosyntaxLet"
+    "VariableDeclaration"
   ]
 }
 > 1 |  let "\\"" 
     |  ^^^^^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxLet {
-  "key": "NGMicrosyntaxKey",
-  "value": null
+VariableDeclaration {
+  "kind": "let",
+  "declarations": [
+    "VariableDeclarator"
+  ]
 }
 > 1 |  let "\\"" 
     |  ^^^^^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKey {
+VariableDeclarator {
+  "id": "Identifier",
+  "init": null
+}
+> 1 |  let "\\"" 
+    |  ^^^^^^^^
+--------------------------------------------------------------------------------
+Identifier {
   "name": "\\""
 }
 > 1 |  let "\\"" 
     |      ^^^^
 `;
 
+exports[` let "\\""  2`] = `
+{
+  "ast": {
+    "body": [
+      {
+        "declarations": [
+          {
+            "end": 9,
+            "id": {
+              "end": 9,
+              "name": """,
+              "range": [
+                5,
+                9,
+              ],
+              "start": 5,
+              "type": "Identifier",
+            },
+            "init": null,
+            "range": [
+              1,
+              9,
+            ],
+            "start": 1,
+            "type": "VariableDeclarator",
+          },
+        ],
+        "end": 9,
+        "kind": "let",
+        "range": [
+          1,
+          9,
+        ],
+        "start": 1,
+        "type": "VariableDeclaration",
+      },
+    ],
+    "end": 9,
+    "range": [
+      1,
+      9,
+    ],
+    "start": 1,
+    "type": "NGMicrosyntax",
+  },
+  "text": " let "\\"" ",
+}
+`;
+
 exports[` let "a" = "b" ; "c" as "d"  1`] = `
 NGMicrosyntax {
   "body": [
-    "NGMicrosyntaxLet",
-    "NGMicrosyntaxAs"
+    "VariableDeclaration",
+    "NGMicrosyntaxAsExpression"
   ]
 }
 > 1 |  let "a" = "b" ; "c" as "d" 
     |  ^^^^^^^^^^^^^^^^^^^^^^^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxLet {
-  "key": "NGMicrosyntaxKey",
-  "value": "NGMicrosyntaxKey"
+VariableDeclaration {
+  "kind": "let",
+  "declarations": [
+    "VariableDeclarator"
+  ]
 }
 > 1 |  let "a" = "b" ; "c" as "d" 
-    |  ^^^^^^^^^^^^^
+    |  ^^^^^^^^^^^^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKey {
+VariableDeclarator {
+  "id": "Identifier",
+  "init": "Identifier"
+}
+> 1 |  let "a" = "b" ; "c" as "d" 
+    |  ^^^^^^^^^^^^^^^
+--------------------------------------------------------------------------------
+Identifier {
   "name": "a"
 }
 > 1 |  let "a" = "b" ; "c" as "d" 
     |      ^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKey {
+Identifier {
   "name": "b"
 }
 > 1 |  let "a" = "b" ; "c" as "d" 
     |            ^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxAs {
-  "key": "NGMicrosyntaxKey",
-  "alias": "NGMicrosyntaxKey"
+NGMicrosyntaxAsExpression {
+  "expression": "Identifier",
+  "alias": "Identifier"
 }
 > 1 |  let "a" = "b" ; "c" as "d" 
     |                  ^^^^^^^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKey {
+Identifier {
   "name": "c"
 }
 > 1 |  let "a" = "b" ; "c" as "d" 
     |                  ^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKey {
+Identifier {
   "name": "d"
 }
 > 1 |  let "a" = "b" ; "c" as "d" 
     |                         ^^^
 `;
 
+exports[` let "a" = "b" ; "c" as "d"  2`] = `
+{
+  "ast": {
+    "body": [
+      {
+        "declarations": [
+          {
+            "end": 16,
+            "id": {
+              "end": 8,
+              "name": "a",
+              "range": [
+                5,
+                8,
+              ],
+              "start": 5,
+              "type": "Identifier",
+            },
+            "init": {
+              "end": 14,
+              "name": "b",
+              "range": [
+                11,
+                14,
+              ],
+              "start": 11,
+              "type": "Identifier",
+            },
+            "range": [
+              1,
+              16,
+            ],
+            "start": 1,
+            "type": "VariableDeclarator",
+          },
+        ],
+        "end": 16,
+        "kind": "let",
+        "range": [
+          1,
+          16,
+        ],
+        "start": 1,
+        "type": "VariableDeclaration",
+      },
+      {
+        "alias": {
+          "end": 27,
+          "name": "d",
+          "range": [
+            24,
+            27,
+          ],
+          "start": 24,
+          "type": "Identifier",
+        },
+        "end": 27,
+        "expression": {
+          "end": 20,
+          "name": "c",
+          "range": [
+            17,
+            20,
+          ],
+          "start": 17,
+          "type": "Identifier",
+        },
+        "range": [
+          17,
+          27,
+        ],
+        "start": 17,
+        "type": "NGMicrosyntaxAsExpression",
+      },
+    ],
+    "end": 27,
+    "range": [
+      1,
+      27,
+    ],
+    "start": 1,
+    "type": "NGMicrosyntax",
+  },
+  "text": " let "a" = "b" ; "c" as "d" ",
+}
+`;
+
 exports[` let hero  1`] = `
 NGMicrosyntax {
   "body": [
-    "NGMicrosyntaxLet"
+    "VariableDeclaration"
   ]
 }
 > 1 |  let hero 
     |  ^^^^^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxLet {
-  "key": "NGMicrosyntaxKey",
-  "value": null
+VariableDeclaration {
+  "kind": "let",
+  "declarations": [
+    "VariableDeclarator"
+  ]
 }
 > 1 |  let hero 
     |  ^^^^^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKey {
+VariableDeclarator {
+  "id": "Identifier",
+  "init": null
+}
+> 1 |  let hero 
+    |  ^^^^^^^^
+--------------------------------------------------------------------------------
+Identifier {
   "name": "hero"
 }
 > 1 |  let hero 
     |      ^^^^
 `;
 
+exports[` let hero  2`] = `
+{
+  "ast": {
+    "body": [
+      {
+        "declarations": [
+          {
+            "end": 9,
+            "id": {
+              "end": 9,
+              "name": "hero",
+              "range": [
+                5,
+                9,
+              ],
+              "start": 5,
+              "type": "Identifier",
+            },
+            "init": null,
+            "range": [
+              1,
+              9,
+            ],
+            "start": 1,
+            "type": "VariableDeclarator",
+          },
+        ],
+        "end": 9,
+        "kind": "let",
+        "range": [
+          1,
+          9,
+        ],
+        "start": 1,
+        "type": "VariableDeclaration",
+      },
+    ],
+    "end": 9,
+    "range": [
+      1,
+      9,
+    ],
+    "start": 1,
+    "type": "NGMicrosyntax",
+  },
+  "text": " let hero ",
+}
+`;
+
 exports[` let hero ; of : heroes  1`] = `
 NGMicrosyntax {
   "body": [
-    "NGMicrosyntaxLet",
+    "VariableDeclaration",
     "NGMicrosyntaxKeyedExpression"
   ]
 }
 > 1 |  let hero ; of : heroes 
     |  ^^^^^^^^^^^^^^^^^^^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxLet {
-  "key": "NGMicrosyntaxKey",
-  "value": null
+VariableDeclaration {
+  "kind": "let",
+  "declarations": [
+    "VariableDeclarator"
+  ]
 }
 > 1 |  let hero ; of : heroes 
-    |  ^^^^^^^^
+    |  ^^^^^^^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKey {
+VariableDeclarator {
+  "id": "Identifier",
+  "init": null
+}
+> 1 |  let hero ; of : heroes 
+    |  ^^^^^^^^^^
+--------------------------------------------------------------------------------
+Identifier {
   "name": "hero"
 }
 > 1 |  let hero ; of : heroes 
     |      ^^^^
 --------------------------------------------------------------------------------
 NGMicrosyntaxKeyedExpression {
-  "key": "NGMicrosyntaxKey",
-  "expression": "NGMicrosyntaxExpression"
+  "key": "Identifier",
+  "expression": "Identifier"
 }
 > 1 |  let hero ; of : heroes 
     |             ^^^^^^^^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKey {
-  "name": "of"
+Identifier {
+  "name": "Of"
 }
 > 1 |  let hero ; of : heroes 
     |             ^^
---------------------------------------------------------------------------------
-NGMicrosyntaxExpression {
-  "expression": "Identifier",
-  "alias": null
-}
-> 1 |  let hero ; of : heroes 
-    |                  ^^^^^^
 --------------------------------------------------------------------------------
 Identifier {
   "name": "heroes"
@@ -493,81 +1427,500 @@ Identifier {
     |                  ^^^^^^
 `;
 
+exports[` let hero ; of : heroes  2`] = `
+{
+  "ast": {
+    "body": [
+      {
+        "declarations": [
+          {
+            "end": 11,
+            "id": {
+              "end": 9,
+              "name": "hero",
+              "range": [
+                5,
+                9,
+              ],
+              "start": 5,
+              "type": "Identifier",
+            },
+            "init": null,
+            "range": [
+              1,
+              11,
+            ],
+            "start": 1,
+            "type": "VariableDeclarator",
+          },
+        ],
+        "end": 11,
+        "kind": "let",
+        "range": [
+          1,
+          11,
+        ],
+        "start": 1,
+        "type": "VariableDeclaration",
+      },
+      {
+        "end": 23,
+        "expression": {
+          "end": 23,
+          "name": "heroes",
+          "range": [
+            17,
+            23,
+          ],
+          "start": 17,
+          "type": "Identifier",
+        },
+        "key": {
+          "end": 14,
+          "name": "Of",
+          "range": [
+            12,
+            14,
+          ],
+          "start": 12,
+          "type": "Identifier",
+        },
+        "range": [
+          12,
+          23,
+        ],
+        "start": 12,
+        "type": "NGMicrosyntaxKeyedExpression",
+      },
+    ],
+    "end": 23,
+    "range": [
+      1,
+      23,
+    ],
+    "start": 1,
+    "type": "NGMicrosyntax",
+  },
+  "text": " let hero ; of : heroes ",
+}
+`;
+
 exports[` let hero = hello  1`] = `
 NGMicrosyntax {
   "body": [
-    "NGMicrosyntaxLet"
+    "VariableDeclaration"
   ]
 }
 > 1 |  let hero = hello 
     |  ^^^^^^^^^^^^^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxLet {
-  "key": "NGMicrosyntaxKey",
-  "value": "NGMicrosyntaxKey"
+VariableDeclaration {
+  "kind": "let",
+  "declarations": [
+    "VariableDeclarator"
+  ]
 }
 > 1 |  let hero = hello 
     |  ^^^^^^^^^^^^^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKey {
+VariableDeclarator {
+  "id": "Identifier",
+  "init": "Identifier"
+}
+> 1 |  let hero = hello 
+    |  ^^^^^^^^^^^^^^^^
+--------------------------------------------------------------------------------
+Identifier {
   "name": "hero"
 }
 > 1 |  let hero = hello 
     |      ^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKey {
+Identifier {
   "name": "hello"
 }
 > 1 |  let hero = hello 
     |             ^^^^^
 `;
 
+exports[` let hero = hello  2`] = `
+{
+  "ast": {
+    "body": [
+      {
+        "declarations": [
+          {
+            "end": 17,
+            "id": {
+              "end": 9,
+              "name": "hero",
+              "range": [
+                5,
+                9,
+              ],
+              "start": 5,
+              "type": "Identifier",
+            },
+            "init": {
+              "end": 17,
+              "name": "hello",
+              "range": [
+                12,
+                17,
+              ],
+              "start": 12,
+              "type": "Identifier",
+            },
+            "range": [
+              1,
+              17,
+            ],
+            "start": 1,
+            "type": "VariableDeclarator",
+          },
+        ],
+        "end": 17,
+        "kind": "let",
+        "range": [
+          1,
+          17,
+        ],
+        "start": 1,
+        "type": "VariableDeclaration",
+      },
+    ],
+    "end": 17,
+    "range": [
+      1,
+      17,
+    ],
+    "start": 1,
+    "type": "NGMicrosyntax",
+  },
+  "text": " let hero = hello ",
+}
+`;
+
 exports[` let hero of heroes  1`] = `
 NGMicrosyntax {
   "body": [
-    "NGMicrosyntaxLet",
-    "NGMicrosyntaxKeyedExpression"
+    "NGMicrosyntaxOfExpression"
   ]
 }
 > 1 |  let hero of heroes 
     |  ^^^^^^^^^^^^^^^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxLet {
-  "key": "NGMicrosyntaxKey",
-  "value": null
+NGMicrosyntaxOfExpression {
+  "left": "VariableDeclaration",
+  "right": "Identifier"
 }
 > 1 |  let hero of heroes 
     |  ^^^^^^^^
 --------------------------------------------------------------------------------
-NGMicrosyntaxKey {
+VariableDeclaration {
+  "kind": "let",
+  "declarations": [
+    "VariableDeclarator"
+  ]
+}
+> 1 |  let hero of heroes 
+    |  ^^^^^^^^
+--------------------------------------------------------------------------------
+VariableDeclarator {
+  "id": "Identifier",
+  "init": null
+}
+> 1 |  let hero of heroes 
+    |  ^^^^^^^^
+--------------------------------------------------------------------------------
+Identifier {
   "name": "hero"
 }
 > 1 |  let hero of heroes 
     |      ^^^^
---------------------------------------------------------------------------------
-NGMicrosyntaxKeyedExpression {
-  "key": "NGMicrosyntaxKey",
-  "expression": "NGMicrosyntaxExpression"
-}
-> 1 |  let hero of heroes 
-    |           ^^^^^^^^^
---------------------------------------------------------------------------------
-NGMicrosyntaxKey {
-  "name": "of"
-}
-> 1 |  let hero of heroes 
-    |           ^^
---------------------------------------------------------------------------------
-NGMicrosyntaxExpression {
-  "expression": "Identifier",
-  "alias": null
-}
-> 1 |  let hero of heroes 
-    |              ^^^^^^
 --------------------------------------------------------------------------------
 Identifier {
   "name": "heroes"
 }
 > 1 |  let hero of heroes 
     |              ^^^^^^
+`;
+
+exports[` let hero of heroes  2`] = `
+{
+  "ast": {
+    "body": [
+      {
+        "end": 9,
+        "left": {
+          "declarations": [
+            {
+              "end": 9,
+              "id": {
+                "end": 9,
+                "name": "hero",
+                "range": [
+                  5,
+                  9,
+                ],
+                "start": 5,
+                "type": "Identifier",
+              },
+              "init": null,
+              "range": [
+                1,
+                9,
+              ],
+              "start": 1,
+              "type": "VariableDeclarator",
+            },
+          ],
+          "end": 9,
+          "kind": "let",
+          "range": [
+            1,
+            9,
+          ],
+          "start": 1,
+          "type": "VariableDeclaration",
+        },
+        "range": [
+          1,
+          9,
+        ],
+        "right": {
+          "end": 19,
+          "name": "heroes",
+          "range": [
+            13,
+            19,
+          ],
+          "start": 13,
+          "type": "Identifier",
+        },
+        "start": 1,
+        "type": "NGMicrosyntaxOfExpression",
+      },
+    ],
+    "end": 19,
+    "range": [
+      1,
+      19,
+    ],
+    "start": 1,
+    "type": "NGMicrosyntax",
+  },
+  "text": " let hero of heroes ",
+}
+`;
+
+exports[` let item of items; index as i; trackBy: trackByFn 1`] = `
+NGMicrosyntax {
+  "body": [
+    "NGMicrosyntaxOfExpression",
+    "NGMicrosyntaxAsExpression",
+    "NGMicrosyntaxKeyedExpression"
+  ]
+}
+> 1 |  let item of items; index as i; trackBy: trackByFn
+    |  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+--------------------------------------------------------------------------------
+NGMicrosyntaxOfExpression {
+  "left": "VariableDeclaration",
+  "right": "Identifier"
+}
+> 1 |  let item of items; index as i; trackBy: trackByFn
+    |  ^^^^^^^^
+--------------------------------------------------------------------------------
+VariableDeclaration {
+  "kind": "let",
+  "declarations": [
+    "VariableDeclarator"
+  ]
+}
+> 1 |  let item of items; index as i; trackBy: trackByFn
+    |  ^^^^^^^^
+--------------------------------------------------------------------------------
+VariableDeclarator {
+  "id": "Identifier",
+  "init": null
+}
+> 1 |  let item of items; index as i; trackBy: trackByFn
+    |  ^^^^^^^^
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "item"
+}
+> 1 |  let item of items; index as i; trackBy: trackByFn
+    |      ^^^^
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "items"
+}
+> 1 |  let item of items; index as i; trackBy: trackByFn
+    |              ^^^^^
+--------------------------------------------------------------------------------
+NGMicrosyntaxAsExpression {
+  "expression": "Identifier",
+  "alias": "Identifier"
+}
+> 1 |  let item of items; index as i; trackBy: trackByFn
+    |                     ^^^^^^^^^^
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "index"
+}
+> 1 |  let item of items; index as i; trackBy: trackByFn
+    |                     ^^^^^
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "i"
+}
+> 1 |  let item of items; index as i; trackBy: trackByFn
+    |                              ^
+--------------------------------------------------------------------------------
+NGMicrosyntaxKeyedExpression {
+  "key": "Identifier",
+  "expression": "Identifier"
+}
+> 1 |  let item of items; index as i; trackBy: trackByFn
+    |                                 ^^^^^^^^^^^^^^^^^^
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "TrackBy"
+}
+> 1 |  let item of items; index as i; trackBy: trackByFn
+    |                                 ^^^^^^^
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "trackByFn"
+}
+> 1 |  let item of items; index as i; trackBy: trackByFn
+    |                                          ^^^^^^^^^
+`;
+
+exports[` let item of items; index as i; trackBy: trackByFn 2`] = `
+{
+  "ast": {
+    "body": [
+      {
+        "end": 9,
+        "left": {
+          "declarations": [
+            {
+              "end": 9,
+              "id": {
+                "end": 9,
+                "name": "item",
+                "range": [
+                  5,
+                  9,
+                ],
+                "start": 5,
+                "type": "Identifier",
+              },
+              "init": null,
+              "range": [
+                1,
+                9,
+              ],
+              "start": 1,
+              "type": "VariableDeclarator",
+            },
+          ],
+          "end": 9,
+          "kind": "let",
+          "range": [
+            1,
+            9,
+          ],
+          "start": 1,
+          "type": "VariableDeclaration",
+        },
+        "range": [
+          1,
+          9,
+        ],
+        "right": {
+          "end": 18,
+          "name": "items",
+          "range": [
+            13,
+            18,
+          ],
+          "start": 13,
+          "type": "Identifier",
+        },
+        "start": 1,
+        "type": "NGMicrosyntaxOfExpression",
+      },
+      {
+        "alias": {
+          "end": 30,
+          "name": "i",
+          "range": [
+            29,
+            30,
+          ],
+          "start": 29,
+          "type": "Identifier",
+        },
+        "end": 30,
+        "expression": {
+          "end": 25,
+          "name": "index",
+          "range": [
+            20,
+            25,
+          ],
+          "start": 20,
+          "type": "Identifier",
+        },
+        "range": [
+          20,
+          30,
+        ],
+        "start": 20,
+        "type": "NGMicrosyntaxAsExpression",
+      },
+      {
+        "end": 50,
+        "expression": {
+          "end": 50,
+          "name": "trackByFn",
+          "range": [
+            41,
+            50,
+          ],
+          "start": 41,
+          "type": "Identifier",
+        },
+        "key": {
+          "end": 39,
+          "name": "TrackBy",
+          "range": [
+            32,
+            39,
+          ],
+          "start": 32,
+          "type": "Identifier",
+        },
+        "range": [
+          32,
+          50,
+        ],
+        "start": 32,
+        "type": "NGMicrosyntaxKeyedExpression",
+      },
+    ],
+    "end": 50,
+    "range": [
+      1,
+      50,
+    ],
+    "start": 1,
+    "type": "NGMicrosyntax",
+  },
+  "text": " let item of items; index as i; trackBy: trackByFn",
+}
 `;
