@@ -8,14 +8,6 @@ import {
 import { type RawNGComment } from './types.js';
 import { Context } from './context.js';
 
-const NG_PARSE_FAKE_LOCATION = 'angular-estree-parser';
-const NG_PARSE_TEMPLATE_BINDINGS_FAKE_PREFIX = 'NgEstreeParser';
-const NG_PARSE_FAKE_ABSOLUTE_OFFSET = 0;
-const NG_PARSE_SHARED_PARAMS: readonly [string, number] = [
-  NG_PARSE_FAKE_LOCATION,
-  NG_PARSE_FAKE_ABSOLUTE_OFFSET,
-];
-
 function createParser() {
   return new Parser(new Lexer());
 }
@@ -33,29 +25,20 @@ function parse(
 }
 
 function parseBinding(text: string) {
-  return parse(text, (text, parser) =>
-    parser.parseBinding(text, ...NG_PARSE_SHARED_PARAMS),
-  );
+  return parse(text, (text, parser) => parser.parseBinding(text, '', 0));
 }
 
 function parseSimpleBinding(text: string) {
-  return parse(text, (text, parser) =>
-    parser.parseSimpleBinding(text, ...NG_PARSE_SHARED_PARAMS),
-  );
+  return parse(text, (text, parser) => parser.parseSimpleBinding(text, '', 0));
 }
 
 function parseAction(text: string) {
-  return parse(text, (text, parser) =>
-    parser.parseAction(text, ...NG_PARSE_SHARED_PARAMS),
-  );
+  return parse(text, (text, parser) => parser.parseAction(text, '', 0));
 }
 
 function parseInterpolationExpression(text: string) {
   return parse(text, (text, parser) => {
-    const result = parser.parseInterpolationExpression(
-      text,
-      ...NG_PARSE_SHARED_PARAMS,
-    );
+    const result = parser.parseInterpolationExpression(text, '', 0);
     result.ast = (result.ast as Interpolation).expressions[0];
     return result;
   });
@@ -65,13 +48,7 @@ function parseTemplateBindings(text: string) {
   const context = new Context(text);
   const parser = createParser();
   const { templateBindings: expressions, errors } =
-    parser.parseTemplateBindings(
-      NG_PARSE_TEMPLATE_BINDINGS_FAKE_PREFIX,
-      text,
-      NG_PARSE_FAKE_LOCATION,
-      NG_PARSE_FAKE_ABSOLUTE_OFFSET,
-      NG_PARSE_FAKE_ABSOLUTE_OFFSET,
-    );
+    parser.parseTemplateBindings('', text, '', 0, 0);
   assertAstErrors(errors);
   return { expressions, context };
 }
@@ -107,7 +84,6 @@ function extractComments(
 }
 
 export {
-  NG_PARSE_TEMPLATE_BINDINGS_FAKE_PREFIX,
   parseBinding,
   parseSimpleBinding,
   parseAction,
