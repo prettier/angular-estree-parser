@@ -255,4 +255,4 @@ function transformTemplateBindings(
   }
 }
 
-export { transformTemplateBindings };
+export default transformTemplateBindings

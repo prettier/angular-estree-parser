@@ -60,15 +60,19 @@ function createAngularParseFunction<
 export const parseBinding = createAngularParseFunction((text, parser) =>
   parser.parseBinding(text, '', 0),
 );
+
 export const parseSimpleBinding = createAngularParseFunction((text, parser) =>
   parser.parseSimpleBinding(text, '', 0),
 );
+
 export const parseAction = createAngularParseFunction((text, parser) =>
   parser.parseAction(text, '', 0),
 );
+
 export const parseInterpolationExpression = createAngularParseFunction(
   (text, parser) => parser.parseInterpolationExpression(text, '', 0),
 );
+
 export const parseTemplateBindings = createAngularParseFunction(
   (text, parser) => parser.parseTemplateBindings('', text, '', 0, 0),
   /* shouldExtractComment */ false,
