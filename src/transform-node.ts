@@ -43,8 +43,66 @@ class Transformer extends Context {
     this.#text = text;
   }
 
-  transform() {
+  transformAst() {
     return this.transformNode(this.#ast, this);
+  }
+
+  #transform<T extends NGNode>(node: ng.AST, isInParentParens = false) {
+    return this.transformNode(node, this, isInParentParens) as T;
+  }
+
+  #create<T extends NGNode>(
+    properties: Partial<T> & { type: T['type'] } & RawNGSpan,
+    { stripSpaces = true, hasParentParens = false } = {},
+  ) {
+    return createNode<T>(this, properties, {
+      stripSpaces,
+      hasParentParens,
+    });
+  }
+
+  #transformReceiverAndName(
+    receiver: ng.AST,
+    property: b.Expression,
+    {
+      computed,
+      optional,
+      end = getOuterEnd(property),
+      hasParentParens = false,
+    }: {
+      computed: boolean;
+      optional: boolean;
+      end?: number;
+      hasParentParens?: boolean;
+    },
+  ) {
+    if (
+      isImplicitThis(receiver, this.text) ||
+      receiver.sourceSpan.start === property.start
+    ) {
+      return property;
+    }
+    const object = this.#transform<b.Expression>(receiver);
+    const isOptionalObject = isOptionalObjectOrCallee(object);
+    return this.#create<b.OptionalMemberExpression | b.MemberExpression>(
+      {
+        type:
+          optional || isOptionalObject
+            ? 'OptionalMemberExpression'
+            : 'MemberExpression',
+        object,
+        property,
+        computed: computed,
+        ...(optional
+          ? { optional: true }
+          : isOptionalObject
+            ? { optional: false }
+            : undefined),
+        start: getOuterStart(object),
+        end,
+      },
+      { hasParentParens },
+    );
   }
 
   transformNode(
@@ -52,10 +110,9 @@ class Transformer extends Context {
     context: Context,
     isInParentParens = false,
   ): NGNode {
-    const _t = <T extends NGNode>(n: ng.AST) =>
-      this.transformNode(n, this) as T;
+    const _t = <T extends NGNode>(n: ng.AST) => this.#transform(n) as T;
     const _transformHasParentParens = <T extends NGNode>(n: ng.AST) =>
-      this.transformNode(n, this, true) as T;
+      this.#transform(n, true) as T;
 
     if (node instanceof ng.Interpolation) {
       const { expressions } = node;
@@ -64,15 +121,15 @@ class Transformer extends Context {
         throw new Error("Unexpected 'Interpolation'");
       }
 
-      return _t(expressions[0]);
+      return this.#transform(expressions[0]);
     }
 
     if (node instanceof ng.Unary) {
-      return _c<b.UnaryExpression>(
+      return this.#create<b.UnaryExpression>(
         {
           type: 'UnaryExpression',
           prefix: true,
-          argument: _t<b.Expression>(node.expr),
+          argument: this.#transform<b.Expression>(node.expr),
           operator: node.operator as '-' | '+',
           ...node.sourceSpan,
         },
@@ -86,8 +143,8 @@ class Transformer extends Context {
         operation: operator,
         right: originalRight,
       } = node;
-      const left = _t<b.Expression>(originalLeft);
-      const right = _t<b.Expression>(originalRight);
+      const left = this.#transform<b.Expression>(originalLeft);
+      const right = this.#transform<b.Expression>(originalRight);
       const start = getOuterStart(left);
       const end = getOuterEnd(right);
       const properties = {
@@ -98,7 +155,7 @@ class Transformer extends Context {
       };
 
       if (operator === '&&' || operator === '||' || operator === '??') {
-        return _c<b.LogicalExpression>(
+        return this.#create<b.LogicalExpression>(
           {
             ...properties,
             type: 'LogicalExpression',
@@ -108,7 +165,7 @@ class Transformer extends Context {
         );
       }
 
-      return _c<b.BinaryExpression>(
+      return this.#create<b.BinaryExpression>(
         {
           ...properties,
           type: 'BinaryExpression',
@@ -120,21 +177,21 @@ class Transformer extends Context {
 
     if (node instanceof ng.BindingPipe) {
       const { exp: expressionNode, name, args: originalArguments } = node;
-      const left = _t<b.Expression>(expressionNode);
+      const left = this.#transform<b.Expression>(expressionNode);
       const start = getOuterStart(left);
       const leftEnd = getOuterEnd(left);
       const rightStart = context.getCharacterIndex(
         /\S/,
         context.getCharacterIndex('|', leftEnd) + 1,
       );
-      const right = _c<b.Identifier>({
+      const right = this.#create<b.Identifier>({
         type: 'Identifier',
         name,
         start: rightStart,
         end: rightStart + name.length,
       });
       const argumentNodes = originalArguments.map<b.Expression>(_t);
-      return _c<NGPipeExpression>(
+      return this.#create<NGPipeExpression>(
         {
           type: 'NGPipeExpression',
           left,
@@ -151,7 +208,7 @@ class Transformer extends Context {
     }
 
     if (node instanceof ng.Chain) {
-      return _c<NGChainedExpression>(
+      return this.#create<NGChainedExpression>(
         {
           type: 'NGChainedExpression',
           expressions: node.expressions.map<b.Expression>(_t),
@@ -163,10 +220,10 @@ class Transformer extends Context {
 
     if (node instanceof ng.Conditional) {
       const { condition, trueExp, falseExp } = node;
-      const test = _t<b.Expression>(condition);
-      const consequent = _t<b.Expression>(trueExp);
-      const alternate = _t<b.Expression>(falseExp);
-      return _c<b.ConditionalExpression>(
+      const test = this.#transform<b.Expression>(condition);
+      const consequent = this.#transform<b.Expression>(trueExp);
+      const alternate = this.#transform<b.Expression>(falseExp);
+      return this.#create<b.ConditionalExpression>(
         {
           type: 'ConditionalExpression',
           test,
@@ -180,23 +237,23 @@ class Transformer extends Context {
     }
 
     if (node instanceof ng.EmptyExpr) {
-      return _c<NGEmptyExpression>(
+      return this.#create<NGEmptyExpression>(
         { type: 'NGEmptyExpression', ...node.sourceSpan },
         { hasParentParens: isInParentParens },
       );
     }
 
     if (node instanceof ng.ImplicitReceiver) {
-      return _c<b.ThisExpression>(
+      return this.#create<b.ThisExpression>(
         { type: 'ThisExpression', ...node.sourceSpan },
         { hasParentParens: isInParentParens },
       );
     }
 
     if (node instanceof ng.KeyedRead || node instanceof ng.SafeKeyedRead) {
-      return _transformReceiverAndName(
+      return this.#transformReceiverAndName(
         node.receiver,
-        _t<b.Expression>(node.key),
+        this.#transform<b.Expression>(node.key),
         {
           computed: true,
           optional: node instanceof ng.SafeKeyedRead,
@@ -207,7 +264,7 @@ class Transformer extends Context {
     }
 
     if (node instanceof ng.LiteralArray) {
-      return _c<b.ArrayExpression>(
+      return this.#create<b.ArrayExpression>(
         {
           type: 'ArrayExpression',
           elements: node.expressions.map<b.Expression>(_t),
@@ -219,7 +276,9 @@ class Transformer extends Context {
 
     if (node instanceof ng.LiteralMap) {
       const { keys, values } = node;
-      const tValues = values.map((value) => _t<b.Expression>(value));
+      const tValues = values.map((value) =>
+        this.#transform<b.Expression>(value),
+      );
       const tProperties = keys.map(({ key, quoted }, index) => {
         const tValue = tValues[index];
         const valueStart = getOuterStart(tValue);
@@ -241,15 +300,19 @@ class Transformer extends Context {
               ) + 1;
         const keySpan = { start: keyStart, end: keyEnd };
         const tKey = quoted
-          ? _c<b.StringLiteral>({
+          ? this.#create<b.StringLiteral>({
               type: 'StringLiteral',
               value: key,
               ...keySpan,
             })
-          : _c<b.Identifier>({ type: 'Identifier', name: key, ...keySpan });
+          : this.#create<b.Identifier>({
+              type: 'Identifier',
+              name: key,
+              ...keySpan,
+            });
         const shorthand = tKey.end < tKey.start || keyStart === valueStart;
 
-        return _c<b.ObjectProperty>({
+        return this.#create<b.ObjectProperty>({
           type: 'ObjectProperty',
           key: tKey,
           value: tValue,
@@ -259,7 +322,7 @@ class Transformer extends Context {
           end: valueEnd,
         });
       });
-      return _c<b.ObjectExpression>(
+      return this.#create<b.ObjectExpression>(
         {
           type: 'ObjectExpression',
           properties: tProperties,
@@ -273,27 +336,27 @@ class Transformer extends Context {
       const { value } = node;
       switch (typeof value) {
         case 'boolean':
-          return _c<b.BooleanLiteral>(
+          return this.#create<b.BooleanLiteral>(
             { type: 'BooleanLiteral', value, ...node.sourceSpan },
             { hasParentParens: isInParentParens },
           );
         case 'number':
-          return _c<b.NumericLiteral>(
+          return this.#create<b.NumericLiteral>(
             { type: 'NumericLiteral', value, ...node.sourceSpan },
             { hasParentParens: isInParentParens },
           );
         case 'object':
-          return _c<b.NullLiteral>(
+          return this.#create<b.NullLiteral>(
             { type: 'NullLiteral', ...node.sourceSpan },
             { hasParentParens: isInParentParens },
           );
         case 'string':
-          return _c<b.StringLiteral>(
+          return this.#create<b.StringLiteral>(
             { type: 'StringLiteral', value, ...node.sourceSpan },
             { hasParentParens: isInParentParens },
           );
         case 'undefined':
-          return _c<b.Identifier>(
+          return this.#create<b.Identifier>(
             { type: 'Identifier', name: 'undefined', ...node.sourceSpan },
             { hasParentParens: isInParentParens },
           );
@@ -312,13 +375,13 @@ class Transformer extends Context {
         args.length === 1
           ? [_transformHasParentParens<b.Expression>(args[0])]
           : (args as ng.AST[]).map<b.Expression>(_t);
-      const tReceiver = _t<b.Expression>(receiver!);
+      const tReceiver = this.#transform<b.Expression>(receiver!);
       const isOptionalReceiver = isOptionalObjectOrCallee(tReceiver);
       const nodeType =
         isOptionalType || isOptionalReceiver
           ? 'OptionalCallExpression'
           : 'CallExpression';
-      return _c<b.CallExpression | b.OptionalCallExpression>(
+      return this.#create<b.CallExpression | b.OptionalCallExpression>(
         {
           type: nodeType,
           callee: tReceiver,
@@ -333,8 +396,8 @@ class Transformer extends Context {
     }
 
     if (node instanceof ng.NonNullAssert) {
-      const expression = _t<b.Expression>(node.expression);
-      return _c<b.TSNonNullExpression>(
+      const expression = this.#transform<b.Expression>(node.expression);
+      return this.#create<b.TSNonNullExpression>(
         {
           type: 'TSNonNullExpression',
           expression: expression,
@@ -346,8 +409,8 @@ class Transformer extends Context {
     }
 
     if (node instanceof ng.PrefixNot) {
-      const expression = _t<b.Expression>(node.expression);
-      return _c<b.UnaryExpression>(
+      const expression = this.#transform<b.Expression>(node.expression);
+      return this.#create<b.UnaryExpression>(
         {
           type: 'UnaryExpression',
           prefix: true,
@@ -367,7 +430,7 @@ class Transformer extends Context {
       const { receiver, name } = node;
       const nameEnd =
         context.getCharacterLastIndex(/\S/, node.sourceSpan.end - 1) + 1;
-      const tName = _c<b.Identifier>(
+      const tName = this.#create<b.Identifier>(
         {
           type: 'Identifier',
           name,
@@ -378,7 +441,7 @@ class Transformer extends Context {
           ? { hasParentParens: isInParentParens }
           : {},
       );
-      return _transformReceiverAndName(receiver, tName, {
+      return this.#transformReceiverAndName(receiver, tName, {
         computed: false,
         optional: node instanceof ng.SafePropertyRead,
         hasParentParens: isInParentParens,
@@ -386,14 +449,14 @@ class Transformer extends Context {
     }
 
     if (node instanceof ng.KeyedWrite) {
-      const key = _t<b.Expression>(node.key);
-      const right = _t<b.Expression>(node.value);
-      const left = _transformReceiverAndName(node.receiver, key, {
+      const key = this.#transform<b.Expression>(node.key);
+      const right = this.#transform<b.Expression>(node.value);
+      const left = this.#transformReceiverAndName(node.receiver, key, {
         computed: true,
         optional: false,
         end: context.getCharacterIndex(']', getOuterEnd(key)) + 1,
       });
-      return _c<b.AssignmentExpression>(
+      return this.#create<b.AssignmentExpression>(
         {
           type: 'AssignmentExpression',
           left: left as b.MemberExpression,
@@ -408,23 +471,23 @@ class Transformer extends Context {
 
     if (node instanceof ng.PropertyWrite) {
       const { receiver, name, value } = node;
-      const tValue = _t<b.Expression>(value);
+      const tValue = this.#transform<b.Expression>(value);
       const nameEnd =
         context.getCharacterLastIndex(
           /\S/,
           context.getCharacterLastIndex('=', getOuterStart(tValue) - 1) - 1,
         ) + 1;
-      const tName = _c<b.Identifier>({
+      const tName = this.#create<b.Identifier>({
         type: 'Identifier',
         name,
         start: nameEnd - name.length,
         end: nameEnd,
       });
-      const tReceiverAndName = _transformReceiverAndName(receiver, tName, {
+      const tReceiverAndName = this.#transformReceiverAndName(receiver, tName, {
         computed: false,
         optional: false,
       });
-      return _c<b.AssignmentExpression>(
+      return this.#create<b.AssignmentExpression>(
         {
           type: 'AssignmentExpression',
           left: tReceiverAndName as b.MemberExpression,
@@ -439,60 +502,6 @@ class Transformer extends Context {
 
     // istanbul ignore next
     throw Object.assign(new Error('Unexpected node'), { node });
-
-    function _c<T extends NGNode>(
-      properties: Partial<T> & { type: T['type'] } & RawNGSpan,
-      { stripSpaces = true, hasParentParens = false } = {},
-    ) {
-      return createNode<T>(context, properties, {
-        stripSpaces,
-        hasParentParens,
-      });
-    }
-
-    function _transformReceiverAndName(
-      receiver: ng.AST,
-      property: b.Expression,
-      {
-        computed,
-        optional,
-        end = getOuterEnd(property),
-        hasParentParens = false,
-      }: {
-        computed: boolean;
-        optional: boolean;
-        end?: number;
-        hasParentParens?: boolean;
-      },
-    ) {
-      if (
-        isImplicitThis(receiver, context.text) ||
-        receiver.sourceSpan.start === property.start
-      ) {
-        return property;
-      }
-      const object = _t<b.Expression>(receiver);
-      const isOptionalObject = isOptionalObjectOrCallee(object);
-      return _c<b.OptionalMemberExpression | b.MemberExpression>(
-        {
-          type:
-            optional || isOptionalObject
-              ? 'OptionalMemberExpression'
-              : 'MemberExpression',
-          object,
-          property,
-          computed: computed,
-          ...(optional
-            ? { optional: true }
-            : isOptionalObject
-              ? { optional: false }
-              : undefined),
-          start: getOuterStart(object),
-          end,
-        },
-        { hasParentParens },
-      );
-    }
   }
 }
 
@@ -519,7 +528,7 @@ class Transformer extends Context {
 // EmptyExpr
 // PrefixNot
 function transform(ast: ng.AST, text: string): NGNode {
-  return new Transformer(ast, text).transform();
+  return new Transformer(ast, text).transformAst();
 }
 
 export default transform;
