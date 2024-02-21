@@ -1,4 +1,4 @@
-import type * as angular from '@angular/compiler';
+import * as angular from '@angular/compiler';
 import { codeFrameColumns } from '@babel/code-frame';
 import * as babelParser from '@babel/parser';
 import type * as babel from '@babel/types';
@@ -172,7 +172,7 @@ const KNOWN_AST_TYPES = [
 
 export function getAngularNodeType(node: angular.AST) {
   return (
-    KNOWN_AST_TYPES.find((type) => node instanceof ng[type]) ??
+    KNOWN_AST_TYPES.find((type) => node instanceof angular[type]) ??
     node.constructor.name
   );
 }
