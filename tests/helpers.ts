@@ -1,3 +1,4 @@
+import * as ng from '@angular/compiler';
 import { codeFrameColumns } from '@babel/code-frame';
 import type * as b from '@babel/types';
 import * as babelParser from '@babel/parser';
@@ -141,4 +142,36 @@ function visitAst(ast: any, fn: (node: any) => void) {
   }
 
   Object.keys(ast).forEach((key) => visitAst(ast[key], fn));
+}
+
+const KNOWN_AST_TYPES = [
+  'ASTWithSource',
+  'Unary',
+  'Binary',
+  'BindingPipe',
+  'Call',
+  'Chain',
+  'Conditional',
+  'EmptyExpr',
+  'ImplicitReceiver',
+  'KeyedRead',
+  'SafeKeyedRead',
+  'KeyedWrite',
+  'LiteralArray',
+  'LiteralMap',
+  'LiteralPrimitive',
+  'NonNullAssert',
+  'PrefixNot',
+  'PropertyRead',
+  'PropertyWrite',
+  'SafeCall',
+  'SafePropertyRead',
+  'ThisReceiver',
+] as const;
+
+export function getAngularNodeType(node: ng.AST) {
+  return (
+    KNOWN_AST_TYPES.find((type) => node instanceof ng[type]) ??
+    node.constructor.name
+  );
 }
