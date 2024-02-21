@@ -232,7 +232,7 @@ function transformTemplateBindings(
   }
 
   function _t<T extends NGNode>(node: ng.AST) {
-    return transformNode(node, context) as T;
+    return transformNode(node, context.text) as T;
   }
 
   function _c<T extends NGNode>(

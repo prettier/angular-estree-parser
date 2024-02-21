@@ -12,8 +12,7 @@ function transformAstResult({
   textToParse,
   comments,
 }: AstParseResult) {
-  const context = new Context(textToParse);
-  const ast = transformNode(node, context) as ParseResult;
+  const ast = transformNode(node, textToParse) as ParseResult;
   ast.comments = comments;
   return ast;
 }
