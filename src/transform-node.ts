@@ -7,7 +7,7 @@ import type {
   NGNode,
   NGPipeExpression,
   RawNGSpan,
-  LocationInformation
+  LocationInformation,
 } from './types.js';
 import { createNode } from './utils.js';
 
@@ -44,12 +44,12 @@ class Transformer extends Context {
     this.#text = text;
   }
 
-  transformAst() {
-    return this.#transform(this.#ast);
+  static transform(ast: ng.AST, text: string) {
+    return new Transformer(ast, text).ast;
   }
 
-  #transform<T extends NGNode>(node: ng.AST, isInParentParens = false) {
-    return this.transformNode(node, isInParentParens) as T & LocationInformation;
+  get ast() {
+    return this.#transform(this.#ast);
   }
 
   #create<T extends NGNode>(
@@ -106,7 +106,11 @@ class Transformer extends Context {
     );
   }
 
-  transformNode(node: ng.AST, isInParentParens = false): NGNode {
+  #transform<T extends NGNode>(node: ng.AST, isInParentParens = false) {
+    return this.#transformNode(node, isInParentParens) as T &
+      LocationInformation;
+  }
+  #transformNode(node: ng.AST, isInParentParens = false): NGNode {
     if (node instanceof ng.Interpolation) {
       const { expressions } = node;
 
@@ -528,7 +532,7 @@ class Transformer extends Context {
 // EmptyExpr
 // PrefixNot
 function transform(ast: ng.AST, text: string): NGNode {
-  return new Transformer(ast, text).transformAst();
+  return Transformer.transform(ast, text);
 }
 
 export default transform;
