@@ -51,8 +51,7 @@ class Transformer extends Source {
     properties: Partial<T> & { type: T['type'] } & RawNGSpan,
     { stripSpaces = true, hasParentParens = false } = {},
   ) {
-    return this.createNode<T>(properties, {stripSpaces,hasParentParens,
-    });
+    return this.createNode<T>(properties, { stripSpaces, hasParentParens });
   }
 
   #transformReceiverAndName(

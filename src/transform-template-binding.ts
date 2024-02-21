@@ -279,4 +279,4 @@ function transform(rawTemplateBindings: ng.TemplateBinding[], text: string) {
   return new Transformer(rawTemplateBindings, text).expressions;
 }
 
-export default transform;
+export { transform };
