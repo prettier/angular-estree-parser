@@ -4,77 +4,72 @@ import {
   type ASTWithSource,
   type TemplateBindingParseResult,
 } from '@angular/compiler';
-import { type RawNGComment } from './types.js';
+import { type CommentLine } from './types.js';
+import { sourceSpanToLocationInformation } from './utils.js';
 
-function parse<T extends ASTWithSource | TemplateBindingParseResult>(
-  text: string,
-  parse: (text: string, parser: Parser) => T,
-) {
-  const lexer = new Lexer();
-  const parser = new Parser(lexer);
+const getCommentStart = (text: string): number | null =>
+  // @ts-expect-error -- need to call private _commentStart
+  Parser.prototype._commentStart(text);
 
-  const { text: textToParse, comments } = extractComments(text, parser);
-  const result = parse(textToParse, parser);
+function extractComments(text: string, shouldExtractComment: boolean) {
+  const commentStart = shouldExtractComment ? getCommentStart(text) : null;
 
-  if (result.errors.length !== 0) {
-    const [{ message }] = result.errors;
-    throw new SyntaxError(
-      message.replace(/^Parser Error: | at column \d+ in [^]*$/g, ''),
-    );
+  if (commentStart === null) {
+    return { text, comments: [] };
   }
 
-  return { result, comments };
+  const comment: CommentLine = {
+    type: 'CommentLine',
+    value: text.slice(commentStart + '//'.length),
+    ...sourceSpanToLocationInformation({
+      start: commentStart,
+      end: text.length,
+    }),
+  };
+
+  return {
+    text: text.slice(0, commentStart),
+    comments: [comment],
+  };
 }
 
-function parseBinding(text: string) {
-  return parse(text, (text, parser) => parser.parseBinding(text, '', 0));
+function createAngularParseFunction<
+  T extends ASTWithSource | TemplateBindingParseResult,
+>(parse: (text: string, parser: Parser) => T, shouldExtractComment = true) {
+  return (originalText: string) => {
+    const lexer = new Lexer();
+    const parser = new Parser(lexer);
+
+    const { text: textToParse, comments } = extractComments(
+      originalText,
+      shouldExtractComment,
+    );
+    const result = parse(textToParse, parser);
+
+    if (result.errors.length !== 0) {
+      const [{ message }] = result.errors;
+      throw new SyntaxError(
+        message.replace(/^Parser Error: | at column \d+ in [^]*$/g, ''),
+      );
+    }
+
+    return { result, comments, originalText, textToParse };
+  };
 }
 
-function parseSimpleBinding(text: string) {
-  return parse(text, (text, parser) => parser.parseSimpleBinding(text, '', 0));
-}
-
-function parseAction(text: string) {
-  return parse(text, (text, parser) => parser.parseAction(text, '', 0));
-}
-
-function parseInterpolationExpression(text: string) {
-  return parse(text, (text, parser) =>
-    parser.parseInterpolationExpression(text, '', 0),
-  );
-}
-
-function parseTemplateBindings(text: string) {
-  return parse(text, (text, parser) =>
-    parser.parseTemplateBindings('', text, '', 0, 0),
-  );
-}
-
-function extractComments(
-  text: string,
-  parser: Parser,
-): { text: string; comments: RawNGComment[] } {
-  // @ts-expect-error -- need to call private _commentStart
-  const getCommentStart = parser._commentStart;
-  const commentStart: number | null = getCommentStart(text);
-  return commentStart === null
-    ? { text, comments: [] }
-    : {
-        text: text.slice(0, commentStart),
-        comments: [
-          {
-            type: 'Comment',
-            value: text.slice(commentStart + '//'.length),
-            sourceSpan: { start: commentStart, end: text.length },
-          },
-        ],
-      };
-}
-
-export {
-  parseBinding,
-  parseSimpleBinding,
-  parseAction,
-  parseInterpolationExpression,
-  parseTemplateBindings,
-};
+export const parseBinding = createAngularParseFunction((text, parser) =>
+  parser.parseBinding(text, '', 0),
+);
+export const parseSimpleBinding = createAngularParseFunction((text, parser) =>
+  parser.parseSimpleBinding(text, '', 0),
+);
+export const parseAction = createAngularParseFunction((text, parser) =>
+  parser.parseAction(text, '', 0),
+);
+export const parseInterpolationExpression = createAngularParseFunction(
+  (text, parser) => parser.parseInterpolationExpression(text, '', 0),
+);
+export const parseTemplateBindings = createAngularParseFunction(
+  (text, parser) => parser.parseTemplateBindings('', text, '', 0, 0),
+  /* shouldExtractComment */ false,
+);

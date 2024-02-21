@@ -19,7 +19,9 @@ export type NGNode =
   | NGQuotedExpression
   | NGChainedExpression;
 
-export type ParseResult = NGNode & { comments: b.CommentLine[] };
+export type CommentLine = b.CommentLine & LocationInformation;
+
+export type ParseResult = NGNode & { comments: CommentLine[] };
 
 export interface NGEmptyExpression extends NGBaseNode {
   type: 'NGEmptyExpression';
@@ -41,12 +43,6 @@ export interface NGQuotedExpression extends NGBaseNode {
 export interface NGChainedExpression extends NGBaseNode {
   type: 'NGChainedExpression';
   expressions: NGNode[];
-}
-
-export interface RawNGComment {
-  type: 'Comment';
-  value: string;
-  sourceSpan: RawNGSpan;
 }
 
 export interface RawNGSpan {
