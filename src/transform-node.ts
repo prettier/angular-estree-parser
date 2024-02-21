@@ -91,11 +91,7 @@ function transform(
       );
     }
     case node instanceof ng.BindingPipe: {
-      const {
-        exp: expressionNode,
-        name,
-        args: originalArguments,
-      } = node;
+      const { exp: expressionNode, name, args: originalArguments } = node;
       const left = _t<b.Expression>(expressionNode);
       const start = getOuterStart(left);
       const leftEnd = getOuterEnd(left);
@@ -330,7 +326,7 @@ function transform(
     }
     case node instanceof ng.PropertyRead:
     case node instanceof ng.SafePropertyRead: {
-      const isOptionalType = node instanceof ng.SafePropertyRead
+      const isOptionalType = node instanceof ng.SafePropertyRead;
       const { receiver, name } = node;
       const nameEnd =
         context.getCharacterLastIndex(/\S/, node.sourceSpan.end - 1) + 1;
@@ -404,7 +400,7 @@ function transform(
     }
     // istanbul ignore next
     default:
-      throw Object.assign(new Error(`Unexpected node`), {node});
+      throw Object.assign(new Error(`Unexpected node`), { node });
   }
 
   function _t<T extends NGNode>(n: ng.AST) {

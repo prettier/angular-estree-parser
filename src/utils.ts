@@ -1,9 +1,4 @@
-
-import type {
-  RawNGSpan,
-  LocationInformation,
-  NGNode,
-} from './types.js';
+import type { RawNGSpan, LocationInformation, NGNode } from './types.js';
 import type * as b from '@babel/types';
 import type Context from './context.js';
 
