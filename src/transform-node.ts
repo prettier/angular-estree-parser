@@ -7,6 +7,7 @@ import type {
   NGNode,
   NGPipeExpression,
   RawNGSpan,
+  LocationInformation
 } from './types.js';
 import { createNode } from './utils.js';
 
@@ -44,11 +45,11 @@ class Transformer extends Context {
   }
 
   transformAst() {
-    return this.transformNode(this.#ast);
+    return this.#transform(this.#ast);
   }
 
   #transform<T extends NGNode>(node: ng.AST, isInParentParens = false) {
-    return this.transformNode(node, isInParentParens) as T;
+    return this.transformNode(node, isInParentParens) as T & LocationInformation;
   }
 
   #create<T extends NGNode>(
