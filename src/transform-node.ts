@@ -33,6 +33,28 @@ function isImplicitThis(node: ng.AST, text: string): boolean {
   return start >= end || /^\s+$/.test(text.slice(start, end));
 }
 
+// See `convertAst` in `@angular/compiler`
+// ASTWithSource (Not handled)
+// PropertyRead
+// PropertyWrite
+// KeyedWrite
+// Call
+// LiteralPrimitive
+// Unary
+// Binary
+// ThisReceiver
+// KeyedRead
+// Chain
+// LiteralMap
+// LiteralArray
+// Conditional
+// NonNullAssert
+// BindingPipe
+// SafeKeyedRead
+// SafePropertyRead
+// SafeCall
+// EmptyExpr
+// PrefixNot
 function transform(
   node: ng.AST,
   context: Context,
