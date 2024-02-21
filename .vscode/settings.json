@@ -1,5 +1,5 @@
 {
-  "[javascript]": {
+  "[javascript][typescript]": {
     "editor.codeActionsOnSave": ["source.fixAll.eslint"]
   },
   "[javascript][typescript][markdown][json][jsonc][yaml]": {
