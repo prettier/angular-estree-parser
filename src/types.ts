@@ -21,7 +21,9 @@ export type NGNode =
 
 export type CommentLine = b.CommentLine & LocationInformation;
 
-export type ParseResult<T extends NGNode | NGMicrosyntax = NGNode> = T & { comments: CommentLine[] };
+export type ParseResult<T extends NGNode | NGMicrosyntax = NGNode> = T & {
+  comments: CommentLine[];
+};
 
 export interface NGEmptyExpression extends NGBaseNode {
   type: 'NGEmptyExpression';

@@ -1,1 +1,1 @@
-export {transformMicroSyntax} from './transform-microsyntax.ts'
+export { transformMicroSyntax } from './transform-microsyntax.ts';

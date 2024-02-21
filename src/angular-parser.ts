@@ -77,3 +77,6 @@ export const parseTemplateBindings = createAngularParseFunction(
   (text, parser) => parser.parseTemplateBindings('', text, '', 0, 0),
   /* shouldExtractComment */ false,
 );
+
+export type AstParseResult = ReturnType<typeof parseBinding>;
+export type MicroSyntaxParseResult = ReturnType<typeof parseTemplateBindings>;

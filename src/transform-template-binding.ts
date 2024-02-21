@@ -3,7 +3,7 @@ import {
   ExpressionBinding as NGExpressionBinding,
   VariableBinding as NGVariableBinding,
 } from '@angular/compiler';
-import { Context } from './context.js';
+import { type Context } from './context.js';
 import transformNode from './transform-node.js';
 import type {
   NGMicrosyntax,
@@ -81,9 +81,8 @@ function getAsVariableBindingValue(
 
 function transformTemplateBindings(
   rawTemplateBindings: ng.TemplateBinding[],
-  text: string,
+  context: Context,
 ): NGMicrosyntax {
-  const context = new Context(text);
   rawTemplateBindings.forEach(fixTemplateBindingSpan);
 
   const [firstTemplateBinding] = rawTemplateBindings;
@@ -255,4 +254,4 @@ function transformTemplateBindings(
   }
 }
 
-export default transformTemplateBindings
+export default transformTemplateBindings;
