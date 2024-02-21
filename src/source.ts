@@ -1,11 +1,12 @@
-import type { RawNGSpan, LocationInformation, NGNode } from './types.js';
+import type * as babel from '@babel/types';
+
+import type { LocationInformation, NGNode, RawNGSpan } from './types.js';
 import {
+  fitSpans,
   getCharacterIndex,
   getCharacterLastIndex,
   sourceSpanToLocationInformation,
-  fitSpans,
 } from './utils.js';
-import type * as babel from '@babel/types';
 
 export class Source {
   text;

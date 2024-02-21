@@ -1,5 +1,10 @@
-import * as estreeParser from '../src/estree-parser.js';
+import type * as angular from '@angular/compiler';
+import type * as babelParser from '@babel/parser';
+import type * as babel from '@babel/types';
+
 import * as angularParser from '../src/angular-parser.js';
+import * as estreeParser from '../src/estree-parser.js';
+import type { NGNode } from '../src/types.js';
 import {
   getAngularNodeType,
   massageAst,
@@ -7,10 +12,6 @@ import {
   parseBabelExpression,
   snapshotAst,
 } from './helpers.js';
-import type * as angular from '@angular/compiler';
-import type * as babel from '@babel/types';
-import type * as babelParser from '@babel/parser';
-import type { NGNode } from '../src/types.js';
 
 type BabelParseResult = ReturnType<typeof babelParser.parse>;
 type BabelParseExpressionResult = ReturnType<

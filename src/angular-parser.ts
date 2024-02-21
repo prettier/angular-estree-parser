@@ -1,9 +1,10 @@
 import {
+  type ASTWithSource,
   Lexer,
   Parser,
-  type ASTWithSource,
   type TemplateBindingParseResult,
 } from '@angular/compiler';
+
 import { type CommentLine } from './types.js';
 import { sourceSpanToLocationInformation } from './utils.js';
 

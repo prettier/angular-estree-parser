@@ -1,5 +1,5 @@
-import { transformAstResult, transformMicrosyntaxResult } from './transform.js';
 import * as angularParser from './angular-parser.js';
+import { transformAstResult, transformMicrosyntaxResult } from './transform.js';
 
 export const parseBinding = (text: string) =>
   transformAstResult(angularParser.parseBinding(text));

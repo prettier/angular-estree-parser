@@ -1,9 +1,9 @@
+import type * as angular from '@angular/compiler';
 import { codeFrameColumns } from '@babel/code-frame';
 import * as babelParser from '@babel/parser';
-import { LinesAndColumns } from 'lines-and-columns';
-import { wrap } from 'jest-snapshot-serializer-raw';
-import type * as angular from '@angular/compiler';
 import type * as babel from '@babel/types';
+import { wrap } from 'jest-snapshot-serializer-raw';
+import { LinesAndColumns } from 'lines-and-columns';
 
 const babelParserOptions: babelParser.ParserOptions = {
   plugins: [

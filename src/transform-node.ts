@@ -1,13 +1,14 @@
 import * as angular from '@angular/compiler';
 import type * as babel from '@babel/types';
+
 import Source from './source.js';
 import type {
+  LocationInformation,
   NGChainedExpression,
   NGEmptyExpression,
   NGNode,
   NGPipeExpression,
   RawNGSpan,
-  LocationInformation,
 } from './types.js';
 
 function isParenthesized(node: NGNode) {

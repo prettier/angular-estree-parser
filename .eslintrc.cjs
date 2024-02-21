@@ -11,7 +11,7 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  plugins: ['@typescript-eslint', 'import', 'unicorn'],
+  plugins: ['simple-import-sort', '@typescript-eslint', 'import', 'unicorn'],
   env: { node: true },
   rules: {
     '@typescript-eslint/no-namespace': 'off',
@@ -23,6 +23,8 @@ module.exports = {
     ],
     'no-constant-condition': ['error', { checkLoops: false }],
     'import/extensions': ['error', 'always'],
+    'simple-import-sort/imports': 'error',
+    'simple-import-sort/exports': 'error',
     'unicorn/prefer-at': 'error',
   },
   overrides: [

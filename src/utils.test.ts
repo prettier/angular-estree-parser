@@ -1,5 +1,6 @@
 import { codeFrameColumns } from '@babel/code-frame';
 import { wrap } from 'jest-snapshot-serializer-raw';
+
 import type { RawNGSpan } from './types.js';
 import { fitSpans, getCharacterIndex, getCharacterLastIndex } from './utils.js';
 
