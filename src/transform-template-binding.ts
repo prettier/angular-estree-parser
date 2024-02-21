@@ -1,9 +1,10 @@
-import type * as ng from '@angular/compiler';
 import {
   ExpressionBinding as NGExpressionBinding,
   VariableBinding as NGVariableBinding,
 } from '@angular/compiler';
 import { Transformer as NodeTransformer } from './transform-node.js';
+import { lowercaseFirst } from './utils.js';
+import type * as angular from '@angular/compiler';
 import type {
   NGMicrosyntax,
   NGMicrosyntaxAs,
@@ -15,17 +16,16 @@ import type {
   NGNode,
   RawNGSpan,
 } from './types.js';
-import { lowercaseFirst } from './utils.js';
 
 function isExpressionBinding(
-  templateBinding: ng.TemplateBinding,
-): templateBinding is ng.ExpressionBinding {
+  templateBinding: angular.TemplateBinding,
+): templateBinding is angular.ExpressionBinding {
   return templateBinding instanceof NGExpressionBinding;
 }
 
 function isVariableBinding(
-  templateBinding: ng.TemplateBinding,
-): templateBinding is ng.VariableBinding {
+  templateBinding: angular.TemplateBinding,
+): templateBinding is angular.VariableBinding {
   return templateBinding instanceof NGVariableBinding;
 }
 
@@ -33,7 +33,7 @@ class Transformer extends NodeTransformer {
   #rawTemplateBindings;
   #text;
 
-  constructor(rawTemplateBindings: ng.TemplateBinding[], text: string) {
+  constructor(rawTemplateBindings: angular.TemplateBinding[], text: string) {
     super(undefined, text);
 
     this.#rawTemplateBindings = rawTemplateBindings;
@@ -59,7 +59,7 @@ class Transformer extends NodeTransformer {
     return this.createNode<T>(properties, { stripSpaces });
   }
 
-  #transform<T extends NGNode>(node: ng.AST) {
+  #transform<T extends NGNode>(node: angular.AST) {
     return this.transformNode(node) as T;
   }
 
@@ -96,7 +96,7 @@ class Transformer extends NodeTransformer {
     }
   }
 
-  #fixTemplateBindingSpan(templateBinding: ng.TemplateBinding) {
+  #fixTemplateBindingSpan(templateBinding: angular.TemplateBinding) {
     this.#fixSpan(templateBinding.key.span);
 
     if (isVariableBinding(templateBinding) && templateBinding.value) {
@@ -108,8 +108,8 @@ class Transformer extends NodeTransformer {
    * - "as b" (value="NgEstreeParser" key="b") -> (value="$implicit" key="b")
    */
   #getAsVariableBindingValue(
-    variableBinding: ng.VariableBinding,
-  ): ng.VariableBinding['value'] {
+    variableBinding: angular.VariableBinding,
+  ): angular.VariableBinding['value'] {
     if (!variableBinding.value || variableBinding.value.source) {
       return variableBinding.value;
     }
@@ -141,7 +141,7 @@ class Transformer extends NodeTransformer {
 
     const body: NGMicrosyntax['body'] = [];
 
-    let lastTemplateBinding: ng.TemplateBinding | null = null;
+    let lastTemplateBinding: angular.TemplateBinding | null = null;
     for (const [index, templateBinding] of templateBindings.entries()) {
       if (
         lastTemplateBinding &&
@@ -193,7 +193,7 @@ class Transformer extends NodeTransformer {
   }
 
   #transformTemplateBinding(
-    templateBinding: ng.TemplateBinding,
+    templateBinding: angular.TemplateBinding,
     index: number,
   ): Exclude<NGMicrosyntaxNode, NGMicrosyntax> {
     if (isExpressionBinding(templateBinding)) {
@@ -275,7 +275,10 @@ class Transformer extends NodeTransformer {
   }
 }
 
-function transform(rawTemplateBindings: ng.TemplateBinding[], text: string) {
+function transform(
+  rawTemplateBindings: angular.TemplateBinding[],
+  text: string,
+) {
   return new Transformer(rawTemplateBindings, text).expressions;
 }
 

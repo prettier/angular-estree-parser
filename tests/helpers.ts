@@ -1,9 +1,9 @@
-import * as ng from '@angular/compiler';
 import { codeFrameColumns } from '@babel/code-frame';
-import type * as b from '@babel/types';
 import * as babelParser from '@babel/parser';
 import { LinesAndColumns } from 'lines-and-columns';
 import { wrap } from 'jest-snapshot-serializer-raw';
+import type * as angular from '@angular/compiler';
+import type * as babel from '@babel/types';
 
 const babelParserOptions: babelParser.ParserOptions = {
   plugins: [
@@ -16,9 +16,9 @@ function fixBabelCommentsRange(
   ast: (
     | ReturnType<typeof babelParser.parse>
     | ReturnType<typeof babelParser.parseExpression>
-  ) & { comments?: b.Comment[] | null },
+  ) & { comments?: babel.Comment[] | null },
 ) {
-  // https://github.com/babel/babel/issues/15115
+  // https://githubabel.com/babel/babel/issues/15115
   for (const comment of ast.comments!) {
     // @ts-expect-error -- missing types
     comment.range ??= [comment.start, comment.end];
@@ -170,7 +170,7 @@ const KNOWN_AST_TYPES = [
   'Interpolation',
 ] as const;
 
-export function getAngularNodeType(node: ng.AST) {
+export function getAngularNodeType(node: angular.AST) {
   return (
     KNOWN_AST_TYPES.find((type) => node instanceof ng[type]) ??
     node.constructor.name

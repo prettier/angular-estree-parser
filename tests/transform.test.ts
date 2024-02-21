@@ -1,9 +1,5 @@
-import type * as ng from '@angular/compiler';
-import type * as b from '@babel/types';
-import type * as babelParser from '@babel/parser';
 import * as estreeParser from '../src/estree-parser.js';
 import * as angularParser from '../src/angular-parser.js';
-import type { NGNode } from '../src/types.js';
 import {
   getAngularNodeType,
   massageAst,
@@ -11,6 +7,10 @@ import {
   parseBabelExpression,
   snapshotAst,
 } from './helpers.js';
+import type * as angular from '@angular/compiler';
+import type * as babel from '@babel/types';
+import type * as babelParser from '@babel/parser';
+import type { NGNode } from '../src/types.js';
 
 type BabelParseResult = ReturnType<typeof babelParser.parse>;
 type BabelParseExpressionResult = ReturnType<
@@ -121,18 +121,18 @@ function testSection(
     return;
   }
 
-  let angularNode: ng.AST;
+  let angularNode: angular.AST;
   let estreeNode: NGNode;
   let babelNode: (
     | BabelParseResult
     | BabelParseExpressionResult
-    | b.Expression
-  ) & { comments?: b.Comment[] | null };
+    | babel.Expression
+  ) & { comments?: babel.Comment[] | null };
 
   beforeAll(() => {
     angularNode = parseAngular(text).result.ast;
     if (method === 'parseInterpolationExpression') {
-      angularNode = (angularNode as ng.Interpolation).expressions[0];
+      angularNode = (angularNode as angular.Interpolation).expressions[0];
     }
 
     estreeNode = parseEstree(text);
@@ -160,7 +160,7 @@ function testSection(
     expect(babelNode).toBeDefined();
     if (babelNode.type === 'File') {
       const { comments = [], program } = babelNode;
-      const statement = program.body[0] as b.ExpressionStatement;
+      const statement = program.body[0] as babel.ExpressionStatement;
       expect(statement.type).toEqual('ExpressionStatement');
       babelNode = { ...statement.expression, comments };
     }

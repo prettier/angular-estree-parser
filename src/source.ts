@@ -5,7 +5,7 @@ import {
   sourceSpanToLocationInformation,
   fitSpans,
 } from './utils.js';
-import type * as b from '@babel/types';
+import type * as babel from '@babel/types';
 
 export class Source {
   text;
@@ -68,12 +68,14 @@ export class Source {
       case 'NumericLiteral':
       case 'StringLiteral': {
         const raw = this.text.slice(node.start, node.end);
-        const { value } = node as unknown as b.NumericLiteral | b.StringLiteral;
+        const { value } = node as unknown as
+          | babel.NumericLiteral
+          | babel.StringLiteral;
         node.extra = { ...node.extra, raw, rawValue: value };
         break;
       }
       case 'ObjectProperty': {
-        const { shorthand } = node as unknown as b.ObjectProperty;
+        const { shorthand } = node as unknown as babel.ObjectProperty;
         if (shorthand) {
           node.extra = { ...node.extra, shorthand };
         }

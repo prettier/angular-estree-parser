@@ -1,4 +1,4 @@
-import type * as b from '@babel/types';
+import type * as babel from '@babel/types';
 
 export interface LocationInformation {
   start: number;
@@ -12,14 +12,14 @@ export interface NGBaseNode extends LocationInformation {
 }
 
 export type NGNode =
-  | b.Node
+  | babel.Node
   | NGMicrosyntaxNode
   | NGEmptyExpression
   | NGPipeExpression
   | NGQuotedExpression
   | NGChainedExpression;
 
-export type CommentLine = b.CommentLine & LocationInformation;
+export type CommentLine = babel.CommentLine & LocationInformation;
 
 export interface NGEmptyExpression extends NGBaseNode {
   type: 'NGEmptyExpression';
@@ -27,9 +27,9 @@ export interface NGEmptyExpression extends NGBaseNode {
 
 export interface NGPipeExpression extends NGBaseNode {
   type: 'NGPipeExpression';
-  left: b.Expression;
-  right: b.Identifier;
-  arguments: b.Expression[];
+  left: babel.Expression;
+  right: babel.Identifier;
+  arguments: babel.Expression[];
 }
 
 export interface NGQuotedExpression extends NGBaseNode {
