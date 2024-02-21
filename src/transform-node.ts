@@ -42,7 +42,7 @@ function isImplicitThis(node: ng.AST, text: string): boolean {
 // LiteralPrimitive
 // Unary
 // Binary
-// ThisReceiver
+// ThisReceiver (Not handled)
 // KeyedRead
 // Chain
 // LiteralMap
