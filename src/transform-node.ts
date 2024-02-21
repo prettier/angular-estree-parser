@@ -9,7 +9,6 @@ import type {
   RawNGSpan,
   LocationInformation,
 } from './types.js';
-import { createNode } from './utils.js';
 
 function isParenthesized(node: NGNode) {
   return Boolean(node.extra?.parenthesized);
@@ -56,7 +55,7 @@ class Transformer extends Context {
     properties: Partial<T> & { type: T['type'] } & RawNGSpan,
     { stripSpaces = true, hasParentParens = false } = {},
   ) {
-    return createNode<T>(this, properties, {
+    return this.createNode<T>(this, properties, {
       stripSpaces,
       hasParentParens,
     });

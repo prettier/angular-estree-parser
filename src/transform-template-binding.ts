@@ -16,7 +16,7 @@ import type {
   NGNode,
   RawNGSpan,
 } from './types.js';
-import { toLowerCamelCase, transformSpan, createNode } from './utils.js';
+import { lowercaseFirst, transformSpan } from './utils.js';
 
 function fixTemplateBindingSpan(
   templateBinding: ng.TemplateBinding,
@@ -91,7 +91,7 @@ class Transformer extends Context {
     return this.#transformTemplateBindings();
   }
 
-  get prefix() {
+  get #prefix() {
     return this.#rawTemplateBindings[0].key;
   }
 
@@ -99,7 +99,7 @@ class Transformer extends Context {
     properties: Partial<T> & { type: T['type'] } & RawNGSpan,
     { stripSpaces = true } = {},
   ) {
-    return createNode<T>(this, properties, { stripSpaces });
+    return this.createNode<T>(this, properties, { stripSpaces });
   }
 
   #transform<T extends NGNode>(node: ng.AST) {
@@ -107,7 +107,7 @@ class Transformer extends Context {
   }
 
   #removePrefix(string: string) {
-    return toLowerCamelCase(string.slice(this.prefix.source.length));
+    return lowercaseFirst(string.slice(this.#prefix.source.length));
   }
 
   #transformTemplateBindings(): NGMicrosyntax {

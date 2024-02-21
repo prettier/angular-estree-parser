@@ -1,6 +1,4 @@
-import type { RawNGSpan, LocationInformation, NGNode } from './types.js';
-import type * as b from '@babel/types';
-import type Context from './context.js';
+import type { RawNGSpan, LocationInformation,  } from './types.js';
 
 function stripSurroundingSpaces(
   { start: startIndex, end: endIndex }: RawNGSpan,
@@ -137,7 +135,7 @@ export function getCharacterIndex(
   );
 }
 
-export function toLowerCamelCase(str: string) {
+export function lowercaseFirst(str: string) {
   return str.slice(0, 1).toLowerCase() + str.slice(1);
 }
 
@@ -178,37 +176,3 @@ export function transformSpan(
   return locationInformation;
 }
 
-export function createNode<T extends NGNode>(
-  context: Context,
-  properties: Partial<T> & { type: T['type'] } & RawNGSpan,
-  // istanbul ignore next
-  { stripSpaces = true, hasParentParens = false } = {},
-) {
-  const { type, start, end } = properties;
-  const node = {
-    ...properties,
-    ...transformSpan({ start, end }, context.text, {
-      stripSpaces,
-      hasParentParens,
-    }),
-  } as T & LocationInformation;
-
-  switch (type) {
-    case 'NumericLiteral':
-    case 'StringLiteral': {
-      const raw = context.text.slice(node.start, node.end);
-      const { value } = node as unknown as b.NumericLiteral | b.StringLiteral;
-      node.extra = { ...node.extra, raw, rawValue: value };
-      break;
-    }
-    case 'ObjectProperty': {
-      const { shorthand } = node as unknown as b.ObjectProperty;
-      if (shorthand) {
-        node.extra = { ...node.extra, shorthand };
-      }
-      break;
-    }
-  }
-
-  return node;
-}
