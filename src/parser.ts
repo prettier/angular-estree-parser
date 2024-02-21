@@ -6,14 +6,13 @@ import {
 } from '@angular/compiler';
 import { type RawNGComment } from './types.js';
 
-function createParser() {
-  return new Parser(new Lexer());
-}
+function parse<T extends ASTWithSource | TemplateBindingParseResult>(
+  text: string,
+  parse: (text: string, parser: Parser) => T,
+) {
+  const lexer = new Lexer();
+  const parser = new Parser(lexer);
 
-function parse<
-  T extends ASTWithSource | TemplateBindingParseResult = ASTWithSource,
->(text: string, parse: (text: string, parser: Parser) => T) {
-  const parser = createParser();
   const { text: textToParse, comments } = extractComments(text, parser);
   const result = parse(textToParse, parser);
 
