@@ -44,11 +44,11 @@ class Transformer extends Context {
   }
 
   transformAst() {
-    return this.transformNode(this.#ast, this);
+    return this.transformNode(this.#ast);
   }
 
   #transform<T extends NGNode>(node: ng.AST, isInParentParens = false) {
-    return this.transformNode(node, this, isInParentParens) as T;
+    return this.transformNode(node, isInParentParens) as T;
   }
 
   #create<T extends NGNode>(
@@ -77,7 +77,7 @@ class Transformer extends Context {
     },
   ) {
     if (
-      isImplicitThis(receiver, this.text) ||
+      isImplicitThis(receiver, this.#text) ||
       receiver.sourceSpan.start === property.start
     ) {
       return property;
@@ -105,11 +105,7 @@ class Transformer extends Context {
     );
   }
 
-  transformNode(
-    node: ng.AST,
-    context: Context,
-    isInParentParens = false,
-  ): NGNode {
+  transformNode(node: ng.AST, isInParentParens = false): NGNode {
     if (node instanceof ng.Interpolation) {
       const { expressions } = node;
 
@@ -176,9 +172,9 @@ class Transformer extends Context {
       const left = this.#transform<b.Expression>(expressionNode);
       const start = getOuterStart(left);
       const leftEnd = getOuterEnd(left);
-      const rightStart = context.getCharacterIndex(
+      const rightStart = this.getCharacterIndex(
         /\S/,
-        context.getCharacterIndex('|', leftEnd) + 1,
+        this.getCharacterIndex('|', leftEnd) + 1,
       );
       const right = this.#create<b.Identifier>({
         type: 'Identifier',
@@ -286,19 +282,18 @@ class Transformer extends Context {
         const valueStart = getOuterStart(tValue);
         const valueEnd = getOuterEnd(tValue);
 
-        const keyStart = context.getCharacterIndex(
+        const keyStart = this.getCharacterIndex(
           /\S/,
           index === 0
             ? node.sourceSpan.start + 1 // {
-            : context.getCharacterIndex(',', getOuterEnd(tValues[index - 1])) +
-                1,
+            : this.getCharacterIndex(',', getOuterEnd(tValues[index - 1])) + 1,
         );
         const keyEnd =
           valueStart === keyStart
             ? valueEnd
-            : context.getCharacterLastIndex(
+            : this.getCharacterLastIndex(
                 /\S/,
-                context.getCharacterLastIndex(':', valueStart - 1) - 1,
+                this.getCharacterLastIndex(':', valueStart - 1) - 1,
               ) + 1;
         const keySpan = { start: keyStart, end: keyEnd };
         const tKey = quoted
@@ -433,7 +428,7 @@ class Transformer extends Context {
     ) {
       const { receiver, name } = node;
       const nameEnd =
-        context.getCharacterLastIndex(/\S/, node.sourceSpan.end - 1) + 1;
+        this.getCharacterLastIndex(/\S/, node.sourceSpan.end - 1) + 1;
       const tName = this.#create<b.Identifier>(
         {
           type: 'Identifier',
@@ -441,7 +436,7 @@ class Transformer extends Context {
           start: nameEnd - name.length,
           end: nameEnd,
         },
-        isImplicitThis(receiver, context.text)
+        isImplicitThis(receiver, this.#text)
           ? { hasParentParens: isInParentParens }
           : {},
       );
@@ -458,7 +453,7 @@ class Transformer extends Context {
       const left = this.#transformReceiverAndName(node.receiver, key, {
         computed: true,
         optional: false,
-        end: context.getCharacterIndex(']', getOuterEnd(key)) + 1,
+        end: this.getCharacterIndex(']', getOuterEnd(key)) + 1,
       });
       return this.#create<b.AssignmentExpression>(
         {
@@ -477,9 +472,9 @@ class Transformer extends Context {
       const { receiver, name, value } = node;
       const tValue = this.#transform<b.Expression>(value);
       const nameEnd =
-        context.getCharacterLastIndex(
+        this.getCharacterLastIndex(
           /\S/,
-          context.getCharacterLastIndex('=', getOuterStart(tValue) - 1) - 1,
+          this.getCharacterLastIndex('=', getOuterStart(tValue) - 1) - 1,
         ) + 1;
       const tName = this.#create<b.Identifier>({
         type: 'Identifier',
