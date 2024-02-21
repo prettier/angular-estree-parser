@@ -12,6 +12,6 @@
   "prettier.requireConfig": true,
   // "eslint.experimental.useFlatConfig": true,
   "files.exclude": {
-    "dist*": true
+    "lib": true
   }
 }
