@@ -536,4 +536,4 @@ function transform(ast: ng.AST, text: string): NGNode {
   return Transformer.transform(ast, text);
 }
 
-export {transform};
+export { transform };

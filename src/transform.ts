@@ -1,5 +1,4 @@
-import Context from './context.js';
-import {transform as transformNode} from './transform-node.js';
+import { transform as transformNode } from './transform-node.js';
 import transformTemplateBindings from './transform-template-binding.js';
 import type { ParseResult } from './types.js';
 import type {

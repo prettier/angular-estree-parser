@@ -4,7 +4,7 @@ import {
   VariableBinding as NGVariableBinding,
 } from '@angular/compiler';
 import { Context } from './context.js';
-import {transform as transformNode} from './transform-node.js';
+import { transform as transformNode } from './transform-node.js';
 import type {
   NGMicrosyntax,
   NGMicrosyntaxAs,
@@ -17,6 +17,17 @@ import type {
   RawNGSpan,
 } from './types.js';
 import { toLowerCamelCase, transformSpan, createNode } from './utils.js';
+
+function fixTemplateBindingSpan(
+  templateBinding: ng.TemplateBinding,
+  text: string,
+) {
+  fixSpan(templateBinding.key.span, text);
+
+  if (isVariableBinding(templateBinding) && templateBinding.value) {
+    fixSpan(templateBinding.value.span, text);
+  }
+}
 
 function isExpressionBinding(
   templateBinding: ng.TemplateBinding,
@@ -58,37 +69,18 @@ function fixSpan(span: RawNGSpan, text: string) {
   }
 }
 
-/**
- * - "as b" (value="NgEstreeParser" key="b") -> (value="$implicit" key="b")
- */
-function getAsVariableBindingValue(
-  variableBinding: ng.VariableBinding,
-  context: Context,
-): ng.VariableBinding['value'] {
-  if (!variableBinding.value || variableBinding.value.source) {
-    return variableBinding.value;
-  }
-
-  const index = context.getCharacterIndex(
-    /\S/,
-    variableBinding.sourceSpan.start,
-  );
-  return {
-    source: '$implicit',
-    span: { start: index, end: index },
-  };
-}
-
-
-
 class Transformer extends Context {
-  #rawTemplateBindings
-  #text
+  #rawTemplateBindings;
+  #text;
 
   constructor(rawTemplateBindings: ng.TemplateBinding[], text: string) {
     super(text);
-    this.#rawTemplateBindings = rawTemplateBindings
+    this.#rawTemplateBindings = rawTemplateBindings;
     this.#text = text;
+
+    for (const expression of rawTemplateBindings) {
+      fixTemplateBindingSpan(expression, text);
+    }
   }
 
   static transform(rawTemplateBindings: ng.TemplateBinding[], text: string) {
@@ -99,108 +91,141 @@ class Transformer extends Context {
     return this.#transformTemplateBindings();
   }
 
-
-#transformTemplateBindings(
-): NGMicrosyntax {
-  const rawTemplateBindings = this.#rawTemplateBindings
-  const context = this
-
-  rawTemplateBindings.forEach(fixTemplateBindingSpan);
-
-  const [firstTemplateBinding] = rawTemplateBindings;
-  const { key: prefix } = firstTemplateBinding;
-  const templateBindings =
-    context.text
-      .slice(
-        firstTemplateBinding.sourceSpan.start,
-        firstTemplateBinding.sourceSpan.end,
-      )
-      .trim().length === 0
-      ? rawTemplateBindings.slice(1)
-      : rawTemplateBindings;
-
-  const body: NGMicrosyntax['body'] = [];
-
-  let lastTemplateBinding: ng.TemplateBinding | null = null;
-  for (let i = 0; i < templateBindings.length; i++) {
-    const templateBinding = templateBindings[i];
-
-    if (
-      lastTemplateBinding &&
-      isExpressionBinding(lastTemplateBinding) &&
-      isVariableBinding(templateBinding) &&
-      templateBinding.value &&
-      templateBinding.value.source === lastTemplateBinding.key.source
-    ) {
-      const alias = _c<NGMicrosyntaxKey>({
-        type: 'NGMicrosyntaxKey',
-        name: templateBinding.key.source,
-        ...templateBinding.key.span,
-      });
-      const updateSpanEnd = <T extends NGNode>(node: T, end: number): T => ({
-        ...node,
-        ...transformSpan({ start: node.start!, end }, context.text),
-      });
-      const updateExpressionAlias = (expression: NGMicrosyntaxExpression) => ({
-        ...updateSpanEnd(expression, alias.end),
-        alias,
-      });
-
-      const lastNode = body.pop()!;
-      // istanbul ignore else
-      if (lastNode.type === 'NGMicrosyntaxExpression') {
-        body.push(updateExpressionAlias(lastNode));
-      } else if (lastNode.type === 'NGMicrosyntaxKeyedExpression') {
-        const expression = updateExpressionAlias(lastNode.expression);
-        body.push(updateSpanEnd({ ...lastNode, expression }, expression.end));
-      } else {
-        throw new Error(`Unexpected type ${lastNode.type}`);
-      }
-    } else {
-      body.push(transformTemplateBinding(templateBinding, i));
-    }
-
-    lastTemplateBinding = templateBinding;
+  get prefix() {
+    return this.#rawTemplateBindings[0].key;
   }
 
-  return _c<NGMicrosyntax>({
-    type: 'NGMicrosyntax',
-    body,
-    ...(body.length === 0
-      ? rawTemplateBindings[0].sourceSpan
-      : { start: body[0].start, end: body.at(-1)!.end }),
-  });
+  #create<T extends NGNode>(
+    properties: Partial<T> & { type: T['type'] } & RawNGSpan,
+    { stripSpaces = true } = {},
+  ) {
+    return createNode<T>(this, properties, { stripSpaces });
+  }
 
-  function transformTemplateBinding(
+  #transform<T extends NGNode>(node: ng.AST) {
+    return transformNode(node, this.#text) as T;
+  }
+
+  #removePrefix(string: string) {
+    return toLowerCamelCase(string.slice(this.prefix.source.length));
+  }
+
+  #transformTemplateBindings(): NGMicrosyntax {
+    const rawTemplateBindings = this.#rawTemplateBindings;
+
+    const [firstTemplateBinding] = rawTemplateBindings;
+    const templateBindings =
+      this.#text
+        .slice(
+          firstTemplateBinding.sourceSpan.start,
+          firstTemplateBinding.sourceSpan.end,
+        )
+        .trim().length === 0
+        ? rawTemplateBindings.slice(1)
+        : rawTemplateBindings;
+
+    const body: NGMicrosyntax['body'] = [];
+
+    let lastTemplateBinding: ng.TemplateBinding | null = null;
+    for (const [index, templateBinding] of templateBindings.entries()) {
+      if (
+        lastTemplateBinding &&
+        isExpressionBinding(lastTemplateBinding) &&
+        isVariableBinding(templateBinding) &&
+        templateBinding.value &&
+        templateBinding.value.source === lastTemplateBinding.key.source
+      ) {
+        const alias = this.#create<NGMicrosyntaxKey>({
+          type: 'NGMicrosyntaxKey',
+          name: templateBinding.key.source,
+          ...templateBinding.key.span,
+        });
+        const updateSpanEnd = <T extends NGNode>(node: T, end: number): T => ({
+          ...node,
+          ...transformSpan({ start: node.start!, end }, this.#text),
+        });
+        const updateExpressionAlias = (
+          expression: NGMicrosyntaxExpression,
+        ) => ({
+          ...updateSpanEnd(expression, alias.end),
+          alias,
+        });
+
+        const lastNode = body.pop()!;
+        // istanbul ignore else
+        if (lastNode.type === 'NGMicrosyntaxExpression') {
+          body.push(updateExpressionAlias(lastNode));
+        } else if (lastNode.type === 'NGMicrosyntaxKeyedExpression') {
+          const expression = updateExpressionAlias(lastNode.expression);
+          body.push(updateSpanEnd({ ...lastNode, expression }, expression.end));
+        } else {
+          throw new Error(`Unexpected type ${lastNode.type}`);
+        }
+      } else {
+        body.push(this.#transformTemplateBinding(templateBinding, index));
+      }
+
+      lastTemplateBinding = templateBinding;
+    }
+
+    return this.#create<NGMicrosyntax>({
+      type: 'NGMicrosyntax',
+      body,
+      ...(body.length === 0
+        ? rawTemplateBindings[0].sourceSpan
+        : { start: body[0].start, end: body.at(-1)!.end }),
+    });
+  }
+  /**
+   * - "as b" (value="NgEstreeParser" key="b") -> (value="$implicit" key="b")
+   */
+  #getAsVariableBindingValue(
+    variableBinding: ng.VariableBinding,
+  ): ng.VariableBinding['value'] {
+    if (!variableBinding.value || variableBinding.value.source) {
+      return variableBinding.value;
+    }
+
+    const index = this.getCharacterIndex(
+      /\S/,
+      variableBinding.sourceSpan.start,
+    );
+    return {
+      source: '$implicit',
+      span: { start: index, end: index },
+    };
+  }
+
+  #transformTemplateBinding(
     templateBinding: ng.TemplateBinding,
     index: number,
   ): Exclude<NGMicrosyntaxNode, NGMicrosyntax> {
     if (isExpressionBinding(templateBinding)) {
       const { key, value } = templateBinding;
       if (!value) {
-        return _c<NGMicrosyntaxKey>({
+        return this.#create<NGMicrosyntaxKey>({
           type: 'NGMicrosyntaxKey',
-          name: removePrefix(key.source),
+          name: this.#removePrefix(key.source),
           ...key.span,
         });
       } else if (index === 0) {
-        return _c<NGMicrosyntaxExpression>({
+        return this.#create<NGMicrosyntaxExpression>({
           type: 'NGMicrosyntaxExpression',
-          expression: _t<NGNode>(value.ast),
+          expression: this.#transform<NGNode>(value.ast),
           alias: null,
           ...value.sourceSpan,
         });
       } else {
-        return _c<NGMicrosyntaxKeyedExpression>({
+        return this.#create<NGMicrosyntaxKeyedExpression>({
           type: 'NGMicrosyntaxKeyedExpression',
-          key: _c<NGMicrosyntaxKey>({
+          key: this.#create<NGMicrosyntaxKey>({
             type: 'NGMicrosyntaxKey',
-            name: removePrefix(key.source),
+            name: this.#removePrefix(key.source),
             ...key.span,
           }),
-          expression: _c<NGMicrosyntaxExpression>({
+          expression: this.#create<NGMicrosyntaxExpression>({
             type: 'NGMicrosyntaxExpression',
-            expression: _t<NGNode>(value.ast),
+            expression: this.#transform<NGNode>(value.ast),
             alias: null,
             ...value.sourceSpan,
           }),
@@ -211,20 +236,20 @@ class Transformer extends Context {
     } else {
       const { key, sourceSpan } = templateBinding;
       const startsWithLet = /^let\s$/.test(
-        context.text.slice(sourceSpan.start, sourceSpan.start + 4),
+        this.#text.slice(sourceSpan.start, sourceSpan.start + 4),
       );
       if (startsWithLet) {
         const { value } = templateBinding;
-        return _c<NGMicrosyntaxLet>({
+        return this.#create<NGMicrosyntaxLet>({
           type: 'NGMicrosyntaxLet',
-          key: _c<NGMicrosyntaxKey>({
+          key: this.#create<NGMicrosyntaxKey>({
             type: 'NGMicrosyntaxKey',
             name: key.source,
             ...key.span,
           }),
           value: !value
             ? null
-            : _c<NGMicrosyntaxKey>({
+            : this.#create<NGMicrosyntaxKey>({
                 type: 'NGMicrosyntaxKey',
                 name: value.source,
                 ...value.span,
@@ -233,15 +258,15 @@ class Transformer extends Context {
           end: value ? value.span.end : key.span.end,
         });
       } else {
-        const value = getAsVariableBindingValue(templateBinding, context);
-        return _c<NGMicrosyntaxAs>({
+        const value = this.#getAsVariableBindingValue(templateBinding);
+        return this.#create<NGMicrosyntaxAs>({
           type: 'NGMicrosyntaxAs',
-          key: _c<NGMicrosyntaxKey>({
+          key: this.#create<NGMicrosyntaxKey>({
             type: 'NGMicrosyntaxKey',
             name: value!.source,
             ...value!.span,
           }),
-          alias: _c<NGMicrosyntaxKey>({
+          alias: this.#create<NGMicrosyntaxKey>({
             type: 'NGMicrosyntaxKey',
             name: key.source,
             ...key.span,
@@ -252,35 +277,9 @@ class Transformer extends Context {
       }
     }
   }
-
-  function _t<T extends NGNode>(node: ng.AST) {
-    return transformNode(node, context.text) as T;
-  }
-
-  function _c<T extends NGNode>(
-    properties: Partial<T> & { type: T['type'] } & RawNGSpan,
-    { stripSpaces = true } = {},
-  ) {
-    return createNode<T>(context, properties, { stripSpaces });
-  }
-
-  function removePrefix(string: string) {
-    return toLowerCamelCase(string.slice(prefix.source.length));
-  }
-
-  function fixTemplateBindingSpan(templateBinding: ng.TemplateBinding) {
-    fixSpan(templateBinding.key.span, context.text);
-    if (isVariableBinding(templateBinding) && templateBinding.value) {
-      fixSpan(templateBinding.value.span, context.text);
-    }
-  }
-}
 }
 
-function transform(
-  rawTemplateBindings: ng.TemplateBinding[],
-  text: string,
-) {
+function transform(rawTemplateBindings: ng.TemplateBinding[], text: string) {
   return Transformer.transform(rawTemplateBindings, text);
 }
 
