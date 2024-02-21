@@ -48,7 +48,6 @@ export class Context {
   }
 
   createNode<T extends NGNode>(
-    context: Context,
     properties: Partial<T> & { type: T['type'] } & RawNGSpan,
     // istanbul ignore next
     { stripSpaces = true, hasParentParens = false } = {},
@@ -68,7 +67,7 @@ export class Context {
     switch (type) {
       case 'NumericLiteral':
       case 'StringLiteral': {
-        const raw = context.text.slice(node.start, node.end);
+        const raw = this.text.slice(node.start, node.end);
         const { value } = node as unknown as b.NumericLiteral | b.StringLiteral;
         node.extra = { ...node.extra, raw, rawValue: value };
         break;

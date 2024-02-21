@@ -60,7 +60,7 @@ class Transformer extends Context {
     properties: Partial<T> & { type: T['type'] } & RawNGSpan,
     { stripSpaces = true } = {},
   ) {
-    return this.createNode<T>(this, properties, { stripSpaces });
+    return this.createNode<T>(properties, { stripSpaces });
   }
 
   #transform<T extends NGNode>(node: ng.AST) {

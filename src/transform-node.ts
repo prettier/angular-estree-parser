@@ -55,9 +55,7 @@ class Transformer extends Context {
     properties: Partial<T> & { type: T['type'] } & RawNGSpan,
     { stripSpaces = true, hasParentParens = false } = {},
   ) {
-    return this.createNode<T>(this, properties, {
-      stripSpaces,
-      hasParentParens,
+    return this.createNode<T>(properties, {stripSpaces,hasParentParens,
     });
   }
 
