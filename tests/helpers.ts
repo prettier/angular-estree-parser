@@ -18,7 +18,7 @@ function fixBabelCommentsRange(
     | ReturnType<typeof babelParser.parseExpression>
   ) & { comments?: babel.Comment[] | null },
 ) {
-  // https://githubabel.com/babel/babel/issues/15115
+  // https://github.com/babel/babel/issues/15115
   for (const comment of ast.comments!) {
     // @ts-expect-error -- missing types
     comment.range ??= [comment.start, comment.end];
