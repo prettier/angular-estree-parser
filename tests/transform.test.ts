@@ -130,7 +130,7 @@ function testSection(
   ) & { comments?: b.Comment[] | null };
 
   beforeAll(() => {
-    angularNode = parseAngular(text).ast;
+    angularNode = parseAngular(text).result.ast;
     if (method === 'parseInterpolationExpression') {
       angularNode = (angularNode as ng.Interpolation).expressions[0];
     }

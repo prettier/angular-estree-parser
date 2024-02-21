@@ -2,26 +2,29 @@ import {
   Lexer,
   Parser,
   type ASTWithSource,
-  type Interpolation,
-  type ParserError,
+  type TemplateBindingParseResult,
 } from '@angular/compiler';
 import { type RawNGComment } from './types.js';
-import { Context } from './context.js';
 
 function createParser() {
   return new Parser(new Lexer());
 }
 
-function parse(
-  text: string,
-  parse: (text: string, parser: Parser) => ASTWithSource,
-) {
-  const context = new Context(text);
+function parse<
+  T extends ASTWithSource | TemplateBindingParseResult = ASTWithSource,
+>(text: string, parse: (text: string, parser: Parser) => T) {
   const parser = createParser();
   const { text: textToParse, comments } = extractComments(text, parser);
-  const { ast, errors } = parse(textToParse, parser);
-  assertAstErrors(errors);
-  return { ast, comments, context };
+  const result = parse(textToParse, parser);
+
+  if (result.errors.length !== 0) {
+    const [{ message }] = result.errors;
+    throw new SyntaxError(
+      message.replace(/^Parser Error: | at column \d+ in [^]*$/g, ''),
+    );
+  }
+
+  return { result, comments };
 }
 
 function parseBinding(text: string) {
@@ -37,25 +40,15 @@ function parseAction(text: string) {
 }
 
 function parseInterpolationExpression(text: string) {
-  return parse(text, (text, parser) => parser.parseInterpolationExpression(text, '', 0));
+  return parse(text, (text, parser) =>
+    parser.parseInterpolationExpression(text, '', 0),
+  );
 }
 
 function parseTemplateBindings(text: string) {
-  const context = new Context(text);
-  const parser = createParser();
-  const { templateBindings: expressions, errors } =
-    parser.parseTemplateBindings('', text, '', 0, 0);
-  assertAstErrors(errors);
-  return { expressions, context };
-}
-
-function assertAstErrors(errors: ParserError[]) {
-  if (errors.length !== 0) {
-    const [{ message }] = errors;
-    throw new SyntaxError(
-      message.replace(/^Parser Error: | at column \d+ in [^]*$/g, ''),
-    );
-  }
+  return parse(text, (text, parser) =>
+    parser.parseTemplateBindings('', text, '', 0, 0),
+  );
 }
 
 function extractComments(

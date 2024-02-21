@@ -61,10 +61,10 @@ function transform(
   isInParentParens = false,
 ): NGNode {
   if (node instanceof ng.Interpolation) {
-    const {expressions} = node
+    const { expressions } = node;
 
     if (expressions.length !== 1) {
-      throw new Error("Unexpected 'Interpolation'")
+      throw new Error("Unexpected 'Interpolation'");
     }
 
     return _t(expressions[0]);
