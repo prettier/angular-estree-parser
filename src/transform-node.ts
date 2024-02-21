@@ -110,10 +110,6 @@ class Transformer extends Context {
     context: Context,
     isInParentParens = false,
   ): NGNode {
-    const _t = <T extends NGNode>(n: ng.AST) => this.#transform(n) as T;
-    const _transformHasParentParens = <T extends NGNode>(n: ng.AST) =>
-      this.#transform(n, true) as T;
-
     if (node instanceof ng.Interpolation) {
       const { expressions } = node;
 
@@ -190,7 +186,9 @@ class Transformer extends Context {
         start: rightStart,
         end: rightStart + name.length,
       });
-      const argumentNodes = originalArguments.map<b.Expression>(_t);
+      const argumentNodes = originalArguments.map<b.Expression>((node) =>
+        this.#transform(node),
+      );
       return this.#create<NGPipeExpression>(
         {
           type: 'NGPipeExpression',
@@ -211,7 +209,9 @@ class Transformer extends Context {
       return this.#create<NGChainedExpression>(
         {
           type: 'NGChainedExpression',
-          expressions: node.expressions.map<b.Expression>(_t),
+          expressions: node.expressions.map<b.Expression>((node) =>
+            this.#transform(node),
+          ),
           ...node.sourceSpan,
         },
         { hasParentParens: isInParentParens },
@@ -267,7 +267,9 @@ class Transformer extends Context {
       return this.#create<b.ArrayExpression>(
         {
           type: 'ArrayExpression',
-          elements: node.expressions.map<b.Expression>(_t),
+          elements: node.expressions.map<b.Expression>((node) =>
+            this.#transform(node),
+          ),
           ...node.sourceSpan,
         },
         { hasParentParens: isInParentParens },
@@ -373,8 +375,10 @@ class Transformer extends Context {
       const { receiver, args } = node;
       const tArgs =
         args.length === 1
-          ? [_transformHasParentParens<b.Expression>(args[0])]
-          : (args as ng.AST[]).map<b.Expression>(_t);
+          ? [this.#transform<b.Expression>(args[0], true)]
+          : (args as ng.AST[]).map<b.Expression>((node) =>
+              this.#transform(node),
+            );
       const tReceiver = this.#transform<b.Expression>(receiver!);
       const isOptionalReceiver = isOptionalObjectOrCallee(tReceiver);
       const nodeType =
