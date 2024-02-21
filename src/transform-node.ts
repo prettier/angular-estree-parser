@@ -40,14 +40,12 @@ function transform(
 ): NGNode {
   switch (true) {
     case node instanceof ng.Unary: {
-      const { operator, expr } = node;
-      const argumentNode = _t<b.Expression>(expr);
       return _c<b.UnaryExpression>(
         {
           type: 'UnaryExpression',
           prefix: true,
-          argument: argumentNode,
-          operator: operator as '-' | '+',
+          argument: _t<b.Expression>(node.expr),
+          operator: node.operator as '-' | '+',
           ...node.sourceSpan,
         },
         { hasParentParens: isInParentParens },
@@ -122,11 +120,10 @@ function transform(
       );
     }
     case node instanceof ng.Chain: {
-      const { expressions } = node;
       return _c<NGChainedExpression>(
         {
           type: 'NGChainedExpression',
-          expressions: expressions.map<b.Expression>(_t),
+          expressions: node.expressions.map<b.Expression>(_t),
           ...node.sourceSpan,
         },
         { hasParentParens: isInParentParens },
@@ -162,22 +159,18 @@ function transform(
     }
     case node instanceof ng.KeyedRead:
     case node instanceof ng.SafeKeyedRead: {
-      const isOptionalType = node instanceof ng.SafeKeyedRead;
-      const { key, receiver } = node;
-      const tKey = _t<b.Expression>(key);
-      return _transformReceiverAndName(receiver, tKey, {
+      return _transformReceiverAndName(node.receiver, _t<b.Expression>(node.key), {
         computed: true,
-        optional: isOptionalType,
+        optional: node instanceof ng.SafeKeyedRead,
         end: node.sourceSpan.end, // ]
         hasParentParens: isInParentParens,
       });
     }
     case node instanceof ng.LiteralArray: {
-      const { expressions } = node;
       return _c<b.ArrayExpression>(
         {
           type: 'ArrayExpression',
-          elements: expressions.map<b.Expression>(_t),
+          elements: node.expressions.map<b.Expression>(_t),
           ...node.sourceSpan,
         },
         { hasParentParens: isInParentParens },
@@ -297,36 +290,33 @@ function transform(
       );
     }
     case node instanceof ng.NonNullAssert: {
-      const { expression } = node;
-      const tExpression = _t<b.Expression>(expression);
+      const expression = _t<b.Expression>(node.expression);
       return _c<b.TSNonNullExpression>(
         {
           type: 'TSNonNullExpression',
-          expression: tExpression,
-          start: getOuterStart(tExpression),
+          expression: expression,
+          start: getOuterStart(expression),
           end: node.sourceSpan.end, // !
         },
         { hasParentParens: isInParentParens },
       );
     }
     case node instanceof ng.PrefixNot: {
-      const { expression } = node;
-      const tExpression = _t<b.Expression>(expression);
+      const expression = _t<b.Expression>(node.expression);
       return _c<b.UnaryExpression>(
         {
           type: 'UnaryExpression',
           prefix: true,
           operator: '!',
-          argument: tExpression,
+          argument: expression,
           start: node.sourceSpan.start, // !
-          end: getOuterEnd(tExpression),
+          end: getOuterEnd(expression),
         },
         { hasParentParens: isInParentParens },
       );
     }
     case node instanceof ng.PropertyRead:
     case node instanceof ng.SafePropertyRead: {
-      const isOptionalType = node instanceof ng.SafePropertyRead;
       const { receiver, name } = node;
       const nameEnd =
         context.getCharacterLastIndex(/\S/, node.sourceSpan.end - 1) + 1;
@@ -343,18 +333,17 @@ function transform(
       );
       return _transformReceiverAndName(receiver, tName, {
         computed: false,
-        optional: isOptionalType,
+        optional: node instanceof ng.SafePropertyRead,
         hasParentParens: isInParentParens,
       });
     }
     case node instanceof ng.KeyedWrite: {
-      const { key, value, receiver } = node;
-      const tKey = _t<b.Expression>(key);
-      const right = _t<b.Expression>(value);
-      const left = _transformReceiverAndName(receiver, tKey, {
+      const key = _t<b.Expression>(node.key);
+      const right = _t<b.Expression>(node.value);
+      const left = _transformReceiverAndName(node.receiver, key, {
         computed: true,
         optional: false,
-        end: context.getCharacterIndex(']', getOuterEnd(tKey)) + 1,
+        end: context.getCharacterIndex(']', getOuterEnd(key)) + 1,
       });
       return _c<b.AssignmentExpression>(
         {
