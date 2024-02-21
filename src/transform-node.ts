@@ -111,6 +111,7 @@ class Transformer extends Source {
     if (node instanceof ng.Interpolation) {
       const { expressions } = node;
 
+      // istanbul ignore next 3
       if (expressions.length !== 1) {
         throw new Error("Unexpected 'Interpolation'");
       }
