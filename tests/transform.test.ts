@@ -1,9 +1,9 @@
 import type * as ng from '@angular/compiler';
 import type * as b from '@babel/types';
 import type * as babelParser from '@babel/parser';
-import * as estreeParser from '../src/index.js';
+import * as estreeParser from '../src/estree-parser.js';
+import * as angularParser from '../src/angular-parser.js';
 import type { NGNode } from '../src/types.js';
-import * as angularParser from '../src/parser.js';
 import {
   getAngularNodeType,
   massageAst,
