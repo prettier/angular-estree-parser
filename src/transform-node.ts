@@ -1,4 +1,4 @@
-import type * as ng from '@angular/compiler';
+import * as ng from '@angular/compiler';
 import type * as b from '@babel/types';
 import type Context from './context.js';
 import type {
@@ -8,7 +8,7 @@ import type {
   NGPipeExpression,
   RawNGSpan,
 } from './types.js';
-import { getAngularNodeType, createNode } from './utils.js';
+import { createNode } from './utils.js';
 
 function isParenthesized(node: NGNode) {
   return Boolean(node.extra?.parenthesized);
@@ -38,10 +38,9 @@ function transform(
   context: Context,
   isInParentParens = false,
 ): NGNode {
-  const type = getAngularNodeType(node);
-  switch (type) {
-    case 'Unary': {
-      const { operator, expr } = node as ng.Unary;
+  switch (true) {
+    case node instanceof ng.Unary: {
+      const { operator, expr } = node;
       const argumentNode = _t<b.Expression>(expr);
       return _c<b.UnaryExpression>(
         {
@@ -54,12 +53,12 @@ function transform(
         { hasParentParens: isInParentParens },
       );
     }
-    case 'Binary': {
+    case node instanceof ng.Binary: {
       const {
         left: originalLeft,
         operation: operator,
         right: originalRight,
-      } = node as ng.Binary;
+      } = node;
       const left = _t<b.Expression>(originalLeft);
       const right = _t<b.Expression>(originalRight);
       const start = getOuterStart(left);
@@ -91,12 +90,12 @@ function transform(
         { hasParentParens: isInParentParens },
       );
     }
-    case 'BindingPipe': {
+    case node instanceof ng.BindingPipe: {
       const {
         exp: expressionNode,
         name,
         args: originalArguments,
-      } = node as ng.BindingPipe;
+      } = node;
       const left = _t<b.Expression>(expressionNode);
       const start = getOuterStart(left);
       const leftEnd = getOuterEnd(left);
@@ -126,8 +125,8 @@ function transform(
         { hasParentParens: isInParentParens },
       );
     }
-    case 'Chain': {
-      const { expressions } = node as ng.Chain;
+    case node instanceof ng.Chain: {
+      const { expressions } = node;
       return _c<NGChainedExpression>(
         {
           type: 'NGChainedExpression',
@@ -137,8 +136,8 @@ function transform(
         { hasParentParens: isInParentParens },
       );
     }
-    case 'Conditional': {
-      const { condition, trueExp, falseExp } = node as ng.Conditional;
+    case node instanceof ng.Conditional: {
+      const { condition, trueExp, falseExp } = node;
       const test = _t<b.Expression>(condition);
       const consequent = _t<b.Expression>(trueExp);
       const alternate = _t<b.Expression>(falseExp);
@@ -154,21 +153,21 @@ function transform(
         { hasParentParens: isInParentParens },
       );
     }
-    case 'EmptyExpr':
+    case node instanceof ng.EmptyExpr:
       return _c<NGEmptyExpression>(
         { type: 'NGEmptyExpression', ...node.sourceSpan },
         { hasParentParens: isInParentParens },
       );
-    case 'ImplicitReceiver': {
+    case node instanceof ng.ImplicitReceiver: {
       return _c<b.ThisExpression>(
         { type: 'ThisExpression', ...node.sourceSpan },
         { hasParentParens: isInParentParens },
       );
     }
-    case 'KeyedRead':
-    case 'SafeKeyedRead': {
-      const isOptionalType = type === 'SafeKeyedRead';
-      const { key, receiver } = node as ng.KeyedRead | ng.SafeKeyedRead;
+    case node instanceof ng.KeyedRead:
+    case node instanceof ng.SafeKeyedRead: {
+      const isOptionalType = node instanceof ng.SafeKeyedRead;
+      const { key, receiver } = node;
       const tKey = _t<b.Expression>(key);
       return _transformReceiverAndName(receiver, tKey, {
         computed: true,
@@ -177,8 +176,8 @@ function transform(
         hasParentParens: isInParentParens,
       });
     }
-    case 'LiteralArray': {
-      const { expressions } = node as ng.LiteralArray;
+    case node instanceof ng.LiteralArray: {
+      const { expressions } = node;
       return _c<b.ArrayExpression>(
         {
           type: 'ArrayExpression',
@@ -188,8 +187,8 @@ function transform(
         { hasParentParens: isInParentParens },
       );
     }
-    case 'LiteralMap': {
-      const { keys, values } = node as ng.LiteralMap;
+    case node instanceof ng.LiteralMap: {
+      const { keys, values } = node;
       const tValues = values.map((value) => _t<b.Expression>(value));
       const tProperties = keys.map(({ key, quoted }, index) => {
         const tValue = tValues[index];
@@ -239,8 +238,8 @@ function transform(
         { hasParentParens: isInParentParens },
       );
     }
-    case 'LiteralPrimitive': {
-      const { value } = node as ng.LiteralPrimitive;
+    case node instanceof ng.LiteralPrimitive: {
+      const { value } = node;
       switch (typeof value) {
         case 'boolean':
           return _c<b.BooleanLiteral>(
@@ -274,10 +273,10 @@ function transform(
           );
       }
     }
-    case 'Call':
-    case 'SafeCall': {
-      const isOptionalType = type === 'SafeCall';
-      const { receiver, args } = node as ng.Call | ng.SafeCall;
+    case node instanceof ng.Call:
+    case node instanceof ng.SafeCall: {
+      const isOptionalType = node instanceof ng.SafeCall;
+      const { receiver, args } = node;
       const tArgs =
         args.length === 1
           ? [_transformHasParentParens<b.Expression>(args[0])]
@@ -301,8 +300,8 @@ function transform(
         { hasParentParens: isInParentParens },
       );
     }
-    case 'NonNullAssert': {
-      const { expression } = node as ng.NonNullAssert;
+    case node instanceof ng.NonNullAssert: {
+      const { expression } = node;
       const tExpression = _t<b.Expression>(expression);
       return _c<b.TSNonNullExpression>(
         {
@@ -314,8 +313,8 @@ function transform(
         { hasParentParens: isInParentParens },
       );
     }
-    case 'PrefixNot': {
-      const { expression } = node as ng.PrefixNot;
+    case node instanceof ng.PrefixNot: {
+      const { expression } = node;
       const tExpression = _t<b.Expression>(expression);
       return _c<b.UnaryExpression>(
         {
@@ -329,10 +328,10 @@ function transform(
         { hasParentParens: isInParentParens },
       );
     }
-    case 'PropertyRead':
-    case 'SafePropertyRead': {
-      const isOptionalType = type === 'SafePropertyRead';
-      const { receiver, name } = node as ng.PropertyRead | ng.SafePropertyRead;
+    case node instanceof ng.PropertyRead:
+    case node instanceof ng.SafePropertyRead: {
+      const isOptionalType = node instanceof ng.SafePropertyRead
+      const { receiver, name } = node;
       const nameEnd =
         context.getCharacterLastIndex(/\S/, node.sourceSpan.end - 1) + 1;
       const tName = _c<b.Identifier>(
@@ -352,8 +351,8 @@ function transform(
         hasParentParens: isInParentParens,
       });
     }
-    case 'KeyedWrite': {
-      const { key, value, receiver } = node as ng.KeyedWrite;
+    case node instanceof ng.KeyedWrite: {
+      const { key, value, receiver } = node;
       const tKey = _t<b.Expression>(key);
       const right = _t<b.Expression>(value);
       const left = _transformReceiverAndName(receiver, tKey, {
@@ -373,8 +372,8 @@ function transform(
         { hasParentParens: isInParentParens },
       );
     }
-    case 'PropertyWrite': {
-      const { receiver, name, value } = node as ng.PropertyWrite;
+    case node instanceof ng.PropertyWrite: {
+      const { receiver, name, value } = node;
       const tValue = _t<b.Expression>(value);
       const nameEnd =
         context.getCharacterLastIndex(
@@ -405,7 +404,7 @@ function transform(
     }
     // istanbul ignore next
     default:
-      throw new Error(`Unexpected node ${type}`);
+      throw Object.assign(new Error(`Unexpected node`), {node});
   }
 
   function _t<T extends NGNode>(n: ng.AST) {

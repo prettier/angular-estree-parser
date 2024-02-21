@@ -1,38 +1,11 @@
-import * as ng from '@angular/compiler';
+
 import type {
-  RawNGComment,
   RawNGSpan,
   LocationInformation,
   NGNode,
 } from './types.js';
 import type * as b from '@babel/types';
 import type Context from './context.js';
-
-// prettier-ignore
-export function getAngularNodeType(node: (ng.AST | RawNGComment) & { type?: string }) {
-  if (node instanceof ng.Unary) { return 'Unary'; }
-  if (node instanceof ng.Binary) { return 'Binary'; }
-  if (node instanceof ng.BindingPipe) { return "BindingPipe"; }
-  if (node instanceof ng.Call) { return "Call"; }
-  if (node instanceof ng.Chain) { return "Chain"; }
-  if (node instanceof ng.Conditional) { return "Conditional"; }
-  if (node instanceof ng.EmptyExpr) { return "EmptyExpr"; }
-  if (node instanceof ng.ImplicitReceiver) { return "ImplicitReceiver"; }
-  if (node instanceof ng.KeyedRead) { return "KeyedRead"; }
-  if (node instanceof ng.SafeKeyedRead) { return "SafeKeyedRead"; }
-  if (node instanceof ng.KeyedWrite) { return "KeyedWrite"; }
-  if (node instanceof ng.LiteralArray) { return "LiteralArray"; }
-  if (node instanceof ng.LiteralMap) { return "LiteralMap"; }
-  if (node instanceof ng.LiteralPrimitive) { return "LiteralPrimitive"; }
-  if (node instanceof ng.NonNullAssert) { return "NonNullAssert"; }
-  if (node instanceof ng.PrefixNot) { return "PrefixNot"; }
-  if (node instanceof ng.PropertyRead) { return "PropertyRead"; }
-  if (node instanceof ng.PropertyWrite) { return "PropertyWrite"; }
-  if (node instanceof ng.SafeCall) { return "SafeCall"; }
-  if (node instanceof ng.SafePropertyRead) { return "SafePropertyRead"; }
-  // istanbul ignore next
-  return node.type;
-}
 
 function stripSurroundingSpaces(
   { start: startIndex, end: endIndex }: RawNGSpan,
