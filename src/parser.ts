@@ -46,7 +46,7 @@ function parseSimpleBinding(text: string) {
 
 function parseAction(text: string) {
   return parse(text, (text, parser) =>
-    parser.parseAction(text, false, ...NG_PARSE_SHARED_PARAMS),
+    parser.parseAction(text, ...NG_PARSE_SHARED_PARAMS),
   );
 }
 
