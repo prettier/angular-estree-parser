@@ -35,21 +35,21 @@ function isImplicitThis(node: ng.AST, text: string): boolean {
 }
 
 class Transformer extends Context {
-  #ast;
+  #node;
   #text;
 
   constructor(ast: ng.AST, text: string) {
     super(text);
-    this.#ast = ast;
+    this.#node = ast;
     this.#text = text;
   }
 
   static transform(ast: ng.AST, text: string) {
-    return new Transformer(ast, text).ast;
+    return new Transformer(ast, text).node;
   }
 
-  get ast() {
-    return this.#transform(this.#ast);
+  get node() {
+    return this.#transform(this.#node);
   }
 
   #create<T extends NGNode>(
@@ -110,6 +110,7 @@ class Transformer extends Context {
     return this.#transformNode(node, isInParentParens) as T &
       LocationInformation;
   }
+
   #transformNode(node: ng.AST, isInParentParens = false): NGNode {
     if (node instanceof ng.Interpolation) {
       const { expressions } = node;
@@ -535,4 +536,4 @@ function transform(ast: ng.AST, text: string): NGNode {
   return Transformer.transform(ast, text);
 }
 
-export default transform;
+export {transform};

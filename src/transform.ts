@@ -1,28 +1,27 @@
 import Context from './context.js';
-import transformNode from './transform-node.js';
+import {transform as transformNode} from './transform-node.js';
 import transformTemplateBindings from './transform-template-binding.js';
 import type { ParseResult } from './types.js';
 import type {
   AstParseResult,
   MicroSyntaxParseResult,
-} from './angular-parser.ts';
+} from './angular-parser.js';
 
 function transformAstResult({
   result: { ast: node },
-  textToParse,
+  text,
   comments,
 }: AstParseResult) {
-  const ast = transformNode(node, textToParse) as ParseResult;
+  const ast = transformNode(node, text) as ParseResult;
   ast.comments = comments;
   return ast;
 }
 
 function transformMicrosyntaxResult({
   result: { templateBindings: expressions },
-  textToParse,
+  text,
 }: MicroSyntaxParseResult) {
-  const context = new Context(textToParse);
-  return transformTemplateBindings(expressions, context);
+  return transformTemplateBindings(expressions, text);
 }
 
 export { transformAstResult, transformMicrosyntaxResult };

@@ -3,8 +3,8 @@ import {
   ExpressionBinding as NGExpressionBinding,
   VariableBinding as NGVariableBinding,
 } from '@angular/compiler';
-import { type Context } from './context.js';
-import transformNode from './transform-node.js';
+import { Context } from './context.js';
+import {transform as transformNode} from './transform-node.js';
 import type {
   NGMicrosyntax,
   NGMicrosyntaxAs,
@@ -79,10 +79,32 @@ function getAsVariableBindingValue(
   };
 }
 
-function transformTemplateBindings(
-  rawTemplateBindings: ng.TemplateBinding[],
-  context: Context,
+
+
+class Transformer extends Context {
+  #rawTemplateBindings
+  #text
+
+  constructor(rawTemplateBindings: ng.TemplateBinding[], text: string) {
+    super(text);
+    this.#rawTemplateBindings = rawTemplateBindings
+    this.#text = text;
+  }
+
+  static transform(rawTemplateBindings: ng.TemplateBinding[], text: string) {
+    return new Transformer(rawTemplateBindings, text).expressions;
+  }
+
+  get expressions() {
+    return this.#transformTemplateBindings();
+  }
+
+
+#transformTemplateBindings(
 ): NGMicrosyntax {
+  const rawTemplateBindings = this.#rawTemplateBindings
+  const context = this
+
   rawTemplateBindings.forEach(fixTemplateBindingSpan);
 
   const [firstTemplateBinding] = rawTemplateBindings;
@@ -253,5 +275,13 @@ function transformTemplateBindings(
     }
   }
 }
+}
 
-export default transformTemplateBindings;
+function transform(
+  rawTemplateBindings: ng.TemplateBinding[],
+  text: string,
+) {
+  return Transformer.transform(rawTemplateBindings, text);
+}
+
+export default transform;

@@ -40,11 +40,11 @@ function createAngularParseFunction<
     const lexer = new Lexer();
     const parser = new Parser(lexer);
 
-    const { text: textToParse, comments } = extractComments(
+    const { text, comments } = extractComments(
       originalText,
       shouldExtractComment,
     );
-    const result = parse(textToParse, parser);
+    const result = parse(text, parser);
 
     if (result.errors.length !== 0) {
       const [{ message }] = result.errors;
@@ -53,7 +53,7 @@ function createAngularParseFunction<
       );
     }
 
-    return { result, comments, originalText, textToParse };
+    return { result, comments, text };
   };
 }
 
