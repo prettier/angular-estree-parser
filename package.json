@@ -27,7 +27,7 @@
     "release": "yarn build && standard-version"
   },
   "devDependencies": {
-    "@angular/compiler": "17.3.9",
+    "@angular/compiler": "17.3.10",
     "@babel/code-frame": "7.24.2",
     "@babel/parser": "7.24.5",
     "@babel/types": "7.24.5",
