@@ -213,12 +213,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/parser@npm:7.24.5, @babel/parser@npm:^7.1.0, @babel/parser@npm:^7.14.7, @babel/parser@npm:^7.20.7, @babel/parser@npm:^7.23.9, @babel/parser@npm:^7.24.0, @babel/parser@npm:^7.24.5":
-  version: 7.24.5
-  resolution: "@babel/parser@npm:7.24.5"
+"@babel/parser@npm:7.24.7, @babel/parser@npm:^7.1.0, @babel/parser@npm:^7.14.7, @babel/parser@npm:^7.20.7, @babel/parser@npm:^7.23.9, @babel/parser@npm:^7.24.0, @babel/parser@npm:^7.24.5":
+  version: 7.24.7
+  resolution: "@babel/parser@npm:7.24.7"
   bin:
     parser: ./bin/babel-parser.js
-  checksum: 10/f5ed1c5fd4b0045a364fb906f54fd30e2fff93a45069068b6d80d3ab2b64f5569c90fb41d39aff80fb7e925ca4d44917965a76776a3ca11924ec1fae3be5d1ea
+  checksum: 10/ef9ebce60e13db560ccc7af9235d460f6726bb7e23ae2d675098c1fc43d5249067be60d4118889dad33b1d4f85162cf66baf554719e1669f29bb20e71322568e
   languageName: node
   linkType: hard
 
@@ -1339,7 +1339,7 @@ __metadata:
   dependencies:
     "@angular/compiler": "npm:18.0.0"
     "@babel/code-frame": "npm:7.24.2"
-    "@babel/parser": "npm:7.24.5"
+    "@babel/parser": "npm:7.24.7"
     "@babel/types": "npm:7.24.5"
     "@types/babel__code-frame": "npm:7.0.6"
     "@types/jest": "npm:29.5.12"
