@@ -33,7 +33,7 @@
     "@babel/types": "7.24.5",
     "@types/babel__code-frame": "7.0.6",
     "@types/jest": "29.5.12",
-    "@typescript-eslint/eslint-plugin": "7.10.0",
+    "@typescript-eslint/eslint-plugin": "7.18.0",
     "@typescript-eslint/parser": "7.10.0",
     "del-cli": "5.1.0",
     "eslint": "8.56.0",
