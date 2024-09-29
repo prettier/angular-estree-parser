@@ -1,5 +1,0 @@
-coverage/
-lib/
-!/**/.eslintrc.js
-**/.yarn/**
-**/.pnp.*
