@@ -1292,7 +1292,7 @@ __metadata:
     eslint-plugin-import: "npm:2.30.0"
     eslint-plugin-simple-import-sort: "npm:12.1.1"
     eslint-plugin-unicorn: "npm:55.0.0"
-    globals: "npm:15.9.0"
+    globals: "npm:15.11.0"
     jest: "npm:29.7.0"
     jest-snapshot-serializer-raw: "npm:1.2.0"
     lines-and-columns: "npm:2.0.4"
@@ -3293,10 +3293,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globals@npm:15.9.0, globals@npm:^15.7.0":
-  version: 15.9.0
-  resolution: "globals@npm:15.9.0"
-  checksum: 10/19bca70131c5d3e0d4171deed0f8ae16adda19f18d39b67421056f1eaa160b4433c3ffc8eb69b8b19adebbbdad4834d8a0494c5fe1ae295f0f769a5c0331d794
+"globals@npm:15.11.0, globals@npm:^15.7.0":
+  version: 15.11.0
+  resolution: "globals@npm:15.11.0"
+  checksum: 10/14009ef1906ac929d930ed1c896a47159e7d11b4d201901ca5f3827766519191a3f5fb45124de43c4511fee04018704e7ed5a097fb37d23abf39523d1d41c85f
   languageName: node
   linkType: hard
 
