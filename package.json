@@ -34,7 +34,7 @@
     "@types/babel__code-frame": "7.0.6",
     "@types/jest": "29.5.13",
     "del-cli": "5.1.0",
-    "eslint": "9.11.1",
+    "eslint": "9.13.0",
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-import": "2.30.0",
     "eslint-plugin-simple-import-sort": "12.1.1",
