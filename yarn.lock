@@ -15,17 +15,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/compiler@npm:18.2.6":
-  version: 18.2.6
-  resolution: "@angular/compiler@npm:18.2.6"
+"@angular/compiler@npm:18.2.12":
+  version: 18.2.12
+  resolution: "@angular/compiler@npm:18.2.12"
   dependencies:
     tslib: "npm:^2.3.0"
   peerDependencies:
-    "@angular/core": 18.2.6
+    "@angular/core": 18.2.12
   peerDependenciesMeta:
     "@angular/core":
       optional: true
-  checksum: 10/14ed1b955141b6af4a609fda9bc1d38c4a62dc0fee85610c8542de32fb6e7ea8f09ea4309216c61d7cbd4c85a3f400a7ecd3a8d845f3f8c59e805d247ed65d38
+  checksum: 10/a08fa0fc46c003d83af6e088450f35026281dde7bd65c6775242b52c2695c3deaec2c6bd675933261151932c27072de9b51edcbdde18dca02ed3313bc4873004
   languageName: node
   linkType: hard
 
@@ -1280,7 +1280,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "angular-estree-parser@workspace:."
   dependencies:
-    "@angular/compiler": "npm:18.2.6"
+    "@angular/compiler": "npm:18.2.12"
     "@babel/code-frame": "npm:7.24.7"
     "@babel/parser": "npm:7.25.6"
     "@babel/types": "npm:7.25.6"
