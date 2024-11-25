@@ -416,15 +416,34 @@ class Transformer extends Source {
       );
     }
 
-    if (node instanceof angular.PrefixNot) {
+    const isPrefixNot = node instanceof angular.PrefixNot;
+    if (isPrefixNot || node instanceof angular.TypeofExpression) {
       const expression = this.#transform<babel.Expression>(node.expression);
+
+      const operator = isPrefixNot ? '!' : 'typeof';
+      let { start } = node.sourceSpan;
+
+      if (!isPrefixNot) {
+        const index = this.text.lastIndexOf(operator, start);
+
+        if (index === -1) {
+          throw new Error(
+            `Cannot find operator ${operator} from index ${start} in ${JSON.stringify(
+              this.text,
+            )}`,
+          );
+        }
+
+        start = index;
+      }
+
       return this.#create<babel.UnaryExpression>(
         {
           type: 'UnaryExpression',
           prefix: true,
-          operator: '!',
+          operator,
           argument: expression,
-          start: node.sourceSpan.start, // !
+          start,
           end: getOuterEnd(expression),
         },
         { hasParentParens: isInParentParens },
@@ -535,6 +554,7 @@ class Transformer extends Source {
 // SafeCall
 // EmptyExpr
 // PrefixNot
+// TypeofExpression
 function transform(node: angular.AST, text: string): NGNode {
   return new Transformer(node, text).node;
 }

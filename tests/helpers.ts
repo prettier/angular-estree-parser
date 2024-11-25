@@ -156,6 +156,7 @@ const KNOWN_AST_TYPES = [
   'ImplicitReceiver',
   'KeyedRead',
   'SafeKeyedRead',
+  'TypeofExpression',
   'KeyedWrite',
   'LiteralArray',
   'LiteralMap',
