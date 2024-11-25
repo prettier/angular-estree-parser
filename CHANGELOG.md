@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [10.1.0](https://github.com/prettier/angular-estree-parser/compare/v10.0.4...v10.1.0) (2024-11-25)
+
+
+### Features
+
+* support angular 19 ([#313](https://github.com/prettier/angular-estree-parser/issues/313)) ([e536295](https://github.com/prettier/angular-estree-parser/commit/e5362958567a9a8a0f613e29b7b689710b2ba902))
+
 ### [10.0.4](https://github.com/prettier/angular-estree-parser/compare/v10.0.3...v10.0.4) (2024-09-29)
 
 ### [10.0.3](https://github.com/prettier/angular-estree-parser/compare/v10.0.2...v10.0.3) (2024-05-23)
