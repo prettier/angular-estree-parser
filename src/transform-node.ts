@@ -426,6 +426,7 @@ class Transformer extends Source {
       if (!isPrefixNot) {
         const index = this.text.lastIndexOf(operator, start);
 
+        // istanbul ignore next 7
         if (index === -1) {
           throw new Error(
             `Cannot find operator ${operator} from index ${start} in ${JSON.stringify(
