@@ -27,7 +27,7 @@
     "release": "yarn build && standard-version"
   },
   "devDependencies": {
-    "@angular/compiler": "19.0.0",
+    "@angular/compiler": "19.2.1",
     "@babel/code-frame": "7.26.2",
     "@babel/parser": "7.26.2",
     "@babel/types": "7.26.0",
