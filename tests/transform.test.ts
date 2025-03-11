@@ -94,6 +94,8 @@ describe.each`
   ${'TypeofExpression'} | ${'UnaryExpression'}          | ${' typeof {} '}                    | ${true}     | ${true}      | ${true}            | ${true}
   ${'Binary'}           | ${'BinaryExpression'}         | ${' typeof {} === "object" '}       | ${true}     | ${true}      | ${true}            | ${true}
   ${'PrefixNot'}        | ${'UnaryExpression'}          | ${' ! ( typeof {} === "number" ) '} | ${true}     | ${true}      | ${true}            | ${true}
+  ${'TemplateLiteral'}  | ${'TemplateLiteral'}          | ${' ` a ${ b } \u0063 ` '}          | ${true}     | ${true}      | ${true}            | ${true}
+  ${'TemplateLiteral'}  | ${'TemplateLiteral'}          | ${' ( ` a ${ b } \u0063 ` ) '}      | ${true}     | ${true}      | ${true}            | ${true}
 `('($expectedAngularType -> $expectedEstreeType)', (fields) => {
   for (const method of PARSE_METHODS) {
     testSection(method, fields);
