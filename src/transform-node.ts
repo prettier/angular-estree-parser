@@ -34,6 +34,11 @@ function isImplicitThis(node: angular.AST, text: string): boolean {
   return start >= end || /^\s+$/.test(text.slice(start, end));
 }
 
+type NodeTransformOptions = {
+  isInParentParens?: boolean;
+  parent?: angular.AST;
+};
+
 class Transformer extends Source {
   #node;
   #text;
@@ -105,12 +110,19 @@ class Transformer extends Source {
     );
   }
 
-  #transform<T extends NGNode>(node: angular.AST, isInParentParens = false) {
-    return this.#transformNode(node, isInParentParens) as T &
-      LocationInformation;
+  #transform<T extends NGNode>(
+    node: angular.AST,
+    options?: NodeTransformOptions,
+  ) {
+    return this.#transformNode(node, options) as T & LocationInformation;
   }
 
-  #transformNode(node: angular.AST, isInParentParens = false): NGNode {
+  #transformNode(node: angular.AST, options?: NodeTransformOptions): NGNode {
+    const { isInParentParens } = {
+      isInParentParens: false,
+      ...options,
+    };
+
     if (node instanceof angular.Interpolation) {
       const { expressions } = node;
 
@@ -374,7 +386,11 @@ class Transformer extends Source {
       const { receiver, args } = node;
       const tArgs =
         args.length === 1
-          ? [this.#transform<babel.Expression>(args[0], true)]
+          ? [
+              this.#transform<babel.Expression>(args[0], {
+                isInParentParens: true,
+              }),
+            ]
           : (args as angular.AST[]).map<babel.Expression>((node) =>
               this.#transform(node),
             );
@@ -520,6 +536,55 @@ class Transformer extends Source {
           end: getOuterEnd(tValue),
         },
         { hasParentParens: isInParentParens },
+      );
+    }
+
+    if (node instanceof angular.TemplateLiteral) {
+      const { elements, expressions } = node;
+
+      return this.#create<babel.TemplateLiteral>({
+        type: 'TemplateLiteral',
+        quasis: elements.map((element) =>
+          this.#transform(element, { parent: node }),
+        ),
+        expressions: expressions.map((expression) =>
+          this.#transform(expression),
+        ),
+        ...node.sourceSpan,
+      });
+    }
+
+    if (node instanceof angular.TemplateLiteralElement) {
+      const templateLiteral = options!.parent! as angular.TemplateLiteral;
+      const elementIndex = templateLiteral.elements.indexOf(node);
+      const isFirst = elementIndex === 0;
+      const isLast = elementIndex === templateLiteral.elements.length - 1;
+
+      // The `TemplateLiteralElement` don't have correct location information
+      const start = isFirst
+        ? templateLiteral.sourceSpan.start + 1
+        : node.sourceSpan.start;
+      let end;
+      if (isLast) {
+        end = templateLiteral.sourceSpan.end - 1;
+      } else {
+        const nextExpression = templateLiteral.expressions[elementIndex];
+        end = this.getCharacterLastIndex('$', nextExpression.sourceSpan.start);
+      }
+      const raw = this.text.slice(start, end);
+
+      return this.#create<babel.TemplateElement>(
+        {
+          type: 'TemplateElement',
+          value: {
+            cooked: node.text,
+            raw,
+          },
+          start: start,
+          end: end,
+          tail: isLast,
+        },
+        { stripSpaces: false },
       );
     }
 
