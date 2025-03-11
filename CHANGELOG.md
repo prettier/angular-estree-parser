@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [10.3.0](https://github.com/prettier/angular-estree-parser/compare/v9.0.0...v10.3.0) (2025-03-11)
+
+
+### Features
+
+* support `typeof` expression ([#315](https://github.com/prettier/angular-estree-parser/issues/315)) ([4bd57c8](https://github.com/prettier/angular-estree-parser/commit/4bd57c8af82c3856d5d38b11f8b739652b39de57))
+* support angular 19 ([#313](https://github.com/prettier/angular-estree-parser/issues/313)) ([e536295](https://github.com/prettier/angular-estree-parser/commit/e5362958567a9a8a0f613e29b7b689710b2ba902))
+
+
+
 ## [10.2.0](https://github.com/prettier/angular-estree-parser/compare/v10.1.0...v10.2.0) (2024-11-25)
 
 
