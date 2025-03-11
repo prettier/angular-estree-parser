@@ -126,7 +126,7 @@ class Transformer extends Source {
     if (node instanceof angular.Interpolation) {
       const { expressions } = node;
 
-      // istanbul ignore next 3
+      /* c8 ignore next 3 */
       if (expressions.length !== 1) {
         throw new Error("Unexpected 'Interpolation'");
       }
@@ -373,7 +373,7 @@ class Transformer extends Source {
             { type: 'Identifier', name: 'undefined', ...node.sourceSpan },
             { hasParentParens: isInParentParens },
           );
-        // istanbul ignore next
+        /* c8 ignore next 4 */
         default:
           throw new Error(
             `Unexpected LiteralPrimitive value type ${typeof value}`,
@@ -432,8 +432,6 @@ class Transformer extends Source {
       node instanceof angular.TypeofExpression ||
       node instanceof angular.VoidExpression
     ) {
-      const expression = this.#transform<babel.Expression>(node.expression);
-
       const operator =
         node instanceof angular.PrefixNot
           ? '!'
@@ -441,14 +439,20 @@ class Transformer extends Source {
             ? 'typeof'
             : node instanceof angular.VoidExpression
               ? 'void'
-              : undefined;
+              : /* c8 ignore next */
+                undefined;
+
+      /* c8 ignore next 3 */
+      if (!operator) {
+        throw new Error('Unexpected expression.');
+      }
 
       let { start } = node.sourceSpan;
 
       if (operator === 'typeof' || operator === 'void') {
         const index = this.text.lastIndexOf(operator, start);
 
-        // istanbul ignore next 7
+        /* c8 ignore next 7 */
         if (index === -1) {
           throw new Error(
             `Cannot find operator '${operator}' from index ${start} in ${JSON.stringify(
@@ -459,6 +463,8 @@ class Transformer extends Source {
 
         start = index;
       }
+
+      const expression = this.#transform<babel.Expression>(node.expression);
 
       return this.#create<babel.UnaryExpression>(
         {
@@ -610,7 +616,7 @@ class Transformer extends Source {
       );
     }
 
-    // istanbul ignore next
+    /* c8 ignore next */
     throw new Error(`Unexpected node type '${node.constructor.name}'`);
   }
 }
