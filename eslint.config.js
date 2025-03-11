@@ -1,6 +1,5 @@
 import eslintPluginJs from '@eslint/js';
 import eslintConfigPrettier from 'eslint-config-prettier';
-import eslintPluginImport from 'eslint-plugin-import';
 import eslintPluginSimpleImportSort from 'eslint-plugin-simple-import-sort';
 import eslintPluginUnicorn from 'eslint-plugin-unicorn';
 import globals from 'globals';
@@ -17,12 +16,10 @@ export default tseslint.config(
     },
     plugins: {
       'simple-import-sort': eslintPluginSimpleImportSort,
-      import: eslintPluginImport,
       unicorn: eslintPluginUnicorn,
     },
     rules: {
       'no-constant-condition': ['error', { checkLoops: false }],
-      'import/extensions': ['error', 'always'],
       'simple-import-sort/imports': 'error',
       'simple-import-sort/exports': 'error',
       'unicorn/prefer-at': 'error',
