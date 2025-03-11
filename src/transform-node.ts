@@ -550,6 +550,15 @@ class Transformer extends Source {
       );
     }
 
+    if (node instanceof angular.TaggedTemplateLiteral) {
+      return this.#create<babel.TaggedTemplateExpression>({
+        type: 'TaggedTemplateExpression',
+        tag: this.#transform(node.tag),
+        quasi: this.#transform(node.template),
+        ...node.sourceSpan,
+      });
+    }
+
     if (node instanceof angular.TemplateLiteral) {
       const { elements, expressions } = node;
 
@@ -631,7 +640,8 @@ type SupportedNodes =
   | angular.PrefixNot
   | angular.TypeofExpression
   | angular.VoidExpression
-  | angular.TemplateLiteral; // Including `TemplateLiteralElement`
+  | angular.TemplateLiteral // Including `TemplateLiteralElement`
+  | angular.TaggedTemplateLiteral;
 function transform(node: SupportedNodes, text: string): NGNode {
   return new Transformer(node, text).node;
 }
