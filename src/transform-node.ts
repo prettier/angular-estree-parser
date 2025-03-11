@@ -15,10 +15,10 @@ function isParenthesized(node: NGNode) {
   return Boolean(node.extra?.parenthesized);
 }
 function getOuterStart(node: NGNode): number {
-  return isParenthesized(node) ? node.extra.parenStart : node.start;
+  return isParenthesized(node) ? node.extra.parenStart : node.start!;
 }
 function getOuterEnd(node: NGNode): number {
-  return isParenthesized(node) ? node.extra.parenEnd : node.end;
+  return isParenthesized(node) ? node.extra.parenEnd : node.end!;
 }
 
 function isOptionalObjectOrCallee(node: NGNode): boolean {
@@ -145,12 +145,7 @@ class Transformer extends Source {
       const right = this.#transform<babel.Expression>(originalRight);
       const start = getOuterStart(left);
       const end = getOuterEnd(right);
-      const properties = {
-        left,
-        right,
-        start,
-        end,
-      };
+      const properties = { left, right, start, end };
 
       if (operator === '&&' || operator === '||' || operator === '??') {
         return this.#create<babel.LogicalExpression>(

@@ -33,8 +33,6 @@ jobs:
         node:
           - '22'
           - '20'
-          - '18'
-          - '16'
     name: Node.js ${{ matrix.node }}
     runs-on: ubuntu-latest
     steps:
@@ -47,7 +45,9 @@ jobs:
       - run: yarn run test
         env:
           ENABLE_COVERAGE: 1
-      - uses: codecov/codecov-action@v4
+      - uses: codecov/codecov-action@v5
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: true
+          disable_search: true
+          files: coverage/lcov.info
+          token: ${{ secrets.CODECOV_TOKEN }}

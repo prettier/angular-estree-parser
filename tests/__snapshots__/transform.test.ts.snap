@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`(BindingPipe -> NGPipeExpression) parseBinding(" a | b ") 1`] = `
+exports[`('BindingPipe' -> 'NGPipeExpression') > parseBinding(" a | b ") 1`] = `
 NGPipeExpression {
   "left": "Identifier",
   "right": "Identifier",
@@ -23,7 +23,7 @@ Identifier {
     |      ^
 `;
 
-exports[`(BindingPipe -> NGPipeExpression) parseBinding(" a | b : c ") 1`] = `
+exports[`('BindingPipe' -> 'NGPipeExpression') > parseBinding(" a | b : c ") 1`] = `
 NGPipeExpression {
   "left": "Identifier",
   "right": "Identifier",
@@ -54,7 +54,7 @@ Identifier {
     |          ^
 `;
 
-exports[`(BindingPipe -> NGPipeExpression) parseInterpolationExpression(" a | b ") 1`] = `
+exports[`('BindingPipe' -> 'NGPipeExpression') > parseInterpolationExpression(" a | b ") 1`] = `
 NGPipeExpression {
   "left": "Identifier",
   "right": "Identifier",
@@ -77,7 +77,7 @@ Identifier {
     |      ^
 `;
 
-exports[`(BindingPipe -> NGPipeExpression) parseInterpolationExpression(" a | b : c ") 1`] = `
+exports[`('BindingPipe' -> 'NGPipeExpression') > parseInterpolationExpression(" a | b : c ") 1`] = `
 NGPipeExpression {
   "left": "Identifier",
   "right": "Identifier",
@@ -108,7 +108,7 @@ Identifier {
     |          ^
 `;
 
-exports[`(Chain -> NGChainedExpression) parseAction(" a ; b ") 1`] = `
+exports[`('Chain' -> 'NGChainedExpression') > parseAction(" a ; b ") 1`] = `
 NGChainedExpression {
   "expressions": [
     "Identifier",
@@ -132,7 +132,7 @@ Identifier {
     |      ^
 `;
 
-exports[`(EmptyExpr -> NGEmptyExpression) parseAction("") 1`] = `
+exports[`('EmptyExpr' -> 'NGEmptyExpression') > parseAction("") 1`] = `
 NGEmptyExpression {
   "comments": []
 }
@@ -140,7 +140,7 @@ NGEmptyExpression {
     | ^
 `;
 
-exports[`(EmptyExpr -> NGEmptyExpression) parseBinding("") 1`] = `
+exports[`('EmptyExpr' -> 'NGEmptyExpression') > parseBinding("") 1`] = `
 NGEmptyExpression {
   "comments": []
 }
@@ -148,7 +148,7 @@ NGEmptyExpression {
     | ^
 `;
 
-exports[`(EmptyExpr -> NGEmptyExpression) parseInterpolationExpression("") 1`] = `
+exports[`('EmptyExpr' -> 'NGEmptyExpression') > parseInterpolationExpression("") 1`] = `
 NGEmptyExpression {
   "comments": []
 }
@@ -156,7 +156,7 @@ NGEmptyExpression {
     | ^
 `;
 
-exports[`(EmptyExpr -> NGEmptyExpression) parseSimpleBinding("") 1`] = `
+exports[`('EmptyExpr' -> 'NGEmptyExpression') > parseSimpleBinding("") 1`] = `
 NGEmptyExpression {
   "comments": []
 }
