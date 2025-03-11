@@ -553,8 +553,8 @@ class Transformer extends Source {
     if (node instanceof angular.TaggedTemplateLiteral) {
       return this.#create<babel.TaggedTemplateExpression>({
         type: 'TaggedTemplateExpression',
-        tag: this.#transform(node.tag),
-        quasi: this.#transform(node.template),
+        tag: this.#transform(node.tag) as babel.Expression,
+        quasi: this.#transform(node.template) as babel.TemplateLiteral,
         ...node.sourceSpan,
       });
     }
