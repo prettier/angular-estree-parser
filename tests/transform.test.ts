@@ -28,6 +28,7 @@ const PARSE_METHODS = [
 describe.each`
   expectedAngularType        | expectedEstreeType            | text                                            | parseAction | parseBinding | parseSimpleBinding | parseInterpolationExpression
   ${'Binary'}                | ${'BinaryExpression'}         | ${' 0 - 1 '}                                    | ${true}     | ${true}      | ${true}            | ${true}
+  ${'Binary'}                | ${'BinaryExpression'}         | ${' a ** b '}                                   | ${true}     | ${true}      | ${true}            | ${true}
   ${'Binary'}                | ${'LogicalExpression'}        | ${' a && b '}                                   | ${true}     | ${true}      | ${true}            | ${true}
   ${'Binary'}                | ${'LogicalExpression'}        | ${' a ?? b '}                                   | ${true}     | ${true}      | ${true}            | ${true}
   ${'Unary'}                 | ${'UnaryExpression'}          | ${' - 1 '}                                      | ${true}     | ${true}      | ${true}            | ${true}
