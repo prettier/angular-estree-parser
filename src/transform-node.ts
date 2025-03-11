@@ -408,7 +408,7 @@ class Transformer extends Source {
           optional:
             nodeType === 'OptionalCallExpression' ? isOptionalType : undefined,
           start: getOuterStart(tReceiver),
-          end: node.sourceSpan.end, // )
+          end: node.sourceSpan.end, // `)`
         },
         { hasParentParens: isInParentParens },
       );
@@ -421,7 +421,7 @@ class Transformer extends Source {
           type: 'TSNonNullExpression',
           expression: expression,
           start: getOuterStart(expression),
-          end: node.sourceSpan.end, // !
+          end: node.sourceSpan.end, // `!`
         },
         { hasParentParens: isInParentParens },
       );
@@ -569,6 +569,8 @@ class Transformer extends Source {
         end = templateLiteral.sourceSpan.end - 1;
       } else {
         const nextExpression = templateLiteral.expressions[elementIndex];
+        // TODO: Support search multiple characters in `getCharacterLastIndex()`
+        // FIXME: Search `${` instead
         end = this.getCharacterLastIndex('$', nextExpression.sourceSpan.start);
       }
       const raw = this.text.slice(start, end);
