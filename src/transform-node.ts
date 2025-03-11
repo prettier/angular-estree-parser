@@ -427,20 +427,31 @@ class Transformer extends Source {
       );
     }
 
-    const isPrefixNot = node instanceof angular.PrefixNot;
-    if (isPrefixNot || node instanceof angular.TypeofExpression) {
+    if (
+      node instanceof angular.PrefixNot ||
+      node instanceof angular.TypeofExpression ||
+      node instanceof angular.VoidExpression
+    ) {
       const expression = this.#transform<babel.Expression>(node.expression);
 
-      const operator = isPrefixNot ? '!' : 'typeof';
+      const operator =
+        node instanceof angular.PrefixNot
+          ? '!'
+          : node instanceof angular.TypeofExpression
+            ? 'typeof'
+            : node instanceof angular.VoidExpression
+              ? 'void'
+              : undefined;
+
       let { start } = node.sourceSpan;
 
-      if (!isPrefixNot) {
+      if (operator === 'typeof' || operator === 'void') {
         const index = this.text.lastIndexOf(operator, start);
 
         // istanbul ignore next 7
         if (index === -1) {
           throw new Error(
-            `Cannot find operator ${operator} from index ${start} in ${JSON.stringify(
+            `Cannot find operator '${operator}' from index ${start} in ${JSON.stringify(
               this.text,
             )}`,
           );
@@ -619,6 +630,7 @@ type SupportedNodes =
   | angular.EmptyExpr
   | angular.PrefixNot
   | angular.TypeofExpression
+  | angular.VoidExpression
   | angular.TemplateLiteral; // Including `TemplateLiteralElement`
 function transform(node: SupportedNodes, text: string): NGNode {
   return new Transformer(node, text).node;
