@@ -589,34 +589,36 @@ class Transformer extends Source {
     }
 
     // istanbul ignore next
-    throw Object.assign(new Error('Unexpected node'), { node });
+    throw new Error(`Unexpected node type '${node.constructor.name}'`);
   }
 }
 
 // See `convertAst` in `@angular/compiler`
-// ASTWithSource (Not handled)
-// PropertyRead
-// PropertyWrite
-// KeyedWrite
-// Call
-// LiteralPrimitive
-// Unary
-// Binary
-// ThisReceiver (Not handled)
-// KeyedRead
-// Chain
-// LiteralMap
-// LiteralArray
-// Conditional
-// NonNullAssert
-// BindingPipe
-// SafeKeyedRead
-// SafePropertyRead
-// SafeCall
-// EmptyExpr
-// PrefixNot
-// TypeofExpression
-function transform(node: angular.AST, text: string): NGNode {
+type SupportedNodes =
+  | angular.ASTWithSource // Not handled
+  | angular.PropertyRead
+  | angular.PropertyWrite
+  | angular.KeyedWrite
+  | angular.Call
+  | angular.LiteralPrimitive
+  | angular.Unary
+  | angular.Binary
+  | angular.ThisReceiver // Not handled
+  | angular.KeyedRead
+  | angular.Chain
+  | angular.LiteralMap
+  | angular.LiteralArray
+  | angular.Conditional
+  | angular.NonNullAssert
+  | angular.BindingPipe
+  | angular.SafeKeyedRead
+  | angular.SafePropertyRead
+  | angular.SafeCall
+  | angular.EmptyExpr
+  | angular.PrefixNot
+  | angular.TypeofExpression
+  | angular.TemplateLiteral; // Including `TemplateLiteralElement`
+function transform(node: SupportedNodes, text: string): NGNode {
   return new Transformer(node, text).node;
 }
 
