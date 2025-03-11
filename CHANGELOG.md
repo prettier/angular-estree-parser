@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [11.1.0](https://github.com/prettier/angular-estree-parser/compare/v11.0.0...v11.1.0) (2025-03-11)
+
+
+### Features
+
+* support `TemplateExpression` ([#325](https://github.com/prettier/angular-estree-parser/issues/325)) ([76a865b](https://github.com/prettier/angular-estree-parser/commit/76a865b9c10ab721047c418c2bd06abda7ce0cd5))
+
+
+
 # [11.0.0](https://github.com/prettier/angular-estree-parser/compare/v10.3.0...v11.0.0) (2025-03-11)
 
 
