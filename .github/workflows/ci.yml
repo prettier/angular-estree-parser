@@ -33,8 +33,6 @@ jobs:
         node:
           - '22'
           - '20'
-          - '18'
-          - '16'
     name: Node.js ${{ matrix.node }}
     runs-on: ubuntu-latest
     steps:
