@@ -555,24 +555,13 @@ class Transformer extends Source {
     }
 
     if (node instanceof angular.TemplateLiteralElement) {
-      const templateLiteral = options!.parent! as angular.TemplateLiteral;
-      const elementIndex = templateLiteral.elements.indexOf(node);
+      const { elements } = options!.parent! as angular.TemplateLiteral;
+      const elementIndex = elements.indexOf(node);
       const isFirst = elementIndex === 0;
-      const isLast = elementIndex === templateLiteral.elements.length - 1;
+      const isLast = elementIndex === elements.length - 1;
 
-      // The `TemplateLiteralElement` don't have correct location information
-      const start = isFirst
-        ? templateLiteral.sourceSpan.start + 1
-        : node.sourceSpan.start;
-      let end;
-      if (isLast) {
-        end = templateLiteral.sourceSpan.end - 1;
-      } else {
-        const nextExpression = templateLiteral.expressions[elementIndex];
-        // TODO: Support search multiple characters in `getCharacterLastIndex()`
-        // FIXME: Search `${` instead
-        end = this.getCharacterLastIndex('$', nextExpression.sourceSpan.start);
-      }
+      const end = node.sourceSpan.end - (isLast ? 1 : 0);
+      const start = node.sourceSpan.start + (isFirst ? 1 : 0);
       const raw = this.text.slice(start, end);
 
       return this.#create<babel.TemplateElement>(
