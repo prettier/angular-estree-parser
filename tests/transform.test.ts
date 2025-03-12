@@ -96,6 +96,9 @@ describe.each`
   ${'PrefixNot'}        | ${'UnaryExpression'}          | ${' ! ( typeof {} === "number" ) '} | ${true}     | ${true}      | ${true}            | ${true}
   ${'TemplateLiteral'}  | ${'TemplateLiteral'}          | ${' ` a ${ b } \u0063 ` '}          | ${true}     | ${true}      | ${true}            | ${true}
   ${'TemplateLiteral'}  | ${'TemplateLiteral'}          | ${' ( ` a ${ b } \u0063 ` ) '}      | ${true}     | ${true}      | ${true}            | ${true}
+  ${'TemplateLiteral'}  | ${'TemplateLiteral'}          | ${' `  \u0063  ` '}                 | ${true}     | ${true}      | ${true}            | ${true}
+  ${'TemplateLiteral'}  | ${'TemplateLiteral'}          | ${' ( ( `   ` ) ) '}                | ${true}     | ${true}      | ${true}            | ${true}
+  ${'TemplateLiteral'}  | ${'TemplateLiteral'}          | ${' `` '}                           | ${true}     | ${true}      | ${true}            | ${true}
 `('($expectedAngularType -> $expectedEstreeType)', (fields) => {
   for (const method of PARSE_METHODS) {
     testSection(method, fields);

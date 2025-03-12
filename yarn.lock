@@ -15,17 +15,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/compiler@npm:19.2.1":
-  version: 19.2.1
-  resolution: "@angular/compiler@npm:19.2.1"
+"@angular/compiler@npm:19.2.2":
+  version: 19.2.2
+  resolution: "@angular/compiler@npm:19.2.2"
   dependencies:
     tslib: "npm:^2.3.0"
   peerDependencies:
-    "@angular/core": 19.2.1
+    "@angular/core": 19.2.2
   peerDependenciesMeta:
     "@angular/core":
       optional: true
-  checksum: 10/24d094e6f6653e20bd554a1b38488b6e6f752ec65491dd77135fc8b7ac03020f64ed967e21fd9ea38a5e644e7e90e84cf8da24d31ef905944cbafa34c05a31bb
+  checksum: 10/2c427e4e4696f8ce357e432a517d12a0730f9cbdb1306b5be49f9d4f7bd54b76442cfaba8f82579152bc814402e5f666bb5092c994f43c3022bb9a93e8d64db6
   languageName: node
   linkType: hard
 
@@ -54,24 +54,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/parser@npm:7.26.9, @babel/parser@npm:^7.25.4":
-  version: 7.26.9
-  resolution: "@babel/parser@npm:7.26.9"
+"@babel/parser@npm:7.26.10, @babel/parser@npm:^7.25.4":
+  version: 7.26.10
+  resolution: "@babel/parser@npm:7.26.10"
   dependencies:
-    "@babel/types": "npm:^7.26.9"
+    "@babel/types": "npm:^7.26.10"
   bin:
     parser: ./bin/babel-parser.js
-  checksum: 10/cb84fe3ba556d6a4360f3373cf7eb0901c46608c8d77330cc1ca021d60f5d6ebb4056a8e7f9dd0ef231923ef1fe69c87b11ce9e160d2252e089a20232a2b942b
+  checksum: 10/3f87781f46795ba72448168061d9e99c394fdf9cd4aa3ddf053a06334247da4d25d0923ccc89195937d3360d384cee181e99711763c1e8fe81d4f17ee22541fc
   languageName: node
   linkType: hard
 
-"@babel/types@npm:7.26.9, @babel/types@npm:^7.25.4, @babel/types@npm:^7.26.9":
-  version: 7.26.9
-  resolution: "@babel/types@npm:7.26.9"
+"@babel/types@npm:7.26.10, @babel/types@npm:^7.25.4, @babel/types@npm:^7.26.10":
+  version: 7.26.10
+  resolution: "@babel/types@npm:7.26.10"
   dependencies:
     "@babel/helper-string-parser": "npm:^7.25.9"
     "@babel/helper-validator-identifier": "npm:^7.25.9"
-  checksum: 10/11b62ea7ed64ef7e39cc9b33852c1084064c3b970ae0eaa5db659241cfb776577d1e68cbff4de438bada885d3a827b52cc0f3746112d8e1bc672bb99a8eb5b56
+  checksum: 10/6b4f24ee77af853c2126eaabb65328cd44a7d6f439685131cf929c30567e01b6ea2e5d5653b2c304a09c63a5a6199968f0e27228a007acf35032036d79a9dee6
   languageName: node
   linkType: hard
 
@@ -989,10 +989,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "angular-estree-parser@workspace:."
   dependencies:
-    "@angular/compiler": "npm:19.2.1"
+    "@angular/compiler": "npm:19.2.2"
     "@babel/code-frame": "npm:7.26.2"
-    "@babel/parser": "npm:7.26.9"
-    "@babel/types": "npm:7.26.9"
+    "@babel/parser": "npm:7.26.10"
+    "@babel/types": "npm:7.26.10"
     "@types/babel__code-frame": "npm:7.0.6"
     "@types/node": "npm:22.13.10"
     "@vitest/coverage-v8": "npm:3.0.8"
@@ -1011,7 +1011,7 @@ __metadata:
     typescript-eslint: "npm:8.26.1"
     vitest: "npm:3.0.8"
   peerDependencies:
-    "@angular/compiler": ^19.0.0
+    "@angular/compiler": ">=19.2.2"
   languageName: unknown
   linkType: soft
 
