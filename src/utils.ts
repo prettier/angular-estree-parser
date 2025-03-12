@@ -106,6 +106,7 @@ export function getCharacterLastIndex(
     }
   }
 
+  /* c8 ignore next 4 */
   throw new Error(
     `Cannot find front char ${pattern} from index ${fromIndex} in ${JSON.stringify(
       text,

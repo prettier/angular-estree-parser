@@ -168,13 +168,14 @@ class Transformer extends NodeTransformer {
         });
 
         const lastNode = body.pop()!;
-        // istanbul ignore else
+
         if (lastNode.type === 'NGMicrosyntaxExpression') {
           body.push(updateExpressionAlias(lastNode));
         } else if (lastNode.type === 'NGMicrosyntaxKeyedExpression') {
           const expression = updateExpressionAlias(lastNode.expression);
           body.push(updateSpanEnd({ ...lastNode, expression }, expression.end));
         } else {
+          /* c8 ignore next 2 */
           throw new Error(`Unexpected type ${lastNode.type}`);
         }
       } else {
