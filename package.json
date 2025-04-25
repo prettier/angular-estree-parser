@@ -27,7 +27,7 @@
     "release": "yarn build && standard-version"
   },
   "devDependencies": {
-    "@angular/compiler": "20.0.0-next.1",
+    "@angular/compiler": "20.0.0-next.8",
     "@babel/code-frame": "7.26.2",
     "@babel/parser": "7.26.10",
     "@babel/types": "7.26.10",

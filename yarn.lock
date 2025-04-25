@@ -15,17 +15,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/compiler@npm:20.0.0-next.1":
-  version: 20.0.0-next.1
-  resolution: "@angular/compiler@npm:20.0.0-next.1"
+"@angular/compiler@npm:20.0.0-next.8":
+  version: 20.0.0-next.8
+  resolution: "@angular/compiler@npm:20.0.0-next.8"
   dependencies:
     tslib: "npm:^2.3.0"
-  peerDependencies:
-    "@angular/core": 20.0.0-next.1
-  peerDependenciesMeta:
-    "@angular/core":
-      optional: true
-  checksum: 10/b391d6eeda17b6a9277dcc20bed551e270fe3a5d190446fdf3325f25c80f00f2fff2d464879ce8ffeafe596f93b4c4c51fd317a58403d647367b727b2e523ec1
+  checksum: 10/6ce4a2b5d4dc85d45560675403f07ac9c900ddf696f1c49942865e0fdbfde4319371ee35f525d658fad189b19da8e52cc6998dd1cdd1ed1f05866b39da2f15cd
   languageName: node
   linkType: hard
 
@@ -989,7 +984,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "angular-estree-parser@workspace:."
   dependencies:
-    "@angular/compiler": "npm:20.0.0-next.1"
+    "@angular/compiler": "npm:20.0.0-next.8"
     "@babel/code-frame": "npm:7.26.2"
     "@babel/parser": "npm:7.26.10"
     "@babel/types": "npm:7.26.10"
@@ -1011,7 +1006,7 @@ __metadata:
     typescript-eslint: "npm:8.26.1"
     vitest: "npm:3.0.8"
   peerDependencies:
-    "@angular/compiler": ^19.2.2 || ^20.0.0
+    "@angular/compiler": ">=19.2.2 || ^20.0.0"
   languageName: unknown
   linkType: soft
 
