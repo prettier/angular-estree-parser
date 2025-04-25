@@ -98,6 +98,10 @@ describe.each`
   ${'VoidExpression'}        | ${'UnaryExpression'}          | ${' ( ( void ( ( a() ) ) ) ) '}                 | ${true}     | ${true}      | ${true}            | ${true}
   ${'TemplateLiteral'}       | ${'TemplateLiteral'}          | ${' ` a ${ b } \\u0063 ` '}                     | ${true}     | ${true}      | ${true}            | ${true}
   ${'TemplateLiteral'}       | ${'TemplateLiteral'}          | ${' ( ( ` a ${ b } \\u0063 ` ) ) '}             | ${true}     | ${true}      | ${true}            | ${true}
+  ${'TemplateLiteral'}       | ${'TemplateLiteral'}          | ${' ( ` a ${ b } \u0063 ` ) '}                  | ${true}     | ${true}      | ${true}            | ${true}
+  ${'TemplateLiteral'}       | ${'TemplateLiteral'}          | ${' `  \u0063  ` '}                             | ${true}     | ${true}      | ${true}            | ${true}
+  ${'TemplateLiteral'}       | ${'TemplateLiteral'}          | ${' ( ( `   ` ) ) '}                            | ${true}     | ${true}      | ${true}            | ${true}
+  ${'TemplateLiteral'}       | ${'TemplateLiteral'}          | ${' `` '}                                       | ${true}     | ${true}      | ${true}            | ${true}
   ${'TaggedTemplateLiteral'} | ${'TaggedTemplateExpression'} | ${' tag ` a ${ b } \\u0063 ` '}                 | ${true}     | ${true}      | ${true}            | ${true}
   ${'TaggedTemplateLiteral'} | ${'TaggedTemplateExpression'} | ${' ( ( ( ( tag ) ) ` a ${ b } \\u0063 ` ) ) '} | ${true}     | ${true}      | ${true}            | ${true}
 `('($expectedAngularType -> $expectedEstreeType)', (fields) => {
