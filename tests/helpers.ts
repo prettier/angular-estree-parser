@@ -169,9 +169,17 @@ const KNOWN_AST_TYPES = [
   'SafePropertyRead',
   'ThisReceiver',
   'Interpolation',
+  'VoidExpression',
+  'TemplateLiteral',
+  'TaggedTemplateLiteral',
+  'ParenthesizedExpression',
 ] as const;
 
 export function getAngularNodeType(node: angular.AST) {
+  if (node instanceof angular.ParenthesizedExpression) {
+    return getAngularNodeType(node.expression);
+  }
+
   return (
     KNOWN_AST_TYPES.find((type) => node instanceof angular[type]) ??
     node.constructor.name
