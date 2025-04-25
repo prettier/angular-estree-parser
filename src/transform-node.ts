@@ -605,6 +605,10 @@ class Transformer extends Source {
       );
     }
 
+    if (node instanceof angular.ParenthesizedExpression) {
+      return this.#transformNode(node.expression);
+    }
+
     /* c8 ignore next */
     throw new Error(`Unexpected node type '${node.constructor.name}'`);
   }
@@ -636,7 +640,8 @@ type SupportedNodes =
   | angular.TypeofExpression
   | angular.VoidExpression
   | angular.TemplateLiteral // Including `TemplateLiteralElement`
-  | angular.TaggedTemplateLiteral;
+  | angular.TaggedTemplateLiteral
+  | angular.ParenthesizedExpression;
 function transform(node: SupportedNodes, text: string): NGNode {
   return new Transformer(node, text).node;
 }
