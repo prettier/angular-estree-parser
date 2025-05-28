@@ -11,13 +11,13 @@ export interface NGBaseNode extends LocationInformation {
   type: string;
 }
 
-export type NGNode =
-  | babel.Node
+export type NGOwnNode =
   | NGMicrosyntaxNode
   | NGEmptyExpression
   | NGPipeExpression
-  | NGQuotedExpression
   | NGChainedExpression;
+
+export type NGNode = babel.Node | NGOwnNode;
 
 export type CommentLine = babel.CommentLine & LocationInformation;
 
@@ -30,12 +30,6 @@ export interface NGPipeExpression extends NGBaseNode {
   left: babel.Expression;
   right: babel.Identifier;
   arguments: babel.Expression[];
-}
-
-export interface NGQuotedExpression extends NGBaseNode {
-  type: 'NGQuotedExpression';
-  prefix: string;
-  value: string;
 }
 
 export interface NGChainedExpression extends NGBaseNode {
