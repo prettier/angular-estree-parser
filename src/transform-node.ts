@@ -405,8 +405,9 @@ class Transformer extends Source {
           type: nodeType,
           callee: tReceiver,
           arguments: tArgs,
-          optional:
-            nodeType === 'OptionalCallExpression' ? isOptionalType : undefined,
+          ...(nodeType === 'OptionalCallExpression'
+            ? { optional: isOptionalType }
+            : undefined),
           start: getOuterStart(tReceiver),
           end: node.sourceSpan.end, // `)`
         },
