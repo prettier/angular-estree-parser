@@ -37,13 +37,13 @@ export function parseBabel(input: string) {
   return fixBabelCommentsRange(babelParser.parse(input, babelParserOptions));
 }
 
-export function massageAst(ast: any): any {
+export function massageAst(ast: any, parser): any {
   if (!ast || typeof ast !== 'object') {
     return ast;
   }
 
   if (Array.isArray(ast)) {
-    return ast.map(massageAst);
+    return ast.map((node) => massageAst(node, parser));
   }
 
   // Not exists in types, but exists in node.
@@ -64,7 +64,7 @@ export function massageAst(ast: any): any {
         // do nothing
         break;
       case 'extra': {
-        const extra = massageAst(ast[key]);
+        const extra = massageAst(ast[key], parser);
         if (extra) {
           // we added a custom `parenEnd` field for positioning
           delete extra.parenEnd;
@@ -75,7 +75,7 @@ export function massageAst(ast: any): any {
         break;
       }
       default:
-        reduced[key] = massageAst(ast[key]);
+        reduced[key] = massageAst(ast[key], parser);
         break;
     }
     return reduced;

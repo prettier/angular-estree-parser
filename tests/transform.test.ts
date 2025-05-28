@@ -104,6 +104,8 @@ describe.each`
   ${'TemplateLiteral'}       | ${'TemplateLiteral'}          | ${' `` '}                                       | ${true}     | ${true}      | ${true}            | ${true}
   ${'TaggedTemplateLiteral'} | ${'TaggedTemplateExpression'} | ${' tag ` a ${ b } \\u0063 ` '}                 | ${true}     | ${true}      | ${true}            | ${true}
   ${'TaggedTemplateLiteral'} | ${'TaggedTemplateExpression'} | ${' ( ( ( ( tag ) ) ` a ${ b } \\u0063 ` ) ) '} | ${true}     | ${true}      | ${true}            | ${true}
+  ${'LiteralMap'}            | ${'ObjectExpression'}         | ${' ( ( {foo: ` a ${ b } ` } ) ) '}             | ${true}     | ${true}      | ${true}            | ${true}
+  ${'LiteralMap'}            | ${'ObjectExpression'}         | ${' ( ( {foo: tag ` a ${ b } ` } ) ) '}         | ${true}     | ${true}      | ${true}            | ${true}
 `('($expectedAngularType -> $expectedEstreeType)', (fields) => {
   for (const method of PARSE_METHODS) {
     testSection(method, fields);
@@ -178,6 +180,8 @@ function testSection(
       expect(statement.type).toEqual('ExpressionStatement');
       babelNode = { ...statement.expression, comments };
     }
-    expect(massageAst(estreeNode)).toEqual(massageAst(babelNode));
+    expect(massageAst(estreeNode, 'angular')).toEqual(
+      massageAst(babelNode, 'babel'),
+    );
   });
 }
