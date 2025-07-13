@@ -290,13 +290,19 @@ class Transformer extends Source {
       node instanceof angular.KeyedRead ||
       node instanceof angular.SafeKeyedRead
     ) {
+      // TODO: Use `node.sourceSpan.end` directly
+      // https://github.com/angular/angular/issues/62617
+      const end =
+        this.text.charAt(node.sourceSpan.end - 1) === '='
+          ? this.getCharacterLastIndex(/\S/, node.sourceSpan.end - 2) + 1
+          : node.sourceSpan.end;
       return this.#transformReceiverAndName(
         node.receiver,
         this.#transform<babel.Expression>(node.key),
         {
           computed: true,
           optional: node instanceof angular.SafeKeyedRead,
-          end: node.sourceSpan.end, // ]
+          end: end, // ]
           hasParentParens: isInParentParens,
         },
       );
