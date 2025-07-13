@@ -1,12 +1,22 @@
 import {
   type ASTWithSource,
   Lexer,
+  ParseLocation,
   Parser,
+  ParseSourceFile,
+  ParseSourceSpan,
   type TemplateBindingParseResult,
 } from '@angular/compiler';
 
 import { type CommentLine } from './types.js';
 import { sourceSpanToLocationInformation } from './utils.js';
+
+// https://github.com/angular/angular/blob/5e9707dc84e6590ec8c9d41e7d3be7deb2fa7c53/packages/compiler/test/expression_parser/utils/span.ts
+function getFakeSpan(fileName = 'test.html') {
+  const file = new ParseSourceFile('', fileName);
+  const location = new ParseLocation(file, 0, 0, 0);
+  return new ParseSourceSpan(location, location);
+}
 
 const getCommentStart = (text: string): number | null =>
   // @ts-expect-error -- need to call private _commentStart
@@ -59,23 +69,23 @@ function createAngularParseFunction<
 }
 
 export const parseBinding = createAngularParseFunction((text, parser) =>
-  parser.parseBinding(text, '', 0),
+  parser.parseBinding(text, getFakeSpan(), 0),
 );
 
 export const parseSimpleBinding = createAngularParseFunction((text, parser) =>
-  parser.parseSimpleBinding(text, '', 0),
+  parser.parseSimpleBinding(text, getFakeSpan(), 0),
 );
 
 export const parseAction = createAngularParseFunction((text, parser) =>
-  parser.parseAction(text, '', 0),
+  parser.parseAction(text, getFakeSpan(), 0),
 );
 
 export const parseInterpolationExpression = createAngularParseFunction(
-  (text, parser) => parser.parseInterpolationExpression(text, '', 0),
+  (text, parser) => parser.parseInterpolationExpression(text, getFakeSpan(), 0),
 );
 
 export const parseTemplateBindings = createAngularParseFunction(
-  (text, parser) => parser.parseTemplateBindings('', text, '', 0, 0),
+  (text, parser) => parser.parseTemplateBindings('', text, getFakeSpan(), 0, 0),
   /* shouldExtractComment */ false,
 );
 
