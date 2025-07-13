@@ -51,7 +51,7 @@ describe.each`
   ${'SafeKeyedRead'}         | ${'OptionalMemberExpression'} | ${' a ?. b ?. [ c ] '}                          | ${true}     | ${true}      | ${true}            | ${true}
   ${'KeyedRead'}             | ${'OptionalMemberExpression'} | ${' a ?. b () [ c ] '}                          | ${true}     | ${true}      | ${true}            | ${true}
   ${'SafeKeyedRead'}         | ${'OptionalMemberExpression'} | ${' a ?. b () ?. [ c ] '}                       | ${true}     | ${true}      | ${true}            | ${true}
-  ${'KeyedWrite'}            | ${'AssignmentExpression'}     | ${' a [ b ] = 1 '}                              | ${true}     | ${true}      | ${true}            | ${true}
+  ${'Binary'}                | ${'AssignmentExpression'}     | ${' a [ b ] = 1 '}                              | ${true}     | ${true}      | ${true}            | ${true}
   ${'ImplicitReceiver'}      | ${'ThisExpression'}           | ${' this '}                                     | ${true}     | ${true}      | ${true}            | ${true}
   ${'LiteralArray'}          | ${'ArrayExpression'}          | ${' [ 1 ] '}                                    | ${true}     | ${true}      | ${true}            | ${true}
   ${'LiteralMap'}            | ${'ObjectExpression'}         | ${' ( { "a" : 1 } )'}                           | ${true}     | ${true}      | ${true}            | ${true}
@@ -88,8 +88,8 @@ describe.each`
   ${'PropertyRead'}          | ${'MemberExpression'}         | ${' this . a '}                                 | ${true}     | ${true}      | ${true}            | ${true}
   ${'PropertyRead'}          | ${'OptionalMemberExpression'} | ${' a ?. b . c '}                               | ${true}     | ${true}      | ${true}            | ${true}
   ${'PropertyRead'}          | ${'OptionalMemberExpression'} | ${' a ?. b ( ) . c '}                           | ${true}     | ${true}      | ${true}            | ${true}
-  ${'PropertyWrite'}         | ${'AssignmentExpression'}     | ${' a . b = 1 '}                                | ${true}     | ${false}     | ${false}           | ${false}
-  ${'PropertyWrite'}         | ${'AssignmentExpression'}     | ${' a = 1 '}                                    | ${true}     | ${false}     | ${false}           | ${false}
+  ${'Binary'}                | ${'AssignmentExpression'}     | ${' a . b = 1 '}                                | ${true}     | ${false}     | ${false}           | ${false}
+  ${'Binary'}                | ${'AssignmentExpression'}     | ${' a = 1 '}                                    | ${true}     | ${false}     | ${false}           | ${false}
   ${'Call'}                  | ${'OptionalCallExpression'}   | ${' a ?. b ( ) '}                               | ${true}     | ${true}      | ${true}            | ${true}
   ${'SafeCall'}              | ${'OptionalCallExpression'}   | ${' a ?. b ?. ( ) '}                            | ${true}     | ${true}      | ${true}            | ${true}
   ${'SafePropertyRead'}      | ${'OptionalMemberExpression'} | ${' a ?. b '}                                   | ${true}     | ${true}      | ${true}            | ${true}
@@ -106,6 +106,7 @@ describe.each`
   ${'TaggedTemplateLiteral'} | ${'TaggedTemplateExpression'} | ${' ( ( ( ( tag ) ) ` a ${ b } \\u0063 ` ) ) '} | ${true}     | ${true}      | ${true}            | ${true}
   ${'LiteralMap'}            | ${'ObjectExpression'}         | ${' ( ( {foo: ` a ${ b } ` } ) ) '}             | ${true}     | ${true}      | ${true}            | ${true}
   ${'LiteralMap'}            | ${'ObjectExpression'}         | ${' ( ( {foo: tag ` a ${ b } ` } ) ) '}         | ${true}     | ${true}      | ${true}            | ${true}
+  ${'Binary'}                | ${'AssignmentExpression'}     | ${' a ??= b '}                                  | ${true}     | ${false}     | ${false}           | ${false}
 `('($expectedAngularType -> $expectedEstreeType)', (fields) => {
   for (const method of PARSE_METHODS) {
     testSection(method, fields);

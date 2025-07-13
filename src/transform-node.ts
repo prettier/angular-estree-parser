@@ -39,6 +39,20 @@ type NodeTransformOptions = {
   parent?: angular.AST;
 };
 
+const assignmentOperators = new Set([
+  '=',
+  // https://github.com/angular/angular/pull/62064
+  '+=', // addition assignment
+  '-=', // subtraction assignment
+  '*=', // multiplication assignment
+  '/=', // division assignment
+  '%=', // remainder assignment
+  '**=', // exponentiation assignment
+  '&&=', // logical AND assignment
+  '||=', // logical OR assignment
+  '??=', // nullish coalescing assignment
+]);
+
 class Transformer extends Source {
   #node;
   #text;
@@ -170,6 +184,19 @@ class Transformer extends Source {
         );
       }
 
+      if (assignmentOperators.has(operator)) {
+        return this.#create<babel.AssignmentExpression>(
+          {
+            ...properties,
+            type: 'AssignmentExpression',
+            left: left as babel.MemberExpression,
+            operator,
+            ...node.sourceSpan,
+          },
+          { hasParentParens: isInParentParens },
+        );
+      }
+
       return this.#create<babel.BinaryExpression>(
         {
           ...properties,
@@ -263,13 +290,19 @@ class Transformer extends Source {
       node instanceof angular.KeyedRead ||
       node instanceof angular.SafeKeyedRead
     ) {
+      // TODO: Use `node.sourceSpan.end` directly
+      // https://github.com/angular/angular/issues/62617
+      const end =
+        this.text.charAt(node.sourceSpan.end - 1) === '='
+          ? this.getCharacterLastIndex(/\S/, node.sourceSpan.end - 2) + 1
+          : node.sourceSpan.end;
       return this.#transformReceiverAndName(
         node.receiver,
         this.#transform<babel.Expression>(node.key),
         {
           computed: true,
           optional: node instanceof angular.SafeKeyedRead,
-          end: node.sourceSpan.end, // ]
+          end: end, // ]
           hasParentParens: isInParentParens,
         },
       );
@@ -485,14 +518,11 @@ class Transformer extends Source {
       node instanceof angular.SafePropertyRead
     ) {
       const { receiver, name } = node;
-      const nameEnd =
-        this.getCharacterLastIndex(/\S/, node.sourceSpan.end - 1) + 1;
       const tName = this.#create<babel.Identifier>(
         {
           type: 'Identifier',
           name,
-          start: nameEnd - name.length,
-          end: nameEnd,
+          ...node.nameSpan,
         },
         isImplicitThis(receiver, this.#text)
           ? { hasParentParens: isInParentParens }
@@ -503,58 +533,6 @@ class Transformer extends Source {
         optional: node instanceof angular.SafePropertyRead,
         hasParentParens: isInParentParens,
       });
-    }
-
-    if (node instanceof angular.KeyedWrite) {
-      const key = this.#transform<babel.Expression>(node.key);
-      const right = this.#transform<babel.Expression>(node.value);
-      const left = this.#transformReceiverAndName(node.receiver, key, {
-        computed: true,
-        optional: false,
-        end: this.getCharacterIndex(']', getOuterEnd(key)) + 1,
-      });
-      return this.#create<babel.AssignmentExpression>(
-        {
-          type: 'AssignmentExpression',
-          left: left as babel.MemberExpression,
-          operator: '=',
-          right,
-          start: getOuterStart(left),
-          end: getOuterEnd(right),
-        },
-        { hasParentParens: isInParentParens },
-      );
-    }
-
-    if (node instanceof angular.PropertyWrite) {
-      const { receiver, name, value } = node;
-      const tValue = this.#transform<babel.Expression>(value);
-      const nameEnd =
-        this.getCharacterLastIndex(
-          /\S/,
-          this.getCharacterLastIndex('=', getOuterStart(tValue) - 1) - 1,
-        ) + 1;
-      const tName = this.#create<babel.Identifier>({
-        type: 'Identifier',
-        name,
-        start: nameEnd - name.length,
-        end: nameEnd,
-      });
-      const tReceiverAndName = this.#transformReceiverAndName(receiver, tName, {
-        computed: false,
-        optional: false,
-      });
-      return this.#create<babel.AssignmentExpression>(
-        {
-          type: 'AssignmentExpression',
-          left: tReceiverAndName as babel.MemberExpression,
-          operator: '=',
-          right: tValue,
-          start: getOuterStart(tReceiverAndName),
-          end: getOuterEnd(tValue),
-        },
-        { hasParentParens: isInParentParens },
-      );
     }
 
     if (node instanceof angular.TaggedTemplateLiteral) {
@@ -619,8 +597,6 @@ class Transformer extends Source {
 type SupportedNodes =
   | angular.ASTWithSource // Not handled
   | angular.PropertyRead
-  | angular.PropertyWrite
-  | angular.KeyedWrite
   | angular.Call
   | angular.LiteralPrimitive
   | angular.Unary
