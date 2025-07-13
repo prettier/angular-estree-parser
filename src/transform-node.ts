@@ -39,20 +39,6 @@ type NodeTransformOptions = {
   parent?: angular.AST;
 };
 
-const assignmentOperators = new Set([
-  '=',
-  // https://github.com/angular/angular/pull/62064
-  '+=', // addition assignment
-  '-=', // subtraction assignment
-  '*=', // multiplication assignment
-  '/=', // division assignment
-  '%=', // remainder assignment
-  '**=', // exponentiation assignment
-  '&&=', // logical AND assignment
-  '||=', // logical OR assignment
-  '??=', // nullish coalescing assignment
-]);
-
 class Transformer extends Source {
   #node;
   #text;
@@ -184,7 +170,7 @@ class Transformer extends Source {
         );
       }
 
-      if (assignmentOperators.has(operator)) {
+      if (angular.Binary.isAssignmentOperation(operator)) {
         return this.#create<babel.AssignmentExpression>(
           {
             ...properties,
