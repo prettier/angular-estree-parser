@@ -65,20 +65,23 @@ class Transformer extends Source {
   }
 
   #transformReceiverAndName(
-    receiver: angular.AST,
+    node:
+      | angular.KeyedRead
+      | angular.SafeKeyedRead
+      | angular.PropertyRead
+      | angular.SafePropertyRead,
     property: babel.Expression,
     {
       computed,
       optional,
-      end = getOuterEnd(property),
       hasParentParens = false,
     }: {
       computed: boolean;
       optional: boolean;
-      end?: number;
       hasParentParens?: boolean;
     },
   ) {
+    const { receiver } = node;
     if (
       isImplicitThis(receiver, this.#text) ||
       receiver.sourceSpan.start === property.start
@@ -103,8 +106,7 @@ class Transformer extends Source {
           : isOptionalObject
             ? { optional: false }
             : undefined),
-        start: getOuterStart(object),
-        end,
+        ...node.sourceSpan,
       },
       { hasParentParens },
     );
@@ -269,22 +271,6 @@ class Transformer extends Source {
       return this.#create<babel.ThisExpression>(
         { type: 'ThisExpression', ...node.sourceSpan },
         { hasParentParens: isInParentParens },
-      );
-    }
-
-    if (
-      node instanceof angular.KeyedRead ||
-      node instanceof angular.SafeKeyedRead
-    ) {
-      return this.#transformReceiverAndName(
-        node.receiver,
-        this.#transform<babel.Expression>(node.key),
-        {
-          computed: true,
-          optional: node instanceof angular.SafeKeyedRead,
-          end: node.sourceSpan.end, // ]
-          hasParentParens: isInParentParens,
-        },
       );
     }
 
@@ -494,6 +480,21 @@ class Transformer extends Source {
     }
 
     if (
+      node instanceof angular.KeyedRead ||
+      node instanceof angular.SafeKeyedRead
+    ) {
+      return this.#transformReceiverAndName(
+        node,
+        this.#transform<babel.Expression>(node.key),
+        {
+          computed: true,
+          optional: node instanceof angular.SafeKeyedRead,
+          hasParentParens: isInParentParens,
+        },
+      );
+    }
+
+    if (
       node instanceof angular.PropertyRead ||
       node instanceof angular.SafePropertyRead
     ) {
@@ -508,7 +509,7 @@ class Transformer extends Source {
           ? { hasParentParens: isInParentParens }
           : {},
       );
-      return this.#transformReceiverAndName(receiver, tName, {
+      return this.#transformReceiverAndName(node, tName, {
         computed: false,
         optional: node instanceof angular.SafePropertyRead,
         hasParentParens: isInParentParens,
