@@ -18,8 +18,8 @@ describe.each([
 ])('', (parseType: ParseType, input: string) => {
   if (parseType & ParseType.Binding) {
     test(`${ParseType[ParseType.Binding]}: ${JSON.stringify(input)}`, () => {
-      expect(massageAst(parseBinding(input))).toEqual(
-        massageAst(parseBabelExpression(input)),
+      expect(massageAst(parseBinding(input), 'angular')).toEqual(
+        massageAst(parseBabelExpression(input), 'babel'),
       );
     });
   }

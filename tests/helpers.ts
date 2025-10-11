@@ -37,7 +37,7 @@ export function parseBabel(input: string) {
   return fixBabelCommentsRange(babelParser.parse(input, babelParserOptions));
 }
 
-export function massageAst(ast: any, parser): any {
+export function massageAst(ast: any, parser: 'babel' | 'angular'): any {
   if (!ast || typeof ast !== 'object') {
     return ast;
   }
