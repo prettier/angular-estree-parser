@@ -3,8 +3,8 @@
   "version": "13.0.4",
   "description": "A parser that converts Angular source code into an ESTree-compatible form",
   "keywords": [],
-  "main": "./lib/index.js",
-  "types": "./lib/index.d.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "repository": "https://github.com/prettier/angular-estree-parser",
   "homepage": "https://github.com/prettier/angular-estree-parser#readme",
   "author": {
@@ -14,7 +14,6 @@
   },
   "license": "MIT",
   "scripts": {
-    "clean": "del-cli ./lib",
     "prepare": "yarn run build",
     "test": "vitest",
     "lint": "run-p \"lint:*\"",
@@ -23,7 +22,7 @@
     "fix": "run-s \"fix:*\"",
     "fix:eslint": "yarn lint:eslint --fix",
     "fix:prettier": "yarn lint:prettier --write",
-    "build": "yarn clean && tsc -p ./tsconfig.build.json",
+    "build": "tsdown",
     "release": "release-it"
   },
   "devDependencies": {
@@ -33,7 +32,6 @@
     "@babel/types": "8.0.0-beta.2",
     "@types/node": "24.7.1",
     "@vitest/coverage-v8": "3.2.4",
-    "del-cli": "7.0.0",
     "eslint": "9.37.0",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-simple-import-sort": "12.1.1",
@@ -44,6 +42,7 @@
     "npm-run-all2": "8.0.4",
     "prettier": "3.6.2",
     "release-it": "19.0.5",
+    "tsdown": "0.15.6",
     "typescript": "5.9.3",
     "typescript-eslint": "8.46.0",
     "vitest": "3.2.4"
@@ -55,7 +54,7 @@
     "node": ">= 20"
   },
   "files": [
-    "lib"
+    "dist"
   ],
   "type": "module",
   "publishConfig": {
