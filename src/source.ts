@@ -87,5 +87,3 @@ export class Source {
     return node;
   }
 }
-
-export default Source;

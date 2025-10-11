@@ -1,7 +1,7 @@
 import * as angular from '@angular/compiler';
 import type * as babel from '@babel/types';
 
-import Source from './source.js';
+import { Source } from './source.js';
 import type {
   LocationInformation,
   NGChainedExpression,
