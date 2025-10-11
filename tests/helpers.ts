@@ -54,6 +54,14 @@ export function massageAst(ast: any, parser): any {
       );
     }
     delete ast.method;
+    if (
+      ast.shorthand &&
+      ast.extra &&
+      Object.keys(ast.extra).length === 1 &&
+      ast.extra.shorthand
+    ) {
+      delete ast.extra;
+    }
   }
 
   delete ast.loc;
