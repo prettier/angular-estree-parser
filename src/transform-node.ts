@@ -22,7 +22,7 @@ function getOuterEnd(node: NGNode): number {
 }
 
 function isOptionalObjectOrCallee(node: NGNode): boolean {
-  if (node.type === 'TSNonNullExpression') {
+  if (node.type === 'TSNonNullExpression' && !isParenthesized(node)) {
     return isOptionalObjectOrCallee(node.expression);
   }
 
