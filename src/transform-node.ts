@@ -182,7 +182,7 @@ class Transformer extends Source {
             ...properties,
             type: 'AssignmentExpression',
             left: left as babel.MemberExpression,
-            operator,
+            operator: operator as babel.AssignmentExpression['operator'],
             ...node.sourceSpan,
           },
           { hasParentParens: isInParentParens },
