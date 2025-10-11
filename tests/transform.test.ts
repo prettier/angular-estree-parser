@@ -88,6 +88,8 @@ describe.each`
   ${'PropertyRead'}          | ${'MemberExpression'}         | ${' this . a '}                                 | ${true}     | ${true}      | ${true}            | ${true}
   ${'PropertyRead'}          | ${'OptionalMemberExpression'} | ${' a ?. b . c '}                               | ${true}     | ${true}      | ${true}            | ${true}
   ${'PropertyRead'}          | ${'OptionalMemberExpression'} | ${' a ?. b ( ) . c '}                           | ${true}     | ${true}      | ${true}            | ${true}
+  ${'PropertyRead'}          | ${'OptionalMemberExpression'} | ${' foo?.bar!.bam '}                            | ${true}     | ${true}      | ${true}            | ${true}
+  ${'PropertyRead'}          | ${'MemberExpression'}         | ${' (foo?.bar)!.bam '}                          | ${true}     | ${true}      | ${true}            | ${true}
   ${'Binary'}                | ${'AssignmentExpression'}     | ${' a . b = 1 '}                                | ${true}     | ${false}     | ${false}           | ${false}
   ${'Binary'}                | ${'AssignmentExpression'}     | ${' a = 1 '}                                    | ${true}     | ${false}     | ${false}           | ${false}
   ${'Call'}                  | ${'OptionalCallExpression'}   | ${' a ?. b ( ) '}                               | ${true}     | ${true}      | ${true}            | ${true}
