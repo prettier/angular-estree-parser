@@ -1,3 +1,9 @@
-export * from './estree-parser.js';
-export type { NGMicrosyntax, NGNode } from './types.ts';
-export { visitorKeys } from './visitor-keys.js';
+export {
+  parseAction,
+  parseBinding,
+  parseInterpolationExpression,
+  parseSimpleBinding,
+  parseTemplateBindings,
+} from './estree-parser.ts';
+export type * as NGTree from './types.ts';
+export { visitorKeys } from './visitor-keys.ts';

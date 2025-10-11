@@ -1,12 +1,12 @@
 import type * as babel from '@babel/types';
 
-import type { LocationInformation, NGNode, RawNGSpan } from './types.js';
+import type { LocationInformation, NGNode, RawNGSpan } from './types.ts';
 import {
   fitSpans,
   getCharacterIndex,
   getCharacterLastIndex,
   sourceSpanToLocationInformation,
-} from './utils.js';
+} from './utils.ts';
 
 export class Source {
   text;

@@ -1,7 +1,7 @@
 import * as angular from '@angular/compiler';
 import type * as babel from '@babel/types';
 
-import { Source } from './source.js';
+import { Source } from './source.ts';
 import type {
   LocationInformation,
   NGChainedExpression,
@@ -9,7 +9,7 @@ import type {
   NGNode,
   NGPipeExpression,
   RawNGSpan,
-} from './types.js';
+} from './types.ts';
 
 function isParenthesized(node: NGNode) {
   return Boolean(node.extra?.parenthesized);

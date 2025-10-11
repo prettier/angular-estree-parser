@@ -1,9 +1,9 @@
 import type {
   AstParseResult,
   MicroSyntaxParseResult,
-} from './angular-parser.js';
-import { transform as transformNode } from './transform-node.js';
-import { transform as transformTemplateBindings } from './transform-template-binding.js';
+} from './angular-parser.ts';
+import { transform as transformNode } from './transform-node.ts';
+import { transform as transformTemplateBindings } from './transform-template-binding.ts';
 
 function transformAstResult({
   result: { ast },

@@ -8,8 +8,8 @@ import {
   type TemplateBindingParseResult,
 } from '@angular/compiler';
 
-import { type CommentLine } from './types.js';
-import { sourceSpanToLocationInformation } from './utils.js';
+import { type CommentLine } from './types.ts';
+import { sourceSpanToLocationInformation } from './utils.ts';
 
 // https://github.com/angular/angular/blob/5e9707dc84e6590ec8c9d41e7d3be7deb2fa7c53/packages/compiler/test/expression_parser/utils/span.ts
 function getFakeSpan(fileName = 'test.html') {

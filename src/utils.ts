@@ -1,4 +1,4 @@
-import type { LocationInformation, RawNGSpan } from './types.js';
+import type { LocationInformation, RawNGSpan } from './types.ts';
 
 function stripSurroundingSpaces(
   { start: startIndex, end: endIndex }: RawNGSpan,

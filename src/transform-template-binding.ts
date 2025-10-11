@@ -4,7 +4,7 @@ import {
   VariableBinding as NGVariableBinding,
 } from '@angular/compiler';
 
-import { Transformer as NodeTransformer } from './transform-node.js';
+import { Transformer as NodeTransformer } from './transform-node.ts';
 import type {
   NGMicrosyntax,
   NGMicrosyntaxAs,
@@ -15,8 +15,8 @@ import type {
   NGMicrosyntaxNode,
   NGNode,
   RawNGSpan,
-} from './types.js';
-import { lowercaseFirst } from './utils.js';
+} from './types.ts';
+import { lowercaseFirst } from './utils.ts';
 
 function isExpressionBinding(
   templateBinding: angular.TemplateBinding,

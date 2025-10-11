@@ -1,8 +1,8 @@
 import { codeFrameColumns } from '@babel/code-frame';
 import { wrap } from 'jest-snapshot-serializer-raw';
 
-import type { RawNGSpan } from './types.js';
-import { fitSpans, getCharacterIndex, getCharacterLastIndex } from './utils.js';
+import type { RawNGSpan } from './types.ts';
+import { fitSpans, getCharacterIndex, getCharacterLastIndex } from './utils.ts';
 
 const text = ` ( ( ( 1 ) ) ) `;
 const length = Math.floor(text.length / 2);
