@@ -67,7 +67,8 @@ export class Source {
 
     switch (type) {
       case 'NumericLiteral':
-      case 'StringLiteral': {
+      case 'StringLiteral':
+      case 'RegExpLiteral': {
         const raw = this.text.slice(node.start, node.end);
         const { value } = node as unknown as
           | babel.NumericLiteral
