@@ -28,8 +28,8 @@
   "devDependencies": {
     "@angular/compiler": "21.0.0",
     "@babel/code-frame": "8.0.0-beta.3",
-    "@babel/parser": "8.0.0-beta.2",
-    "@babel/types": "8.0.0-beta.2",
+    "@babel/parser": "8.0.0-beta.3",
+    "@babel/types": "8.0.0-beta.3",
     "@types/node": "24.10.1",
     "@vitest/coverage-v8": "4.0.12",
     "eslint": "9.39.1",
@@ -62,5 +62,5 @@
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
-  "packageManager": "yarn@4.7.0"
+  "packageManager": "yarn@4.11.0"
 }
