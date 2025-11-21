@@ -22,7 +22,7 @@
     "fix": "run-s \"fix:*\"",
     "fix:eslint": "yarn lint:eslint --fix",
     "fix:prettier": "yarn lint:prettier --write",
-    "build": "tsdown",
+    "build": "tsdown --unbundle",
     "release": "release-it"
   },
   "devDependencies": {
