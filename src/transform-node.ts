@@ -384,6 +384,18 @@ class Transformer extends Source {
       }
     }
 
+    if (node instanceof angular.RegularExpressionLiteral) {
+      return this.#create<babel.RegExpLiteral>(
+        {
+          type: 'RegExpLiteral',
+          pattern: node.body,
+          flags: node.flags ?? '',
+          ...node.sourceSpan,
+        },
+        { hasParentParens: isInParentParens },
+      );
+    }
+
     if (node instanceof angular.Call || node instanceof angular.SafeCall) {
       const isOptionalType = node instanceof angular.SafeCall;
       const { receiver, args } = node;
