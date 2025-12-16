@@ -40,7 +40,7 @@ function isImplicitThis(node: angular.AST, text: string): boolean {
 
 type NodeTransformOptions = {
   isInParentParens?: boolean;
-  parent?: angular.AST;
+  ancestors: angular.AST[];
 };
 
 class Transformer extends Source {
@@ -55,7 +55,8 @@ class Transformer extends Source {
     node: angular.AST,
     options?: NodeTransformOptions,
   ) {
-    return this.#transform(node, options) as T & LocationInformation;
+    return this.#transform(node, options ?? { ancestors: [] }) as T &
+      LocationInformation;
   }
 
   #create<T extends NGNode>(
@@ -132,10 +133,13 @@ class Transformer extends Source {
     );
   }
 
-  #transform<T extends NGNode = NGNode>(
-    node: angular.AST,
-    options?: NodeTransformOptions,
-  ): NGNode {
+  #transform(node: angular.AST, options: NodeTransformOptions): NGNode {
+    const ancestors = options.ancestors;
+    const childTransformOptions = {
+      ...options,
+      ancestors: [...ancestors, node],
+    };
+
     const { isInParentParens } = {
       isInParentParens: false,
       ...options,
@@ -149,7 +153,7 @@ class Transformer extends Source {
         throw new Error("Unexpected 'Interpolation'");
       }
 
-      return this.transform(expressions[0]);
+      return this.transform(expressions[0], childTransformOptions);
     }
 
     if (node instanceof angular.Unary) {
@@ -171,8 +175,14 @@ class Transformer extends Source {
         operation: operator,
         right: originalRight,
       } = node;
-      const left = this.transform<babel.Expression>(originalLeft);
-      const right = this.transform<babel.Expression>(originalRight);
+      const left = this.transform<babel.Expression>(
+        originalLeft,
+        childTransformOptions,
+      );
+      const right = this.transform<babel.Expression>(
+        originalRight,
+        childTransformOptions,
+      );
       const start = getOuterStart(left);
       const end = getOuterEnd(right);
       const properties = { left, right, start, end };
@@ -213,7 +223,10 @@ class Transformer extends Source {
 
     if (node instanceof angular.BindingPipe) {
       const { exp: expressionNode, name, args: originalArguments } = node;
-      const left = this.transform<babel.Expression>(expressionNode);
+      const left = this.transform<babel.Expression>(
+        expressionNode,
+        childTransformOptions,
+      );
       const start = getOuterStart(left);
       const leftEnd = getOuterEnd(left);
       const rightStart = this.getCharacterIndex(
@@ -227,7 +240,7 @@ class Transformer extends Source {
         end: rightStart + name.length,
       });
       const argumentNodes = originalArguments.map<babel.Expression>((node) =>
-        this.transform(node),
+        this.transform(node, childTransformOptions),
       );
       return this.#create<NGPipeExpression>(
         {
@@ -250,7 +263,7 @@ class Transformer extends Source {
         {
           type: 'NGChainedExpression',
           expressions: node.expressions.map<babel.Expression>((node) =>
-            this.transform(node),
+            this.transform(node, childTransformOptions),
           ),
           ...node.sourceSpan,
         },
@@ -260,9 +273,18 @@ class Transformer extends Source {
 
     if (node instanceof angular.Conditional) {
       const { condition, trueExp, falseExp } = node;
-      const test = this.transform<babel.Expression>(condition);
-      const consequent = this.transform<babel.Expression>(trueExp);
-      const alternate = this.transform<babel.Expression>(falseExp);
+      const test = this.transform<babel.Expression>(
+        condition,
+        childTransformOptions,
+      );
+      const consequent = this.transform<babel.Expression>(
+        trueExp,
+        childTransformOptions,
+      );
+      const alternate = this.transform<babel.Expression>(
+        falseExp,
+        childTransformOptions,
+      );
       return this.#create<babel.ConditionalExpression>(
         {
           type: 'ConditionalExpression',
@@ -295,7 +317,7 @@ class Transformer extends Source {
         {
           type: 'ArrayExpression',
           elements: node.expressions.map<babel.Expression>((node) =>
-            this.transform(node),
+            this.transform(node, childTransformOptions),
           ),
           ...node.sourceSpan,
         },
@@ -415,11 +437,12 @@ class Transformer extends Source {
         args.length === 1
           ? [
               this.transform<babel.Expression>(args[0], {
+                ...childTransformOptions,
                 isInParentParens: true,
               }),
             ]
           : (args as angular.AST[]).map<babel.Expression>((node) =>
-              this.transform(node),
+              this.transform(node, childTransformOptions),
             );
       const tReceiver = this.transform<babel.Expression>(receiver!);
       const isOptionalReceiver = isOptionalObjectOrCallee(tReceiver);
@@ -559,17 +582,18 @@ class Transformer extends Source {
       return this.#create<babel.TemplateLiteral>({
         type: 'TemplateLiteral',
         quasis: elements.map((element) =>
-          this.transform(element, { parent: node }),
+          this.transform(element, childTransformOptions),
         ),
         expressions: expressions.map((expression) =>
-          this.transform(expression),
+          this.transform(expression, childTransformOptions),
         ),
         ...node.sourceSpan,
       });
     }
 
     if (node instanceof angular.TemplateLiteralElement) {
-      const { elements } = options!.parent! as angular.TemplateLiteral;
+      const [parent] = ancestors;
+      const { elements } = parent as angular.TemplateLiteral;
       const elementIndex = elements.indexOf(node);
       const isFirst = elementIndex === 0;
       const isLast = elementIndex === elements.length - 1;
@@ -594,7 +618,7 @@ class Transformer extends Source {
     }
 
     if (node instanceof angular.ParenthesizedExpression) {
-      return this.transform(node.expression);
+      return this.transform(node.expression, childTransformOptions);
     }
 
     /* c8 ignore next */
