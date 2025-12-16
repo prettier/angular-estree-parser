@@ -258,8 +258,7 @@ class Transformer extends Source {
           test,
           consequent,
           alternate,
-          start: getOuterStart(test),
-          end: getOuterEnd(alternate),
+          ...node.sourceSpan,
         },
         ancestors,
       );
