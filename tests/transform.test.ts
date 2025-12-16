@@ -58,7 +58,7 @@ describe.each`
   ${'SafeKeyedRead'}            | ${'OptionalMemberExpression'} | ${' a ?. b () ?. [ c ] '}                       | ${true}     | ${true}      | ${true}            | ${true}
   ${'ImplicitReceiver'}         | ${'ThisExpression'}           | ${' this '}                                     | ${true}     | ${true}      | ${true}            | ${true}
   ${'LiteralArray'}             | ${'ArrayExpression'}          | ${' [ 1 ] '}                                    | ${true}     | ${true}      | ${true}            | ${true}
-  ${'LiteralMap'}               | ${'ObjectExpression'}         | ${' ( { "a" : 1 } )'}                           | ${true}     | ${true}      | ${true}            | ${true}
+  ${'LiteralMap'}               | ${'ObjectExpression'}         | ${' ( ( { "a" : ( ( 1 ) ) } ) )'}               | ${true}     | ${true}      | ${true}            | ${true}
   ${'LiteralMap'}               | ${'ObjectExpression'}         | ${' ( { a : 1 } ) '}                            | ${true}     | ${true}      | ${true}            | ${true}
   ${'Call'}                     | ${'CallExpression'}           | ${' f ( { a : 1 } ) '}                          | ${true}     | ${true}      | ${true}            | ${true}
   ${'LiteralMap'}               | ${'ObjectExpression'}         | ${' ( {a, b: 2} ) '}                            | ${true}     | ${true}      | ${true}            | ${true}

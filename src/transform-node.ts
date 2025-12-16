@@ -17,9 +17,6 @@ function isParenthesized(node: NGNode) {
 function getOuterStart(node: NGNode): number {
   return isParenthesized(node) ? node.extra.parenStart : node.start!;
 }
-function getOuterEnd(node: NGNode): number {
-  return isParenthesized(node) ? node.extra.parenEnd : node.end!;
-}
 
 function isOptionalObjectOrCallee(node: NGNode): boolean {
   if (node.type === 'TSNonNullExpression' && !isParenthesized(node)) {
@@ -275,20 +272,15 @@ class Transformer extends Source {
 
     if (node instanceof angular.LiteralMap) {
       const { keys, values } = node;
-      const tValues = values.map((value) =>
-        this.transform<babel.Expression>(value, childTransformOptions),
-      );
       const tProperties = keys.map((property, index) => {
         const { key, quoted } = property;
-        const tValue = tValues[index];
-        const valueStart = getOuterStart(tValue);
-        const valueEnd = getOuterEnd(tValue);
+        const { start: valueStart, end: valueEnd } = values[index].sourceSpan;
 
         const keyStart = this.getCharacterIndex(
           /\S/,
           index === 0
             ? node.sourceSpan.start + 1 // {
-            : this.getCharacterIndex(',', getOuterEnd(tValues[index - 1])) + 1,
+            : this.getCharacterIndex(',', values[index - 1].sourceSpan.end) + 1,
         );
         const keyEnd =
           valueStart === keyStart
@@ -316,12 +308,16 @@ class Transformer extends Source {
               [],
             );
         const shorthand = tKey.end < tKey.start || keyStart === valueStart;
+        const value = this.transform<babel.Expression>(
+          values[index],
+          childTransformOptions,
+        );
 
         return this.#create<babel.ObjectProperty>(
           {
             type: 'ObjectProperty',
             key: tKey,
-            value: tValue,
+            value,
             shorthand,
             computed: false,
             start: getOuterStart(tKey),
