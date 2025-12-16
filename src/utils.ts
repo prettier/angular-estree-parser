@@ -23,7 +23,7 @@ export function getCharacterLastIndex(
     }
   }
 
-  /* c8 ignore next 4 */
+  /* c8 ignore next 4 @preserve */
   throw new Error(
     `Cannot find front char ${pattern} from index ${fromIndex} in ${JSON.stringify(
       text,
@@ -46,6 +46,7 @@ export function getCharacterIndex(
     }
   }
 
+  /* c8 ignore next 4 @preserve */
   throw new Error(
     `Cannot find character ${pattern} from index ${fromIndex} in ${JSON.stringify(
       text,
