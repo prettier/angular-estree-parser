@@ -2,4 +2,24 @@
   $schema: 'https://docs.renovatebot.com/renovate-schema.json',
   dependencyDashboardApproval: true,
   postUpdateOptions: ['yarnDedupeHighest'],
+  packageRules: [
+    {
+      "groupName": "devDependencies",
+      "matchDepTypes": ["devDependencies"]
+    },
+    {
+      "groupName": "dependencies",
+      "matchDepTypes": ["dependencies"],
+      "rangeStrategy": "replace"
+    },
+    {
+      "groupName": "peerDependencies",
+      "matchDepTypes": ["peerDependencies"],
+      "rangeStrategy": "widen"
+    },
+    {
+      groupName: 'GitHub Actions',
+      matchManagers: ['github-actions'],
+    },
+  ],
 }
