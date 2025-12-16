@@ -25,7 +25,7 @@ export class Source {
 
   transformSpan(
     span: RawNGSpan,
-    { stripSpaces = false, hasParentParens = false } = {},
+    { stripSpaces = false, isInParentParens = false } = {},
   ): LocationInformation {
     if (!stripSpaces) {
       return sourceSpanToLocationInformation(span);
@@ -34,7 +34,7 @@ export class Source {
     const { outerSpan, innerSpan, hasParens } = fitSpans(
       span,
       this.text,
-      hasParentParens,
+      isInParentParens,
     );
     const locationInformation = sourceSpanToLocationInformation(innerSpan);
     if (hasParens) {
@@ -51,7 +51,7 @@ export class Source {
   createNode<T extends NGNode>(
     properties: Partial<T> & { type: T['type'] } & RawNGSpan,
     // istanbul ignore next
-    { stripSpaces = true, hasParentParens = false } = {},
+    { stripSpaces = true, isInParentParens = false } = {},
   ) {
     const { type, start, end } = properties;
     const node = {
@@ -60,7 +60,7 @@ export class Source {
         { start, end },
         {
           stripSpaces,
-          hasParentParens,
+          isInParentParens,
         },
       ),
     } as T & LocationInformation;

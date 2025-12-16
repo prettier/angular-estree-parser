@@ -61,9 +61,9 @@ class Transformer extends Source {
 
   #create<T extends NGNode>(
     properties: Partial<T> & { type: T['type'] } & RawNGSpan,
-    { stripSpaces = true, hasParentParens = false } = {},
+    { stripSpaces = true, isInParentParens = false } = {},
   ) {
-    return this.createNode<T>(properties, { stripSpaces, hasParentParens });
+    return this.createNode<T>(properties, { stripSpaces, isInParentParens });
   }
 
   #transformReceiverAndName(
@@ -76,11 +76,11 @@ class Transformer extends Source {
     {
       computed,
       optional,
-      hasParentParens = false,
+      isInParentParens = false,
     }: {
       computed: boolean;
       optional: boolean;
-      hasParentParens?: boolean;
+      isInParentParens?: boolean;
     },
   ) {
     const { receiver } = node;
@@ -107,7 +107,7 @@ class Transformer extends Source {
           optional: optional || !isOptionalObject,
           ...commonProps,
         },
-        { hasParentParens },
+        { isInParentParens },
       );
     }
 
@@ -118,7 +118,7 @@ class Transformer extends Source {
           ...commonProps,
           computed: true,
         },
-        { hasParentParens },
+        { isInParentParens },
       );
     }
 
@@ -129,7 +129,7 @@ class Transformer extends Source {
         computed: false,
         property: property as babel.MemberExpressionNonComputed['property'],
       },
-      { hasParentParens },
+      { isInParentParens },
     );
   }
 
@@ -165,7 +165,7 @@ class Transformer extends Source {
           operator: node.operator as '-' | '+',
           ...node.sourceSpan,
         },
-        { hasParentParens: isInParentParens },
+        { isInParentParens: isInParentParens },
       );
     }
 
@@ -194,7 +194,7 @@ class Transformer extends Source {
             type: 'LogicalExpression',
             operator: operator as babel.LogicalExpression['operator'],
           },
-          { hasParentParens: isInParentParens },
+          { isInParentParens: isInParentParens },
         );
       }
 
@@ -207,7 +207,7 @@ class Transformer extends Source {
             operator: operator as babel.AssignmentExpression['operator'],
             ...node.sourceSpan,
           },
-          { hasParentParens: isInParentParens },
+          { isInParentParens: isInParentParens },
         );
       }
 
@@ -217,7 +217,7 @@ class Transformer extends Source {
           type: 'BinaryExpression',
           operator: operator as babel.BinaryExpression['operator'],
         },
-        { hasParentParens: isInParentParens },
+        { isInParentParens: isInParentParens },
       );
     }
 
@@ -254,7 +254,7 @@ class Transformer extends Source {
             argumentNodes.length === 0 ? right : argumentNodes.at(-1)!,
           ),
         },
-        { hasParentParens: isInParentParens },
+        { isInParentParens: isInParentParens },
       );
     }
 
@@ -267,7 +267,7 @@ class Transformer extends Source {
           ),
           ...node.sourceSpan,
         },
-        { hasParentParens: isInParentParens },
+        { isInParentParens: isInParentParens },
       );
     }
 
@@ -294,21 +294,21 @@ class Transformer extends Source {
           start: getOuterStart(test),
           end: getOuterEnd(alternate),
         },
-        { hasParentParens: isInParentParens },
+        { isInParentParens: isInParentParens },
       );
     }
 
     if (node instanceof angular.EmptyExpr) {
       return this.#create<NGEmptyExpression>(
         { type: 'NGEmptyExpression', ...node.sourceSpan },
-        { hasParentParens: isInParentParens },
+        { isInParentParens: isInParentParens },
       );
     }
 
     if (node instanceof angular.ImplicitReceiver) {
       return this.#create<babel.ThisExpression>(
         { type: 'ThisExpression', ...node.sourceSpan },
-        { hasParentParens: isInParentParens },
+        { isInParentParens: isInParentParens },
       );
     }
 
@@ -321,7 +321,7 @@ class Transformer extends Source {
           ),
           ...node.sourceSpan,
         },
-        { hasParentParens: isInParentParens },
+        { isInParentParens: isInParentParens },
       );
     }
 
@@ -378,7 +378,7 @@ class Transformer extends Source {
           properties: tProperties,
           ...node.sourceSpan,
         },
-        { hasParentParens: isInParentParens },
+        { isInParentParens: isInParentParens },
       );
     }
 
@@ -388,27 +388,27 @@ class Transformer extends Source {
         case 'boolean':
           return this.#create<babel.BooleanLiteral>(
             { type: 'BooleanLiteral', value, ...node.sourceSpan },
-            { hasParentParens: isInParentParens },
+            { isInParentParens: isInParentParens },
           );
         case 'number':
           return this.#create<babel.NumericLiteral>(
             { type: 'NumericLiteral', value, ...node.sourceSpan },
-            { hasParentParens: isInParentParens },
+            { isInParentParens: isInParentParens },
           );
         case 'object':
           return this.#create<babel.NullLiteral>(
             { type: 'NullLiteral', ...node.sourceSpan },
-            { hasParentParens: isInParentParens },
+            { isInParentParens: isInParentParens },
           );
         case 'string':
           return this.#create<babel.StringLiteral>(
             { type: 'StringLiteral', value, ...node.sourceSpan },
-            { hasParentParens: isInParentParens },
+            { isInParentParens: isInParentParens },
           );
         case 'undefined':
           return this.#create<babel.Identifier>(
             { type: 'Identifier', name: 'undefined', ...node.sourceSpan },
-            { hasParentParens: isInParentParens },
+            { isInParentParens: isInParentParens },
           );
         /* c8 ignore next 4 */
         default:
@@ -426,7 +426,7 @@ class Transformer extends Source {
           flags: node.flags ?? '',
           ...node.sourceSpan,
         },
-        { hasParentParens: isInParentParens },
+        { isInParentParens: isInParentParens },
       );
     }
 
@@ -461,7 +461,7 @@ class Transformer extends Source {
           start: getOuterStart(tReceiver),
           end: node.sourceSpan.end, // `)`
         },
-        { hasParentParens: isInParentParens },
+        { isInParentParens: isInParentParens },
       );
     }
 
@@ -474,7 +474,7 @@ class Transformer extends Source {
           start: getOuterStart(expression),
           end: node.sourceSpan.end, // `!`
         },
-        { hasParentParens: isInParentParens },
+        { isInParentParens: isInParentParens },
       );
     }
 
@@ -526,7 +526,7 @@ class Transformer extends Source {
           start,
           end: getOuterEnd(expression),
         },
-        { hasParentParens: isInParentParens },
+        { isInParentParens: isInParentParens },
       );
     }
 
@@ -540,7 +540,7 @@ class Transformer extends Source {
         {
           computed: true,
           optional: node instanceof angular.SafeKeyedRead,
-          hasParentParens: isInParentParens,
+          isInParentParens: isInParentParens,
         },
       );
     }
@@ -557,13 +557,13 @@ class Transformer extends Source {
           ...node.nameSpan,
         },
         isImplicitThis(receiver, this.#text)
-          ? { hasParentParens: isInParentParens }
+          ? { isInParentParens: isInParentParens }
           : {},
       );
       return this.#transformReceiverAndName(node, tName, {
         computed: false,
         optional: node instanceof angular.SafePropertyRead,
-        hasParentParens: isInParentParens,
+        isInParentParens: isInParentParens,
       });
     }
 
