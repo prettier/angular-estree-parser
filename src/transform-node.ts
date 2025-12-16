@@ -147,16 +147,15 @@ class Transformer extends Source {
         originalRight,
         childTransformOptions,
       );
-      const start = getOuterStart(left);
-      const end = getOuterEnd(right);
-      const properties = { left, right, start, end };
 
       if (operator === '&&' || operator === '||' || operator === '??') {
         return this.#create<babel.LogicalExpression>(
           {
-            ...properties,
             type: 'LogicalExpression',
             operator: operator as babel.LogicalExpression['operator'],
+            left,
+            right,
+            ...node.sourceSpan,
           },
           ancestors,
         );
@@ -165,9 +164,9 @@ class Transformer extends Source {
       if (angular.Binary.isAssignmentOperation(operator)) {
         return this.#create<babel.AssignmentExpression>(
           {
-            ...properties,
             type: 'AssignmentExpression',
             left: left as babel.MemberExpression,
+            right,
             operator: operator as babel.AssignmentExpression['operator'],
             ...node.sourceSpan,
           },
@@ -177,9 +176,11 @@ class Transformer extends Source {
 
       return this.#create<babel.BinaryExpression>(
         {
-          ...properties,
+          left,
+          right,
           type: 'BinaryExpression',
           operator: operator as babel.BinaryExpression['operator'],
+          ...node.sourceSpan,
         },
         ancestors,
       );
