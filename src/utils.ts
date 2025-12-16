@@ -1,23 +1,5 @@
 import type { LocationInformation, RawNGSpan } from './types.ts';
 
-function expandSurroundingSpaces(
-  { start: startIndex, end: endIndex }: RawNGSpan,
-  text: string,
-) {
-  let start = startIndex;
-  let end = endIndex;
-
-  while (end !== text.length && /\s/.test(text[end])) {
-    end++;
-  }
-
-  while (start !== 0 && /\s/.test(text[start - 1])) {
-    start--;
-  }
-
-  return { start, end };
-}
-
 function getCharacterSearchTestFunction(pattern: RegExp | string) {
   if (typeof pattern === 'string') {
     return (character: string) => character === pattern;

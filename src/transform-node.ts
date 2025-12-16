@@ -178,12 +178,11 @@ class Transformer extends Source {
     }
 
     if (node instanceof angular.BindingPipe) {
-      const { exp: expressionNode, name, args: originalArguments } = node;
+      const { name } = node;
       const left = this.transform<babel.Expression>(
-        expressionNode,
+        node.exp,
         childTransformOptions,
       );
-      const start = getOuterStart(left);
       const leftEnd = getOuterEnd(left);
       const rightStart = this.getCharacterIndex(
         /\S/,
@@ -198,7 +197,7 @@ class Transformer extends Source {
         },
         ancestors,
       );
-      const argumentNodes = originalArguments.map<babel.Expression>((node) =>
+      const arguments_ = node.args.map<babel.Expression>((node) =>
         this.transform(node, childTransformOptions),
       );
       return this.#create<NGPipeExpression>(
@@ -206,12 +205,8 @@ class Transformer extends Source {
           type: 'NGPipeExpression',
           left,
           right,
-          arguments: argumentNodes,
-          start,
-          end: getOuterEnd(
-            // TODO[@fisker]: End seems not correct, since there should be `()`
-            argumentNodes.length === 0 ? right : argumentNodes.at(-1)!,
-          ),
+          arguments: arguments_,
+          ...node.sourceSpan,
         },
         ancestors,
       );
