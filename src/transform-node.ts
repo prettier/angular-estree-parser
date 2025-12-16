@@ -204,18 +204,12 @@ class Transformer extends Source {
               ) + 1;
         const tKey = quoted
           ? createNode<babel.StringLiteral>(
-              {
-                type: 'StringLiteral',
-                value: key,
-              },
+              { type: 'StringLiteral', value: key },
               [keyStart, keyEnd],
               [],
             )
           : createNode<babel.Identifier>(
-              {
-                type: 'Identifier',
-                name: key,
-              },
+              { type: 'Identifier', name: key },
               [keyStart, keyEnd],
               [],
             );

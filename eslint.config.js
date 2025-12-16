@@ -6,7 +6,7 @@ import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
-  { ignores: ['coverage/', 'lib/', '**/.yarn/**', '**/.pnp.*'] },
+  { ignores: ['coverage/', 'lib/', '**/.yarn/**', '**/.pnp.*', 'dist*/'] },
   eslintPluginJs.configs.recommended,
   ...tseslint.configs.recommended,
   eslintConfigPrettier,

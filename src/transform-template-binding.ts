@@ -152,10 +152,7 @@ class TemplateBindingTransformer extends NodeTransformer {
         templateBinding.value.source === lastTemplateBinding.key.source
       ) {
         const alias = this.#create<NGMicrosyntaxKey>(
-          {
-            type: 'NGMicrosyntaxKey',
-            name: templateBinding.key.source,
-          },
+          { type: 'NGMicrosyntaxKey', name: templateBinding.key.source },
           templateBinding.key.span,
         );
         const updateSpanEnd = <T extends NGNode>(node: T, end: number): T => ({
@@ -164,10 +161,7 @@ class TemplateBindingTransformer extends NodeTransformer {
         });
         const updateExpressionAlias = (
           expression: NGMicrosyntaxExpression,
-        ) => ({
-          ...updateSpanEnd(expression, alias.end),
-          alias,
-        });
+        ) => ({ ...updateSpanEnd(expression, alias.end), alias });
 
         const lastNode = body.pop()!;
 
@@ -188,10 +182,7 @@ class TemplateBindingTransformer extends NodeTransformer {
     }
 
     return this.#create<NGMicrosyntax>(
-      {
-        type: 'NGMicrosyntax',
-        body,
-      },
+      { type: 'NGMicrosyntax', body },
       body.length === 0
         ? rawTemplateBindings[0].sourceSpan
         : { start: body[0].start, end: body.at(-1)!.end },
@@ -206,10 +197,7 @@ class TemplateBindingTransformer extends NodeTransformer {
       const { key, value } = templateBinding;
       if (!value) {
         return this.#create<NGMicrosyntaxKey>(
-          {
-            type: 'NGMicrosyntaxKey',
-            name: this.#removePrefix(key.source),
-          },
+          { type: 'NGMicrosyntaxKey', name: this.#removePrefix(key.source) },
           key.span,
         );
       } else if (index === 0) {
@@ -255,19 +243,13 @@ class TemplateBindingTransformer extends NodeTransformer {
           {
             type: 'NGMicrosyntaxLet',
             key: this.#create<NGMicrosyntaxKey>(
-              {
-                type: 'NGMicrosyntaxKey',
-                name: key.source,
-              },
+              { type: 'NGMicrosyntaxKey', name: key.source },
               key.span,
             ),
             value: !value
               ? null
               : this.#create<NGMicrosyntaxKey>(
-                  {
-                    type: 'NGMicrosyntaxKey',
-                    name: value.source,
-                  },
+                  { type: 'NGMicrosyntaxKey', name: value.source },
                   value.span,
                 ),
           },
@@ -279,17 +261,11 @@ class TemplateBindingTransformer extends NodeTransformer {
           {
             type: 'NGMicrosyntaxAs',
             key: this.#create<NGMicrosyntaxKey>(
-              {
-                type: 'NGMicrosyntaxKey',
-                name: value!.source,
-              },
+              { type: 'NGMicrosyntaxKey', name: value!.source },
               value!.span,
             ),
             alias: this.#create<NGMicrosyntaxKey>(
-              {
-                type: 'NGMicrosyntaxKey',
-                name: key.source,
-              },
+              { type: 'NGMicrosyntaxKey', name: key.source },
               key.span,
             ),
           },
