@@ -61,6 +61,7 @@ class Transformer extends Source {
 
   #create<T extends NGNode>(
     properties: Partial<T> & { type: T['type'] } & RawNGSpan,
+    ancestors: angular.AST[],
     { stripSpaces = true, isInParentParens = false } = {},
   ) {
     return this.createNode<T>(properties, { stripSpaces, isInParentParens });
@@ -73,6 +74,7 @@ class Transformer extends Source {
       | angular.PropertyRead
       | angular.SafePropertyRead,
     property: babel.Expression,
+    ancestors: angular.AST[],
     {
       computed,
       optional,
@@ -107,6 +109,7 @@ class Transformer extends Source {
           optional: optional || !isOptionalObject,
           ...commonProps,
         },
+        ancestors,
         { isInParentParens },
       );
     }
@@ -118,6 +121,7 @@ class Transformer extends Source {
           ...commonProps,
           computed: true,
         },
+        ancestors,
         { isInParentParens },
       );
     }
@@ -129,6 +133,7 @@ class Transformer extends Source {
         computed: false,
         property: property as babel.MemberExpressionNonComputed['property'],
       },
+      ancestors,
       { isInParentParens },
     );
   }
@@ -165,6 +170,7 @@ class Transformer extends Source {
           operator: node.operator as '-' | '+',
           ...node.sourceSpan,
         },
+        ancestors,
         { isInParentParens: isInParentParens },
       );
     }
@@ -194,6 +200,7 @@ class Transformer extends Source {
             type: 'LogicalExpression',
             operator: operator as babel.LogicalExpression['operator'],
           },
+          ancestors,
           { isInParentParens: isInParentParens },
         );
       }
@@ -207,6 +214,7 @@ class Transformer extends Source {
             operator: operator as babel.AssignmentExpression['operator'],
             ...node.sourceSpan,
           },
+          ancestors,
           { isInParentParens: isInParentParens },
         );
       }
@@ -217,6 +225,7 @@ class Transformer extends Source {
           type: 'BinaryExpression',
           operator: operator as babel.BinaryExpression['operator'],
         },
+        ancestors,
         { isInParentParens: isInParentParens },
       );
     }
@@ -233,12 +242,15 @@ class Transformer extends Source {
         /\S/,
         this.getCharacterIndex('|', leftEnd) + 1,
       );
-      const right = this.#create<babel.Identifier>({
-        type: 'Identifier',
-        name,
-        start: rightStart,
-        end: rightStart + name.length,
-      });
+      const right = this.#create<babel.Identifier>(
+        {
+          type: 'Identifier',
+          name,
+          start: rightStart,
+          end: rightStart + name.length,
+        },
+        ancestors,
+      );
       const argumentNodes = originalArguments.map<babel.Expression>((node) =>
         this.transform(node, childTransformOptions),
       );
@@ -254,6 +266,7 @@ class Transformer extends Source {
             argumentNodes.length === 0 ? right : argumentNodes.at(-1)!,
           ),
         },
+        ancestors,
         { isInParentParens: isInParentParens },
       );
     }
@@ -267,6 +280,7 @@ class Transformer extends Source {
           ),
           ...node.sourceSpan,
         },
+        ancestors,
         { isInParentParens: isInParentParens },
       );
     }
@@ -294,6 +308,7 @@ class Transformer extends Source {
           start: getOuterStart(test),
           end: getOuterEnd(alternate),
         },
+        ancestors,
         { isInParentParens: isInParentParens },
       );
     }
@@ -301,6 +316,7 @@ class Transformer extends Source {
     if (node instanceof angular.EmptyExpr) {
       return this.#create<NGEmptyExpression>(
         { type: 'NGEmptyExpression', ...node.sourceSpan },
+        ancestors,
         { isInParentParens: isInParentParens },
       );
     }
@@ -308,6 +324,7 @@ class Transformer extends Source {
     if (node instanceof angular.ImplicitReceiver) {
       return this.#create<babel.ThisExpression>(
         { type: 'ThisExpression', ...node.sourceSpan },
+        ancestors,
         { isInParentParens: isInParentParens },
       );
     }
@@ -321,6 +338,7 @@ class Transformer extends Source {
           ),
           ...node.sourceSpan,
         },
+        ancestors,
         { isInParentParens: isInParentParens },
       );
     }
@@ -350,27 +368,36 @@ class Transformer extends Source {
               ) + 1;
         const keySpan = { start: keyStart, end: keyEnd };
         const tKey = quoted
-          ? this.#create<babel.StringLiteral>({
-              type: 'StringLiteral',
-              value: key,
-              ...keySpan,
-            })
-          : this.#create<babel.Identifier>({
-              type: 'Identifier',
-              name: key,
-              ...keySpan,
-            });
+          ? this.#create<babel.StringLiteral>(
+              {
+                type: 'StringLiteral',
+                value: key,
+                ...keySpan,
+              },
+              ancestors,
+            )
+          : this.#create<babel.Identifier>(
+              {
+                type: 'Identifier',
+                name: key,
+                ...keySpan,
+              },
+              ancestors,
+            );
         const shorthand = tKey.end < tKey.start || keyStart === valueStart;
 
-        return this.#create<babel.ObjectProperty>({
-          type: 'ObjectProperty',
-          key: tKey,
-          value: tValue,
-          shorthand,
-          computed: false,
-          start: getOuterStart(tKey),
-          end: valueEnd,
-        });
+        return this.#create<babel.ObjectProperty>(
+          {
+            type: 'ObjectProperty',
+            key: tKey,
+            value: tValue,
+            shorthand,
+            computed: false,
+            start: getOuterStart(tKey),
+            end: valueEnd,
+          },
+          ancestors,
+        );
       });
       return this.#create<babel.ObjectExpression>(
         {
@@ -378,6 +405,7 @@ class Transformer extends Source {
           properties: tProperties,
           ...node.sourceSpan,
         },
+        ancestors,
         { isInParentParens: isInParentParens },
       );
     }
@@ -388,26 +416,31 @@ class Transformer extends Source {
         case 'boolean':
           return this.#create<babel.BooleanLiteral>(
             { type: 'BooleanLiteral', value, ...node.sourceSpan },
+            ancestors,
             { isInParentParens: isInParentParens },
           );
         case 'number':
           return this.#create<babel.NumericLiteral>(
             { type: 'NumericLiteral', value, ...node.sourceSpan },
+            ancestors,
             { isInParentParens: isInParentParens },
           );
         case 'object':
           return this.#create<babel.NullLiteral>(
             { type: 'NullLiteral', ...node.sourceSpan },
+            ancestors,
             { isInParentParens: isInParentParens },
           );
         case 'string':
           return this.#create<babel.StringLiteral>(
             { type: 'StringLiteral', value, ...node.sourceSpan },
+            ancestors,
             { isInParentParens: isInParentParens },
           );
         case 'undefined':
           return this.#create<babel.Identifier>(
             { type: 'Identifier', name: 'undefined', ...node.sourceSpan },
+            ancestors,
             { isInParentParens: isInParentParens },
           );
         /* c8 ignore next 4 */
@@ -426,6 +459,7 @@ class Transformer extends Source {
           flags: node.flags ?? '',
           ...node.sourceSpan,
         },
+        ancestors,
         { isInParentParens: isInParentParens },
       );
     }
@@ -461,6 +495,7 @@ class Transformer extends Source {
           start: getOuterStart(tReceiver),
           end: node.sourceSpan.end, // `)`
         },
+        ancestors,
         { isInParentParens: isInParentParens },
       );
     }
@@ -474,6 +509,7 @@ class Transformer extends Source {
           start: getOuterStart(expression),
           end: node.sourceSpan.end, // `!`
         },
+        ancestors,
         { isInParentParens: isInParentParens },
       );
     }
@@ -526,6 +562,7 @@ class Transformer extends Source {
           start,
           end: getOuterEnd(expression),
         },
+        ancestors,
         { isInParentParens: isInParentParens },
       );
     }
@@ -537,6 +574,7 @@ class Transformer extends Source {
       return this.#transformReceiverAndName(
         node,
         this.transform<babel.Expression>(node.key),
+        ancestors,
         {
           computed: true,
           optional: node instanceof angular.SafeKeyedRead,
@@ -556,11 +594,12 @@ class Transformer extends Source {
           name,
           ...node.nameSpan,
         },
+        ancestors,
         isImplicitThis(receiver, this.#text)
           ? { isInParentParens: isInParentParens }
           : {},
       );
-      return this.#transformReceiverAndName(node, tName, {
+      return this.#transformReceiverAndName(node, tName, ancestors, {
         computed: false,
         optional: node instanceof angular.SafePropertyRead,
         isInParentParens: isInParentParens,
@@ -568,27 +607,33 @@ class Transformer extends Source {
     }
 
     if (node instanceof angular.TaggedTemplateLiteral) {
-      return this.#create<babel.TaggedTemplateExpression>({
-        type: 'TaggedTemplateExpression',
-        tag: this.transform<babel.Expression>(node.tag),
-        quasi: this.transform<babel.TemplateLiteral>(node.template),
-        ...node.sourceSpan,
-      });
+      return this.#create<babel.TaggedTemplateExpression>(
+        {
+          type: 'TaggedTemplateExpression',
+          tag: this.transform<babel.Expression>(node.tag),
+          quasi: this.transform<babel.TemplateLiteral>(node.template),
+          ...node.sourceSpan,
+        },
+        ancestors,
+      );
     }
 
     if (node instanceof angular.TemplateLiteral) {
       const { elements, expressions } = node;
 
-      return this.#create<babel.TemplateLiteral>({
-        type: 'TemplateLiteral',
-        quasis: elements.map((element) =>
-          this.transform(element, childTransformOptions),
-        ),
-        expressions: expressions.map((expression) =>
-          this.transform(expression, childTransformOptions),
-        ),
-        ...node.sourceSpan,
-      });
+      return this.#create<babel.TemplateLiteral>(
+        {
+          type: 'TemplateLiteral',
+          quasis: elements.map((element) =>
+            this.transform(element, childTransformOptions),
+          ),
+          expressions: expressions.map((expression) =>
+            this.transform(expression, childTransformOptions),
+          ),
+          ...node.sourceSpan,
+        },
+        ancestors,
+      );
     }
 
     if (node instanceof angular.TemplateLiteralElement) {
@@ -613,6 +658,7 @@ class Transformer extends Source {
           end: end,
           tail: isLast,
         },
+        ancestors,
         { stripSpaces: false },
       );
     }
