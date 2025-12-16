@@ -65,9 +65,13 @@ class Transformer extends Source {
     const ancestors = options.ancestors;
     const transformChild = <T extends NGNode>(child: angular.AST) =>
       this.transform<T>(child, { ancestors: [node, ...ancestors] });
+    const transformChildren = <T extends NGNode>(children: angular.AST[]) =>
+      children.map((child) => transformChild<T>(child));
     const createNode = <T extends NGNode>(
       properties: Partial<T> & { type: T['type'] },
-    ) => this.#create(properties, node, ancestors);
+      location: angular.AST | RawNGSpan | [number, number] = node,
+      ancestorsToCreate: angular.AST[] = ancestors,
+    ) => this.#create(properties, location, ancestorsToCreate);
 
     if (node instanceof angular.Interpolation) {
       const { expressions } = node;
@@ -91,9 +95,10 @@ class Transformer extends Source {
 
     if (node instanceof angular.Binary) {
       const { operation: operator } = node;
-      const [left, right] = [node.left, node.right].map((node) =>
-        transformChild<babel.Expression>(node),
-      );
+      const [left, right] = transformChildren<babel.Expression>([
+        node.left,
+        node.right,
+      ]);
 
       if (operator === '&&' || operator === '||' || operator === '??') {
         return createNode<babel.LogicalExpression>({
@@ -129,14 +134,11 @@ class Transformer extends Source {
         /\S/,
         super.getCharacterIndex('|', leftEnd) + 1,
       );
-      const right = this.#create<babel.Identifier>(
-        { type: 'Identifier', name },
-        [rightStart, rightStart + name.length],
-        ancestors,
-      );
-      const arguments_ = node.args.map<babel.Expression>((node) =>
-        transformChild(node),
-      );
+      const right = createNode<babel.Identifier>({ type: 'Identifier', name }, [
+        rightStart,
+        rightStart + name.length,
+      ]);
+      const arguments_ = transformChildren<babel.Expression>(node.args);
       return createNode<NGPipeExpression>({
         type: 'NGPipeExpression',
         left,
@@ -148,18 +150,14 @@ class Transformer extends Source {
     if (node instanceof angular.Chain) {
       return createNode<NGChainedExpression>({
         type: 'NGChainedExpression',
-        expressions: node.expressions.map<babel.Expression>((node) =>
-          transformChild(node),
-        ),
+        expressions: transformChildren<babel.Expression>(node.expressions),
       });
     }
 
     if (node instanceof angular.Conditional) {
-      const [test, consequent, alternate] = [
-        node.condition,
-        node.trueExp,
-        node.falseExp,
-      ].map((node) => transformChild<babel.Expression>(node));
+      const [test, consequent, alternate] = transformChildren<babel.Expression>(
+        [node.condition, node.trueExp, node.falseExp],
+      );
 
       return createNode<babel.ConditionalExpression>({
         type: 'ConditionalExpression',
@@ -180,9 +178,7 @@ class Transformer extends Source {
     if (node instanceof angular.LiteralArray) {
       return createNode<babel.ArrayExpression>({
         type: 'ArrayExpression',
-        elements: node.expressions.map<babel.Expression>((node) =>
-          transformChild(node),
-        ),
+        elements: transformChildren<babel.Expression>(node.expressions),
       });
     }
 
@@ -207,7 +203,7 @@ class Transformer extends Source {
                 super.getCharacterLastIndex(':', valueStart - 1) - 1,
               ) + 1;
         const tKey = quoted
-          ? this.#create<babel.StringLiteral>(
+          ? createNode<babel.StringLiteral>(
               {
                 type: 'StringLiteral',
                 value: key,
@@ -215,7 +211,7 @@ class Transformer extends Source {
               [keyStart, keyEnd],
               [],
             )
-          : this.#create<babel.Identifier>(
+          : createNode<babel.Identifier>(
               {
                 type: 'Identifier',
                 name: key,
@@ -226,7 +222,7 @@ class Transformer extends Source {
         const shorthand = tKey.end < tKey.start || keyStart === valueStart;
         const value = transformChild<babel.Expression>(values[index]);
 
-        return this.#create<babel.ObjectProperty>(
+        return createNode<babel.ObjectProperty>(
           {
             type: 'ObjectProperty',
             key: tKey,
@@ -286,9 +282,7 @@ class Transformer extends Source {
     }
 
     if (node instanceof angular.Call || node instanceof angular.SafeCall) {
-      const arguments_ = node.args.map<babel.Expression>((node) =>
-        transformChild(node),
-      );
+      const arguments_ = transformChildren<babel.Expression>(node.args);
       const callee = transformChild<babel.Expression>(node.receiver);
       const isOptionalReceiver = isOptionalObjectOrCallee(callee);
       const isOptional = node instanceof angular.SafeCall;
@@ -350,9 +344,9 @@ class Transformer extends Source {
         start = index;
       }
 
-      const expression = this.transform<babel.Expression>(node.expression);
+      const expression = transformChild<babel.Expression>(node.expression);
 
-      return this.#create<babel.UnaryExpression>(
+      return createNode<babel.UnaryExpression>(
         {
           type: 'UnaryExpression',
           prefix: true,
@@ -360,7 +354,6 @@ class Transformer extends Source {
           argument: expression,
         },
         [start, node.sourceSpan.end],
-        ancestors,
       );
     }
 
@@ -389,11 +382,8 @@ class Transformer extends Source {
         const { name, nameSpan } = node;
 
         isImplicitThis = node.sourceSpan.start === nameSpan.start;
-        property = this.#create<babel.Identifier>(
-          {
-            type: 'Identifier',
-            name,
-          },
+        property = createNode<babel.Identifier>(
+          { type: 'Identifier', name },
           node.nameSpan,
           isImplicitThis ? ancestors : [],
         );
@@ -403,7 +393,7 @@ class Transformer extends Source {
         return property;
       }
 
-      const object = this.transform<babel.Expression>(receiver);
+      const object = transformChild<babel.Expression>(receiver);
       const isOptionalObject = isOptionalObjectOrCallee(object);
 
       if (isOptional || isOptionalObject) {
@@ -444,10 +434,8 @@ class Transformer extends Source {
     if (node instanceof angular.TemplateLiteral) {
       return createNode<babel.TemplateLiteral>({
         type: 'TemplateLiteral',
-        quasis: node.elements.map((element) => transformChild(element)),
-        expressions: node.expressions.map((expression) =>
-          transformChild(expression),
-        ),
+        quasis: transformChildren(node.elements),
+        expressions: transformChildren(node.expressions),
       });
     }
 
@@ -462,17 +450,13 @@ class Transformer extends Source {
       const start = node.sourceSpan.start + (isFirst ? 1 : 0);
       const raw = this.text.slice(start, end);
 
-      return this.#create<babel.TemplateElement>(
+      return createNode<babel.TemplateElement>(
         {
           type: 'TemplateElement',
-          value: {
-            cooked: node.text,
-            raw,
-          },
+          value: { cooked: node.text, raw },
           tail: isLast,
         },
         [start, end],
-        ancestors,
       );
     }
 
