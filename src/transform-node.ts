@@ -14,9 +14,6 @@ import type {
 function isParenthesized(node: NGNode) {
   return Boolean(node.extra?.parenthesized);
 }
-function getOuterStart(node: NGNode): number {
-  return isParenthesized(node) ? node.extra.parenStart : node.start!;
-}
 
 function isOptionalObjectOrCallee(node: NGNode): boolean {
   if (node.type === 'TSNonNullExpression' && !isParenthesized(node)) {
@@ -320,7 +317,7 @@ class Transformer extends Source {
             value,
             shorthand,
             computed: false,
-            start: getOuterStart(tKey),
+            start: tKey.start,
             end: valueEnd,
           },
           [],
