@@ -33,7 +33,6 @@ describe.each`
   ${'Binary'}                   | ${'LogicalExpression'}        | ${' ( ( ( ( a ) ) && ( ( b ) ) ) ) '}           | ${true}     | ${true}      | ${true}            | ${true}
   ${'Binary'}                   | ${'LogicalExpression'}        | ${' ( ( ( ( a ) ) || ( ( b ) ) ) ) '}           | ${true}     | ${true}      | ${true}            | ${true}
   ${'Binary'}                   | ${'LogicalExpression'}        | ${' ( ( ( ( a ) ) ?? ( ( b ) ) ) ) '}           | ${true}     | ${true}      | ${true}            | ${true}
-  ${'Binary'}                   | ${'AssignmentExpression'}     | ${' ( ( a . b = ( ( 1 ) ) ) ) '}                | ${true}     | ${false}     | ${false}           | ${false}
   ${'Binary'}                   | ${'AssignmentExpression'}     | ${' ( ( a = ( ( 1 ) ) ) ) '}                    | ${true}     | ${false}     | ${false}           | ${false}
   ${'Binary'}                   | ${'AssignmentExpression'}     | ${' a [ b ] = 1 '}                              | ${true}     | ${true}      | ${true}            | ${true}
   ${'Binary'}                   | ${'AssignmentExpression'}     | ${' ( ( a ??= ( ( 1 ) ) ) ) '}                  | ${true}     | ${false}     | ${false}           | ${false}

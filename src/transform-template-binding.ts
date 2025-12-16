@@ -54,9 +54,10 @@ class TemplateBindingTransformer extends NodeTransformer {
   }
 
   #create<T extends NGNode>(
-    properties: Partial<T> & { type: T['type'] } & RawNGSpan,
+    properties: Partial<T> & { type: T['type'] },
+    location: angular.AST | RawNGSpan | [number, number],
   ) {
-    return this.createNode<T>(properties);
+    return this.createNode<T>(properties, location);
   }
 
   #transform<T extends NGNode>(node: angular.AST) {
@@ -150,11 +151,13 @@ class TemplateBindingTransformer extends NodeTransformer {
         templateBinding.value &&
         templateBinding.value.source === lastTemplateBinding.key.source
       ) {
-        const alias = this.#create<NGMicrosyntaxKey>({
-          type: 'NGMicrosyntaxKey',
-          name: templateBinding.key.source,
-          ...templateBinding.key.span,
-        });
+        const alias = this.#create<NGMicrosyntaxKey>(
+          {
+            type: 'NGMicrosyntaxKey',
+            name: templateBinding.key.source,
+          },
+          templateBinding.key.span,
+        );
         const updateSpanEnd = <T extends NGNode>(node: T, end: number): T => ({
           ...node,
           ...this.transformSpan({ start: node.start!, end }),
@@ -184,13 +187,15 @@ class TemplateBindingTransformer extends NodeTransformer {
       lastTemplateBinding = templateBinding;
     }
 
-    return this.#create<NGMicrosyntax>({
-      type: 'NGMicrosyntax',
-      body,
-      ...(body.length === 0
+    return this.#create<NGMicrosyntax>(
+      {
+        type: 'NGMicrosyntax',
+        body,
+      },
+      body.length === 0
         ? rawTemplateBindings[0].sourceSpan
-        : { start: body[0].start, end: body.at(-1)!.end }),
-    });
+        : { start: body[0].start, end: body.at(-1)!.end },
+    );
   }
 
   #transformTemplateBinding(
@@ -200,35 +205,44 @@ class TemplateBindingTransformer extends NodeTransformer {
     if (isExpressionBinding(templateBinding)) {
       const { key, value } = templateBinding;
       if (!value) {
-        return this.#create<NGMicrosyntaxKey>({
-          type: 'NGMicrosyntaxKey',
-          name: this.#removePrefix(key.source),
-          ...key.span,
-        });
-      } else if (index === 0) {
-        return this.#create<NGMicrosyntaxExpression>({
-          type: 'NGMicrosyntaxExpression',
-          expression: this.#transform<NGNode>(value.ast),
-          alias: null,
-          ...value.sourceSpan,
-        });
-      } else {
-        return this.#create<NGMicrosyntaxKeyedExpression>({
-          type: 'NGMicrosyntaxKeyedExpression',
-          key: this.#create<NGMicrosyntaxKey>({
+        return this.#create<NGMicrosyntaxKey>(
+          {
             type: 'NGMicrosyntaxKey',
             name: this.#removePrefix(key.source),
-            ...key.span,
-          }),
-          expression: this.#create<NGMicrosyntaxExpression>({
+          },
+          key.span,
+        );
+      } else if (index === 0) {
+        return this.#create<NGMicrosyntaxExpression>(
+          {
             type: 'NGMicrosyntaxExpression',
             expression: this.#transform<NGNode>(value.ast),
             alias: null,
-            ...value.sourceSpan,
-          }),
-          start: key.span.start,
-          end: value.sourceSpan.end,
-        });
+          },
+          value,
+        );
+      } else {
+        return this.#create<NGMicrosyntaxKeyedExpression>(
+          {
+            type: 'NGMicrosyntaxKeyedExpression',
+            key: this.#create<NGMicrosyntaxKey>(
+              {
+                type: 'NGMicrosyntaxKey',
+                name: this.#removePrefix(key.source),
+              },
+              key.span,
+            ),
+            expression: this.#create<NGMicrosyntaxExpression>(
+              {
+                type: 'NGMicrosyntaxExpression',
+                expression: this.#transform<NGNode>(value.ast),
+                alias: null,
+              },
+              value,
+            ),
+          },
+          [key.span.start, value.sourceSpan.end],
+        );
       }
     } else {
       const { key, sourceSpan } = templateBinding;
@@ -237,40 +251,50 @@ class TemplateBindingTransformer extends NodeTransformer {
       );
       if (startsWithLet) {
         const { value } = templateBinding;
-        return this.#create<NGMicrosyntaxLet>({
-          type: 'NGMicrosyntaxLet',
-          key: this.#create<NGMicrosyntaxKey>({
-            type: 'NGMicrosyntaxKey',
-            name: key.source,
-            ...key.span,
-          }),
-          value: !value
-            ? null
-            : this.#create<NGMicrosyntaxKey>({
+        return this.#create<NGMicrosyntaxLet>(
+          {
+            type: 'NGMicrosyntaxLet',
+            key: this.#create<NGMicrosyntaxKey>(
+              {
                 type: 'NGMicrosyntaxKey',
-                name: value.source,
-                ...value.span,
-              }),
-          start: sourceSpan.start,
-          end: value ? value.span.end : key.span.end,
-        });
+                name: key.source,
+              },
+              key.span,
+            ),
+            value: !value
+              ? null
+              : this.#create<NGMicrosyntaxKey>(
+                  {
+                    type: 'NGMicrosyntaxKey',
+                    name: value.source,
+                  },
+                  value.span,
+                ),
+          },
+          [sourceSpan.start, value ? value.span.end : key.span.end],
+        );
       } else {
         const value = this.#getAsVariableBindingValue(templateBinding);
-        return this.#create<NGMicrosyntaxAs>({
-          type: 'NGMicrosyntaxAs',
-          key: this.#create<NGMicrosyntaxKey>({
-            type: 'NGMicrosyntaxKey',
-            name: value!.source,
-            ...value!.span,
-          }),
-          alias: this.#create<NGMicrosyntaxKey>({
-            type: 'NGMicrosyntaxKey',
-            name: key.source,
-            ...key.span,
-          }),
-          start: value!.span.start,
-          end: key.span.end,
-        });
+        return this.#create<NGMicrosyntaxAs>(
+          {
+            type: 'NGMicrosyntaxAs',
+            key: this.#create<NGMicrosyntaxKey>(
+              {
+                type: 'NGMicrosyntaxKey',
+                name: value!.source,
+              },
+              value!.span,
+            ),
+            alias: this.#create<NGMicrosyntaxKey>(
+              {
+                type: 'NGMicrosyntaxKey',
+                name: key.source,
+              },
+              key.span,
+            ),
+          },
+          [value!.span.start, key.span.end],
+        );
       }
     }
   }

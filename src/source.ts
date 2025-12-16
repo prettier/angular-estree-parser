@@ -1,3 +1,4 @@
+import * as angular from '@angular/compiler';
 import type * as babel from '@babel/types';
 
 import type { LocationInformation, NGNode, RawNGSpan } from './types.ts';
@@ -27,11 +28,26 @@ export class Source {
   }
 
   createNode<T extends NGNode>(
-    properties: Partial<T> & { type: T['type'] } & RawNGSpan,
+    properties: Partial<T> & { type: T['type'] },
+    location: angular.AST | RawNGSpan | [number, number],
   ) {
+    let start: number;
+    let end: number;
+    let range: [number, number];
+    if (Array.isArray(location)) {
+      range = location;
+      [start, end] = location;
+    } else {
+      ({ start, end } =
+        location instanceof angular.AST ? location.sourceSpan : location);
+      range = [start, end];
+    }
+
     const node = {
+      start,
+      end,
+      range,
       ...properties,
-      range: [properties.start, properties.end],
     } as T & LocationInformation;
 
     switch (node.type) {
