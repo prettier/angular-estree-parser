@@ -389,7 +389,7 @@ class Transformer extends Source {
     if (node instanceof angular.LiteralMap) {
       const { keys, values } = node;
       const tValues = values.map((value) =>
-        this.transform<babel.Expression>(value),
+        this.transform<babel.Expression>(value, childTransformOptions),
       );
       const tProperties = keys.map((property, index) => {
         const { key, quoted } = property;
@@ -412,21 +412,21 @@ class Transformer extends Source {
               ) + 1;
         const keySpan = { start: keyStart, end: keyEnd };
         const tKey = quoted
-          ? this.#createLegacy<babel.StringLiteral>(
+          ? this.#create<babel.StringLiteral>(
               {
                 type: 'StringLiteral',
                 value: key,
                 ...keySpan,
               },
-              ancestors,
+              [],
             )
-          : this.#createLegacy<babel.Identifier>(
+          : this.#create<babel.Identifier>(
               {
                 type: 'Identifier',
                 name: key,
                 ...keySpan,
               },
-              ancestors,
+              [],
             );
         const shorthand = tKey.end < tKey.start || keyStart === valueStart;
 
