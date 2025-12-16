@@ -39,7 +39,6 @@ function isImplicitThis(node: angular.AST, text: string): boolean {
 }
 
 type NodeTransformOptions = {
-  isInParentParens?: boolean;
   ancestors: angular.AST[];
 };
 
@@ -57,14 +56,6 @@ class Transformer extends Source {
   ) {
     return this.#transform(node, options ?? { ancestors: [] }) as T &
       LocationInformation;
-  }
-
-  #createLegacy<T extends NGNode>(
-    properties: Partial<T> & { type: T['type'] } & RawNGSpan,
-    ancestors: angular.AST[],
-    { stripSpaces = true, isInParentParens = false } = {},
-  ) {
-    return this.createNode<T>(properties, { stripSpaces, isInParentParens });
   }
 
   #create<T extends NGNode>(
@@ -138,7 +129,6 @@ class Transformer extends Source {
     }: {
       computed: boolean;
       optional: boolean;
-      isInParentParens?: boolean;
     },
   ) {
     const { receiver } = node;
@@ -196,11 +186,6 @@ class Transformer extends Source {
     const childTransformOptions = {
       ...options,
       ancestors: [node, ...ancestors],
-    };
-
-    const { isInParentParens } = {
-      isInParentParens: false,
-      ...options,
     };
 
     if (node instanceof angular.Interpolation) {
@@ -509,7 +494,6 @@ class Transformer extends Source {
           ? [
               this.transform<babel.Expression>(args[0], {
                 ...childTransformOptions,
-                isInParentParens: true,
               }),
             ]
           : (args as angular.AST[]).map<babel.Expression>((node) =>
@@ -612,7 +596,6 @@ class Transformer extends Source {
         {
           computed: true,
           optional: node instanceof angular.SafeKeyedRead,
-          isInParentParens: isInParentParens,
         },
       );
     }
@@ -622,21 +605,17 @@ class Transformer extends Source {
       node instanceof angular.SafePropertyRead
     ) {
       const { receiver, name } = node;
-      const tName = this.#createLegacy<babel.Identifier>(
+      const tName = this.#create<babel.Identifier>(
         {
           type: 'Identifier',
           name,
           ...node.nameSpan,
         },
-        ancestors,
-        isImplicitThis(receiver, this.#text)
-          ? { isInParentParens: isInParentParens }
-          : {},
+        isImplicitThis(receiver, this.#text) ? ancestors : [],
       );
       return this.#transformReceiverAndName(node, tName, ancestors, {
         computed: false,
         optional: node instanceof angular.SafePropertyRead,
-        isInParentParens: isInParentParens,
       });
     }
 
