@@ -430,7 +430,7 @@ class Transformer extends Source {
             );
         const shorthand = tKey.end < tKey.start || keyStart === valueStart;
 
-        return this.#createLegacy<babel.ObjectProperty>(
+        return this.#create<babel.ObjectProperty>(
           {
             type: 'ObjectProperty',
             key: tKey,
@@ -440,7 +440,7 @@ class Transformer extends Source {
             start: getOuterStart(tKey),
             end: valueEnd,
           },
-          ancestors,
+          [],
         );
       });
       return this.#create<babel.ObjectExpression>(
