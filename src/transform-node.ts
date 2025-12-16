@@ -27,21 +27,13 @@ function isOptionalObjectOrCallee(node: NGNode): boolean {
   );
 }
 
-function isImplicitThis(node: angular.AST, text: string): boolean {
-  const { start, end } = node.sourceSpan;
-  return start >= end || /^\s+$/.test(text.slice(start, end));
-}
-
 type NodeTransformOptions = {
   ancestors: angular.AST[];
 };
 
 class Transformer extends Source {
-  #text;
-
   constructor(text: string) {
     super(text);
-    this.#text = text;
   }
 
   transform<T extends NGNode>(
@@ -457,24 +449,27 @@ class Transformer extends Source {
 
       const { receiver } = node;
 
-      const implicit = isImplicitThis(receiver, this.#text);
+      let isImplicitThis;
 
       let property;
       if (isComputed) {
+        isImplicitThis = node.sourceSpan.start === node.key.sourceSpan.start;
         property = this.transform<babel.Expression>(node.key);
       } else {
-        const { name } = node;
+        const { name, nameSpan } = node;
+
+        isImplicitThis = node.sourceSpan.start === nameSpan.start;
         property = this.#create<babel.Identifier>(
           {
             type: 'Identifier',
             name,
             ...node.nameSpan,
           },
-          implicit ? ancestors : [],
+          isImplicitThis ? ancestors : [],
         );
       }
 
-      if (implicit || receiver.sourceSpan.start === property.start) {
+      if (isImplicitThis) {
         return property;
       }
 
