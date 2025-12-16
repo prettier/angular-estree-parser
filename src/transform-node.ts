@@ -183,7 +183,7 @@ class Transformer extends Source {
         node.exp,
         childTransformOptions,
       );
-      const leftEnd = getOuterEnd(left);
+      const leftEnd = node.exp.sourceSpan.end;
       const rightStart = this.getCharacterIndex(
         /\S/,
         this.getCharacterIndex('|', leftEnd) + 1,
