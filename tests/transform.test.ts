@@ -85,7 +85,7 @@ describe.each`
   ${'SafeCall'}                 | ${'OptionalCallExpression'}   | ${' a ?. b . c ?. ( ) '}                        | ${true}     | ${true}      | ${true}            | ${true}
   ${'Call'}                     | ${'OptionalCallExpression'}   | ${' a ?. b ( ) . c ( ) '}                       | ${true}     | ${true}      | ${true}            | ${true}
   ${'SafeCall'}                 | ${'OptionalCallExpression'}   | ${' a ?. b ( ) . c ?.( ) '}                     | ${true}     | ${true}      | ${true}            | ${true}
-  ${'NonNullAssert'}            | ${'TSNonNullExpression'}      | ${' x ! '}                                      | ${true}     | ${true}      | ${true}            | ${true}
+  ${'NonNullAssert'}            | ${'TSNonNullExpression'}      | ${' ( ( ( ( x ) ) ! ) ) '}                      | ${true}     | ${true}      | ${true}            | ${true}
   ${'PropertyRead'}             | ${'Identifier'}               | ${' ( ( a ) ) '}                                | ${true}     | ${true}      | ${true}            | ${true}
   ${'PropertyRead'}             | ${'Identifier'}               | ${' a '}                                        | ${true}     | ${true}      | ${true}            | ${true}
   ${'PropertyRead'}             | ${'Identifier'}               | ${' a // hello '}                               | ${true}     | ${true}      | ${true}            | ${true}

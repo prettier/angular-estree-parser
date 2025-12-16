@@ -424,8 +424,7 @@ class Transformer extends Source {
         {
           type: 'TSNonNullExpression',
           expression: expression,
-          start: getOuterStart(expression),
-          end: node.sourceSpan.end, // `!`
+          ...node.sourceSpan,
         },
         ancestors,
       );
