@@ -174,7 +174,7 @@ class TemplateBindingTransformer extends NodeTransformer {
           const expression = updateExpressionAlias(lastNode.expression);
           body.push(updateSpanEnd({ ...lastNode, expression }, expression.end));
         } else {
-          /* c8 ignore next 2 */
+          /* c8 ignore next 2 @preserve */
           throw new Error(`Unexpected type ${lastNode.type}`);
         }
       } else {

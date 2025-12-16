@@ -23,29 +23,8 @@ export class Source {
     return getCharacterLastIndex(this.text, pattern, index);
   }
 
-  transformSpan(
-    span: RawNGSpan,
-    { stripSpaces = false, isInParentParens = false } = {},
-  ): LocationInformation {
-    if (!stripSpaces) {
-      return sourceSpanToLocationInformation(span);
-    }
-
-    const { outerSpan, innerSpan, hasParens } = fitSpans(
-      span,
-      this.text,
-      isInParentParens,
-    );
-    const locationInformation = sourceSpanToLocationInformation(innerSpan);
-    if (hasParens) {
-      locationInformation.extra = {
-        parenthesized: true,
-        parenStart: outerSpan.start,
-        parenEnd: outerSpan.end,
-      };
-    }
-
-    return locationInformation;
+  transformSpan(span: RawNGSpan): LocationInformation {
+    return sourceSpanToLocationInformation(span);
   }
 
   createNode<T extends NGNode>(
