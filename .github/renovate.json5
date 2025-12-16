@@ -4,18 +4,18 @@
   postUpdateOptions: ['yarnDedupeHighest'],
   packageRules: [
     {
-      "groupName": "devDependencies",
-      "matchDepTypes": ["devDependencies"]
+      groupName: 'devDependencies',
+      matchDepTypes: ['devDependencies'],
     },
     {
-      "groupName": "dependencies",
-      "matchDepTypes": ["dependencies"],
-      "rangeStrategy": "replace"
+      groupName: 'dependencies',
+      matchDepTypes: ['dependencies'],
+      rangeStrategy: 'replace',
     },
     {
-      "groupName": "peerDependencies",
-      "matchDepTypes": ["peerDependencies"],
-      "rangeStrategy": "widen"
+      groupName: 'peerDependencies',
+      matchDepTypes: ['peerDependencies'],
+      rangeStrategy: 'widen',
     },
     {
       groupName: 'GitHub Actions',
