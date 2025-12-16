@@ -48,7 +48,7 @@ describe.each`
   ${'SafeCall'}                 | ${'OptionalCallExpression'}   | ${' ( ( ( ( a . b ) )?.( 1 , 2 ) ) ) '}         | ${true}     | ${true}      | ${true}            | ${true}
   ${'Call'}                     | ${'CallExpression'}           | ${' ( ( ( ( a ) ) ( 1 , 2 ) ) ) '}              | ${true}     | ${true}      | ${true}            | ${true}
   ${'SafeCall'}                 | ${'OptionalCallExpression'}   | ${' ( ( ( ( a ) ) ?. ( 1 , 2 ) ) ) '}           | ${true}     | ${true}      | ${true}            | ${true}
-  ${'Call'}                     | ${'CallExpression'}           | ${' a ( 1 ) ( 2 ) '}                            | ${true}     | ${true}      | ${true}            | ${true}
+  ${'Call'}                     | ${'CallExpression'}           | ${' ( ( a ( ( ( 1 ) ) ) ( ( ( 1 ) ) ) ) ) '}    | ${true}     | ${true}      | ${true}            | ${true}
   ${'SafeCall'}                 | ${'OptionalCallExpression'}   | ${' a ( 1 )?.( 2 ) '}                           | ${true}     | ${true}      | ${true}            | ${true}
   ${'KeyedRead'}                | ${'MemberExpression'}         | ${' a [ b ] '}                                  | ${true}     | ${true}      | ${true}            | ${true}
   ${'SafeKeyedRead'}            | ${'OptionalMemberExpression'} | ${' a ?. [ b ] '}                               | ${true}     | ${true}      | ${true}            | ${true}
