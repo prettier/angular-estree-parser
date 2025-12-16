@@ -94,23 +94,42 @@ class Transformer extends Source {
     }
     const object = this.#transform<babel.Expression>(receiver);
     const isOptionalObject = isOptionalObjectOrCallee(object);
-    return this.#create<
-      babel.OptionalMemberExpression | babel.MemberExpression
-    >(
+
+    const commonProps = {
+      property,
+      object,
+      computed,
+      ...node.sourceSpan,
+    };
+
+    if (optional || isOptionalObject) {
+      return this.#create<babel.OptionalMemberExpression>(
+        {
+          type: 'OptionalMemberExpression',
+          optional: optional || !isOptionalObject,
+          ...commonProps,
+        },
+        { hasParentParens },
+      );
+    }
+
+    if (computed) {
+      return this.#create<babel.MemberExpressionComputed>(
+        {
+          type: 'MemberExpression',
+          ...commonProps,
+          computed: true,
+        },
+        { hasParentParens },
+      );
+    }
+
+    return this.#create<babel.MemberExpressionNonComputed>(
       {
-        type:
-          optional || isOptionalObject
-            ? 'OptionalMemberExpression'
-            : 'MemberExpression',
-        object,
-        property,
-        computed: computed,
-        ...(optional
-          ? { optional: true }
-          : isOptionalObject
-            ? { optional: false }
-            : undefined),
-        ...node.sourceSpan,
+        type: 'MemberExpression',
+        ...commonProps,
+        computed: false,
+        property: property as babel.MemberExpressionNonComputed['property'],
       },
       { hasParentParens },
     );
