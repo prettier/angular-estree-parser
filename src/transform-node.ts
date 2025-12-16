@@ -112,7 +112,7 @@ class Transformer extends Source {
     if (node instanceof angular.Interpolation) {
       const { expressions } = node;
 
-      /* c8 ignore next 3 */
+      /* c8 ignore next 3 @preserve */
       if (expressions.length !== 1) {
         throw new Error("Unexpected 'Interpolation'");
       }
@@ -442,10 +442,10 @@ class Transformer extends Source {
             ? 'typeof'
             : node instanceof angular.VoidExpression
               ? 'void'
-              : /* c8 ignore next */
+              : /* c8 ignore next @preserve */
                 undefined;
 
-      /* c8 ignore next 3 */
+      /* c8 ignore next 3 @preserve */
       if (!operator) {
         throw new Error('Unexpected expression.');
       }
@@ -455,7 +455,7 @@ class Transformer extends Source {
       if (operator === 'typeof' || operator === 'void') {
         const index = this.text.lastIndexOf(operator, start);
 
-        /* c8 ignore next 7 */
+        /* c8 ignore next 7 @preserve */
         if (index === -1) {
           throw new Error(
             `Cannot find operator '${operator}' from index ${start} in ${JSON.stringify(
@@ -574,15 +574,13 @@ class Transformer extends Source {
     }
 
     if (node instanceof angular.TemplateLiteral) {
-      const { elements, expressions } = node;
-
       return this.#create<babel.TemplateLiteral>(
         {
           type: 'TemplateLiteral',
-          quasis: elements.map((element) =>
+          quasis: node.elements.map((element) =>
             this.transform(element, childTransformOptions),
           ),
-          expressions: expressions.map((expression) =>
+          expressions: node.expressions.map((expression) =>
             this.transform(expression, childTransformOptions),
           ),
           ...node.sourceSpan,
@@ -621,7 +619,7 @@ class Transformer extends Source {
       return this.transform(node.expression, childTransformOptions);
     }
 
-    /* c8 ignore next */
+    /* c8 ignore next @preserve */
     throw new Error(`Unexpected node type '${node.constructor.name}'`);
   }
 }

@@ -38,29 +38,6 @@ Identifier {
     |                   ^
 `;
 
-exports[`('BindingPipe' -> 'NGPipeExpression') > parseBinding(" a | b ") 1`] = `
-NGPipeExpression {
-  "left": "Identifier",
-  "right": "Identifier",
-  "arguments": [],
-  "comments": []
-}
-> 1 |  a | b 
-    |  ^^^^^
---------------------------------------------------------------------------------
-Identifier {
-  "name": "a"
-}
-> 1 |  a | b 
-    |  ^
---------------------------------------------------------------------------------
-Identifier {
-  "name": "b"
-}
-> 1 |  a | b 
-    |      ^
-`;
-
 exports[`('BindingPipe' -> 'NGPipeExpression') > parseBinding(" a | b : c ") 1`] = `
 NGPipeExpression {
   "left": "Identifier",
@@ -128,29 +105,6 @@ Identifier {
 }
 > 1 |  ( ( ( ( a ) ) |  b  )) 
     |                   ^
-`;
-
-exports[`('BindingPipe' -> 'NGPipeExpression') > parseInterpolationExpression(" a | b ") 1`] = `
-NGPipeExpression {
-  "left": "Identifier",
-  "right": "Identifier",
-  "arguments": [],
-  "comments": []
-}
-> 1 |  a | b 
-    |  ^^^^^
---------------------------------------------------------------------------------
-Identifier {
-  "name": "a"
-}
-> 1 |  a | b 
-    |  ^
---------------------------------------------------------------------------------
-Identifier {
-  "name": "b"
-}
-> 1 |  a | b 
-    |      ^
 `;
 
 exports[`('BindingPipe' -> 'NGPipeExpression') > parseInterpolationExpression(" a | b : c ") 1`] = `

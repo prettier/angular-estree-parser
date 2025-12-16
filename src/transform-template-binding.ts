@@ -55,9 +55,8 @@ class TemplateBindingTransformer extends NodeTransformer {
 
   #create<T extends NGNode>(
     properties: Partial<T> & { type: T['type'] } & RawNGSpan,
-    { stripSpaces = true } = {},
   ) {
-    return this.createNode<T>(properties, { stripSpaces });
+    return this.createNode<T>(properties);
   }
 
   #transform<T extends NGNode>(node: angular.AST) {
