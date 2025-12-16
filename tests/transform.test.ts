@@ -39,7 +39,7 @@ describe.each`
   ${'Binary'}                   | ${'AssignmentExpression'}     | ${' ( ( a ??= ( ( 1 ) ) ) ) '}                  | ${true}     | ${false}     | ${false}           | ${false}
   ${'Unary'}                    | ${'UnaryExpression'}          | ${' - 1 '}                                      | ${true}     | ${true}      | ${true}            | ${true}
   ${'Unary'}                    | ${'UnaryExpression'}          | ${' + 1 '}                                      | ${true}     | ${true}      | ${true}            | ${true}
-  ${'BindingPipe'}              | ${'NGPipeExpression'}         | ${' a | b '}                                    | ${false}    | ${true}      | ${false}           | ${true}
+  ${'BindingPipe'}              | ${'NGPipeExpression'}         | ${' ( ( ( ( a ) ) |  b  )) '}                   | ${false}    | ${true}      | ${false}           | ${true}
   ${'BindingPipe'}              | ${'NGPipeExpression'}         | ${' a | b : c '}                                | ${false}    | ${true}      | ${false}           | ${true}
   ${'Chain'}                    | ${'NGChainedExpression'}      | ${' a ; b '}                                    | ${true}     | ${false}     | ${false}           | ${false}
   ${'Conditional'}              | ${'ConditionalExpression'}    | ${' ( ( ( ( a ) ) ? ( ( 1 ) ) : ( ( 2 ) ) ))'}  | ${true}     | ${true}      | ${true}            | ${true}

@@ -231,19 +231,14 @@ class Transformer extends Source {
     }
 
     if (node instanceof angular.Conditional) {
-      const { condition, trueExp, falseExp } = node;
-      const test = this.transform<babel.Expression>(
-        condition,
-        childTransformOptions,
+      const [test, consequent, alternate] = [
+        node.condition,
+        node.trueExp,
+        node.falseExp,
+      ].map((node) =>
+        this.transform<babel.Expression>(node, childTransformOptions),
       );
-      const consequent = this.transform<babel.Expression>(
-        trueExp,
-        childTransformOptions,
-      );
-      const alternate = this.transform<babel.Expression>(
-        falseExp,
-        childTransformOptions,
-      );
+
       return this.#create<babel.ConditionalExpression>(
         {
           type: 'ConditionalExpression',
