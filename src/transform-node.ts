@@ -467,10 +467,9 @@ class Transformer extends Source {
             ancestors,
           );
         case 'object':
-          return this.#createLegacy<babel.NullLiteral>(
+          return this.#create<babel.NullLiteral>(
             { type: 'NullLiteral', ...node.sourceSpan },
             ancestors,
-            { isInParentParens: isInParentParens },
           );
         case 'string':
           return this.#create<babel.StringLiteral>(
@@ -478,7 +477,7 @@ class Transformer extends Source {
             ancestors,
           );
         case 'undefined':
-          return this.#createLegacy<babel.Identifier>(
+          return this.#create<babel.Identifier>(
             { type: 'Identifier', name: 'undefined', ...node.sourceSpan },
             ancestors,
           );
