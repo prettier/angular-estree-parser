@@ -48,7 +48,7 @@ class Transformer extends Source {
     properties: Partial<T> & { type: T['type'] } & RawNGSpan,
     ancestors: angular.AST[],
   ) {
-    const node = this.createNode(properties);
+    const node = super.createNode(properties);
 
     if (ancestors[0] instanceof angular.ParenthesizedExpression) {
       node.extra = {
@@ -142,9 +142,9 @@ class Transformer extends Source {
         childTransformOptions,
       );
       const leftEnd = node.exp.sourceSpan.end;
-      const rightStart = this.getCharacterIndex(
+      const rightStart = super.getCharacterIndex(
         /\S/,
-        this.getCharacterIndex('|', leftEnd) + 1,
+        super.getCharacterIndex('|', leftEnd) + 1,
       );
       const right = this.#create<babel.Identifier>(
         {
@@ -237,18 +237,19 @@ class Transformer extends Source {
         const { key, quoted } = property;
         const { start: valueStart, end: valueEnd } = values[index].sourceSpan;
 
-        const keyStart = this.getCharacterIndex(
+        const keyStart = super.getCharacterIndex(
           /\S/,
           index === 0
             ? node.sourceSpan.start + 1 // {
-            : this.getCharacterIndex(',', values[index - 1].sourceSpan.end) + 1,
+            : super.getCharacterIndex(',', values[index - 1].sourceSpan.end) +
+                1,
         );
         const keyEnd =
           valueStart === keyStart
             ? valueEnd
-            : this.getCharacterLastIndex(
+            : super.getCharacterLastIndex(
                 /\S/,
-                this.getCharacterLastIndex(':', valueStart - 1) - 1,
+                super.getCharacterLastIndex(':', valueStart - 1) - 1,
               ) + 1;
         const keySpan = { start: keyStart, end: keyEnd };
         const tKey = quoted
