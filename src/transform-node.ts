@@ -44,20 +44,14 @@ type NodeTransformOptions = {
 };
 
 class Transformer extends Source {
-  #node;
   #text;
 
-  constructor(ast: angular.AST | undefined, text: string) {
+  constructor(text: string) {
     super(text);
-    this.#node = ast;
     this.#text = text;
   }
 
-  get node() {
-    return this.#transform(this.#node!);
-  }
-
-  transformNode<T extends NGNode>(node: angular.AST) {
+  transform<T extends NGNode>(node: angular.AST) {
     return this.#transformNode(node) as T & LocationInformation;
   }
 
@@ -636,7 +630,7 @@ type SupportedNodes =
   | angular.TaggedTemplateLiteral
   | angular.ParenthesizedExpression;
 function transform(node: SupportedNodes, text: string): NGNode {
-  return new Transformer(node, text).node;
+  return new Transformer(text).transform(node);
 }
 
 export { transform, Transformer };
