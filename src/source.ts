@@ -2,7 +2,6 @@ import type * as babel from '@babel/types';
 
 import type { LocationInformation, NGNode, RawNGSpan } from './types.ts';
 import {
-  fitSpans,
   getCharacterIndex,
   getCharacterLastIndex,
   sourceSpanToLocationInformation,
