@@ -46,6 +46,10 @@ export function massageAst(ast: any, parser: 'babel' | 'angular'): any {
     return ast.map((node) => massageAst(node, parser));
   }
 
+  if (parser === 'babel' && typeof ast.extra?.parenStart === 'number') {
+    delete ast.extra.parenStart;
+  }
+
   // Not exists in types, but exists in node.
   if (ast.type === 'ObjectProperty') {
     if (ast.method !== undefined && ast.method !== false) {
@@ -54,6 +58,7 @@ export function massageAst(ast: any, parser: 'babel' | 'angular'): any {
       );
     }
     delete ast.method;
+
     if (
       ast.shorthand &&
       ast.extra &&

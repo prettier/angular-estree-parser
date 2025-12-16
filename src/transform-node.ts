@@ -32,33 +32,6 @@ function isImplicitThis(node: angular.AST, text: string): boolean {
   return start >= end || /^\s+$/.test(text.slice(start, end));
 }
 
-function getParenthesizedInformation(ancestors: angular.AST[]) {
-  const parenthesizedExpression =
-    getOutermostParenthesizedExpression(ancestors);
-
-  if (!parenthesizedExpression) {
-    return;
-  }
-
-  return {
-    parenthesized: true,
-    parenStart: parenthesizedExpression.sourceSpan.start,
-    parenEnd: parenthesizedExpression.sourceSpan.end,
-  };
-}
-
-function getOutermostParenthesizedExpression(ancestors: angular.AST[]) {
-  for (const [index, node] of ancestors.entries()) {
-    if (!(node instanceof angular.ParenthesizedExpression)) {
-      return;
-    }
-
-    if (!(ancestors[index + 1] instanceof angular.ParenthesizedExpression)) {
-      return node;
-    }
-  }
-}
-
 type NodeTransformOptions = {
   ancestors: angular.AST[];
 };
@@ -85,11 +58,10 @@ class Transformer extends Source {
   ) {
     const node = this.createNode(properties);
 
-    const parenthesizedInformation = getParenthesizedInformation(ancestors);
-    if (parenthesizedInformation) {
+    if (ancestors[0] instanceof angular.ParenthesizedExpression) {
       node.extra = {
         ...node.extra,
-        ...parenthesizedInformation,
+        parenthesized: true,
       };
     }
 

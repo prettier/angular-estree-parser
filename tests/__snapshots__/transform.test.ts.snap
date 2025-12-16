@@ -6,9 +6,7 @@ NGPipeExpression {
   "right": "Identifier",
   "arguments": [],
   "extra": {
-    "parenthesized": true,
-    "parenStart": 1,
-    "parenEnd": 23
+    "parenthesized": true
   },
   "comments": []
 }
@@ -18,9 +16,7 @@ NGPipeExpression {
 Identifier {
   "name": "a",
   "extra": {
-    "parenthesized": true,
-    "parenStart": 5,
-    "parenEnd": 14
+    "parenthesized": true
   }
 }
 > 1 |  ( ( ( ( a ) ) |  b  )) 
@@ -29,9 +25,7 @@ Identifier {
 Identifier {
   "name": "b",
   "extra": {
-    "parenthesized": true,
-    "parenStart": 1,
-    "parenEnd": 23
+    "parenthesized": true
   }
 }
 > 1 |  ( ( ( ( a ) ) |  b  )) 
@@ -75,9 +69,7 @@ NGPipeExpression {
   "right": "Identifier",
   "arguments": [],
   "extra": {
-    "parenthesized": true,
-    "parenStart": 1,
-    "parenEnd": 23
+    "parenthesized": true
   },
   "comments": []
 }
@@ -87,9 +79,7 @@ NGPipeExpression {
 Identifier {
   "name": "a",
   "extra": {
-    "parenthesized": true,
-    "parenStart": 5,
-    "parenEnd": 14
+    "parenthesized": true
   }
 }
 > 1 |  ( ( ( ( a ) ) |  b  )) 
@@ -98,9 +88,7 @@ Identifier {
 Identifier {
   "name": "b",
   "extra": {
-    "parenthesized": true,
-    "parenStart": 1,
-    "parenEnd": 23
+    "parenthesized": true
   }
 }
 > 1 |  ( ( ( ( a ) ) |  b  )) 
