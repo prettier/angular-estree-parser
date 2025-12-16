@@ -51,8 +51,11 @@ class Transformer extends Source {
     this.#text = text;
   }
 
-  transform<T extends NGNode>(node: angular.AST) {
-    return this.#transformNode(node) as T & LocationInformation;
+  transform<T extends NGNode>(
+    node: angular.AST,
+    options?: NodeTransformOptions,
+  ): T & LocationInformation {
+    return this.#transformNode(node, options) as T & LocationInformation;
   }
 
   #create<T extends NGNode>(
@@ -86,7 +89,7 @@ class Transformer extends Source {
     ) {
       return property;
     }
-    const object = this.#transform<babel.Expression>(receiver);
+    const object = this.transform<babel.Expression>(receiver);
     const isOptionalObject = isOptionalObjectOrCallee(object);
 
     const commonProps = {
@@ -129,13 +132,6 @@ class Transformer extends Source {
     );
   }
 
-  #transform<T extends NGNode>(
-    node: angular.AST,
-    options?: NodeTransformOptions,
-  ) {
-    return this.#transformNode(node, options) as T & LocationInformation;
-  }
-
   #transformNode(node: angular.AST, options?: NodeTransformOptions): NGNode {
     const { isInParentParens } = {
       isInParentParens: false,
@@ -150,7 +146,7 @@ class Transformer extends Source {
         throw new Error("Unexpected 'Interpolation'");
       }
 
-      return this.#transformNode(expressions[0]);
+      return this.transform(expressions[0]);
     }
 
     if (node instanceof angular.Unary) {
@@ -158,7 +154,7 @@ class Transformer extends Source {
         {
           type: 'UnaryExpression',
           prefix: true,
-          argument: this.#transform<babel.Expression>(node.expr),
+          argument: this.transform<babel.Expression>(node.expr),
           operator: node.operator as '-' | '+',
           ...node.sourceSpan,
         },
@@ -172,8 +168,8 @@ class Transformer extends Source {
         operation: operator,
         right: originalRight,
       } = node;
-      const left = this.#transform<babel.Expression>(originalLeft);
-      const right = this.#transform<babel.Expression>(originalRight);
+      const left = this.transform<babel.Expression>(originalLeft);
+      const right = this.transform<babel.Expression>(originalRight);
       const start = getOuterStart(left);
       const end = getOuterEnd(right);
       const properties = { left, right, start, end };
@@ -214,7 +210,7 @@ class Transformer extends Source {
 
     if (node instanceof angular.BindingPipe) {
       const { exp: expressionNode, name, args: originalArguments } = node;
-      const left = this.#transform<babel.Expression>(expressionNode);
+      const left = this.transform<babel.Expression>(expressionNode);
       const start = getOuterStart(left);
       const leftEnd = getOuterEnd(left);
       const rightStart = this.getCharacterIndex(
@@ -228,7 +224,7 @@ class Transformer extends Source {
         end: rightStart + name.length,
       });
       const argumentNodes = originalArguments.map<babel.Expression>((node) =>
-        this.#transform(node),
+        this.transform(node),
       );
       return this.#create<NGPipeExpression>(
         {
@@ -251,7 +247,7 @@ class Transformer extends Source {
         {
           type: 'NGChainedExpression',
           expressions: node.expressions.map<babel.Expression>((node) =>
-            this.#transform(node),
+            this.transform(node),
           ),
           ...node.sourceSpan,
         },
@@ -261,9 +257,9 @@ class Transformer extends Source {
 
     if (node instanceof angular.Conditional) {
       const { condition, trueExp, falseExp } = node;
-      const test = this.#transform<babel.Expression>(condition);
-      const consequent = this.#transform<babel.Expression>(trueExp);
-      const alternate = this.#transform<babel.Expression>(falseExp);
+      const test = this.transform<babel.Expression>(condition);
+      const consequent = this.transform<babel.Expression>(trueExp);
+      const alternate = this.transform<babel.Expression>(falseExp);
       return this.#create<babel.ConditionalExpression>(
         {
           type: 'ConditionalExpression',
@@ -296,7 +292,7 @@ class Transformer extends Source {
         {
           type: 'ArrayExpression',
           elements: node.expressions.map<babel.Expression>((node) =>
-            this.#transform(node),
+            this.transform(node),
           ),
           ...node.sourceSpan,
         },
@@ -307,7 +303,7 @@ class Transformer extends Source {
     if (node instanceof angular.LiteralMap) {
       const { keys, values } = node;
       const tValues = values.map((value) =>
-        this.#transform<babel.Expression>(value),
+        this.transform<babel.Expression>(value),
       );
       const tProperties = keys.map(({ key, quoted }, index) => {
         const tValue = tValues[index];
@@ -415,14 +411,14 @@ class Transformer extends Source {
       const tArgs =
         args.length === 1
           ? [
-              this.#transform<babel.Expression>(args[0], {
+              this.transform<babel.Expression>(args[0], {
                 isInParentParens: true,
               }),
             ]
           : (args as angular.AST[]).map<babel.Expression>((node) =>
-              this.#transform(node),
+              this.transform(node),
             );
-      const tReceiver = this.#transform<babel.Expression>(receiver!);
+      const tReceiver = this.transform<babel.Expression>(receiver!);
       const isOptionalReceiver = isOptionalObjectOrCallee(tReceiver);
       const nodeType =
         isOptionalType || isOptionalReceiver
@@ -444,7 +440,7 @@ class Transformer extends Source {
     }
 
     if (node instanceof angular.NonNullAssert) {
-      const expression = this.#transform<babel.Expression>(node.expression);
+      const expression = this.transform<babel.Expression>(node.expression);
       return this.#create<babel.TSNonNullExpression>(
         {
           type: 'TSNonNullExpression',
@@ -493,7 +489,7 @@ class Transformer extends Source {
         start = index;
       }
 
-      const expression = this.#transform<babel.Expression>(node.expression);
+      const expression = this.transform<babel.Expression>(node.expression);
 
       return this.#create<babel.UnaryExpression>(
         {
@@ -514,7 +510,7 @@ class Transformer extends Source {
     ) {
       return this.#transformReceiverAndName(
         node,
-        this.#transform<babel.Expression>(node.key),
+        this.transform<babel.Expression>(node.key),
         {
           computed: true,
           optional: node instanceof angular.SafeKeyedRead,
@@ -548,8 +544,8 @@ class Transformer extends Source {
     if (node instanceof angular.TaggedTemplateLiteral) {
       return this.#create<babel.TaggedTemplateExpression>({
         type: 'TaggedTemplateExpression',
-        tag: this.#transform<babel.Expression>(node.tag),
-        quasi: this.#transform<babel.TemplateLiteral>(node.template),
+        tag: this.transform<babel.Expression>(node.tag),
+        quasi: this.transform<babel.TemplateLiteral>(node.template),
         ...node.sourceSpan,
       });
     }
@@ -560,10 +556,10 @@ class Transformer extends Source {
       return this.#create<babel.TemplateLiteral>({
         type: 'TemplateLiteral',
         quasis: elements.map((element) =>
-          this.#transform(element, { parent: node }),
+          this.transform(element, { parent: node }),
         ),
         expressions: expressions.map((expression) =>
-          this.#transform(expression),
+          this.transform(expression),
         ),
         ...node.sourceSpan,
       });
@@ -595,7 +591,7 @@ class Transformer extends Source {
     }
 
     if (node instanceof angular.ParenthesizedExpression) {
-      return this.#transformNode(node.expression);
+      return this.transform(node.expression);
     }
 
     /* c8 ignore next */
