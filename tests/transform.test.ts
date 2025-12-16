@@ -82,7 +82,6 @@ describe.each`
   ${'Call'}                     | ${'OptionalCallExpression'}   | ${' a ?. b ( ) . c ( ) '}                       | ${true}     | ${true}      | ${true}            | ${true}
   ${'SafeCall'}                 | ${'OptionalCallExpression'}   | ${' a ?. b ( ) . c ?.( ) '}                     | ${true}     | ${true}      | ${true}            | ${true}
   ${'NonNullAssert'}            | ${'TSNonNullExpression'}      | ${' x ! '}                                      | ${true}     | ${true}      | ${true}            | ${true}
-  ${'PrefixNot'}                | ${'UnaryExpression'}          | ${' ! x '}                                      | ${true}     | ${true}      | ${true}            | ${true}
   ${'PropertyRead'}             | ${'Identifier'}               | ${' ( ( a ) ) '}                                | ${true}     | ${true}      | ${true}            | ${true}
   ${'PropertyRead'}             | ${'Identifier'}               | ${' a '}                                        | ${true}     | ${true}      | ${true}            | ${true}
   ${'PropertyRead'}             | ${'Identifier'}               | ${' a // hello '}                               | ${true}     | ${true}      | ${true}            | ${true}
@@ -98,10 +97,10 @@ describe.each`
   ${'Call'}                     | ${'OptionalCallExpression'}   | ${' a ?. b ( ) '}                               | ${true}     | ${true}      | ${true}            | ${true}
   ${'SafeCall'}                 | ${'OptionalCallExpression'}   | ${' a ?. b ?. ( ) '}                            | ${true}     | ${true}      | ${true}            | ${true}
   ${'SafePropertyRead'}         | ${'OptionalMemberExpression'} | ${' a ?. b '}                                   | ${true}     | ${true}      | ${true}            | ${true}
-  ${'TypeofExpression'}         | ${'UnaryExpression'}          | ${' ( ( typeof {} ) ) '}                        | ${true}     | ${true}      | ${true}            | ${true}
+  ${'PrefixNot'}                | ${'UnaryExpression'}          | ${' ( ( ! ( ( x ) ) ) ) '}                      | ${true}     | ${true}      | ${true}            | ${true}
+  ${'TypeofExpression'}         | ${'UnaryExpression'}          | ${' ( ( typeof ( ( x ) ) ) ) '}                 | ${true}     | ${true}      | ${true}            | ${true}
+  ${'VoidExpression'}           | ${'UnaryExpression'}          | ${' ( ( void ( ( x ) ) ) ) '}                   | ${true}     | ${true}      | ${true}            | ${true}
   ${'Binary'}                   | ${'BinaryExpression'}         | ${' typeof {} === "object" '}                   | ${true}     | ${true}      | ${true}            | ${true}
-  ${'PrefixNot'}                | ${'UnaryExpression'}          | ${' ! ( typeof {} === "" ) '}                   | ${true}     | ${true}      | ${true}            | ${true}
-  ${'VoidExpression'}           | ${'UnaryExpression'}          | ${' ( ( void ( ( a() ) ) ) ) '}                 | ${true}     | ${true}      | ${true}            | ${true}
   ${'TemplateLiteral'}          | ${'TemplateLiteral'}          | ${' ` a ${ b } \\u0063 ` '}                     | ${true}     | ${true}      | ${true}            | ${true}
   ${'TemplateLiteral'}          | ${'TemplateLiteral'}          | ${' ( ( ` a ${ b } \\u0063 ` ) ) '}             | ${true}     | ${true}      | ${true}            | ${true}
   ${'TemplateLiteral'}          | ${'TemplateLiteral'}          | ${' `  \\u0063  ` '}                            | ${true}     | ${true}      | ${true}            | ${true}

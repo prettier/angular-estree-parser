@@ -499,7 +499,7 @@ class Transformer extends Source {
           operator,
           argument: expression,
           start,
-          end: getOuterEnd(expression),
+          end: node.sourceSpan.end,
         },
         ancestors,
       );
