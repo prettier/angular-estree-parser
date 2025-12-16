@@ -44,10 +44,10 @@ describe.each`
   ${'Chain'}                    | ${'NGChainedExpression'}      | ${' a ; b '}                                    | ${true}     | ${false}     | ${false}           | ${false}
   ${'Conditional'}              | ${'ConditionalExpression'}    | ${' ( ( ( ( a ) ) ? ( ( 1 ) ) : ( ( 2 ) ) ))'}  | ${true}     | ${true}      | ${true}            | ${true}
   ${'EmptyExpr'}                | ${'NGEmptyExpression'}        | ${''}                                           | ${true}     | ${true}      | ${true}            | ${true}
-  ${'Call'}                     | ${'CallExpression'}           | ${' ( a . b ) ( 1 , 2 ) '}                      | ${true}     | ${true}      | ${true}            | ${true}
-  ${'SafeCall'}                 | ${'OptionalCallExpression'}   | ${' ( a . b )?.( 1 , 2 ) '}                     | ${true}     | ${true}      | ${true}            | ${true}
-  ${'Call'}                     | ${'CallExpression'}           | ${' ( a ) ( 1 , 2 ) '}                          | ${true}     | ${true}      | ${true}            | ${true}
-  ${'SafeCall'}                 | ${'OptionalCallExpression'}   | ${' ( a )?.( 1 , 2 ) '}                         | ${true}     | ${true}      | ${true}            | ${true}
+  ${'Call'}                     | ${'CallExpression'}           | ${' ( ( ( ( a . b ) ) ( 1 , 2 ) ) ) '}          | ${true}     | ${true}      | ${true}            | ${true}
+  ${'SafeCall'}                 | ${'OptionalCallExpression'}   | ${' ( ( ( ( a . b ) )?.( 1 , 2 ) ) ) '}         | ${true}     | ${true}      | ${true}            | ${true}
+  ${'Call'}                     | ${'CallExpression'}           | ${' ( ( ( ( a ) ) ( 1 , 2 ) ) ) '}              | ${true}     | ${true}      | ${true}            | ${true}
+  ${'SafeCall'}                 | ${'OptionalCallExpression'}   | ${' ( ( ( ( a ) ) ?. ( 1 , 2 ) ) ) '}           | ${true}     | ${true}      | ${true}            | ${true}
   ${'Call'}                     | ${'CallExpression'}           | ${' a ( 1 ) ( 2 ) '}                            | ${true}     | ${true}      | ${true}            | ${true}
   ${'SafeCall'}                 | ${'OptionalCallExpression'}   | ${' a ( 1 )?.( 2 ) '}                           | ${true}     | ${true}      | ${true}            | ${true}
   ${'KeyedRead'}                | ${'MemberExpression'}         | ${' a [ b ] '}                                  | ${true}     | ${true}      | ${true}            | ${true}

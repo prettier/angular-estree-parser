@@ -1,5 +1,43 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`('BindingPipe' -> 'NGPipeExpression') > parseBinding(" ( ( ( ( a ) ) |  b  )) ") 1`] = `
+NGPipeExpression {
+  "left": "Identifier",
+  "right": "Identifier",
+  "arguments": [],
+  "extra": {
+    "parenthesized": true,
+    "parenStart": 1,
+    "parenEnd": 23
+  },
+  "comments": []
+}
+> 1 |  ( ( ( ( a ) ) |  b  )) 
+    |      ^^^^^^^^^^^^^^^^^^
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "a",
+  "extra": {
+    "parenthesized": true,
+    "parenStart": 5,
+    "parenEnd": 14
+  }
+}
+> 1 |  ( ( ( ( a ) ) |  b  )) 
+    |          ^
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "b",
+  "extra": {
+    "parenthesized": true,
+    "parenStart": 1,
+    "parenEnd": 23
+  }
+}
+> 1 |  ( ( ( ( a ) ) |  b  )) 
+    |                   ^
+`;
+
 exports[`('BindingPipe' -> 'NGPipeExpression') > parseBinding(" a | b ") 1`] = `
 NGPipeExpression {
   "left": "Identifier",
@@ -52,6 +90,44 @@ Identifier {
 }
 > 1 |  a | b : c 
     |          ^
+`;
+
+exports[`('BindingPipe' -> 'NGPipeExpression') > parseInterpolationExpression(" ( ( ( ( a ) ) |  b  )) ") 1`] = `
+NGPipeExpression {
+  "left": "Identifier",
+  "right": "Identifier",
+  "arguments": [],
+  "extra": {
+    "parenthesized": true,
+    "parenStart": 1,
+    "parenEnd": 23
+  },
+  "comments": []
+}
+> 1 |  ( ( ( ( a ) ) |  b  )) 
+    |      ^^^^^^^^^^^^^^^^^^
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "a",
+  "extra": {
+    "parenthesized": true,
+    "parenStart": 5,
+    "parenEnd": 14
+  }
+}
+> 1 |  ( ( ( ( a ) ) |  b  )) 
+    |          ^
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "b",
+  "extra": {
+    "parenthesized": true,
+    "parenStart": 1,
+    "parenEnd": 23
+  }
+}
+> 1 |  ( ( ( ( a ) ) |  b  )) 
+    |                   ^
 `;
 
 exports[`('BindingPipe' -> 'NGPipeExpression') > parseInterpolationExpression(" a | b ") 1`] = `

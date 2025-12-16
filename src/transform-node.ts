@@ -394,34 +394,25 @@ class Transformer extends Source {
     }
 
     if (node instanceof angular.Call || node instanceof angular.SafeCall) {
-      const isOptionalType = node instanceof angular.SafeCall;
-      const { receiver, args } = node;
-      const tArgs =
-        args.length === 1
-          ? [
-              this.transform<babel.Expression>(args[0], {
-                ...childTransformOptions,
-              }),
-            ]
-          : (args as angular.AST[]).map<babel.Expression>((node) =>
-              this.transform(node, childTransformOptions),
-            );
-      const tReceiver = this.transform<babel.Expression>(receiver!);
-      const isOptionalReceiver = isOptionalObjectOrCallee(tReceiver);
+      const arguments_ = node.args.map<babel.Expression>((node) =>
+        this.transform(node, childTransformOptions),
+      );
+      const callee = this.transform<babel.Expression>(node.receiver);
+      const isOptionalReceiver = isOptionalObjectOrCallee(callee);
+      const isOptional = node instanceof angular.SafeCall;
       const nodeType =
-        isOptionalType || isOptionalReceiver
+        isOptional || isOptionalReceiver
           ? 'OptionalCallExpression'
           : 'CallExpression';
       return this.#create<babel.CallExpression | babel.OptionalCallExpression>(
         {
           type: nodeType,
-          callee: tReceiver,
-          arguments: tArgs,
+          callee,
+          arguments: arguments_,
           ...(nodeType === 'OptionalCallExpression'
-            ? { optional: isOptionalType }
+            ? { optional: isOptional }
             : undefined),
-          start: getOuterStart(tReceiver),
-          end: node.sourceSpan.end, // `)`
+          ...node.sourceSpan,
         },
         ancestors,
       );
