@@ -2,7 +2,6 @@ import type * as babel from '@babel/types';
 
 import type { LocationInformation, NGNode, RawNGSpan } from './types.ts';
 import {
-  fitSpans,
   getCharacterIndex,
   getCharacterLastIndex,
   sourceSpanToLocationInformation,
@@ -23,49 +22,19 @@ export class Source {
     return getCharacterLastIndex(this.text, pattern, index);
   }
 
-  transformSpan(
-    span: RawNGSpan,
-    { stripSpaces = false, hasParentParens = false } = {},
-  ): LocationInformation {
-    if (!stripSpaces) {
-      return sourceSpanToLocationInformation(span);
-    }
-
-    const { outerSpan, innerSpan, hasParens } = fitSpans(
-      span,
-      this.text,
-      hasParentParens,
-    );
-    const locationInformation = sourceSpanToLocationInformation(innerSpan);
-    if (hasParens) {
-      locationInformation.extra = {
-        parenthesized: true,
-        parenStart: outerSpan.start,
-        parenEnd: outerSpan.end,
-      };
-    }
-
-    return locationInformation;
+  transformSpan(span: RawNGSpan): LocationInformation {
+    return sourceSpanToLocationInformation(span);
   }
 
   createNode<T extends NGNode>(
     properties: Partial<T> & { type: T['type'] } & RawNGSpan,
-    // istanbul ignore next
-    { stripSpaces = true, hasParentParens = false } = {},
   ) {
-    const { type, start, end } = properties;
     const node = {
       ...properties,
-      ...this.transformSpan(
-        { start, end },
-        {
-          stripSpaces,
-          hasParentParens,
-        },
-      ),
+      range: [properties.start, properties.end],
     } as T & LocationInformation;
 
-    switch (type) {
+    switch (node.type) {
       case 'NumericLiteral':
       case 'StringLiteral':
       case 'RegExpLiteral': {

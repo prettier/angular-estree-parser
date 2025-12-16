@@ -30,12 +30,12 @@ function isVariableBinding(
   return templateBinding instanceof NGVariableBinding;
 }
 
-class Transformer extends NodeTransformer {
+class TemplateBindingTransformer extends NodeTransformer {
   #rawTemplateBindings;
   #text;
 
   constructor(rawTemplateBindings: angular.TemplateBinding[], text: string) {
-    super(undefined, text);
+    super(text);
 
     this.#rawTemplateBindings = rawTemplateBindings;
     this.#text = text;
@@ -55,13 +55,12 @@ class Transformer extends NodeTransformer {
 
   #create<T extends NGNode>(
     properties: Partial<T> & { type: T['type'] } & RawNGSpan,
-    { stripSpaces = true } = {},
   ) {
-    return this.createNode<T>(properties, { stripSpaces });
+    return this.createNode<T>(properties);
   }
 
   #transform<T extends NGNode>(node: angular.AST) {
-    return this.transformNode(node) as T;
+    return super.transform(node) as T;
   }
 
   #removePrefix(string: string) {
@@ -175,7 +174,7 @@ class Transformer extends NodeTransformer {
           const expression = updateExpressionAlias(lastNode.expression);
           body.push(updateSpanEnd({ ...lastNode, expression }, expression.end));
         } else {
-          /* c8 ignore next 2 */
+          /* c8 ignore next 2 @preserve */
           throw new Error(`Unexpected type ${lastNode.type}`);
         }
       } else {
@@ -281,7 +280,7 @@ function transform(
   rawTemplateBindings: angular.TemplateBinding[],
   text: string,
 ) {
-  return new Transformer(rawTemplateBindings, text).expressions;
+  return new TemplateBindingTransformer(rawTemplateBindings, text).expressions;
 }
 
 export { transform };
