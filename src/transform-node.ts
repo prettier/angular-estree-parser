@@ -54,8 +54,8 @@ class Transformer extends Source {
   transform<T extends NGNode>(
     node: angular.AST,
     options?: NodeTransformOptions,
-  ): T & LocationInformation {
-    return this.#transformNode(node, options) as T & LocationInformation;
+  ) {
+    return this.#transform(node, options) as T & LocationInformation;
   }
 
   #create<T extends NGNode>(
@@ -132,7 +132,10 @@ class Transformer extends Source {
     );
   }
 
-  #transformNode(node: angular.AST, options?: NodeTransformOptions): NGNode {
+  #transform<T extends NGNode = NGNode>(
+    node: angular.AST,
+    options?: NodeTransformOptions,
+  ): NGNode {
     const { isInParentParens } = {
       isInParentParens: false,
       ...options,
