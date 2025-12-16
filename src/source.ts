@@ -50,22 +50,13 @@ export class Source {
 
   createNode<T extends NGNode>(
     properties: Partial<T> & { type: T['type'] } & RawNGSpan,
-    // istanbul ignore next
-    { stripSpaces = true, isInParentParens = false } = {},
   ) {
-    const { type, start, end } = properties;
     const node = {
       ...properties,
-      ...this.transformSpan(
-        { start, end },
-        {
-          stripSpaces,
-          isInParentParens,
-        },
-      ),
+      range: [properties.start, properties.end],
     } as T & LocationInformation;
 
-    switch (type) {
+    switch (node.type) {
       case 'NumericLiteral':
       case 'StringLiteral':
       case 'RegExpLiteral': {

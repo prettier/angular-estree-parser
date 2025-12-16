@@ -38,6 +38,33 @@ function isImplicitThis(node: angular.AST, text: string): boolean {
   return start >= end || /^\s+$/.test(text.slice(start, end));
 }
 
+function getParenthesizedInformation(ancestors: angular.AST[]) {
+  const parenthesizedExpression =
+    getOutermostParenthesizedExpression(ancestors);
+
+  if (!parenthesizedExpression) {
+    return;
+  }
+
+  return {
+    parenthesized: true,
+    parenStart: parenthesizedExpression.sourceSpan.start,
+    parenEnd: parenthesizedExpression.sourceSpan.end,
+  };
+}
+
+function getOutermostParenthesizedExpression(ancestors: angular.AST[]) {
+  for (const [index, node] of ancestors.entries()) {
+    if (!(node instanceof angular.ParenthesizedExpression)) {
+      return;
+    }
+
+    if (!(ancestors[index + 1] instanceof angular.ParenthesizedExpression)) {
+      return node;
+    }
+  }
+}
+
 type NodeTransformOptions = {
   ancestors: angular.AST[];
 };
@@ -62,54 +89,14 @@ class Transformer extends Source {
     properties: Partial<T> & { type: T['type'] } & RawNGSpan,
     ancestors: angular.AST[],
   ) {
-    const node = {
-      ...properties,
-      range: [properties.start, properties.end],
-    } as T & LocationInformation;
+    const node = this.createNode(properties);
 
-    const parenthesizedExpression = getOutermostParenthesizedExpression();
-
-    if (parenthesizedExpression) {
+    const parenthesizedInformation = getParenthesizedInformation(ancestors);
+    if (parenthesizedInformation) {
       node.extra = {
         ...node.extra,
-        parenthesized: true,
-        parenStart: parenthesizedExpression.sourceSpan.start,
-        parenEnd: parenthesizedExpression.sourceSpan.end,
+        ...parenthesizedInformation,
       };
-    }
-
-    function getOutermostParenthesizedExpression() {
-      for (const [index, node] of ancestors.entries()) {
-        if (!(node instanceof angular.ParenthesizedExpression)) {
-          return;
-        }
-
-        if (
-          !(ancestors[index + 1] instanceof angular.ParenthesizedExpression)
-        ) {
-          return node;
-        }
-      }
-    }
-
-    switch (node.type) {
-      case 'NumericLiteral':
-      case 'StringLiteral':
-      case 'RegExpLiteral': {
-        const raw = this.text.slice(node.start, node.end);
-        const { value } = node as unknown as
-          | babel.NumericLiteral
-          | babel.StringLiteral;
-        node.extra = { ...node.extra, raw, rawValue: value };
-        break;
-      }
-      case 'ObjectProperty': {
-        const { shorthand } = node as unknown as babel.ObjectProperty;
-        if (shorthand) {
-          node.extra = { ...node.extra, shorthand };
-        }
-        break;
-      }
     }
 
     return node;
