@@ -36,7 +36,7 @@
     "@babel/parser": "8.0.0-beta.3",
     "@babel/types": "8.0.0-beta.3",
     "@types/node": "25.0.2",
-    "@vitest/coverage-v8": "4.0.15",
+    "@vitest/coverage-v8": "4.0.16",
     "eslint": "9.39.2",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-simple-import-sort": "12.1.1",
@@ -50,10 +50,10 @@
     "tsdown": "0.18.0",
     "typescript": "5.9.3",
     "typescript-eslint": "8.50.0",
-    "vitest": "4.0.15"
+    "vitest": "4.0.16"
   },
   "peerDependencies": {
-    "@angular/compiler": "^21.0.0"
+    "@angular/compiler": "^21.0.5"
   },
   "engines": {
     "node": ">= 20"
