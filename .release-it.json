@@ -9,6 +9,5 @@
   "npm": {
     "publish": false
   },
-  "hooks": {
-  }
+  "hooks": {}
 }
