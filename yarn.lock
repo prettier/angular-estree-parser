@@ -1318,12 +1318,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:24.10.1":
-  version: 24.10.1
-  resolution: "@types/node@npm:24.10.1"
+"@types/node@npm:25.0.2":
+  version: 25.0.2
+  resolution: "@types/node@npm:25.0.2"
   dependencies:
     undici-types: "npm:~7.16.0"
-  checksum: 10/ddac8c97be5f7401e31ea0e9316c6e864993c6cd06689b7f9874ecfb576ef8349f2d14298248a08b94a6dd029570a46a285cddc4d50e524817f1a3730b29a86e
+  checksum: 10/8d37061ed51c273551cca3fe36913a448cc5992b687d7c077a5e99eeb3d0f15a8aca81e53ad3f557dc16f4f4b11877832bb4fbb45f3e162066806da969015251
   languageName: node
   linkType: hard
 
@@ -1628,7 +1628,7 @@ __metadata:
     "@babel/code-frame": "npm:8.0.0-beta.3"
     "@babel/parser": "npm:8.0.0-beta.3"
     "@babel/types": "npm:8.0.0-beta.3"
-    "@types/node": "npm:24.10.1"
+    "@types/node": "npm:25.0.2"
     "@vitest/coverage-v8": "npm:4.0.12"
     eslint: "npm:9.39.1"
     eslint-config-prettier: "npm:10.1.8"
