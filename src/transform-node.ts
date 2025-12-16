@@ -102,72 +102,6 @@ class Transformer extends Source {
     return node;
   }
 
-  #transformReceiverAndName(
-    node:
-      | angular.KeyedRead
-      | angular.SafeKeyedRead
-      | angular.PropertyRead
-      | angular.SafePropertyRead,
-    property: babel.Expression,
-    ancestors: angular.AST[],
-    {
-      computed,
-      optional,
-    }: {
-      computed: boolean;
-      optional: boolean;
-    },
-  ) {
-    const { receiver } = node;
-    if (
-      isImplicitThis(receiver, this.#text) ||
-      receiver.sourceSpan.start === property.start
-    ) {
-      return property;
-    }
-    const object = this.transform<babel.Expression>(receiver);
-    const isOptionalObject = isOptionalObjectOrCallee(object);
-
-    const commonProps = {
-      property,
-      object,
-      computed,
-      ...node.sourceSpan,
-    };
-
-    if (optional || isOptionalObject) {
-      return this.#create<babel.OptionalMemberExpression>(
-        {
-          type: 'OptionalMemberExpression',
-          optional: optional || !isOptionalObject,
-          ...commonProps,
-        },
-        ancestors,
-      );
-    }
-
-    if (computed) {
-      return this.#create<babel.MemberExpressionComputed>(
-        {
-          type: 'MemberExpression',
-          ...commonProps,
-          computed: true,
-        },
-        ancestors,
-      );
-    }
-
-    return this.#create<babel.MemberExpressionNonComputed>(
-      {
-        type: 'MemberExpression',
-        ...commonProps,
-        computed: false,
-        property: property as babel.MemberExpressionNonComputed['property'],
-      },
-      ancestors,
-    );
-  }
-
   #transform(node: angular.AST, options: NodeTransformOptions): NGNode {
     const ancestors = options.ancestors;
     const childTransformOptions = {
@@ -574,36 +508,81 @@ class Transformer extends Source {
 
     if (
       node instanceof angular.KeyedRead ||
-      node instanceof angular.SafeKeyedRead
-    ) {
-      return this.#transformReceiverAndName(
-        node,
-        this.transform<babel.Expression>(node.key),
-        ancestors,
-        {
-          computed: true,
-          optional: node instanceof angular.SafeKeyedRead,
-        },
-      );
-    }
-
-    if (
+      node instanceof angular.SafeKeyedRead ||
       node instanceof angular.PropertyRead ||
       node instanceof angular.SafePropertyRead
     ) {
-      const { receiver, name } = node;
-      const tName = this.#create<babel.Identifier>(
+      const isComputed =
+        node instanceof angular.KeyedRead ||
+        node instanceof angular.SafeKeyedRead;
+      const isOptional =
+        node instanceof angular.SafeKeyedRead ||
+        node instanceof angular.SafePropertyRead;
+
+      const { receiver } = node;
+
+      const implicit = isImplicitThis(receiver, this.#text);
+
+      let property;
+      if (isComputed) {
+        property = this.transform<babel.Expression>(node.key);
+      } else {
+        const { name } = node;
+        property = this.#create<babel.Identifier>(
+          {
+            type: 'Identifier',
+            name,
+            ...node.nameSpan,
+          },
+          implicit ? ancestors : [],
+        );
+      }
+
+      if (implicit || receiver.sourceSpan.start === property.start) {
+        return property;
+      }
+
+      const object = this.transform<babel.Expression>(receiver);
+      const isOptionalObject = isOptionalObjectOrCallee(object);
+
+      const commonProps = {
+        property,
+        object,
+        ...node.sourceSpan,
+      };
+
+      if (isOptional || isOptionalObject) {
+        return this.#create<babel.OptionalMemberExpression>(
+          {
+            type: 'OptionalMemberExpression',
+            optional: isOptional || !isOptionalObject,
+            computed: isComputed,
+            ...commonProps,
+          },
+          ancestors,
+        );
+      }
+
+      if (isComputed) {
+        return this.#create<babel.MemberExpressionComputed>(
+          {
+            type: 'MemberExpression',
+            ...commonProps,
+            computed: true,
+          },
+          ancestors,
+        );
+      }
+
+      return this.#create<babel.MemberExpressionNonComputed>(
         {
-          type: 'Identifier',
-          name,
-          ...node.nameSpan,
+          type: 'MemberExpression',
+          ...commonProps,
+          computed: false,
+          property: property as babel.MemberExpressionNonComputed['property'],
         },
-        isImplicitThis(receiver, this.#text) ? ancestors : [],
+        ancestors,
       );
-      return this.#transformReceiverAndName(node, tName, ancestors, {
-        computed: false,
-        optional: node instanceof angular.SafePropertyRead,
-      });
     }
 
     if (node instanceof angular.TaggedTemplateLiteral) {
