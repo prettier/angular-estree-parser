@@ -134,18 +134,9 @@ class Transformer extends Source {
     }
 
     if (node instanceof angular.Binary) {
-      const {
-        left: originalLeft,
-        operation: operator,
-        right: originalRight,
-      } = node;
-      const left = this.transform<babel.Expression>(
-        originalLeft,
-        childTransformOptions,
-      );
-      const right = this.transform<babel.Expression>(
-        originalRight,
-        childTransformOptions,
+      const { operation: operator } = node;
+      const [left, right] = [node.left, node.right].map((node) =>
+        this.transform<babel.Expression>(node, childTransformOptions),
       );
 
       if (operator === '&&' || operator === '||' || operator === '??') {
