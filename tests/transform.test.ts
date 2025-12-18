@@ -218,7 +218,12 @@ const testCases: TestCase[] = [
   {
     expectedAngularType: 'LiteralMap',
     expectedEstreeType: 'ObjectExpression',
-    text: ' ( { a : 1 } ) ',
+    text: ' { "a" : ( ( 1 ) ) }',
+  },
+  {
+    expectedAngularType: 'LiteralMap',
+    expectedEstreeType: 'ObjectExpression',
+    text: ' ( ( { a : 1 } )  ) ',
   },
   {
     expectedAngularType: 'Call',

@@ -175,6 +175,10 @@ class Transformer extends Source {
 
     if (node instanceof angular.LiteralMap) {
       const { keys, values } = node;
+      const createChild = <T extends NGNode>(
+        properties: Partial<T> & { type: T['type'] },
+        location: angular.AST | RawNGSpan | [number, number] = node,
+      ) => this.#create(properties, location, [node, ...ancestors]);
       const tProperties = keys.map((property, index) => {
         const { key, quoted, isShorthandInitialized = false } = property;
         const { start: valueStart, end: valueEnd } = values[index].sourceSpan;
@@ -186,6 +190,8 @@ class Transformer extends Source {
         if (isShorthandInitialized) {
           tKey = transformChild<babel.Identifier>(values[index]);
         } else {
+          // No location information
+          // https://github.com/angular/angular/issues/66175
           const keyStart = super.getCharacterIndex(
             /\S/,
             index === 0
@@ -201,19 +207,17 @@ class Transformer extends Source {
                   super.getCharacterLastIndex(':', valueStart - 1) - 1,
                 ) + 1;
           tKey = quoted
-            ? createNode<babel.StringLiteral>(
+            ? createChild<babel.StringLiteral>(
                 { type: 'StringLiteral', value: key },
                 [keyStart, keyEnd],
-                [],
               )
-            : createNode<babel.Identifier>(
-                { type: 'Identifier', name: key },
-                [keyStart, keyEnd],
-                [],
-              );
+            : createChild<babel.Identifier>({ type: 'Identifier', name: key }, [
+                keyStart,
+                keyEnd,
+              ]);
         }
 
-        return createNode<babel.ObjectPropertyNonComputed>(
+        return createChild<babel.ObjectPropertyNonComputed>(
           {
             type: 'ObjectProperty',
             key: tKey,
@@ -224,7 +228,6 @@ class Transformer extends Source {
             method: false,
           },
           [tKey.range[0], valueEnd],
-          [],
         );
       });
       return createNode<babel.ObjectExpression>({
