@@ -365,27 +365,23 @@ class Transformer extends Source {
       const isOptional =
         node instanceof angular.SafeKeyedRead ||
         node instanceof angular.SafePropertyRead;
-
       const { receiver } = node;
-
-      let isImplicitThis;
+      const isImplicitReceiver =
+        receiver instanceof angular.ImplicitReceiver &&
+        !(receiver instanceof angular.ThisReceiver);
 
       let property;
       if (isComputed) {
-        isImplicitThis = node.sourceSpan.start === node.key.sourceSpan.start;
         property = transformChild<babel.Expression>(node.key);
       } else {
-        const { name, nameSpan } = node;
-
-        isImplicitThis = node.sourceSpan.start === nameSpan.start;
         property = createNode<babel.Identifier>(
-          { type: 'Identifier', name },
+          { type: 'Identifier', name: node.name },
           node.nameSpan,
-          isImplicitThis ? ancestors : [],
+          isImplicitReceiver ? ancestors : [],
         );
       }
 
-      if (isImplicitThis) {
+      if (isImplicitReceiver) {
         return property;
       }
 
@@ -473,7 +469,8 @@ type SupportedNodes =
   | angular.LiteralPrimitive
   | angular.Unary
   | angular.Binary
-  | angular.ThisReceiver // Not handled
+  | angular.ThisReceiver
+  | angular.ImplicitReceiver
   | angular.KeyedRead
   | angular.Chain
   | angular.LiteralMap

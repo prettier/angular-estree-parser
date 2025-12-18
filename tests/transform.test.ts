@@ -191,7 +191,12 @@ const testCases: TestCase[] = [
   {
     expectedAngularType: 'ThisReceiver',
     expectedEstreeType: 'ThisExpression',
-    text: ' this ',
+    text: ' ( ( this ) ) ',
+  },
+  {
+    expectedAngularType: 'PropertyRead',
+    expectedEstreeType: 'MemberExpression',
+    text: ' ( ( this.a ) ) ',
   },
   {
     expectedAngularType: 'LiteralArray',
