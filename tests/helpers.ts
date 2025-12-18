@@ -1,41 +1,27 @@
 import * as angular from '@angular/compiler';
 import { codeFrameColumns } from '@babel/code-frame';
-import * as babelParser from '@babel/parser';
-import type * as babel from '@babel/types';
+import * as babel from '@babel/parser';
 import { wrap } from 'jest-snapshot-serializer-raw';
 import { LinesAndColumns } from 'lines-and-columns';
 
-const babelParserOptions: babelParser.ParserOptions = {
+const babelParseOptions: babel.ParserOptions = {
   plugins: [
     'typescript', // NonNullAssert
   ],
   ranges: true,
 };
 
-function fixBabelCommentsRange(
-  ast: (
-    | ReturnType<typeof babelParser.parse>
-    | ReturnType<typeof babelParser.parseExpression>
-  ) & { comments?: babel.Comment[] | null },
-) {
+export const parseBabelExpression = (input: string) => {
+  const ast = babel.parseExpression(input, babelParseOptions);
+
   // https://github.com/babel/babel/issues/15115
   for (const comment of ast.comments!) {
-    // @ts-expect-error -- missing types
+    // @ts-expect-error -- Missing ranges
     comment.range ??= [comment.start, comment.end];
   }
 
   return ast;
-}
-
-export function parseBabelExpression(input: string) {
-  return fixBabelCommentsRange(
-    babelParser.parseExpression(input, babelParserOptions),
-  );
-}
-
-export function parseBabel(input: string) {
-  return fixBabelCommentsRange(babelParser.parse(input, babelParserOptions));
-}
+};
 
 export function massageAst(ast: any, parser: 'babel' | 'angular'): any {
   if (!ast || typeof ast !== 'object') {
