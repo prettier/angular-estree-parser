@@ -9,6 +9,7 @@ const babelParseOptions: babel.ParserOptions = {
     'typescript', // NonNullAssert
   ],
   ranges: true,
+  attachComment: false,
 };
 
 export const parseBabelExpression = (input: string) => {
@@ -32,51 +33,17 @@ export function massageAst(ast: any, parser: 'babel' | 'angular'): any {
     return ast.map((node) => massageAst(node, parser));
   }
 
-  if (parser === 'babel' && typeof ast.extra?.parenStart === 'number') {
-    delete ast.extra.parenStart;
-  }
-
-  // Not exists in types, but exists in node.
-  if (ast.type === 'ObjectProperty') {
-    if (ast.method !== undefined && ast.method !== false) {
-      throw new Error(
-        `Unexpected "method: ${ast.method}" in "ObjectProperty".`,
-      );
+  // We don't provide these
+  if (parser === 'babel') {
+    if (typeof ast.extra?.parenStart === 'number') {
+      delete ast.extra.parenStart;
     }
-    delete ast.method;
 
-    if (
-      ast.shorthand &&
-      ast.extra &&
-      Object.keys(ast.extra).length === 1 &&
-      ast.extra.shorthand
-    ) {
-      delete ast.extra;
-    }
+    delete ast.loc;
   }
-
-  delete ast.loc;
 
   const massaged = Object.keys(ast).reduce((reduced: any, key) => {
-    switch (key) {
-      case 'trailingComments':
-        // do nothing
-        break;
-      case 'extra': {
-        const extra = massageAst(ast[key], parser);
-        if (extra) {
-          // we added a custom `parenEnd` field for positioning
-          delete extra.parenEnd;
-          if (Object.keys(extra).length !== 0) {
-            reduced[key] = extra;
-          }
-        }
-        break;
-      }
-      default:
-        reduced[key] = massageAst(ast[key], parser);
-        break;
-    }
+    reduced[key] = massageAst(ast[key], parser);
     return reduced;
   }, {});
 

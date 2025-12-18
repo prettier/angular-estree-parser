@@ -216,13 +216,15 @@ class Transformer extends Source {
         const shorthand = tKey.end < tKey.start || keyStart === valueStart;
         const value = transformChild<babel.Expression>(values[index]);
 
-        return createNode<babel.ObjectProperty>(
+        return createNode<babel.ObjectPropertyNonComputed>(
           {
             type: 'ObjectProperty',
             key: tKey,
             value,
             shorthand,
             computed: false,
+            // @ts-expect-error -- Missed in types
+            method: false,
           },
           [tKey.start, valueEnd],
           [],

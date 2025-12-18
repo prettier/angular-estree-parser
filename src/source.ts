@@ -61,13 +61,6 @@ export class Source {
         node.extra = { ...node.extra, raw, rawValue: value };
         break;
       }
-      case 'ObjectProperty': {
-        const { shorthand } = node as unknown as babel.ObjectProperty;
-        if (shorthand) {
-          node.extra = { ...node.extra, shorthand };
-        }
-        break;
-      }
     }
 
     return node;
