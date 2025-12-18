@@ -171,7 +171,7 @@ class Transformer extends Source {
       return createNode<NGEmptyExpression>({ type: 'NGEmptyExpression' });
     }
 
-    if (node instanceof angular.ImplicitReceiver) {
+    if (node instanceof angular.ThisReceiver) {
       return createNode<babel.ThisExpression>({ type: 'ThisExpression' });
     }
 

@@ -110,42 +110,10 @@ function visitAst(ast: any, fn: (node: any) => void) {
   Object.keys(ast).forEach((key) => visitAst(ast[key], fn));
 }
 
-const KNOWN_AST_TYPES = [
-  'ASTWithSource',
-  'Unary',
-  'Binary',
-  'BindingPipe',
-  'Call',
-  'Chain',
-  'Conditional',
-  'EmptyExpr',
-  'ImplicitReceiver',
-  'KeyedRead',
-  'SafeKeyedRead',
-  'TypeofExpression',
-  'LiteralArray',
-  'LiteralMap',
-  'LiteralPrimitive',
-  'NonNullAssert',
-  'PrefixNot',
-  'PropertyRead',
-  'SafeCall',
-  'SafePropertyRead',
-  'ThisReceiver',
-  'Interpolation',
-  'VoidExpression',
-  'TemplateLiteral',
-  'TaggedTemplateLiteral',
-  'ParenthesizedExpression',
-] as const;
-
 export function getAngularNodeType(node: angular.AST) {
-  if (node instanceof angular.ParenthesizedExpression) {
-    return getAngularNodeType(node.expression);
+  while (node instanceof angular.ParenthesizedExpression) {
+    node = node.expression;
   }
 
-  return (
-    KNOWN_AST_TYPES.find((type) => node instanceof angular[type]) ??
-    node.constructor.name
-  );
+  return node.constructor.name;
 }

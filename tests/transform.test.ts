@@ -189,7 +189,7 @@ const testCases: TestCase[] = [
     text: ' a ?. b () ?. [ c ] ',
   },
   {
-    expectedAngularType: 'ImplicitReceiver',
+    expectedAngularType: 'ThisReceiver',
     expectedEstreeType: 'ThisExpression',
     text: ' this ',
   },
