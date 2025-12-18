@@ -185,48 +185,54 @@ class Transformer extends Source {
     if (node instanceof angular.LiteralMap) {
       const { keys, values } = node;
       const tProperties = keys.map((property, index) => {
-        const { key, quoted } = property;
+        const { key, quoted, isShorthandInitialized = false } = property;
         const { start: valueStart, end: valueEnd } = values[index].sourceSpan;
-
-        const keyStart = super.getCharacterIndex(
-          /\S/,
-          index === 0
-            ? node.sourceSpan.start + 1 // {
-            : super.getCharacterIndex(',', values[index - 1].sourceSpan.end) +
-                1,
-        );
-        const keyEnd =
-          valueStart === keyStart
-            ? valueEnd
-            : super.getCharacterLastIndex(
-                /\S/,
-                super.getCharacterLastIndex(':', valueStart - 1) - 1,
-              ) + 1;
-        const tKey = quoted
-          ? createNode<babel.StringLiteral>(
-              { type: 'StringLiteral', value: key },
-              [keyStart, keyEnd],
-              [],
-            )
-          : createNode<babel.Identifier>(
-              { type: 'Identifier', name: key },
-              [keyStart, keyEnd],
-              [],
-            );
-        const shorthand = tKey.end < tKey.start || keyStart === valueStart;
         const value = transformChild<babel.Expression>(values[index]);
+
+        let tKey: (babel.StringLiteral | babel.Identifier) &
+          LocationInformation;
+
+        if (isShorthandInitialized) {
+          tKey = transformChild<babel.Identifier>(values[index]);
+        } else {
+          const keyStart = super.getCharacterIndex(
+            /\S/,
+            index === 0
+              ? node.sourceSpan.start + 1 // {
+              : super.getCharacterIndex(',', values[index - 1].sourceSpan.end) +
+                  1,
+          );
+          const keyEnd =
+            valueStart === keyStart
+              ? valueEnd
+              : super.getCharacterLastIndex(
+                  /\S/,
+                  super.getCharacterLastIndex(':', valueStart - 1) - 1,
+                ) + 1;
+          tKey = quoted
+            ? createNode<babel.StringLiteral>(
+                { type: 'StringLiteral', value: key },
+                [keyStart, keyEnd],
+                [],
+              )
+            : createNode<babel.Identifier>(
+                { type: 'Identifier', name: key },
+                [keyStart, keyEnd],
+                [],
+              );
+        }
 
         return createNode<babel.ObjectPropertyNonComputed>(
           {
             type: 'ObjectProperty',
             key: tKey,
             value,
-            shorthand,
+            shorthand: isShorthandInitialized,
             computed: false,
             // @ts-expect-error -- Missed in types
             method: false,
           },
-          [tKey.start, valueEnd],
+          [tKey.range[0], valueEnd],
           [],
         );
       });
