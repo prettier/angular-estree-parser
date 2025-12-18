@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`('BindingPipe' -> 'NGPipeExpression') > parseBinding(" ( ( ( ( a ) ) |  b  )) ") 1`] = `
+exports[`('BindingPipe' -> 'NGPipeExpression') > parseBinding(" ( ( ( ( a ) ) |  b  ) ) ") 1`] = `
 NGPipeExpression {
   "left": "Identifier",
   "right": "Identifier",
@@ -10,7 +10,7 @@ NGPipeExpression {
   },
   "comments": []
 }
-> 1 |  ( ( ( ( a ) ) |  b  )) 
+> 1 |  ( ( ( ( a ) ) |  b  ) ) 
     |      ^^^^^^^^^^^^^^
 --------------------------------------------------------------------------------
 Identifier {
@@ -19,7 +19,7 @@ Identifier {
     "parenthesized": true
   }
 }
-> 1 |  ( ( ( ( a ) ) |  b  )) 
+> 1 |  ( ( ( ( a ) ) |  b  ) ) 
     |          ^
 --------------------------------------------------------------------------------
 Identifier {
@@ -28,7 +28,7 @@ Identifier {
     "parenthesized": true
   }
 }
-> 1 |  ( ( ( ( a ) ) |  b  )) 
+> 1 |  ( ( ( ( a ) ) |  b  ) ) 
     |                   ^
 `;
 
@@ -63,7 +63,7 @@ Identifier {
     |          ^
 `;
 
-exports[`('BindingPipe' -> 'NGPipeExpression') > parseInterpolationExpression(" ( ( ( ( a ) ) |  b  )) ") 1`] = `
+exports[`('BindingPipe' -> 'NGPipeExpression') > parseInterpolationExpression(" ( ( ( ( a ) ) |  b  ) ) ") 1`] = `
 NGPipeExpression {
   "left": "Identifier",
   "right": "Identifier",
@@ -73,7 +73,7 @@ NGPipeExpression {
   },
   "comments": []
 }
-> 1 |  ( ( ( ( a ) ) |  b  )) 
+> 1 |  ( ( ( ( a ) ) |  b  ) ) 
     |      ^^^^^^^^^^^^^^
 --------------------------------------------------------------------------------
 Identifier {
@@ -82,7 +82,7 @@ Identifier {
     "parenthesized": true
   }
 }
-> 1 |  ( ( ( ( a ) ) |  b  )) 
+> 1 |  ( ( ( ( a ) ) |  b  ) ) 
     |          ^
 --------------------------------------------------------------------------------
 Identifier {
@@ -91,7 +91,7 @@ Identifier {
     "parenthesized": true
   }
 }
-> 1 |  ( ( ( ( a ) ) |  b  )) 
+> 1 |  ( ( ( ( a ) ) |  b  ) ) 
     |                   ^
 `;
 
