@@ -127,23 +127,14 @@ class Transformer extends Source {
     }
 
     if (node instanceof angular.BindingPipe) {
-      const { name } = node;
-      const left = transformChild<babel.Expression>(node.exp);
-      const leftEnd = node.exp.sourceSpan.end;
-      const rightStart = super.getCharacterIndex(
-        /\S/,
-        super.getCharacterIndex('|', leftEnd) + 1,
-      );
-      const right = createNode<babel.Identifier>({ type: 'Identifier', name }, [
-        rightStart,
-        rightStart + name.length,
-      ]);
-      const arguments_ = transformChildren<babel.Expression>(node.args);
       return createNode<NGPipeExpression>({
         type: 'NGPipeExpression',
-        left,
-        right,
-        arguments: arguments_,
+        left: transformChild<babel.Expression>(node.exp),
+        right: createNode<babel.Identifier>(
+          { type: 'Identifier', name: node.name },
+          node.nameSpan,
+        ),
+        arguments: transformChildren<babel.Expression>(node.args),
       });
     }
 
@@ -331,6 +322,7 @@ class Transformer extends Source {
 
       let { start } = node.sourceSpan;
 
+      // https://github.com/angular/angular/issues/66174
       if (operator === 'typeof' || operator === 'void') {
         const index = this.text.lastIndexOf(operator, start);
 

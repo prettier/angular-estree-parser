@@ -111,6 +111,13 @@ const testCases: TestCase[] = [
     parseSimpleBinding: false,
   },
   {
+    expectedAngularType: 'BindingPipe',
+    expectedEstreeType: 'NGPipeExpression',
+    text: ' a | b : ( ( c ) ) ',
+    parseAction: false,
+    parseSimpleBinding: false,
+  },
+  {
     expectedAngularType: 'Chain',
     expectedEstreeType: 'NGChainedExpression',
     text: ' a ; b ',
