@@ -1,32 +1,68 @@
 import type * as babel from '@babel/types';
 
 import { parseTemplateBindings } from '../src/index.js';
-import type { NGMicrosyntaxKeyedExpression } from '../src/types.js';
+import type {
+  NGMicrosyntaxKeyedExpression,
+  NGMicrosyntaxNode,
+} from '../src/types.js';
 import { snapshotAst } from './helpers.js';
 
-test.each`
-  input                             | types
-  ${''}                             | ${[]}
-  ${' let hero '}                   | ${['NGMicrosyntaxLet']}
-  ${' let hero = hello '}           | ${['NGMicrosyntaxLet']}
-  ${' let hero of heroes '}         | ${['NGMicrosyntaxLet', 'NGMicrosyntaxKeyedExpression']}
-  ${' let hero ; of : heroes '}     | ${['NGMicrosyntaxLet', 'NGMicrosyntaxKeyedExpression']}
-  ${' as b '}                       | ${['NGMicrosyntaxAs']}
-  ${' a '}                          | ${['NGMicrosyntaxExpression']}
-  ${' a as b '}                     | ${['NGMicrosyntaxExpression']}
-  ${' a , b '}                      | ${['NGMicrosyntaxExpression', 'NGMicrosyntaxKey']}
-  ${' a ; b '}                      | ${['NGMicrosyntaxExpression', 'NGMicrosyntaxKey']}
-  ${' a ; b c '}                    | ${['NGMicrosyntaxExpression', 'NGMicrosyntaxKeyedExpression']}
-  ${' a ; b : c '}                  | ${['NGMicrosyntaxExpression', 'NGMicrosyntaxKeyedExpression']}
-  ${' a ; b : c as d '}             | ${['NGMicrosyntaxExpression', 'NGMicrosyntaxKeyedExpression']}
-  ${' a ; b as c '}                 | ${['NGMicrosyntaxExpression', 'NGMicrosyntaxAs']}
-  ${' let "a" = "b" ; "c" as "d" '} | ${['NGMicrosyntaxLet', 'NGMicrosyntaxAs']}
-  ${' let "\\"" '}                  | ${['NGMicrosyntaxLet']}
-`('$input', ({ input, types }) => {
-  const ast = parseTemplateBindings(input);
-  expect(snapshotAst(ast, input)).toMatchSnapshot();
-  expect(ast.body.map((node) => node.type)).toEqual(types);
-});
+const testCases: {
+  input: string;
+  types: NGMicrosyntaxNode['type'][];
+  only?: true;
+}[] = [
+  { input: '', types: [] },
+  { input: ' let hero ', types: ['NGMicrosyntaxLet'] },
+  { input: ' let hero = hello ', types: ['NGMicrosyntaxLet'] },
+  {
+    input: ' let hero of heroes ',
+    types: ['NGMicrosyntaxLet', 'NGMicrosyntaxKeyedExpression'],
+  },
+  {
+    input: ' let hero ; of : heroes ',
+    types: ['NGMicrosyntaxLet', 'NGMicrosyntaxKeyedExpression'],
+  },
+  { input: ' as b ', types: ['NGMicrosyntaxAs'] },
+  { input: ' a ', types: ['NGMicrosyntaxExpression'] },
+  { input: ' a as b ', types: ['NGMicrosyntaxExpression'] },
+  { input: ' a , b ', types: ['NGMicrosyntaxExpression', 'NGMicrosyntaxKey'] },
+  { input: ' a ; b ', types: ['NGMicrosyntaxExpression', 'NGMicrosyntaxKey'] },
+  {
+    input: ' a ; b c ',
+    types: ['NGMicrosyntaxExpression', 'NGMicrosyntaxKeyedExpression'],
+  },
+  {
+    input: ' a ; b : c ',
+    types: ['NGMicrosyntaxExpression', 'NGMicrosyntaxKeyedExpression'],
+  },
+  {
+    input: ' a ; b : c as d ',
+    types: ['NGMicrosyntaxExpression', 'NGMicrosyntaxKeyedExpression'],
+  },
+  {
+    input: ' a ; b as c ',
+    types: ['NGMicrosyntaxExpression', 'NGMicrosyntaxAs'],
+  },
+  {
+    input: ' let "a" = "b" ; "c" as "d" ',
+    types: ['NGMicrosyntaxLet', 'NGMicrosyntaxAs'],
+  },
+  { input: ' let "\\"" ', types: ['NGMicrosyntaxLet'] },
+];
+
+const IS_CI = Boolean(process.env.CI);
+for (const { input, types, only } of testCases) {
+  if (IS_CI && only) {
+    throw new Error(`Unexpected 'only' property`);
+  }
+
+  (only ? test.only : test)(`'${input}'`, () => {
+    const ast = parseTemplateBindings(input);
+    expect(snapshotAst(ast, input)).toMatchSnapshot();
+    expect(ast.body.map((node) => node.type)).toEqual(types);
+  });
+}
 
 test('Shorthand', () => {
   const code = 'someTmpl; context: {app}';
