@@ -97,6 +97,304 @@ Identifier {
     |          ^
 `;
 
+exports[`('BindingPipe' -> 'NGPipeExpression') > parseBinding("\\r ( ( ( ( a ) ) |  b  ) )  \\r // comment") 1`] = `
+NGPipeExpression {
+  "left": "Identifier",
+  "right": "Identifier",
+  "arguments": [],
+  "extra": {
+    "parenthesized": true
+  },
+  "comments": [
+    "CommentLine"
+  ]
+}
+  1 |
+> 2 |  ( ( ( ( a ) ) |  b  ) )  
+    |      ^^^^^^^^^^^^^^
+  3 |  // comment
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "a",
+  "extra": {
+    "parenthesized": true
+  }
+}
+  1 |
+> 2 |  ( ( ( ( a ) ) |  b  ) )  
+    |          ^
+  3 |  // comment
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "b",
+  "extra": {
+    "parenthesized": true
+  }
+}
+  1 |
+> 2 |  ( ( ( ( a ) ) |  b  ) )  
+    |                   ^
+  3 |  // comment
+--------------------------------------------------------------------------------
+CommentLine {
+  "value": " comment"
+}
+  1 |
+  2 |  ( ( ( ( a ) ) |  b  ) )  
+> 3 |  // comment
+    |  ^^^^^^^^^^
+`;
+
+exports[`('BindingPipe' -> 'NGPipeExpression') > parseBinding("\\r a | b : ( ( c ) )  \\r // comment") 1`] = `
+NGPipeExpression {
+  "left": "Identifier",
+  "right": "Identifier",
+  "arguments": [
+    "Identifier"
+  ],
+  "comments": [
+    "CommentLine"
+  ]
+}
+  1 |
+> 2 |  a | b : ( ( c ) )  
+    |  ^^^^^^^^^^^^^^^^^
+  3 |  // comment
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "a"
+}
+  1 |
+> 2 |  a | b : ( ( c ) )  
+    |  ^
+  3 |  // comment
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "b"
+}
+  1 |
+> 2 |  a | b : ( ( c ) )  
+    |      ^
+  3 |  // comment
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "c",
+  "extra": {
+    "parenthesized": true
+  }
+}
+  1 |
+> 2 |  a | b : ( ( c ) )  
+    |              ^
+  3 |  // comment
+--------------------------------------------------------------------------------
+CommentLine {
+  "value": " comment"
+}
+  1 |
+  2 |  a | b : ( ( c ) )  
+> 3 |  // comment
+    |  ^^^^^^^^^^
+`;
+
+exports[`('BindingPipe' -> 'NGPipeExpression') > parseBinding("\\r a | b : c  \\r // comment") 1`] = `
+NGPipeExpression {
+  "left": "Identifier",
+  "right": "Identifier",
+  "arguments": [
+    "Identifier"
+  ],
+  "comments": [
+    "CommentLine"
+  ]
+}
+  1 |
+> 2 |  a | b : c  
+    |  ^^^^^^^^^
+  3 |  // comment
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "a"
+}
+  1 |
+> 2 |  a | b : c  
+    |  ^
+  3 |  // comment
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "b"
+}
+  1 |
+> 2 |  a | b : c  
+    |      ^
+  3 |  // comment
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "c"
+}
+  1 |
+> 2 |  a | b : c  
+    |          ^
+  3 |  // comment
+--------------------------------------------------------------------------------
+CommentLine {
+  "value": " comment"
+}
+  1 |
+  2 |  a | b : c  
+> 3 |  // comment
+    |  ^^^^^^^^^^
+`;
+
+exports[`('BindingPipe' -> 'NGPipeExpression') > parseBinding("\\r\\n ( ( ( ( a ) ) |  b  ) )  \\r\\n // comment") 1`] = `
+NGPipeExpression {
+  "left": "Identifier",
+  "right": "Identifier",
+  "arguments": [],
+  "extra": {
+    "parenthesized": true
+  },
+  "comments": [
+    "CommentLine"
+  ]
+}
+  1 |
+> 2 |  ( ( ( ( a ) ) |  b  ) )  
+    |      ^^^^^^^^^^^^^^
+  3 |  // comment
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "a",
+  "extra": {
+    "parenthesized": true
+  }
+}
+  1 |
+> 2 |  ( ( ( ( a ) ) |  b  ) )  
+    |          ^
+  3 |  // comment
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "b",
+  "extra": {
+    "parenthesized": true
+  }
+}
+  1 |
+> 2 |  ( ( ( ( a ) ) |  b  ) )  
+    |                   ^
+  3 |  // comment
+--------------------------------------------------------------------------------
+CommentLine {
+  "value": " comment"
+}
+  1 |
+  2 |  ( ( ( ( a ) ) |  b  ) )  
+> 3 |  // comment
+    |  ^^^^^^^^^^
+`;
+
+exports[`('BindingPipe' -> 'NGPipeExpression') > parseBinding("\\r\\n a | b : ( ( c ) )  \\r\\n // comment") 1`] = `
+NGPipeExpression {
+  "left": "Identifier",
+  "right": "Identifier",
+  "arguments": [
+    "Identifier"
+  ],
+  "comments": [
+    "CommentLine"
+  ]
+}
+  1 |
+> 2 |  a | b : ( ( c ) )  
+    |  ^^^^^^^^^^^^^^^^^
+  3 |  // comment
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "a"
+}
+  1 |
+> 2 |  a | b : ( ( c ) )  
+    |  ^
+  3 |  // comment
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "b"
+}
+  1 |
+> 2 |  a | b : ( ( c ) )  
+    |      ^
+  3 |  // comment
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "c",
+  "extra": {
+    "parenthesized": true
+  }
+}
+  1 |
+> 2 |  a | b : ( ( c ) )  
+    |              ^
+  3 |  // comment
+--------------------------------------------------------------------------------
+CommentLine {
+  "value": " comment"
+}
+  1 |
+  2 |  a | b : ( ( c ) )  
+> 3 |  // comment
+    |  ^^^^^^^^^^
+`;
+
+exports[`('BindingPipe' -> 'NGPipeExpression') > parseBinding("\\r\\n a | b : c  \\r\\n // comment") 1`] = `
+NGPipeExpression {
+  "left": "Identifier",
+  "right": "Identifier",
+  "arguments": [
+    "Identifier"
+  ],
+  "comments": [
+    "CommentLine"
+  ]
+}
+  1 |
+> 2 |  a | b : c  
+    |  ^^^^^^^^^
+  3 |  // comment
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "a"
+}
+  1 |
+> 2 |  a | b : c  
+    |  ^
+  3 |  // comment
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "b"
+}
+  1 |
+> 2 |  a | b : c  
+    |      ^
+  3 |  // comment
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "c"
+}
+  1 |
+> 2 |  a | b : c  
+    |          ^
+  3 |  // comment
+--------------------------------------------------------------------------------
+CommentLine {
+  "value": " comment"
+}
+  1 |
+  2 |  a | b : c  
+> 3 |  // comment
+    |  ^^^^^^^^^^
+`;
+
 exports[`('BindingPipe' -> 'NGPipeExpression') > parseInterpolationExpression(" ( ( ( ( a ) ) |  b  ) ) ") 1`] = `
 NGPipeExpression {
   "left": "Identifier",
@@ -194,6 +492,304 @@ Identifier {
     |          ^
 `;
 
+exports[`('BindingPipe' -> 'NGPipeExpression') > parseInterpolationExpression("\\r ( ( ( ( a ) ) |  b  ) )  \\r // comment") 1`] = `
+NGPipeExpression {
+  "left": "Identifier",
+  "right": "Identifier",
+  "arguments": [],
+  "extra": {
+    "parenthesized": true
+  },
+  "comments": [
+    "CommentLine"
+  ]
+}
+  1 |
+> 2 |  ( ( ( ( a ) ) |  b  ) )  
+    |      ^^^^^^^^^^^^^^
+  3 |  // comment
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "a",
+  "extra": {
+    "parenthesized": true
+  }
+}
+  1 |
+> 2 |  ( ( ( ( a ) ) |  b  ) )  
+    |          ^
+  3 |  // comment
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "b",
+  "extra": {
+    "parenthesized": true
+  }
+}
+  1 |
+> 2 |  ( ( ( ( a ) ) |  b  ) )  
+    |                   ^
+  3 |  // comment
+--------------------------------------------------------------------------------
+CommentLine {
+  "value": " comment"
+}
+  1 |
+  2 |  ( ( ( ( a ) ) |  b  ) )  
+> 3 |  // comment
+    |  ^^^^^^^^^^
+`;
+
+exports[`('BindingPipe' -> 'NGPipeExpression') > parseInterpolationExpression("\\r a | b : ( ( c ) )  \\r // comment") 1`] = `
+NGPipeExpression {
+  "left": "Identifier",
+  "right": "Identifier",
+  "arguments": [
+    "Identifier"
+  ],
+  "comments": [
+    "CommentLine"
+  ]
+}
+  1 |
+> 2 |  a | b : ( ( c ) )  
+    |  ^^^^^^^^^^^^^^^^^
+  3 |  // comment
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "a"
+}
+  1 |
+> 2 |  a | b : ( ( c ) )  
+    |  ^
+  3 |  // comment
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "b"
+}
+  1 |
+> 2 |  a | b : ( ( c ) )  
+    |      ^
+  3 |  // comment
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "c",
+  "extra": {
+    "parenthesized": true
+  }
+}
+  1 |
+> 2 |  a | b : ( ( c ) )  
+    |              ^
+  3 |  // comment
+--------------------------------------------------------------------------------
+CommentLine {
+  "value": " comment"
+}
+  1 |
+  2 |  a | b : ( ( c ) )  
+> 3 |  // comment
+    |  ^^^^^^^^^^
+`;
+
+exports[`('BindingPipe' -> 'NGPipeExpression') > parseInterpolationExpression("\\r a | b : c  \\r // comment") 1`] = `
+NGPipeExpression {
+  "left": "Identifier",
+  "right": "Identifier",
+  "arguments": [
+    "Identifier"
+  ],
+  "comments": [
+    "CommentLine"
+  ]
+}
+  1 |
+> 2 |  a | b : c  
+    |  ^^^^^^^^^
+  3 |  // comment
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "a"
+}
+  1 |
+> 2 |  a | b : c  
+    |  ^
+  3 |  // comment
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "b"
+}
+  1 |
+> 2 |  a | b : c  
+    |      ^
+  3 |  // comment
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "c"
+}
+  1 |
+> 2 |  a | b : c  
+    |          ^
+  3 |  // comment
+--------------------------------------------------------------------------------
+CommentLine {
+  "value": " comment"
+}
+  1 |
+  2 |  a | b : c  
+> 3 |  // comment
+    |  ^^^^^^^^^^
+`;
+
+exports[`('BindingPipe' -> 'NGPipeExpression') > parseInterpolationExpression("\\r\\n ( ( ( ( a ) ) |  b  ) )  \\r\\n // comment") 1`] = `
+NGPipeExpression {
+  "left": "Identifier",
+  "right": "Identifier",
+  "arguments": [],
+  "extra": {
+    "parenthesized": true
+  },
+  "comments": [
+    "CommentLine"
+  ]
+}
+  1 |
+> 2 |  ( ( ( ( a ) ) |  b  ) )  
+    |      ^^^^^^^^^^^^^^
+  3 |  // comment
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "a",
+  "extra": {
+    "parenthesized": true
+  }
+}
+  1 |
+> 2 |  ( ( ( ( a ) ) |  b  ) )  
+    |          ^
+  3 |  // comment
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "b",
+  "extra": {
+    "parenthesized": true
+  }
+}
+  1 |
+> 2 |  ( ( ( ( a ) ) |  b  ) )  
+    |                   ^
+  3 |  // comment
+--------------------------------------------------------------------------------
+CommentLine {
+  "value": " comment"
+}
+  1 |
+  2 |  ( ( ( ( a ) ) |  b  ) )  
+> 3 |  // comment
+    |  ^^^^^^^^^^
+`;
+
+exports[`('BindingPipe' -> 'NGPipeExpression') > parseInterpolationExpression("\\r\\n a | b : ( ( c ) )  \\r\\n // comment") 1`] = `
+NGPipeExpression {
+  "left": "Identifier",
+  "right": "Identifier",
+  "arguments": [
+    "Identifier"
+  ],
+  "comments": [
+    "CommentLine"
+  ]
+}
+  1 |
+> 2 |  a | b : ( ( c ) )  
+    |  ^^^^^^^^^^^^^^^^^
+  3 |  // comment
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "a"
+}
+  1 |
+> 2 |  a | b : ( ( c ) )  
+    |  ^
+  3 |  // comment
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "b"
+}
+  1 |
+> 2 |  a | b : ( ( c ) )  
+    |      ^
+  3 |  // comment
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "c",
+  "extra": {
+    "parenthesized": true
+  }
+}
+  1 |
+> 2 |  a | b : ( ( c ) )  
+    |              ^
+  3 |  // comment
+--------------------------------------------------------------------------------
+CommentLine {
+  "value": " comment"
+}
+  1 |
+  2 |  a | b : ( ( c ) )  
+> 3 |  // comment
+    |  ^^^^^^^^^^
+`;
+
+exports[`('BindingPipe' -> 'NGPipeExpression') > parseInterpolationExpression("\\r\\n a | b : c  \\r\\n // comment") 1`] = `
+NGPipeExpression {
+  "left": "Identifier",
+  "right": "Identifier",
+  "arguments": [
+    "Identifier"
+  ],
+  "comments": [
+    "CommentLine"
+  ]
+}
+  1 |
+> 2 |  a | b : c  
+    |  ^^^^^^^^^
+  3 |  // comment
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "a"
+}
+  1 |
+> 2 |  a | b : c  
+    |  ^
+  3 |  // comment
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "b"
+}
+  1 |
+> 2 |  a | b : c  
+    |      ^
+  3 |  // comment
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "c"
+}
+  1 |
+> 2 |  a | b : c  
+    |          ^
+  3 |  // comment
+--------------------------------------------------------------------------------
+CommentLine {
+  "value": " comment"
+}
+  1 |
+  2 |  a | b : c  
+> 3 |  // comment
+    |  ^^^^^^^^^^
+`;
+
 exports[`('Chain' -> 'NGChainedExpression') > parseAction(" a ; b ") 1`] = `
 NGChainedExpression {
   "expressions": [
@@ -218,12 +814,136 @@ Identifier {
     |      ^
 `;
 
+exports[`('Chain' -> 'NGChainedExpression') > parseAction("\\r a ; b  \\r // comment") 1`] = `
+NGChainedExpression {
+  "expressions": [
+    "Identifier",
+    "Identifier"
+  ],
+  "comments": [
+    "CommentLine"
+  ]
+}
+  1 |
+> 2 |  a ; b  
+    |  ^^^^^
+  3 |  // comment
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "a"
+}
+  1 |
+> 2 |  a ; b  
+    |  ^
+  3 |  // comment
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "b"
+}
+  1 |
+> 2 |  a ; b  
+    |      ^
+  3 |  // comment
+--------------------------------------------------------------------------------
+CommentLine {
+  "value": " comment"
+}
+  1 |
+  2 |  a ; b  
+> 3 |  // comment
+    |  ^^^^^^^^^^
+`;
+
+exports[`('Chain' -> 'NGChainedExpression') > parseAction("\\r\\n a ; b  \\r\\n // comment") 1`] = `
+NGChainedExpression {
+  "expressions": [
+    "Identifier",
+    "Identifier"
+  ],
+  "comments": [
+    "CommentLine"
+  ]
+}
+  1 |
+> 2 |  a ; b  
+    |  ^^^^^
+  3 |  // comment
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "a"
+}
+  1 |
+> 2 |  a ; b  
+    |  ^
+  3 |  // comment
+--------------------------------------------------------------------------------
+Identifier {
+  "name": "b"
+}
+  1 |
+> 2 |  a ; b  
+    |      ^
+  3 |  // comment
+--------------------------------------------------------------------------------
+CommentLine {
+  "value": " comment"
+}
+  1 |
+  2 |  a ; b  
+> 3 |  // comment
+    |  ^^^^^^^^^^
+`;
+
 exports[`('EmptyExpr' -> 'NGEmptyExpression') > parseAction("") 1`] = `
 NGEmptyExpression {
   "comments": []
 }
 > 1 |
     | ^
+`;
+
+exports[`('EmptyExpr' -> 'NGEmptyExpression') > parseAction("\\r \\r // comment") 1`] = `
+NGEmptyExpression {
+  "comments": [
+    "CommentLine"
+  ]
+}
+> 1 |
+    | ^
+> 2 |  
+    | ^
+> 3 |  // comment
+    | ^^^^^^^^^^^^
+--------------------------------------------------------------------------------
+CommentLine {
+  "value": " comment"
+}
+  1 |
+  2 |  
+> 3 |  // comment
+    |  ^^^^^^^^^^
+`;
+
+exports[`('EmptyExpr' -> 'NGEmptyExpression') > parseAction("\\r\\n \\r\\n // comment") 1`] = `
+NGEmptyExpression {
+  "comments": [
+    "CommentLine"
+  ]
+}
+> 1 |
+    | ^
+> 2 |  
+    | ^
+> 3 |  // comment
+    | ^^^^^^^^^^^^
+--------------------------------------------------------------------------------
+CommentLine {
+  "value": " comment"
+}
+  1 |
+  2 |  
+> 3 |  // comment
+    |  ^^^^^^^^^^
 `;
 
 exports[`('EmptyExpr' -> 'NGEmptyExpression') > parseBinding("") 1`] = `
@@ -234,6 +954,50 @@ NGEmptyExpression {
     | ^
 `;
 
+exports[`('EmptyExpr' -> 'NGEmptyExpression') > parseBinding("\\r \\r // comment") 1`] = `
+NGEmptyExpression {
+  "comments": [
+    "CommentLine"
+  ]
+}
+> 1 |
+    | ^
+> 2 |  
+    | ^
+> 3 |  // comment
+    | ^^^^^^^^^^^^
+--------------------------------------------------------------------------------
+CommentLine {
+  "value": " comment"
+}
+  1 |
+  2 |  
+> 3 |  // comment
+    |  ^^^^^^^^^^
+`;
+
+exports[`('EmptyExpr' -> 'NGEmptyExpression') > parseBinding("\\r\\n \\r\\n // comment") 1`] = `
+NGEmptyExpression {
+  "comments": [
+    "CommentLine"
+  ]
+}
+> 1 |
+    | ^
+> 2 |  
+    | ^
+> 3 |  // comment
+    | ^^^^^^^^^^^^
+--------------------------------------------------------------------------------
+CommentLine {
+  "value": " comment"
+}
+  1 |
+  2 |  
+> 3 |  // comment
+    |  ^^^^^^^^^^
+`;
+
 exports[`('EmptyExpr' -> 'NGEmptyExpression') > parseInterpolationExpression("") 1`] = `
 NGEmptyExpression {
   "comments": []
@@ -242,10 +1006,98 @@ NGEmptyExpression {
     | ^
 `;
 
+exports[`('EmptyExpr' -> 'NGEmptyExpression') > parseInterpolationExpression("\\r \\r // comment") 1`] = `
+NGEmptyExpression {
+  "comments": [
+    "CommentLine"
+  ]
+}
+> 1 |
+    | ^
+> 2 |  
+    | ^
+> 3 |  // comment
+    | ^^^^^^^^^^^^
+--------------------------------------------------------------------------------
+CommentLine {
+  "value": " comment"
+}
+  1 |
+  2 |  
+> 3 |  // comment
+    |  ^^^^^^^^^^
+`;
+
+exports[`('EmptyExpr' -> 'NGEmptyExpression') > parseInterpolationExpression("\\r\\n \\r\\n // comment") 1`] = `
+NGEmptyExpression {
+  "comments": [
+    "CommentLine"
+  ]
+}
+> 1 |
+    | ^
+> 2 |  
+    | ^
+> 3 |  // comment
+    | ^^^^^^^^^^^^
+--------------------------------------------------------------------------------
+CommentLine {
+  "value": " comment"
+}
+  1 |
+  2 |  
+> 3 |  // comment
+    |  ^^^^^^^^^^
+`;
+
 exports[`('EmptyExpr' -> 'NGEmptyExpression') > parseSimpleBinding("") 1`] = `
 NGEmptyExpression {
   "comments": []
 }
 > 1 |
     | ^
+`;
+
+exports[`('EmptyExpr' -> 'NGEmptyExpression') > parseSimpleBinding("\\r \\r // comment") 1`] = `
+NGEmptyExpression {
+  "comments": [
+    "CommentLine"
+  ]
+}
+> 1 |
+    | ^
+> 2 |  
+    | ^
+> 3 |  // comment
+    | ^^^^^^^^^^^^
+--------------------------------------------------------------------------------
+CommentLine {
+  "value": " comment"
+}
+  1 |
+  2 |  
+> 3 |  // comment
+    |  ^^^^^^^^^^
+`;
+
+exports[`('EmptyExpr' -> 'NGEmptyExpression') > parseSimpleBinding("\\r\\n \\r\\n // comment") 1`] = `
+NGEmptyExpression {
+  "comments": [
+    "CommentLine"
+  ]
+}
+> 1 |
+    | ^
+> 2 |  
+    | ^
+> 3 |  // comment
+    | ^^^^^^^^^^^^
+--------------------------------------------------------------------------------
+CommentLine {
+  "value": " comment"
+}
+  1 |
+  2 |  
+> 3 |  // comment
+    |  ^^^^^^^^^^
 `;

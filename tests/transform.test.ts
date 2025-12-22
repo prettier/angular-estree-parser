@@ -367,11 +367,6 @@ const testCases: TestCase[] = [
   },
   {
     expectedAngularType: 'PropertyRead',
-    expectedEstreeType: 'Identifier',
-    text: ' a // hello ',
-  },
-  {
-    expectedAngularType: 'PropertyRead',
     expectedEstreeType: 'MemberExpression',
     text: ' a . b ',
   },
@@ -501,6 +496,14 @@ for (const testCase of testCases) {
     () => {
       for (const method of PARSE_METHODS) {
         runTest(testCase, method);
+        runTest(
+          { ...testCase, text: `\r\n${testCase.text} \r\n // comment` },
+          method,
+        );
+        runTest(
+          { ...testCase, text: `\r${testCase.text} \r // comment` },
+          method,
+        );
       }
     },
   );

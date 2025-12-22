@@ -38,7 +38,7 @@ function extractComments(text: string, shouldExtractComment: boolean) {
     }),
   };
 
-  return { text: text.slice(0, commentStart), comments: [comment] };
+  return { text, comments: [comment] };
 }
 
 function createAngularParseFunction<
