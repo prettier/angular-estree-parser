@@ -1,7 +1,7 @@
 import { type Call, type SafeCall } from '@angular/compiler';
 import type * as babel from '@babel/types';
 
-import { type Transformer } from '../transform-ast.ts';
+import { type Transformer } from '../transform.ts';
 import { isOptionalObjectOrCallee } from './utilities.ts';
 
 const callOptions = { optional: false } as const;

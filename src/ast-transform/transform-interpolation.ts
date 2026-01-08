@@ -1,6 +1,6 @@
 import { type Interpolation } from '@angular/compiler';
 
-import { type Transformer } from '../transform-ast.ts';
+import { type Transformer } from '../transform.ts';
 
 export const visitInterpolation = (
   node: Interpolation,

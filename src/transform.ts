@@ -2,7 +2,7 @@ import type {
   AstParseResult,
   MicroSyntaxParseResult,
 } from './angular-parser.ts';
-import { transform as transformNode } from './transform-ast.ts';
+import { transform as transformAst } from './ast-transform/index.ts';
 import { transform as transformTemplateBindings } from './transform-template-binding.ts';
 
 function transformAstResult({
@@ -10,7 +10,7 @@ function transformAstResult({
   text,
   comments,
 }: AstParseResult) {
-  return Object.assign(transformNode(ast, text), { comments });
+  return Object.assign(transformAst(ast, text), { comments });
 }
 
 function transformMicrosyntaxResult({

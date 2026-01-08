@@ -5,7 +5,7 @@ import {
 } from '@angular/compiler';
 import type * as babel from '@babel/types';
 
-import { type Transformer } from '../transform-ast.ts';
+import { type Transformer } from '../transform.ts';
 
 export const visitTaggedTemplateLiteral = (
   node: TaggedTemplateLiteral,

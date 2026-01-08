@@ -1,7 +1,7 @@
 import { type Chain } from '@angular/compiler';
 import type * as babel from '@babel/types';
 
-import { type Transformer } from '../transform-ast.ts';
+import { type Transformer } from '../transform.ts';
 import type { NGChainedExpression } from '../types.ts';
 
 export const visitChain = (

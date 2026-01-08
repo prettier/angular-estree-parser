@@ -1,8 +1,8 @@
 import * as angular from '@angular/compiler';
 
-import { transformVisitor } from './ast-transform/visitor.ts';
-import { Source } from './source.ts';
-import type { NGEmptyExpression, NGNode, RawNGSpan } from './types.ts';
+import { Source } from '../source.ts';
+import type { NGEmptyExpression, NGNode, RawNGSpan } from '../types.ts';
+import { transformVisitor } from './visitor.ts';
 
 class Transformer extends Source {
   node: angular.AST;

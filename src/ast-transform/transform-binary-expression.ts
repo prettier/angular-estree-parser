@@ -1,7 +1,7 @@
 import { Binary } from '@angular/compiler';
 import type * as babel from '@babel/types';
 
-import { type Transformer } from '../transform-ast.ts';
+import { type Transformer } from '../transform.ts';
 
 const isAssignmentOperator = (
   operator: Binary['operation'],
