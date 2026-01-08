@@ -101,11 +101,13 @@ function throwErrors<
     }
 
     const error = new SyntaxError(message.trim(), { cause: originalError });
-    Object.assign({
-      cause: originalError,
+    Object.assign(error, {
       location,
       span: originalError.span,
     });
+    error.cause ??= originalError;
+
+    console.log({ error });
 
     throw error;
   }
