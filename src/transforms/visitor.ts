@@ -1,26 +1,26 @@
 import * as angular from '@angular/compiler';
 import type * as babel from '@babel/types';
 
-import { type Transformer } from './transform-ast.ts';
-import { visitCall, visitSafeCall } from './transforms/transform-call.ts';
+import { type Transformer } from '../transform-ast.ts';
+import type { NGChainedExpression, NGPipeExpression } from '../types.ts';
+import { visitCall, visitSafeCall } from './transform-call.ts';
+import {
+  visitLiteralPrimitive,
+  visitRegularExpressionLiteral,
+} from './transform-literal.ts';
 import {
   visitKeyedRead,
   visitPropertyRead,
   visitSafeKeyedRead,
   visitSafePropertyRead,
-} from './transforms/transform-member-expression.ts';
+} from './transform-member-expression.ts';
+import { visitLiteralMap } from './transform-object-expression.ts';
 import {
   visitPrefixNot,
   visitTypeofExpression,
   visitUnary,
   visitVoidExpression,
-} from './transforms/transform-unary-expression.ts';
-import type {
-  NGChainedExpression,
-  NGNode,
-  NGPipeExpression,
-  RawNGSpan,
-} from './types.ts';
+} from './transform-unary-expression.ts';
 
 type AstVisitor = Required<
   Omit<angular.AstVisitor, 'visit' | 'visitASTWithSource'>
@@ -39,6 +39,11 @@ export const transformVisitor: AstVisitor = {
   visitTypeofExpression,
   visitVoidExpression,
   visitUnary,
+
+  visitLiteralMap,
+
+  visitLiteralPrimitive,
+  visitRegularExpressionLiteral,
 
   visitBinary(node: angular.Binary, transformer: Transformer) {
     const { operation: operator } = node;
@@ -122,94 +127,6 @@ export const transformVisitor: AstVisitor = {
       elements: transformer.transformChildren<babel.Expression>(
         node.expressions,
       ),
-    });
-  },
-
-  visitLiteralMap(node: angular.LiteralMap, transformer: Transformer) {
-    const { keys, values } = node;
-    const createChild = <T extends NGNode>(
-      properties: Partial<T> & { type: T['type'] },
-      location: angular.AST | RawNGSpan | [number, number] = node,
-    ) =>
-      transformer.create(properties, location, [
-        node,
-        ...transformer.ancestors,
-      ]);
-
-    return transformer.createNode<babel.ObjectExpression>({
-      type: 'ObjectExpression',
-      properties: keys.map((keyNode, index) => {
-        const valueNode = values[index];
-        const shorthand = Boolean(keyNode.isShorthandInitialized);
-        const key = createChild<babel.Identifier | babel.StringLiteral>(
-          keyNode.quoted
-            ? { type: 'StringLiteral', value: keyNode.key }
-            : { type: 'Identifier', name: keyNode.key },
-          keyNode.sourceSpan,
-        );
-
-        return createChild<babel.ObjectPropertyNonComputed>(
-          {
-            type: 'ObjectProperty',
-            key,
-            value: transformer.transformChild<babel.Expression>(valueNode),
-            shorthand,
-            computed: false,
-            // @ts-expect-error -- Missed in types
-            method: false,
-          },
-          [keyNode.sourceSpan.start, valueNode.sourceSpan.end],
-        );
-      }),
-    });
-  },
-
-  visitLiteralPrimitive(
-    node: angular.LiteralPrimitive,
-    transformer: Transformer,
-  ) {
-    const { value } = node;
-    switch (typeof value) {
-      case 'boolean':
-        return transformer.createNode<babel.BooleanLiteral>({
-          type: 'BooleanLiteral',
-          value,
-        });
-      case 'number':
-        return transformer.createNode<babel.NumericLiteral>({
-          type: 'NumericLiteral',
-          value,
-        });
-      case 'object':
-        return transformer.createNode<babel.NullLiteral>({
-          type: 'NullLiteral',
-        });
-      case 'string':
-        return transformer.createNode<babel.StringLiteral>({
-          type: 'StringLiteral',
-          value,
-        });
-      case 'undefined':
-        return transformer.createNode<babel.Identifier>({
-          type: 'Identifier',
-          name: 'undefined',
-        });
-      /* c8 ignore next 4 */
-      default:
-        throw new Error(
-          `Unexpected LiteralPrimitive value type ${typeof value}`,
-        );
-    }
-  },
-
-  visitRegularExpressionLiteral(
-    node: angular.RegularExpressionLiteral,
-    transformer: Transformer,
-  ) {
-    return transformer.createNode<babel.RegExpLiteral>({
-      type: 'RegExpLiteral',
-      pattern: node.body,
-      flags: node.flags ?? '',
     });
   },
 
