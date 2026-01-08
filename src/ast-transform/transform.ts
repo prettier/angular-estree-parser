@@ -87,12 +87,12 @@ class Transformer extends Source {
   }
 }
 
-const transformAst = (node: angular.AST, text: string) => {
+const transformAstNode = (node: angular.AST, text: string) => {
   return Transformer.transform(node, text);
 };
 
-const transform = (ast: angular.ASTWithSource) => {
+const transformAst = (ast: angular.ASTWithSource) => {
   return Transformer.transform(ast, ast.source!);
 };
 
-export { transform, transformAst, Transformer };
+export { transformAst, transformAstNode, Transformer };

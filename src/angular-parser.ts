@@ -11,22 +11,32 @@ import {
 import { type CommentLine } from './types.ts';
 import { sourceSpanToLocationInformation } from './utils.ts';
 
+let parseSourceSpan: ParseSourceSpan;
 // https://github.com/angular/angular/blob/5e9707dc84e6590ec8c9d41e7d3be7deb2fa7c53/packages/compiler/test/expression_parser/utils/span.ts
-function getFakeSpan(fileName = 'test.html') {
-  const file = new ParseSourceFile('', fileName);
-  const location = new ParseLocation(file, 0, 0, 0);
-  return new ParseSourceSpan(location, location);
+function getParseSourceSpan() {
+  if (!parseSourceSpan) {
+    const file = new ParseSourceFile('', 'test.html');
+    const location = new ParseLocation(file, -1, -1, -1);
+    parseSourceSpan = new ParseSourceSpan(location, location);
+  }
+
+  return parseSourceSpan;
+}
+
+let parser: Parser;
+function getParser() {
+  return (parser ??= new Parser(new Lexer()));
 }
 
 const getCommentStart = (text: string): number | null =>
   // @ts-expect-error -- need to call private _commentStart
   Parser.prototype._commentStart(text);
 
-function extractComments(text: string, shouldExtractComment: boolean) {
-  const commentStart = shouldExtractComment ? getCommentStart(text) : null;
+function extractComments(text: string) {
+  const commentStart = getCommentStart(text);
 
   if (commentStart === null) {
-    return { text, comments: [] };
+    return [];
   }
 
   const comment: CommentLine = {
@@ -38,55 +48,48 @@ function extractComments(text: string, shouldExtractComment: boolean) {
     }),
   };
 
-  return { text, comments: [comment] };
+  return [comment];
 }
 
-function createAngularParseFunction<
-  T extends ASTWithSource | TemplateBindingParseResult,
->(parse: (text: string, parser: Parser) => T, shouldExtractComment = true) {
-  return (originalText: string) => {
-    const lexer = new Lexer();
-    const parser = new Parser(lexer);
-
-    const { text, comments } = extractComments(
-      originalText,
-      shouldExtractComment,
+function throwErrors<
+  ResultType extends ASTWithSource | TemplateBindingParseResult,
+>(result: ResultType) {
+  if (result.errors.length !== 0) {
+    const [{ message }] = result.errors;
+    throw new SyntaxError(
+      message.replace(/^Parser Error: | at column \d+ in [^]*$/g, ''),
     );
-    const result = parse(text, parser);
+  }
 
-    if (result.errors.length !== 0) {
-      const [{ message }] = result.errors;
-      throw new SyntaxError(
-        message.replace(/^Parser Error: | at column \d+ in [^]*$/g, ''),
-      );
-    }
-
-    console.log(result);
-
-    return { result, comments, text };
-  };
+  return result;
 }
 
-export const parseBinding = createAngularParseFunction((text, parser) =>
-  parser.parseBinding(text, getFakeSpan(), 0),
-);
+const createAstParser =
+  (
+    name:
+      | 'parseBinding'
+      | 'parseSimpleBinding'
+      | 'parseAction'
+      | 'parseInterpolationExpression',
+  ) =>
+  (text: string) => ({
+    result: throwErrors<ASTWithSource>(
+      getParser()[name](text, getParseSourceSpan(), 0),
+    ),
+    text,
+    comments: extractComments(text),
+  });
 
-export const parseSimpleBinding = createAngularParseFunction((text, parser) =>
-  parser.parseSimpleBinding(text, getFakeSpan(), 0),
+export const parseAction = createAstParser('parseAction');
+export const parseBinding = createAstParser('parseBinding');
+export const parseSimpleBinding = createAstParser('parseSimpleBinding');
+export const parseInterpolationExpression = createAstParser(
+  'parseInterpolationExpression',
 );
-
-export const parseAction = createAngularParseFunction((text, parser) =>
-  parser.parseAction(text, getFakeSpan(), 0),
-);
-
-export const parseInterpolationExpression = createAngularParseFunction(
-  (text, parser) => parser.parseInterpolationExpression(text, getFakeSpan(), 0),
-);
-
-export const parseTemplateBindings = createAngularParseFunction(
-  (text, parser) => parser.parseTemplateBindings('', text, getFakeSpan(), 0, 0),
-  /* shouldExtractComment */ false,
-);
-
-export type AstParseResult = ReturnType<typeof parseBinding>;
-export type MicroSyntaxParseResult = ReturnType<typeof parseTemplateBindings>;
+export const parseTemplateBindings = (text: string) => ({
+  result: throwErrors<TemplateBindingParseResult>(
+    getParser().parseTemplateBindings('', text, getParseSourceSpan(), 0, 0),
+  ),
+  text,
+  comments: [],
+});
