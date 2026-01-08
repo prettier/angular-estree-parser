@@ -1,7 +1,7 @@
 import * as angular from '@angular/compiler';
 
+import { transformVisitor } from './ast-transform/visitor.ts';
 import { Source } from './source.ts';
-import { transformVisitor } from './transforms/visitor.ts';
 import type { NGEmptyExpression, NGNode, RawNGSpan } from './types.ts';
 
 class Transformer extends Source {
