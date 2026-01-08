@@ -185,15 +185,12 @@ class Transformer extends Source {
         properties: keys.map((keyNode, index) => {
           const valueNode = values[index];
           const shorthand = Boolean(keyNode.isShorthandInitialized);
-          const key = keyNode.quoted
-            ? createChild<babel.StringLiteral>(
-                { type: 'StringLiteral', value: keyNode.key },
-                keyNode.sourceSpan,
-              )
-            : createChild<babel.Identifier>(
-                { type: 'Identifier', name: keyNode.key },
-                keyNode.sourceSpan,
-              );
+          const key = createChild<babel.Identifier | babel.StringLiteral>(
+            keyNode.quoted
+              ? { type: 'StringLiteral', value: keyNode.key }
+              : { type: 'Identifier', name: keyNode.key },
+            keyNode.sourceSpan,
+          );
 
           return createChild<babel.ObjectPropertyNonComputed>(
             {
