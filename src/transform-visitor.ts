@@ -25,7 +25,11 @@ function isOptionalObjectOrCallee(node: NGNode): boolean {
   );
 }
 
-class TransformerVisitor implements angular.AstVisitor {
+type AstVisitor = Required<
+  Omit<angular.AstVisitor, 'visit' | 'visitASTWithSource'>
+>;
+
+export const transformVisitor: AstVisitor = {
   visitUnary(node: angular.Unary, transformer: Transformer) {
     return transformer.createNode<babel.UnaryExpression>({
       type: 'UnaryExpression',
@@ -33,7 +37,7 @@ class TransformerVisitor implements angular.AstVisitor {
       argument: transformer.transformChild<babel.Expression>(node.expr),
       operator: node.operator as '-' | '+',
     });
-  }
+  },
 
   visitBinary(node: angular.Binary, transformer: Transformer) {
     const { operation: operator } = node;
@@ -66,7 +70,7 @@ class TransformerVisitor implements angular.AstVisitor {
       type: 'BinaryExpression',
       operator: operator as babel.BinaryExpression['operator'],
     });
-  }
+  },
 
   visitPipe(node: angular.BindingPipe, transformer: Transformer) {
     return transformer.createNode<NGPipeExpression>({
@@ -78,7 +82,7 @@ class TransformerVisitor implements angular.AstVisitor {
       ),
       arguments: transformer.transformChildren<babel.Expression>(node.args),
     });
-  }
+  },
 
   visitChain(node: angular.Chain, transformer: Transformer) {
     return transformer.createNode<NGChainedExpression>({
@@ -87,7 +91,7 @@ class TransformerVisitor implements angular.AstVisitor {
         node.expressions,
       ),
     });
-  }
+  },
 
   visitConditional(node: angular.Conditional, transformer: Transformer) {
     const [test, consequent, alternate] =
@@ -103,13 +107,13 @@ class TransformerVisitor implements angular.AstVisitor {
       consequent,
       alternate,
     });
-  }
+  },
 
   visitThisReceiver(node: angular.ThisReceiver, transformer: Transformer) {
     return transformer.createNode<babel.ThisExpression>({
       type: 'ThisExpression',
     });
-  }
+  },
 
   visitLiteralArray(node: angular.LiteralArray, transformer: Transformer) {
     return transformer.createNode<babel.ArrayExpression>({
@@ -118,7 +122,7 @@ class TransformerVisitor implements angular.AstVisitor {
         node.expressions,
       ),
     });
-  }
+  },
 
   visitLiteralMap(node: angular.LiteralMap, transformer: Transformer) {
     const { keys, values } = node;
@@ -157,7 +161,7 @@ class TransformerVisitor implements angular.AstVisitor {
         );
       }),
     });
-  }
+  },
 
   visitLiteralPrimitive(
     node: angular.LiteralPrimitive,
@@ -195,7 +199,7 @@ class TransformerVisitor implements angular.AstVisitor {
           `Unexpected LiteralPrimitive value type ${typeof value}`,
         );
     }
-  }
+  },
 
   visitRegularExpressionLiteral(
     node: angular.RegularExpressionLiteral,
@@ -206,14 +210,14 @@ class TransformerVisitor implements angular.AstVisitor {
       pattern: node.body,
       flags: node.flags ?? '',
     });
-  }
+  },
 
   visitNonNullAssert(node: angular.NonNullAssert, transformer: Transformer) {
     return transformer.createNode<babel.TSNonNullExpression>({
       type: 'TSNonNullExpression',
       expression: transformer.transformChild<babel.Expression>(node.expression),
     });
-  }
+  },
 
   visitPrefixNot(node: angular.PrefixNot, transformer: Transformer) {
     return transformer.createNode<babel.UnaryExpression>(
@@ -225,7 +229,7 @@ class TransformerVisitor implements angular.AstVisitor {
       },
       node.sourceSpan,
     );
-  }
+  },
 
   visitTypeofExpression(
     node: angular.TypeofExpression,
@@ -240,7 +244,7 @@ class TransformerVisitor implements angular.AstVisitor {
       },
       node.sourceSpan,
     );
-  }
+  },
 
   visitVoidExpression(
     node: angular.TypeofExpression,
@@ -255,7 +259,7 @@ class TransformerVisitor implements angular.AstVisitor {
       },
       node.sourceSpan,
     );
-  }
+  },
 
   visitTaggedTemplateLiteral(
     node: angular.TaggedTemplateLiteral,
@@ -266,7 +270,7 @@ class TransformerVisitor implements angular.AstVisitor {
       tag: transformer.transformChild<babel.Expression>(node.tag),
       quasi: transformer.transformChild<babel.TemplateLiteral>(node.template),
     });
-  }
+  },
 
   visitTemplateLiteral(
     node: angular.TemplateLiteral,
@@ -277,7 +281,7 @@ class TransformerVisitor implements angular.AstVisitor {
       quasis: transformer.transformChildren(node.elements),
       expressions: transformer.transformChildren(node.expressions),
     });
-  }
+  },
 
   visitTemplateLiteralElement(
     node: angular.TemplateLiteralElement,
@@ -301,126 +305,44 @@ class TransformerVisitor implements angular.AstVisitor {
       },
       [start, end],
     );
-  }
+  },
 
   visitParenthesizedExpression(
     node: angular.ParenthesizedExpression,
     transformer: Transformer,
   ) {
     return transformer.transformChild(node.expression);
-  }
-
-  #visitRead(
-    node:
-      | angular.KeyedRead
-      | angular.SafeKeyedRead
-      | angular.PropertyRead
-      | angular.SafePropertyRead,
-    transformer: Transformer,
-  ) {
-    const isComputed =
-      node instanceof angular.KeyedRead ||
-      node instanceof angular.SafeKeyedRead;
-    const isOptional =
-      node instanceof angular.SafeKeyedRead ||
-      node instanceof angular.SafePropertyRead;
-    const { receiver } = node;
-    const isImplicitReceiver = receiver instanceof angular.ImplicitReceiver;
-
-    let property;
-    if (isComputed) {
-      property = transformer.transformChild<babel.Expression>(node.key);
-    } else {
-      property = transformer.createNode<babel.Identifier>(
-        { type: 'Identifier', name: node.name },
-        node.nameSpan,
-        isImplicitReceiver ? transformer.ancestors : [],
-      );
-    }
-
-    if (isImplicitReceiver) {
-      return property;
-    }
-
-    const object = transformer.transformChild<babel.Expression>(receiver);
-    const isOptionalObject = isOptionalObjectOrCallee(object);
-
-    if (isOptional || isOptionalObject) {
-      return transformer.createNode<babel.OptionalMemberExpression>({
-        type: 'OptionalMemberExpression',
-        optional: isOptional || !isOptionalObject,
-        computed: isComputed,
-        property,
-        object,
-      });
-    }
-
-    if (isComputed) {
-      return transformer.createNode<babel.MemberExpressionComputed>({
-        type: 'MemberExpression',
-        property,
-        object,
-        computed: true,
-      });
-    }
-
-    return transformer.createNode<babel.MemberExpressionNonComputed>({
-      type: 'MemberExpression',
-      object,
-      property: property as babel.MemberExpressionNonComputed['property'],
-      computed: false,
-    });
-  }
+  },
 
   visitKeyedRead(node: angular.KeyedRead, transformer: Transformer) {
-    return this.#visitRead(node, transformer);
-  }
+    return transformMemberExpression(node, transformer, { computed: true });
+  },
 
   visitSafeKeyedRead(node: angular.SafeKeyedRead, transformer: Transformer) {
-    return this.#visitRead(node, transformer);
-  }
+    return transformMemberExpression(node, transformer, {
+      computed: true,
+      optional: true,
+    });
+  },
 
   visitPropertyRead(node: angular.PropertyRead, transformer: Transformer) {
-    return this.#visitRead(node, transformer);
-  }
+    return transformMemberExpression(node, transformer);
+  },
 
   visitSafePropertyRead(
     node: angular.SafePropertyRead,
     transformer: Transformer,
   ) {
-    return this.#visitRead(node, transformer);
-  }
-
-  #visitCall(node: angular.Call | angular.SafeCall, transformer: Transformer) {
-    const arguments_ = transformer.transformChildren<babel.Expression>(
-      node.args,
-    );
-    const callee = transformer.transformChild<babel.Expression>(node.receiver);
-    const isOptionalReceiver = isOptionalObjectOrCallee(callee);
-    const isOptional = node instanceof angular.SafeCall;
-    const nodeType =
-      isOptional || isOptionalReceiver
-        ? 'OptionalCallExpression'
-        : 'CallExpression';
-    return transformer.createNode<
-      babel.CallExpression | babel.OptionalCallExpression
-    >({
-      type: nodeType,
-      callee,
-      arguments: arguments_,
-      ...(nodeType === 'OptionalCallExpression'
-        ? { optional: isOptional }
-        : undefined),
-    });
-  }
+    return transformMemberExpression(node, transformer, { optional: true });
+  },
 
   visitCall(node: angular.Call, transformer: Transformer) {
-    return this.#visitCall(node, transformer);
-  }
+    return transformCall(node, transformer);
+  },
 
   visitSafeCall(node: angular.SafeCall, transformer: Transformer) {
-    return this.#visitCall(node, transformer);
-  }
+    return transformCall(node, transformer, { optional: true });
+  },
 
   visitInterpolation(node: angular.Interpolation, transformer: Transformer) {
     const { expressions } = node;
@@ -431,16 +353,89 @@ class TransformerVisitor implements angular.AstVisitor {
     }
 
     return transformer.transformChild(expressions[0]);
-  }
+  },
 
-  visit(node: angular.AST, context?: any) {}
+  visitImplicitReceiver() {},
+};
 
-  visitASTWithSource(node: angular.ASTWithSource, transformer: Transformer) {}
-
-  visitImplicitReceiver(
-    node: angular.ImplicitReceiver,
-    transformer: Transformer,
-  ) {}
+function transformCall(
+  node: angular.Call | angular.SafeCall,
+  transformer: Transformer,
+  { optional = false } = {},
+) {
+  const arguments_ = transformer.transformChildren<babel.Expression>(node.args);
+  const callee = transformer.transformChild<babel.Expression>(node.receiver);
+  const isOptionalReceiver = isOptionalObjectOrCallee(callee);
+  const nodeType =
+    optional || isOptionalReceiver
+      ? 'OptionalCallExpression'
+      : 'CallExpression';
+  return transformer.createNode<
+    babel.CallExpression | babel.OptionalCallExpression
+  >({
+    type: nodeType,
+    callee,
+    arguments: arguments_,
+    ...(nodeType === 'OptionalCallExpression' ? { optional } : undefined),
+  });
 }
 
-export const transformVisitor = new TransformerVisitor();
+function transformMemberExpression(
+  node:
+    | angular.KeyedRead
+    | angular.SafeKeyedRead
+    | angular.PropertyRead
+    | angular.SafePropertyRead,
+  transformer: Transformer,
+) {
+  const { receiver } = node;
+  const object = transformer.transformChild<babel.Expression>(receiver);
+  const computed =
+    node instanceof angular.KeyedRead || node instanceof angular.SafeKeyedRead;
+  const optional =
+    node instanceof angular.SafeKeyedRead ||
+    node instanceof angular.SafePropertyRead;
+
+  let property;
+  if (computed) {
+    property = transformer.transformChild<babel.Expression>(node.key);
+  } else {
+    property = transformer.createNode<babel.Identifier>(
+      { type: 'Identifier', name: node.name },
+      node.nameSpan,
+      object ? [] : transformer.ancestors,
+    );
+  }
+
+  if (!object) {
+    return property;
+  }
+
+  const isOptionalObject = isOptionalObjectOrCallee(object);
+
+  if (optional || isOptionalObject) {
+    return transformer.createNode<babel.OptionalMemberExpression>({
+      type: 'OptionalMemberExpression',
+      optional: optional || !isOptionalObject,
+      computed,
+      property,
+      object,
+    });
+  }
+
+  if (computed) {
+    return transformer.createNode<babel.MemberExpressionComputed>({
+      type: 'MemberExpression',
+      property,
+      object,
+      computed: true,
+    });
+  }
+
+  return transformer.createNode<babel.MemberExpressionNonComputed>({
+    type: 'MemberExpression',
+    object,
+    property: property as babel.MemberExpressionNonComputed['property'],
+    computed: false,
+  });
+}
