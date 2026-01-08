@@ -5,6 +5,7 @@ import { type Transformer } from '../transform-ast.ts';
 import type { NGChainedExpression, NGPipeExpression } from '../types.ts';
 import { visitBinary } from './transform-binary-expression.ts';
 import { visitCall, visitSafeCall } from './transform-call-expression.ts';
+import { visitConditional } from './transform-conditional-expression.ts';
 import {
   visitLiteralPrimitive,
   visitRegularExpressionLiteral,
@@ -57,6 +58,8 @@ export const transformVisitor: AstVisitor = {
   visitTemplateLiteral,
   visitTemplateLiteralElement,
 
+  visitConditional,
+
   visitPipe(node: angular.BindingPipe, transformer: Transformer) {
     return transformer.createNode<NGPipeExpression>({
       type: 'NGPipeExpression',
@@ -75,22 +78,6 @@ export const transformVisitor: AstVisitor = {
       expressions: transformer.transformChildren<babel.Expression>(
         node.expressions,
       ),
-    });
-  },
-
-  visitConditional(node: angular.Conditional, transformer: Transformer) {
-    const [test, consequent, alternate] =
-      transformer.transformChildren<babel.Expression>([
-        node.condition,
-        node.trueExp,
-        node.falseExp,
-      ]);
-
-    return transformer.createNode<babel.ConditionalExpression>({
-      type: 'ConditionalExpression',
-      test,
-      consequent,
-      alternate,
     });
   },
 

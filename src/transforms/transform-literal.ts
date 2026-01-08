@@ -11,6 +11,7 @@ export const visitLiteralPrimitive = (
   transformer: Transformer,
 ) => {
   const { value } = node;
+  console.log(node);
   switch (typeof value) {
     case 'boolean':
       return transformer.createNode<babel.BooleanLiteral>({
