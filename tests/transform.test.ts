@@ -208,12 +208,12 @@ const testCases: TestCase[] = [
   {
     expectedAngularType: 'LiteralArray',
     expectedEstreeType: 'ArrayExpression',
-    text: ' [ 1 ] ',
+    text: ' ( ( [ ( ( 1 ) ), ] ) ) ',
   },
   {
     expectedAngularType: 'LiteralMap',
     expectedEstreeType: 'ObjectExpression',
-    text: ' ( ( { "a" : ( ( 1 ) ) } ) )',
+    text: ' ( ( { "a" : ( ( 1 ) ), } ) )',
   },
   {
     expectedAngularType: 'LiteralMap',

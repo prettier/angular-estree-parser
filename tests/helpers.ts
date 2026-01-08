@@ -39,6 +39,13 @@ export function massageAst(ast: any, parser: 'babel' | 'angular'): any {
       delete ast.extra.parenStart;
     }
 
+    if (
+      (ast.type === 'ArrayExpression' || ast.type === 'ObjectExpression') &&
+      typeof ast.extra?.trailingComma === 'number'
+    ) {
+      delete ast.extra.trailingComma;
+    }
+
     delete ast.loc;
   }
 
