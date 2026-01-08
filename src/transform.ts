@@ -10,14 +10,7 @@ function transformAstResult({
   text,
   comments,
 }: AstParseResult) {
-  try {
-    return Object.assign(transformNode(ast, text), { comments });
-  } catch {
-    console.log({
-      ast,
-      es: transformNode(ast, text),
-    });
-  }
+  return Object.assign(transformNode(ast, text), { comments });
 }
 
 function transformMicrosyntaxResult({
