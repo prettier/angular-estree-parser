@@ -275,54 +275,39 @@ class Transformer extends Source {
       });
     }
 
-    if (
-      node instanceof angular.PrefixNot ||
-      node instanceof angular.TypeofExpression ||
-      node instanceof angular.VoidExpression
-    ) {
-      const operator =
-        node instanceof angular.PrefixNot
-          ? '!'
-          : node instanceof angular.TypeofExpression
-            ? 'typeof'
-            : node instanceof angular.VoidExpression
-              ? 'void'
-              : /* c8 ignore next @preserve */
-                undefined;
-
-      /* c8 ignore next 3 @preserve */
-      if (!operator) {
-        throw new Error('Unexpected expression.');
-      }
-
-      let { start } = node.sourceSpan;
-
-      // https://github.com/angular/angular/issues/66174
-      if (operator === 'typeof' || operator === 'void') {
-        const index = this.text.lastIndexOf(operator, start);
-
-        /* c8 ignore next 7 @preserve */
-        if (index === -1) {
-          throw new Error(
-            `Cannot find operator '${operator}' from index ${start} in ${JSON.stringify(
-              this.text,
-            )}`,
-          );
-        }
-
-        start = index;
-      }
-
-      const expression = transformChild<babel.Expression>(node.expression);
-
+    if (node instanceof angular.PrefixNot) {
       return createNode<babel.UnaryExpression>(
         {
           type: 'UnaryExpression',
           prefix: true,
-          operator,
-          argument: expression,
+          operator: '!',
+          argument: transformChild<babel.Expression>(node.expression),
         },
-        [start, node.sourceSpan.end],
+        node.sourceSpan,
+      );
+    }
+
+    if (node instanceof angular.TypeofExpression) {
+      return createNode<babel.UnaryExpression>(
+        {
+          type: 'UnaryExpression',
+          prefix: true,
+          operator: 'typeof',
+          argument: transformChild<babel.Expression>(node.expression),
+        },
+        node.sourceSpan,
+      );
+    }
+
+    if (node instanceof angular.VoidExpression) {
+      return createNode<babel.UnaryExpression>(
+        {
+          type: 'UnaryExpression',
+          prefix: true,
+          operator: 'void',
+          argument: transformChild<babel.Expression>(node.expression),
+        },
+        node.sourceSpan,
       );
     }
 
