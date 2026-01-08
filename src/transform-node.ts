@@ -324,9 +324,7 @@ class Transformer extends Source {
         node instanceof angular.SafeKeyedRead ||
         node instanceof angular.SafePropertyRead;
       const { receiver } = node;
-      const isImplicitReceiver =
-        receiver instanceof angular.ImplicitReceiver &&
-        !(receiver instanceof angular.ThisReceiver);
+      const isImplicitReceiver = receiver instanceof angular.ImplicitReceiver;
 
       let property;
       if (isComputed) {
