@@ -58,7 +58,7 @@ class TemplateBindingTransformer extends Source {
     properties: Partial<T> & { type: T['type'] },
     location: angular.AST | RawNGSpan | [number, number],
   ) {
-    return this.createNode<T>(properties, location);
+    return super.createNode<T>(properties, location);
   }
 
   #transform<T extends NGNode>(node: angular.AST) {

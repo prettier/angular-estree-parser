@@ -1,8 +1,8 @@
 import type * as angular from '@angular/compiler';
 import type * as babel from '@babel/types';
 
-import { type Transformer } from './transform.ts';
 import type { NGNode, RawNGSpan } from '../types.ts';
+import { type Transformer } from './transform.ts';
 
 export const visitLiteralMap = (
   node: angular.LiteralMap,
