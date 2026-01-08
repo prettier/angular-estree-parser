@@ -4,7 +4,8 @@ import {
   VariableBinding as NGVariableBinding,
 } from '@angular/compiler';
 
-import { Transformer as NodeTransformer } from './transform-node.ts';
+import { Source } from './source.ts';
+import { transform as transformNode } from './transform-ast.ts';
 import type {
   NGMicrosyntax,
   NGMicrosyntaxAs,
@@ -30,7 +31,7 @@ function isVariableBinding(
   return templateBinding instanceof NGVariableBinding;
 }
 
-class TemplateBindingTransformer extends NodeTransformer {
+class TemplateBindingTransformer extends Source {
   #rawTemplateBindings;
   #text;
 
@@ -61,7 +62,7 @@ class TemplateBindingTransformer extends NodeTransformer {
   }
 
   #transform<T extends NGNode>(node: angular.AST) {
-    return super.transform(node) as T;
+    return transformNode(node, this.text) as T;
   }
 
   #removePrefix(string: string) {
