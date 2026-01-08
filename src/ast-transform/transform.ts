@@ -1,21 +1,26 @@
-import * as angular from '@angular/compiler';
+import {
+  type AST,
+  type ASTWithSource,
+  EmptyExpr,
+  ParenthesizedExpression,
+} from '@angular/compiler';
 
 import { Source } from '../source.ts';
 import type { NGEmptyExpression, NGNode, RawNGSpan } from '../types.ts';
 import { transformVisitor } from './visitor.ts';
 
-class Transformer extends Source {
-  node: angular.AST;
-  ancestors: angular.AST[];
+class NodeTransformer extends Source {
+  node: AST;
+  ancestors: AST[];
 
   constructor({
     node,
     text,
     ancestors,
   }: {
-    node: angular.AST;
+    node: AST;
     text: string;
-    ancestors: angular.AST[];
+    ancestors: AST[];
   }) {
     super(text);
     this.node = node;
@@ -24,12 +29,12 @@ class Transformer extends Source {
 
   create<T extends NGNode>(
     properties: Partial<T> & { type: T['type'] },
-    location: angular.AST | RawNGSpan | [number, number],
-    ancestors: angular.AST[],
+    location: AST | RawNGSpan | [number, number],
+    ancestors: AST[],
   ) {
     const node = super.createNode(properties, location);
 
-    if (ancestors[0] instanceof angular.ParenthesizedExpression) {
+    if (ancestors[0] instanceof ParenthesizedExpression) {
       node.extra = {
         ...node.extra,
         parenthesized: true,
@@ -41,27 +46,27 @@ class Transformer extends Source {
 
   createNode<T extends NGNode>(
     properties: Partial<T> & { type: T['type'] },
-    location: angular.AST | RawNGSpan | [number, number] = this.node,
-    ancestorsToCreate: angular.AST[] = this.ancestors,
+    location: AST | RawNGSpan | [number, number] = this.node,
+    ancestorsToCreate: AST[] = this.ancestors,
   ) {
     return this.create(properties, location, ancestorsToCreate);
   }
 
-  transformChild<T extends NGNode>(child: angular.AST) {
-    return new Transformer({
+  transformChild<T extends NGNode>(child: AST) {
+    return new NodeTransformer({
       node: child,
       ancestors: [this.node, ...this.ancestors],
       text: this.text,
     }).transform<T>();
   }
 
-  transformChildren<T extends NGNode>(children: angular.AST[]) {
+  transformChildren<T extends NGNode>(children: AST[]) {
     return children.map((child) => this.transformChild<T>(child));
   }
 
   transform<T extends NGNode = NGNode>() {
     const { node } = this;
-    if (node instanceof angular.EmptyExpr) {
+    if (node instanceof EmptyExpr) {
       return this.createNode<NGEmptyExpression>(
         { type: 'NGEmptyExpression' },
         node.sourceSpan,
@@ -82,17 +87,34 @@ class Transformer extends Source {
     return estreeNode as T;
   }
 
-  static transform(node: angular.AST, text: string) {
-    return new Transformer({ node, text, ancestors: [] }).transform();
+  static transform(node: AST, text: string) {
+    return new NodeTransformer({ node, text, ancestors: [] }).transform();
   }
 }
 
-const transformAstNode = (node: angular.AST, text: string) => {
-  return Transformer.transform(node, text);
+class AstTransformer {
+  #ast;
+
+  constructor(ast: ASTWithSource) {
+    this.#ast = ast;
+  }
+
+  transform() {
+    return NodeTransformer.transform(this.#ast, this.#ast.source!);
+  }
+}
+
+const transformAstNode = (node: AST, text: string) => {
+  return NodeTransformer.transform(node, text);
 };
 
-const transformAst = (ast: angular.ASTWithSource) => {
-  return Transformer.transform(ast, ast.source!);
+const transformAst = (ast: ASTWithSource) => {
+  return new AstTransformer(ast).transform();
 };
 
-export { transformAst, transformAstNode, Transformer };
+export {
+  NodeTransformer,
+  transformAst,
+  transformAstNode,
+  NodeTransformer as Transformer,
+};
