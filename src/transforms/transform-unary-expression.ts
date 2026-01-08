@@ -30,26 +30,24 @@ const transformUnaryExpression =
   >(
     operator: Visitor['operator'],
   ) =>
-  (node: Visitor['node'], transformer: Transformer) =>
-    transformer.createNode<babel.UnaryExpression>(
-      {
-        type: 'UnaryExpression',
-        prefix: true,
-        operator,
-        argument: transformer.transformChild<babel.Expression>(node.expression),
-      },
-      node.sourceSpan,
-    );
+  (node: Visitor['node'], transformer: Transformer): babel.UnaryExpression => ({
+    type: 'UnaryExpression',
+    prefix: true,
+    operator,
+    argument: transformer.transformChild<babel.Expression>(node.expression),
+  });
 
 export const visitPrefixNot = transformUnaryExpression<VisitorPrefixNot>('!');
 export const visitTypeofExpression =
   transformUnaryExpression<VisitorTypeofExpression>('typeof');
 export const visitVoidExpression =
   transformUnaryExpression<VisitorVoidExpression>('void');
-export const visitUnary = (node: Unary, transformer: Transformer) =>
-  transformer.createNode<babel.UnaryExpression>({
-    type: 'UnaryExpression',
-    prefix: true,
-    argument: transformer.transformChild<babel.Expression>(node.expr),
-    operator: node.operator as '-' | '+',
-  });
+export const visitUnary = (
+  node: Unary,
+  transformer: Transformer,
+): babel.UnaryExpression => ({
+  type: 'UnaryExpression',
+  prefix: true,
+  argument: transformer.transformChild<babel.Expression>(node.expr),
+  operator: node.operator as '-' | '+',
+});

@@ -20,24 +20,25 @@ const transformCall =
   <Visitor extends VisitorCall | VisitorSafeCall>({
     optional,
   }: Visitor['options']) =>
-  (node: Visitor['node'], transformer: Transformer) => {
+  (
+    node: Visitor['node'],
+    transformer: Transformer,
+  ): babel.CallExpression | babel.OptionalCallExpression => {
     const arguments_ = transformer.transformChildren<babel.Expression>(
       node.args,
     );
     const callee = transformer.transformChild<babel.Expression>(node.receiver);
-    const isOptionalReceiver = isOptionalObjectOrCallee(callee);
-    const nodeType =
-      optional || isOptionalReceiver
-        ? 'OptionalCallExpression'
-        : 'CallExpression';
-    return transformer.createNode<
-      babel.CallExpression | babel.OptionalCallExpression
-    >({
-      type: nodeType,
-      callee,
-      arguments: arguments_,
-      ...(nodeType === 'OptionalCallExpression' ? { optional } : undefined),
-    });
+
+    if (optional || isOptionalObjectOrCallee(callee)) {
+      return {
+        type: 'OptionalCallExpression',
+        callee,
+        arguments: arguments_,
+        optional,
+      };
+    }
+
+    return { type: 'CallExpression', callee, arguments: arguments_ };
   };
 
 export const visitCall = transformCall<VisitorCall>(callOptions);

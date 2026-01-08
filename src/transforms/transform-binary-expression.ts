@@ -13,7 +13,13 @@ const isLogicalOperator = (
 ): operator is babel.LogicalExpression['operator'] =>
   operator === '&&' || operator === '||' || operator === '??';
 
-export const visitBinary = (node: Binary, transformer: Transformer) => {
+export const visitBinary = (
+  node: Binary,
+  transformer: Transformer,
+):
+  | babel.LogicalExpression
+  | babel.AssignmentExpression
+  | babel.BinaryExpression => {
   const { operation: operator } = node;
   const [left, right] = transformer.transformChildren<babel.Expression>([
     node.left,
@@ -21,27 +27,22 @@ export const visitBinary = (node: Binary, transformer: Transformer) => {
   ]);
 
   if (isLogicalOperator(operator)) {
-    return transformer.createNode<babel.LogicalExpression>({
-      type: 'LogicalExpression',
-      operator,
-      left,
-      right,
-    });
+    return { type: 'LogicalExpression', operator, left, right };
   }
 
   if (isAssignmentOperator(operator)) {
-    return transformer.createNode<babel.AssignmentExpression>({
+    return {
       type: 'AssignmentExpression',
       left: left as babel.MemberExpression,
       right,
       operator: operator,
-    });
+    };
   }
 
-  return transformer.createNode<babel.BinaryExpression>({
+  return {
     left,
     right,
     type: 'BinaryExpression',
     operator: operator as babel.BinaryExpression['operator'],
-  });
+  };
 };

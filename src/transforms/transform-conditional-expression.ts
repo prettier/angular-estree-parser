@@ -6,7 +6,7 @@ import { type Transformer } from '../transform-ast.ts';
 export const visitConditional = (
   node: Conditional,
   transformer: Transformer,
-) => {
+): babel.ConditionalExpression => {
   const [test, consequent, alternate] =
     transformer.transformChildren<babel.Expression>([
       node.condition,
@@ -14,10 +14,10 @@ export const visitConditional = (
       node.falseExp,
     ]);
 
-  return transformer.createNode<babel.ConditionalExpression>({
+  return {
     type: 'ConditionalExpression',
     test,
     consequent,
     alternate,
-  });
+  };
 };

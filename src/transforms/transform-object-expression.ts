@@ -7,7 +7,7 @@ import type { NGNode, RawNGSpan } from '../types.ts';
 export const visitLiteralMap = (
   node: angular.LiteralMap,
   transformer: Transformer,
-) => {
+): babel.ObjectExpression => {
   const { keys, values } = node;
   const createChild = <T extends NGNode>(
     properties: Partial<T> & { type: T['type'] },
@@ -15,7 +15,7 @@ export const visitLiteralMap = (
   ) =>
     transformer.create(properties, location, [node, ...transformer.ancestors]);
 
-  return transformer.createNode<babel.ObjectExpression>({
+  return {
     type: 'ObjectExpression',
     properties: keys.map((keyNode, index) => {
       const valueNode = values[index];
@@ -40,5 +40,5 @@ export const visitLiteralMap = (
         [keyNode.sourceSpan.start, valueNode.sourceSpan.end],
       );
     }),
-  });
+  };
 };

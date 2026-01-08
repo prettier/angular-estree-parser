@@ -4,39 +4,26 @@ import {
 } from '@angular/compiler';
 import type * as babel from '@babel/types';
 
-import { type Transformer } from '../transform-ast.ts';
-
 export const visitLiteralPrimitive = (
   node: LiteralPrimitive,
-  transformer: Transformer,
-) => {
+):
+  | babel.BooleanLiteral
+  | babel.NumericLiteral
+  | babel.NullLiteral
+  | babel.StringLiteral
+  | babel.Identifier => {
   const { value } = node;
-  console.log(node);
   switch (typeof value) {
     case 'boolean':
-      return transformer.createNode<babel.BooleanLiteral>({
-        type: 'BooleanLiteral',
-        value,
-      });
+      return { type: 'BooleanLiteral', value };
     case 'number':
-      return transformer.createNode<babel.NumericLiteral>({
-        type: 'NumericLiteral',
-        value,
-      });
+      return { type: 'NumericLiteral', value };
     case 'object':
-      return transformer.createNode<babel.NullLiteral>({
-        type: 'NullLiteral',
-      });
+      return { type: 'NullLiteral' };
     case 'string':
-      return transformer.createNode<babel.StringLiteral>({
-        type: 'StringLiteral',
-        value,
-      });
+      return { type: 'StringLiteral', value };
     case 'undefined':
-      return transformer.createNode<babel.Identifier>({
-        type: 'Identifier',
-        name: 'undefined',
-      });
+      return { type: 'Identifier', name: 'undefined' };
     /* c8 ignore next 4 */
     default:
       throw new Error(
@@ -47,10 +34,8 @@ export const visitLiteralPrimitive = (
 
 export const visitRegularExpressionLiteral = (
   node: RegularExpressionLiteral,
-  transformer: Transformer,
-) =>
-  transformer.createNode<babel.RegExpLiteral>({
-    type: 'RegExpLiteral',
-    pattern: node.body,
-    flags: node.flags ?? '',
-  });
+): babel.RegExpLiteral => ({
+  type: 'RegExpLiteral',
+  pattern: node.body,
+  flags: node.flags ?? '',
+});

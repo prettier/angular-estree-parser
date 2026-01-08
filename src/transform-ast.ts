@@ -68,7 +68,18 @@ class Transformer extends Source {
       ) as T;
     }
 
-    return node.visit(transformVisitor, this) as T;
+    const properties = node.visit(transformVisitor, this);
+
+    if (properties.range) {
+      properties.start ??= properties.range[0];
+      properties.end ??= properties.range[1];
+      return properties as T;
+    }
+
+    const { location = node.sourceSpan, ...restProperties } = properties;
+    const estreeNode = this.createNode(restProperties, location);
+
+    return estreeNode as T;
   }
 
   static transform(node: angular.AST, text: string) {

@@ -28,10 +28,12 @@ import {
   visitUnary,
   visitVoidExpression,
 } from './transform-unary-expression.ts';
+import {
+  visitASTWithSource,
+  visitImplicitReceiver,
+} from './transform-unexpected-node.ts';
 
-type AstVisitor = Required<
-  Omit<angular.AstVisitor, 'visit' | 'visitASTWithSource'>
->;
+type AstVisitor = Required<Omit<angular.AstVisitor, 'visit'>>;
 
 export const transformVisitor: AstVisitor = {
   visitCall,
@@ -60,8 +62,11 @@ export const transformVisitor: AstVisitor = {
 
   visitConditional,
 
-  visitPipe(node: angular.BindingPipe, transformer: Transformer) {
-    return transformer.createNode<NGPipeExpression>({
+  visitPipe(
+    node: angular.BindingPipe,
+    transformer: Transformer,
+  ): Omit<NGPipeExpression, 'start' | 'end' | 'range'> {
+    return {
       type: 'NGPipeExpression',
       left: transformer.transformChild<babel.Expression>(node.exp),
       right: transformer.createNode<babel.Identifier>(
@@ -69,39 +74,38 @@ export const transformVisitor: AstVisitor = {
         node.nameSpan,
       ),
       arguments: transformer.transformChildren<babel.Expression>(node.args),
-    });
+    };
   },
 
-  visitChain(node: angular.Chain, transformer: Transformer) {
-    return transformer.createNode<NGChainedExpression>({
+  visitChain(
+    node: angular.Chain,
+    transformer: Transformer,
+  ): Omit<NGChainedExpression, 'start' | 'end' | 'range'> {
+    return {
       type: 'NGChainedExpression',
       expressions: transformer.transformChildren<babel.Expression>(
         node.expressions,
       ),
-    });
+    };
   },
 
-  visitThisReceiver(node: angular.ThisReceiver, transformer: Transformer) {
-    return transformer.createNode<babel.ThisExpression>({
-      type: 'ThisExpression',
-    });
-  },
+  visitThisReceiver: (): babel.ThisExpression => ({ type: 'ThisExpression' }),
 
-  visitLiteralArray(node: angular.LiteralArray, transformer: Transformer) {
-    return transformer.createNode<babel.ArrayExpression>({
-      type: 'ArrayExpression',
-      elements: transformer.transformChildren<babel.Expression>(
-        node.expressions,
-      ),
-    });
-  },
+  visitLiteralArray: (
+    node: angular.LiteralArray,
+    transformer: Transformer,
+  ): babel.ArrayExpression => ({
+    type: 'ArrayExpression',
+    elements: transformer.transformChildren<babel.Expression>(node.expressions),
+  }),
 
-  visitNonNullAssert(node: angular.NonNullAssert, transformer: Transformer) {
-    return transformer.createNode<babel.TSNonNullExpression>({
-      type: 'TSNonNullExpression',
-      expression: transformer.transformChild<babel.Expression>(node.expression),
-    });
-  },
+  visitNonNullAssert: (
+    node: angular.NonNullAssert,
+    transformer: Transformer,
+  ): babel.TSNonNullExpression => ({
+    type: 'TSNonNullExpression',
+    expression: transformer.transformChild<babel.Expression>(node.expression),
+  }),
 
   visitParenthesizedExpression(
     node: angular.ParenthesizedExpression,
@@ -121,5 +125,6 @@ export const transformVisitor: AstVisitor = {
     return transformer.transformChild(expressions[0]);
   },
 
-  visitImplicitReceiver() {},
+  visitASTWithSource,
+  visitImplicitReceiver,
 };

@@ -1,4 +1,5 @@
 import {
+  ImplicitReceiver,
   type KeyedRead,
   type PropertyRead,
   type SafeKeyedRead,
@@ -42,53 +43,57 @@ const transformMemberExpression =
     computed,
     optional,
   }: Visitor['options']) =>
-  (node: Visitor['node'], transformer: Transformer) => {
-    const object = transformer.transformChild<babel.Expression>(node.receiver);
+  (
+    node: Visitor['node'],
+    transformer: Transformer,
+  ):
+    | babel.OptionalMemberExpression
+    | babel.MemberExpression
+    | babel.Identifier => {
+    const { receiver } = node;
 
     let property;
     if (computed) {
       const { key } = node as KeyedRead | SafeKeyedRead;
       property = transformer.transformChild<babel.Expression>(key);
     } else {
+      const isImplicitReceiver = receiver instanceof ImplicitReceiver;
       const { name, nameSpan } = node as PropertyRead | SafePropertyRead;
       property = transformer.createNode<babel.Identifier>(
         { type: 'Identifier', name: name },
         nameSpan,
-        object ? [] : transformer.ancestors,
+        isImplicitReceiver ? transformer.ancestors : [],
       );
+
+      if (isImplicitReceiver) {
+        return property;
+      }
     }
 
-    if (!object) {
-      return property;
-    }
+    const object = transformer.transformChild<babel.Expression>(receiver);
 
     const isOptionalObject = isOptionalObjectOrCallee(object);
 
     if (optional || isOptionalObject) {
-      return transformer.createNode<babel.OptionalMemberExpression>({
+      return {
         type: 'OptionalMemberExpression',
         optional: optional || !isOptionalObject,
         computed,
         property,
         object,
-      });
+      };
     }
 
     if (computed) {
-      return transformer.createNode<babel.MemberExpressionComputed>({
-        type: 'MemberExpression',
-        property,
-        object,
-        computed: true,
-      });
+      return { type: 'MemberExpression', property, object, computed: true };
     }
 
-    return transformer.createNode<babel.MemberExpressionNonComputed>({
+    return {
       type: 'MemberExpression',
       object,
       property: property as babel.MemberExpressionNonComputed['property'],
       computed: false,
-    });
+    };
   };
 
 export const visitKeyedRead =

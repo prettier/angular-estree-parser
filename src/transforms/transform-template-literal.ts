@@ -41,12 +41,10 @@ export const visitTemplateLiteralElement = (
   const start = node.sourceSpan.start + (isFirst ? 1 : 0);
   const raw = transformer.text.slice(start, end);
 
-  return transformer.createNode<babel.TemplateElement>(
-    {
-      type: 'TemplateElement',
-      value: { cooked: node.text, raw },
-      tail: isLast,
-    },
-    [start, end],
-  );
+  return {
+    type: 'TemplateElement',
+    value: { cooked: node.text, raw },
+    tail: isLast,
+    range: [start, end],
+  };
 };
