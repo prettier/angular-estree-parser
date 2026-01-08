@@ -1,4 +1,5 @@
 export * from './transform-array-expression.ts';
+export * from './transform-ast-with-source.ts';
 export * from './transform-binary-expression.ts';
 export * from './transform-call-expression.ts';
 export * from './transform-chained-expression.ts';

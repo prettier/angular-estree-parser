@@ -5,12 +5,8 @@ import type {
 import { transform as transformAst } from './ast-transform/index.ts';
 import { transform as transformTemplateBindings } from './transform-template-binding.ts';
 
-function transformAstResult({
-  result: { ast },
-  text,
-  comments,
-}: AstParseResult) {
-  return Object.assign(transformAst(ast, text), { comments });
+function transformAstResult({ result, comments }: AstParseResult) {
+  return Object.assign(transformAst(result), { comments });
 }
 
 function transformMicrosyntaxResult({

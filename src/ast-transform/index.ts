@@ -1,1 +1,1 @@
-export { transform } from './transform.ts';
+export { transform, transformAst } from './transform.ts';

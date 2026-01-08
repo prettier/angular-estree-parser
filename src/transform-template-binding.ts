@@ -4,7 +4,7 @@ import {
   VariableBinding as NGVariableBinding,
 } from '@angular/compiler';
 
-import { transform as transformAst } from './ast-transform/index.ts';
+import { transformAst } from './ast-transform/index.ts';
 import { Source } from './source.ts';
 import type {
   NGMicrosyntax,

@@ -61,6 +61,8 @@ function createAngularParseFunction<
       );
     }
 
+    console.log(result);
+
     return { result, comments, text };
   };
 }
