@@ -1,8 +1,8 @@
 import { type BindingPipe } from '@angular/compiler';
 import type * as babel from '@babel/types';
 
-import { type Transformer } from './transform.ts';
 import type { NGPipeExpression } from '../types.ts';
+import { type Transformer } from './transform.ts';
 
 export const visitPipe = (
   node: BindingPipe,
