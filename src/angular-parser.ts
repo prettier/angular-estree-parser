@@ -1,6 +1,7 @@
 import {
   type ASTWithSource,
   Lexer,
+  ParseError,
   ParseLocation,
   Parser,
   ParseSourceFile,
@@ -11,16 +12,29 @@ import {
 import { type CommentLine } from './types.ts';
 import { sourceSpanToLocationInformation } from './utils.ts';
 
-let parseSourceSpan: ParseSourceSpan;
-// https://github.com/angular/angular/blob/5e9707dc84e6590ec8c9d41e7d3be7deb2fa7c53/packages/compiler/test/expression_parser/utils/span.ts
-function getParseSourceSpan() {
-  if (!parseSourceSpan) {
-    const file = new ParseSourceFile('', 'test.html');
-    const location = new ParseLocation(file, -1, -1, -1);
-    parseSourceSpan = new ParseSourceSpan(location, location);
-  }
+const FILE_NAME = 'test.html';
 
-  return parseSourceSpan;
+type ParseContext = {
+  text: string;
+  file: ParseSourceFile;
+  start: ParseLocation;
+  end: ParseLocation;
+  sourceSpan: ParseSourceSpan;
+};
+
+// https://github.com/angular/angular/blob/5e9707dc84e6590ec8c9d41e7d3be7deb2fa7c53/packages/compiler/test/expression_parser/utils/span.ts
+function getParseSourceSpan(text: string): ParseContext {
+  const file = new ParseSourceFile(text, FILE_NAME);
+  const start = new ParseLocation(file, 0, 0, 0);
+  const end = start.moveBy(text.length);
+  const sourceSpan = new ParseSourceSpan(start, end);
+  return {
+    text,
+    file,
+    start,
+    end,
+    sourceSpan,
+  };
 }
 
 let parser: Parser;
@@ -53,15 +67,50 @@ function extractComments(text: string) {
 
 function throwErrors<
   ResultType extends ASTWithSource | TemplateBindingParseResult,
->(result: ResultType) {
+>(
+  parseResult: ParseContext & {
+    result: ResultType;
+    comments: CommentLine[];
+  },
+) {
+  const { result } = parseResult;
+
   if (result.errors.length !== 0) {
-    const [{ message }] = result.errors;
-    throw new SyntaxError(
-      message.replace(/^Parser Error: | at column \d+ in [^]*$/g, ''),
-    );
+    const [originalError] = result.errors;
+
+    /* c8 ignore next 3 @preserve */
+    if (!(originalError instanceof ParseError)) {
+      throw originalError;
+    }
+
+    let { message } = originalError;
+    {
+      const match = message.match(/ in .*?@\d+:\d+$/);
+      if (match) {
+        message = message.slice(0, match.index);
+      }
+    }
+
+    let location = parseResult.start;
+    {
+      const match = message.match(/at column (?<index>\d+)/);
+      if (match) {
+        message = message.slice(0, match.index);
+        location = location.moveBy(Number(match.groups!.index));
+      }
+    }
+
+    const error = new SyntaxError(message.trim(), { cause: originalError });
+    Object.assign({
+      cause: originalError,
+      location,
+      span: originalError.span,
+    });
+
+    throw error;
   }
 
-  return result;
+  return parseResult;
 }
 
 const createAstParser =
@@ -72,13 +121,14 @@ const createAstParser =
       | 'parseAction'
       | 'parseInterpolationExpression',
   ) =>
-  (text: string) => ({
-    result: throwErrors<ASTWithSource>(
-      getParser()[name](text, getParseSourceSpan(), 0),
-    ),
-    text,
-    comments: extractComments(text),
-  });
+  (text: string) => {
+    const context = getParseSourceSpan(text);
+    return throwErrors<ASTWithSource>({
+      ...context,
+      result: getParser()[name](text, context.sourceSpan, 0),
+      comments: extractComments(text),
+    });
+  };
 
 export const parseAction = createAstParser('parseAction');
 export const parseBinding = createAstParser('parseBinding');
@@ -86,10 +136,17 @@ export const parseSimpleBinding = createAstParser('parseSimpleBinding');
 export const parseInterpolationExpression = createAstParser(
   'parseInterpolationExpression',
 );
-export const parseTemplateBindings = (text: string) => ({
-  result: throwErrors<TemplateBindingParseResult>(
-    getParser().parseTemplateBindings('', text, getParseSourceSpan(), 0, 0),
-  ),
-  text,
-  comments: [],
-});
+export const parseTemplateBindings = (text: string) => {
+  const context = getParseSourceSpan(text);
+  return throwErrors<TemplateBindingParseResult>({
+    ...context,
+    result: getParser().parseTemplateBindings(
+      '',
+      text,
+      context.sourceSpan,
+      0,
+      0,
+    ),
+    comments: [],
+  });
+};
