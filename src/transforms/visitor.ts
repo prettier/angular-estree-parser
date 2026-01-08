@@ -1,9 +1,10 @@
-import * as angular from '@angular/compiler';
+import type * as angular from '@angular/compiler';
 import type * as babel from '@babel/types';
 
 import { type Transformer } from '../transform-ast.ts';
 import type { NGChainedExpression, NGPipeExpression } from '../types.ts';
-import { visitCall, visitSafeCall } from './transform-call.ts';
+import { visitBinary } from './transform-binary-expression.ts';
+import { visitCall, visitSafeCall } from './transform-call-expression.ts';
 import {
   visitLiteralPrimitive,
   visitRegularExpressionLiteral,
@@ -15,6 +16,11 @@ import {
   visitSafePropertyRead,
 } from './transform-member-expression.ts';
 import { visitLiteralMap } from './transform-object-expression.ts';
+import {
+  visitTaggedTemplateLiteral,
+  visitTemplateLiteral,
+  visitTemplateLiteralElement,
+} from './transform-template-literal.ts';
 import {
   visitPrefixNot,
   visitTypeofExpression,
@@ -40,43 +46,16 @@ export const transformVisitor: AstVisitor = {
   visitVoidExpression,
   visitUnary,
 
+  visitBinary,
+
   visitLiteralMap,
 
   visitLiteralPrimitive,
   visitRegularExpressionLiteral,
 
-  visitBinary(node: angular.Binary, transformer: Transformer) {
-    const { operation: operator } = node;
-    const [left, right] = transformer.transformChildren<babel.Expression>([
-      node.left,
-      node.right,
-    ]);
-
-    if (operator === '&&' || operator === '||' || operator === '??') {
-      return transformer.createNode<babel.LogicalExpression>({
-        type: 'LogicalExpression',
-        operator: operator as babel.LogicalExpression['operator'],
-        left,
-        right,
-      });
-    }
-
-    if (angular.Binary.isAssignmentOperation(operator)) {
-      return transformer.createNode<babel.AssignmentExpression>({
-        type: 'AssignmentExpression',
-        left: left as babel.MemberExpression,
-        right,
-        operator: operator as babel.AssignmentExpression['operator'],
-      });
-    }
-
-    return transformer.createNode<babel.BinaryExpression>({
-      left,
-      right,
-      type: 'BinaryExpression',
-      operator: operator as babel.BinaryExpression['operator'],
-    });
-  },
+  visitTaggedTemplateLiteral,
+  visitTemplateLiteral,
+  visitTemplateLiteralElement,
 
   visitPipe(node: angular.BindingPipe, transformer: Transformer) {
     return transformer.createNode<NGPipeExpression>({
@@ -135,52 +114,6 @@ export const transformVisitor: AstVisitor = {
       type: 'TSNonNullExpression',
       expression: transformer.transformChild<babel.Expression>(node.expression),
     });
-  },
-
-  visitTaggedTemplateLiteral(
-    node: angular.TaggedTemplateLiteral,
-    transformer: Transformer,
-  ) {
-    return transformer.createNode<babel.TaggedTemplateExpression>({
-      type: 'TaggedTemplateExpression',
-      tag: transformer.transformChild<babel.Expression>(node.tag),
-      quasi: transformer.transformChild<babel.TemplateLiteral>(node.template),
-    });
-  },
-
-  visitTemplateLiteral(
-    node: angular.TemplateLiteral,
-    transformer: Transformer,
-  ) {
-    return transformer.createNode<babel.TemplateLiteral>({
-      type: 'TemplateLiteral',
-      quasis: transformer.transformChildren(node.elements),
-      expressions: transformer.transformChildren(node.expressions),
-    });
-  },
-
-  visitTemplateLiteralElement(
-    node: angular.TemplateLiteralElement,
-    transformer: Transformer,
-  ) {
-    const [parent] = transformer.ancestors;
-    const { elements } = parent as angular.TemplateLiteral;
-    const elementIndex = elements.indexOf(node);
-    const isFirst = elementIndex === 0;
-    const isLast = elementIndex === elements.length - 1;
-
-    const end = node.sourceSpan.end - (isLast ? 1 : 0);
-    const start = node.sourceSpan.start + (isFirst ? 1 : 0);
-    const raw = transformer.text.slice(start, end);
-
-    return transformer.createNode<babel.TemplateElement>(
-      {
-        type: 'TemplateElement',
-        value: { cooked: node.text, raw },
-        tail: isLast,
-      },
-      [start, end],
-    );
   },
 
   visitParenthesizedExpression(
