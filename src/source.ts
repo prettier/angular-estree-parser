@@ -2,11 +2,7 @@ import * as angular from '@angular/compiler';
 import type * as babel from '@babel/types';
 
 import type { LocationInformation, NGNode, RawNGSpan } from './types.ts';
-import {
-  getCharacterIndex,
-  getCharacterLastIndex,
-  sourceSpanToLocationInformation,
-} from './utils.ts';
+import { getCharacterIndex, sourceSpanToLocationInformation } from './utils.ts';
 
 export class Source {
   text;
@@ -17,10 +13,6 @@ export class Source {
 
   getCharacterIndex(pattern: RegExp | string, index: number) {
     return getCharacterIndex(this.text, pattern, index);
-  }
-
-  getCharacterLastIndex(pattern: RegExp | string, index: number) {
-    return getCharacterLastIndex(this.text, pattern, index);
   }
 
   transformSpan(span: RawNGSpan): LocationInformation {
