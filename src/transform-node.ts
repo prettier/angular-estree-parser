@@ -179,60 +179,35 @@ class Transformer extends Source {
         properties: Partial<T> & { type: T['type'] },
         location: angular.AST | RawNGSpan | [number, number] = node,
       ) => this.#create(properties, location, [node, ...ancestors]);
-      const tProperties = keys.map((property, index) => {
-        const { key, quoted, isShorthandInitialized = false } = property;
-        const { start: valueStart, end: valueEnd } = values[index].sourceSpan;
-        const value = transformChild<babel.Expression>(values[index]);
 
-        let tKey: (babel.StringLiteral | babel.Identifier) &
-          LocationInformation;
-
-        if (isShorthandInitialized) {
-          tKey = transformChild<babel.Identifier>(values[index]);
-        } else {
-          // No location information
-          // https://github.com/angular/angular/issues/66175
-          const keyStart = super.getCharacterIndex(
-            /\S/,
-            index === 0
-              ? node.sourceSpan.start + 1 // {
-              : super.getCharacterIndex(',', values[index - 1].sourceSpan.end) +
-                  1,
-          );
-          const keyEnd =
-            valueStart === keyStart
-              ? valueEnd
-              : super.getCharacterLastIndex(
-                  /\S/,
-                  super.getCharacterLastIndex(':', valueStart - 1) - 1,
-                ) + 1;
-          tKey = quoted
-            ? createChild<babel.StringLiteral>(
-                { type: 'StringLiteral', value: key },
-                [keyStart, keyEnd],
-              )
-            : createChild<babel.Identifier>({ type: 'Identifier', name: key }, [
-                keyStart,
-                keyEnd,
-              ]);
-        }
-
-        return createChild<babel.ObjectPropertyNonComputed>(
-          {
-            type: 'ObjectProperty',
-            key: tKey,
-            value,
-            shorthand: isShorthandInitialized,
-            computed: false,
-            // @ts-expect-error -- Missed in types
-            method: false,
-          },
-          [tKey.range[0], valueEnd],
-        );
-      });
       return createNode<babel.ObjectExpression>({
         type: 'ObjectExpression',
-        properties: tProperties,
+        properties: keys.map((keyNode, index) => {
+          const valueNode = values[index];
+          const shorthand = Boolean(keyNode.isShorthandInitialized);
+          const key = keyNode.quoted
+            ? createChild<babel.StringLiteral>(
+                { type: 'StringLiteral', value: keyNode.key },
+                keyNode.sourceSpan,
+              )
+            : createChild<babel.Identifier>(
+                { type: 'Identifier', name: keyNode.key },
+                keyNode.sourceSpan,
+              );
+
+          return createChild<babel.ObjectPropertyNonComputed>(
+            {
+              type: 'ObjectProperty',
+              key,
+              value: transformChild<babel.Expression>(valueNode),
+              shorthand,
+              computed: false,
+              // @ts-expect-error -- Missed in types
+              method: false,
+            },
+            [keyNode.sourceSpan.start, valueNode.sourceSpan.end],
+          );
+        }),
       });
     }
 
