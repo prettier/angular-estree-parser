@@ -107,8 +107,6 @@ function throwErrors<
     });
     error.cause ??= originalError;
 
-    console.log({ error });
-
     throw error;
   }
 
