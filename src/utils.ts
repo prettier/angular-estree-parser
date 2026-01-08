@@ -8,29 +8,6 @@ function getCharacterSearchTestFunction(pattern: RegExp | string) {
   return (character: string) => pattern.test(character);
 }
 
-export function getCharacterLastIndex(
-  text: string,
-  pattern: RegExp | string,
-  fromIndex: number,
-) {
-  const test = getCharacterSearchTestFunction(pattern);
-
-  for (let index = fromIndex; index >= 0; index--) {
-    const character = text[index];
-
-    if (test(character)) {
-      return index;
-    }
-  }
-
-  /* c8 ignore next 4 @preserve */
-  throw new Error(
-    `Cannot find front char ${pattern} from index ${fromIndex} in ${JSON.stringify(
-      text,
-    )}`,
-  );
-}
-
 export function getCharacterIndex(
   text: string,
   pattern: RegExp | string,
