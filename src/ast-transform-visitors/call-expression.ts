@@ -1,8 +1,8 @@
 import { type Call, type SafeCall } from '@angular/compiler';
 import type * as babel from '@babel/types';
 
-import { type Transformer } from './transform.ts';
-import { isOptionalObjectOrCallee } from './utilities.ts';
+import { type NodeTransformer } from '../ast-transform/node-transformer.ts';
+import { isOptionalObjectOrCallee } from '../utilities.ts';
 
 const callOptions = { optional: false } as const;
 const safeCallOptions = { optional: true } as const;
@@ -22,7 +22,7 @@ const transformCall =
   }: Visitor['options']) =>
   (
     node: Visitor['node'],
-    transformer: Transformer,
+    transformer: NodeTransformer,
   ): babel.CallExpression | babel.OptionalCallExpression => {
     const arguments_ = transformer.transformChildren<babel.Expression>(
       node.args,

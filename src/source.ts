@@ -2,7 +2,10 @@ import { type AST } from '@angular/compiler';
 import type * as babel from '@babel/types';
 
 import type { LocationInformation, NGNode, Range, StartEnd } from './types.ts';
-import { getCharacterIndex, sourceSpanToLocationInformation } from './utils.ts';
+import {
+  getCharacterIndex,
+  sourceSpanToLocationInformation,
+} from './utilities.ts';
 
 export type RawLocationInformation = AST | StartEnd | Range;
 

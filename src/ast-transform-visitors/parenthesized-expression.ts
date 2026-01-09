@@ -1,8 +1,8 @@
 import { type ParenthesizedExpression } from '@angular/compiler';
 
-import { type Transformer } from './transform.ts';
+import { type NodeTransformer } from '../ast-transform/node-transformer.ts';
 
 export const visitParenthesizedExpression = (
   node: ParenthesizedExpression,
-  transformer: Transformer,
+  transformer: NodeTransformer,
 ) => transformer.transformChild(node.expression);

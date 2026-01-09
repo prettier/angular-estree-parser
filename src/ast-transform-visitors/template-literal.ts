@@ -5,11 +5,11 @@ import {
 } from '@angular/compiler';
 import type * as babel from '@babel/types';
 
-import { type Transformer } from './transform.ts';
+import { type NodeTransformer } from '../ast-transform/node-transformer.ts';
 
 export const visitTaggedTemplateLiteral = (
   node: TaggedTemplateLiteral,
-  transformer: Transformer,
+  transformer: NodeTransformer,
 ) =>
   transformer.createNode<babel.TaggedTemplateExpression>({
     type: 'TaggedTemplateExpression',
@@ -19,7 +19,7 @@ export const visitTaggedTemplateLiteral = (
 
 export const visitTemplateLiteral = (
   node: TemplateLiteral,
-  transformer: Transformer,
+  transformer: NodeTransformer,
 ) =>
   transformer.createNode<babel.TemplateLiteral>({
     type: 'TemplateLiteral',
@@ -29,7 +29,7 @@ export const visitTemplateLiteral = (
 
 export const visitTemplateLiteralElement = (
   node: TemplateLiteralElement,
-  transformer: Transformer,
+  transformer: NodeTransformer,
 ) => {
   const [parent] = transformer.ancestors;
   const { elements } = parent as TemplateLiteral;

@@ -1,11 +1,11 @@
 import { type Conditional } from '@angular/compiler';
 import type * as babel from '@babel/types';
 
-import { type Transformer } from './transform.ts';
+import { type NodeTransformer } from '../ast-transform/node-transformer.ts';
 
 export const visitConditional = (
   node: Conditional,
-  transformer: Transformer,
+  transformer: NodeTransformer,
 ): babel.ConditionalExpression => {
   const [test, consequent, alternate] =
     transformer.transformChildren<babel.Expression>([

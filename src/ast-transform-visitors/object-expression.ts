@@ -3,11 +3,11 @@ import type * as babel from '@babel/types';
 
 import { type RawLocationInformation } from '../source.ts';
 import type { NGNode, Range } from '../types.ts';
-import { type Transformer } from './transform.ts';
+import { type NodeTransformer } from '../ast-transform/node-transformer.ts';
 
 export const visitLiteralMap = (
   node: angular.LiteralMap,
-  transformer: Transformer,
+  transformer: NodeTransformer,
 ): babel.ObjectExpression => {
   const { keys, values } = node;
   const createChild = <T extends NGNode>(

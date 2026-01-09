@@ -1,6 +1,6 @@
 import * as angularParser from './angular-parser.ts';
 import { transformAst } from './ast-transform/index.ts';
-import { transformTemplateBindings } from './transform-template-binding.ts';
+import { transformTemplateBindings } from './template-bindings-transform/transform-template-binding.ts';
 
 const createAstParser =
   (

@@ -1,7 +1,7 @@
 import { Binary } from '@angular/compiler';
 import type * as babel from '@babel/types';
 
-import { type Transformer } from './transform.ts';
+import { type NodeTransformer } from '../ast-transform/node-transformer.ts';
 
 const isAssignmentOperator = (
   operator: Binary['operation'],
@@ -15,7 +15,7 @@ const isLogicalOperator = (
 
 export const visitBinary = (
   node: Binary,
-  transformer: Transformer,
+  transformer: NodeTransformer,
 ):
   | babel.LogicalExpression
   | babel.AssignmentExpression

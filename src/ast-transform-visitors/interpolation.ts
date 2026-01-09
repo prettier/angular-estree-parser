@@ -1,10 +1,10 @@
 import { type Interpolation } from '@angular/compiler';
 
-import { type Transformer } from './transform.ts';
+import { type NodeTransformer } from '../ast-transform/node-transformer.ts';
 
 export const visitInterpolation = (
   node: Interpolation,
-  transformer: Transformer,
+  transformer: NodeTransformer,
 ) => {
   const { expressions } = node;
 

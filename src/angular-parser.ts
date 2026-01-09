@@ -10,7 +10,7 @@ import {
 } from '@angular/compiler';
 
 import { type CommentLine } from './types.ts';
-import { sourceSpanToLocationInformation } from './utils.ts';
+import { sourceSpanToLocationInformation } from './utilities.ts';
 
 const FILE_NAME = 'test.html';
 

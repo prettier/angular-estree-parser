@@ -6,7 +6,7 @@ import {
 } from '@angular/compiler';
 import type * as babel from '@babel/types';
 
-import { type Transformer } from './transform.ts';
+import { type NodeTransformer } from '../ast-transform/node-transformer.ts';
 
 type VisitorPrefixNot = {
   node: PrefixNot;
@@ -30,7 +30,10 @@ const transformUnaryExpression =
   >(
     operator: Visitor['operator'],
   ) =>
-  (node: Visitor['node'], transformer: Transformer): babel.UnaryExpression => ({
+  (
+    node: Visitor['node'],
+    transformer: NodeTransformer,
+  ): babel.UnaryExpression => ({
     type: 'UnaryExpression',
     prefix: true,
     operator,
@@ -44,7 +47,7 @@ export const visitVoidExpression =
   transformUnaryExpression<VisitorVoidExpression>('void');
 export const visitUnary = (
   node: Unary,
-  transformer: Transformer,
+  transformer: NodeTransformer,
 ): babel.UnaryExpression => ({
   type: 'UnaryExpression',
   prefix: true,

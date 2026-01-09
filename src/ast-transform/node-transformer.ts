@@ -1,26 +1,25 @@
 import {
   type AST,
-  type ASTWithSource,
   EmptyExpr,
   ParenthesizedExpression,
 } from '@angular/compiler';
 
+import { transformVisitors } from '../ast-transform-visitors/index.ts';
 import { type RawLocationInformation, Source } from '../source.ts';
 import type { NGEmptyExpression, NGNode } from '../types.ts';
-import { transformVisitor } from './visitor.ts';
 
-class NodeTransformer extends Source {
+export class NodeTransformer extends Source {
   node: AST;
   ancestors: AST[];
 
   constructor({
     node,
     text,
-    ancestors,
+    ancestors = [],
   }: {
     node: AST;
     text: string;
-    ancestors: AST[];
+    ancestors?: AST[];
   }) {
     super(text);
     this.node = node;
@@ -73,7 +72,7 @@ class NodeTransformer extends Source {
       ) as T;
     }
 
-    const properties = node.visit(transformVisitor, this);
+    const properties = node.visit(transformVisitors, this);
 
     if (properties.range) {
       properties.start ??= properties.range[0];
@@ -91,30 +90,3 @@ class NodeTransformer extends Source {
     return new NodeTransformer({ node, text, ancestors: [] }).transform();
   }
 }
-
-class AstTransformer {
-  #ast;
-
-  constructor(ast: ASTWithSource) {
-    this.#ast = ast;
-  }
-
-  transform() {
-    return NodeTransformer.transform(this.#ast, this.#ast.source!);
-  }
-}
-
-const transformAstNode = (node: AST, text: string) => {
-  return NodeTransformer.transform(node, text);
-};
-
-const transformAst = (ast: ASTWithSource) => {
-  return new AstTransformer(ast).transform();
-};
-
-export {
-  NodeTransformer,
-  transformAst,
-  transformAstNode,
-  NodeTransformer as Transformer,
-};

@@ -4,8 +4,8 @@ import {
   VariableBinding as NGVariableBinding,
 } from '@angular/compiler';
 
-import { transformAstNode } from './ast-transform/index.ts';
-import { type RawLocationInformation, Source } from './source.ts';
+import { transformAstNode } from '../ast-transform/index.ts';
+import { type RawLocationInformation, Source } from '../source.ts';
 import type {
   NGMicrosyntax,
   NGMicrosyntaxAs,
@@ -16,8 +16,8 @@ import type {
   NGMicrosyntaxNode,
   NGNode,
   StartEnd,
-} from './types.ts';
-import { lowercaseFirst } from './utils.ts';
+} from '../types.ts';
+import { lowercaseFirst } from '../utilities.ts';
 
 function isExpressionBinding(
   templateBinding: angular.TemplateBinding,
