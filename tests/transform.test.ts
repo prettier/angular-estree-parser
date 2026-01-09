@@ -211,9 +211,19 @@ const testCases: TestCase[] = [
     text: ' ( ( [ ( ( 1 ) ), ] ) ) ',
   },
   {
+    expectedAngularType: 'LiteralArray',
+    expectedEstreeType: 'ArrayExpression',
+    text: ' ( ( [ ( ( 1 ) ), ... ( ( a ) ) ] ) ) ',
+  },
+  {
     expectedAngularType: 'LiteralMap',
     expectedEstreeType: 'ObjectExpression',
     text: ' ( ( { "a" : ( ( 1 ) ), } ) )',
+  },
+  {
+    expectedAngularType: 'LiteralMap',
+    expectedEstreeType: 'ObjectExpression',
+    text: ' ( ( { "a" : ( ( 1 ) ), ...( ( a ) ) } ) )',
   },
   {
     expectedAngularType: 'LiteralMap',
