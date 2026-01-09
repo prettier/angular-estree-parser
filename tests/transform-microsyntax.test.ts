@@ -4,7 +4,7 @@ import { parseTemplateBindings } from '../src/index.js';
 import type {
   NGMicrosyntaxKeyedExpression,
   NGMicrosyntaxNode,
-} from '../src/types.js';
+} from '../src/types.ts';
 import { snapshotAst } from './helpers.js';
 
 const testCases: {

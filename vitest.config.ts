@@ -9,7 +9,7 @@ export default defineConfig({
       enabled: !!process.env.ENABLE_COVERAGE,
       reporter: ['lcov', 'text'],
       include: ['src/**/*.ts'],
-      exclude: ['src/index.ts', 'src/helpers.ts', 'src/types.ts'],
+      exclude: ['src/index.ts', 'src/helpers.ts'],
       thresholds: {
         branches: 95,
         functions: 100,

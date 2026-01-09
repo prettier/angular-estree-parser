@@ -5,8 +5,15 @@ import {
 } from '@angular/compiler';
 
 import { transformVisitors } from '../ast-transform-visitors/index.ts';
-import { type RawLocationInformation, Source } from '../source.ts';
-import type { NGEmptyExpression, NGNode } from '../types.ts';
+import type {
+  NGEmptyExpression,
+  NGNode,
+} from '../ast-transform-visitors/node-types.ts';
+import {
+  type IncompleteNode,
+  type RawLocationInformation,
+  Source,
+} from '../source.ts';
 
 export class NodeTransformer extends Source {
   node: AST;
@@ -27,28 +34,21 @@ export class NodeTransformer extends Source {
   }
 
   create<T extends NGNode>(
-    properties: Partial<T> & { type: T['type'] },
-    location: RawLocationInformation,
-    ancestors: AST[],
+    properties: IncompleteNode<T>,
+    location?: RawLocationInformation,
+    ancestors: AST[] = this.ancestors,
   ) {
-    const node = super.createNode(properties, location);
-
     if (ancestors[0] instanceof ParenthesizedExpression) {
-      node.extra = {
-        ...node.extra,
+      properties.extra = {
+        ...properties.extra,
         parenthesized: true,
       };
     }
 
-    return node;
-  }
-
-  createNode<T extends NGNode>(
-    properties: Partial<T> & { type: T['type'] },
-    location: RawLocationInformation = this.node,
-    ancestorsToCreate: AST[] = this.ancestors,
-  ) {
-    return this.create(properties, location, ancestorsToCreate);
+    return super.createNode<T>(
+      properties,
+      properties.range ?? location ?? this.node,
+    );
   }
 
   transformChild<T extends NGNode>(child: AST) {
@@ -63,27 +63,14 @@ export class NodeTransformer extends Source {
     return children.map((child) => this.transformChild<T>(child));
   }
 
-  transform<T extends NGNode = NGNode>() {
+  transform<T extends NGNode>() {
     const { node } = this;
     if (node instanceof EmptyExpr) {
-      return this.createNode<NGEmptyExpression>(
-        { type: 'NGEmptyExpression' },
-        node.sourceSpan,
-      ) as T;
+      return this.create<NGEmptyExpression>({ type: 'NGEmptyExpression' }) as T;
     }
 
     const properties = node.visit(transformVisitors, this);
-
-    if (properties.range) {
-      properties.start ??= properties.range[0];
-      properties.end ??= properties.range[1];
-      return properties as T;
-    }
-
-    const { location = node.sourceSpan, ...restProperties } = properties;
-    const estreeNode = this.createNode(restProperties, location);
-
-    return estreeNode as T;
+    return this.create(properties, this.node) as T;
   }
 
   static transform(node: AST, text: string) {

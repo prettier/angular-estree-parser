@@ -8,5 +8,5 @@ export const visitSpreadElement = (
   transformer: NodeTransformer,
 ): babel.SpreadElement => ({
   type: 'SpreadElement',
-  argument: transformer.transformChild(node.expression),
+  argument: transformer.transformChild<babel.Expression>(node.expression),
 });

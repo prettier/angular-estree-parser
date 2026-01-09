@@ -8,5 +8,7 @@ export const visitLiteralArray = (
   transformer: NodeTransformer,
 ): babel.ArrayExpression => ({
   type: 'ArrayExpression',
-  elements: transformer.transformChildren<babel.Expression>(node.expressions),
+  elements: transformer.transformChildren<
+    babel.Expression | babel.SpreadElement
+  >(node.expressions),
 });

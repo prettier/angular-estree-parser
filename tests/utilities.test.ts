@@ -1,4 +1,4 @@
-import { getCharacterIndex } from './utilities.ts';
+import { getCharacterIndex } from '../src/utilities.ts';
 
 test('getCharacterIndex', () => {
   expect(getCharacterIndex('foobar', /o/, 0)).toBe(1);

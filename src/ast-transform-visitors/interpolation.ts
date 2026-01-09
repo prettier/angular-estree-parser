@@ -1,4 +1,5 @@
 import { type Interpolation } from '@angular/compiler';
+import type * as babel from '@babel/types';
 
 import { type NodeTransformer } from '../ast-transform/node-transformer.ts';
 
@@ -13,5 +14,5 @@ export const visitInterpolation = (
     throw new Error("Unexpected 'Interpolation'");
   }
 
-  return transformer.transformChild(expressions[0]);
+  return transformer.transformChild<babel.Expression>(expressions[0]);
 };

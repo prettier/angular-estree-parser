@@ -1,13 +1,16 @@
 import { type AST } from '@angular/compiler';
 import type * as babel from '@babel/types';
 
-import type { LocationInformation, NGNode, Range, StartEnd } from './types.ts';
+import type { NGAst, NGNodeTypes, Range, StartEnd } from './types.ts';
 import {
   getCharacterIndex,
   sourceSpanToLocationInformation,
 } from './utilities.ts';
 
 export type RawLocationInformation = AST | StartEnd | Range;
+export type LocationInformation = StartEnd & { range: Range };
+export type IncompleteNode<Node extends { type: NGNodeTypes }> =
+  Partial<Node> & { type: Node['type'] };
 
 export class Source {
   text;
@@ -24,8 +27,8 @@ export class Source {
     return sourceSpanToLocationInformation(span);
   }
 
-  createNode<T extends NGNode>(
-    properties: Partial<T> & { type: T['type'] },
+  createNode<T extends NGAst>(
+    properties: IncompleteNode<T>,
     location?: RawLocationInformation,
   ) {
     let start: number | undefined | null = properties.start;

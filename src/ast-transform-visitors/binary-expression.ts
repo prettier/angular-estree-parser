@@ -33,7 +33,7 @@ export const visitBinary = (
   if (isAssignmentOperator(operator)) {
     return {
       type: 'AssignmentExpression',
-      left: left as babel.MemberExpression,
+      left: left as babel.AssignmentExpression['left'],
       right,
       operator: operator,
     };

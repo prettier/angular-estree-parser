@@ -59,7 +59,7 @@ const transformMemberExpression =
     } else {
       const isImplicitReceiver = receiver instanceof ImplicitReceiver;
       const { name, nameSpan } = node as PropertyRead | SafePropertyRead;
-      property = transformer.createNode<babel.Identifier>(
+      property = transformer.create<babel.Identifier>(
         { type: 'Identifier', name: name },
         nameSpan,
         isImplicitReceiver ? transformer.ancestors : [],

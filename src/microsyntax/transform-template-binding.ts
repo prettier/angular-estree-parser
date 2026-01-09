@@ -7,6 +7,7 @@ import {
 import { transformAstNode } from '../ast-transform/index.ts';
 import { type RawLocationInformation, Source } from '../source.ts';
 import type {
+  NGAst,
   NGMicrosyntax,
   NGMicrosyntaxAs,
   NGMicrosyntaxExpression,
@@ -54,7 +55,7 @@ class TemplateBindingTransformer extends Source {
     return this.#rawTemplateBindings[0].key;
   }
 
-  #create<T extends NGNode>(
+  #create<T extends NGAst>(
     properties: Partial<T> & { type: T['type'] },
     location: RawLocationInformation,
   ) {
@@ -156,7 +157,7 @@ class TemplateBindingTransformer extends Source {
           { type: 'NGMicrosyntaxKey', name: templateBinding.key.source },
           templateBinding.key.span,
         );
-        const updateSpanEnd = <T extends NGNode>(node: T, end: number): T => ({
+        const updateSpanEnd = <T extends NGAst>(node: T, end: number): T => ({
           ...node,
           ...this.transformSpan({ start: node.start!, end }),
         });

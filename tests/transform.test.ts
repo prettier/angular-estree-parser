@@ -2,7 +2,7 @@ import type * as angular from '@angular/compiler';
 
 import * as angularParser from '../src/angular-parser.js';
 import * as estreeParser from '../src/estree-parser.js';
-import type { NGNode } from '../src/types.js';
+import type { NGAst } from '../src/types.ts';
 import {
   getAngularNodeType,
   massageAst,
@@ -19,7 +19,7 @@ const PARSE_METHODS = [
 
 type TestCase = {
   expectedAngularType: string;
-  expectedEstreeType: NGNode['type'];
+  expectedEstreeType: NGAst['type'];
   text: string;
   only?: true;
 } & {

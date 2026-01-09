@@ -1,4 +1,5 @@
 import type { LocationInformation, StartEnd } from './types.ts';
+import type { NGNode } from './types.ts';
 
 function getCharacterSearchTestFunction(pattern: RegExp | string) {
   if (typeof pattern === 'string') {
@@ -45,8 +46,6 @@ export function sourceSpanToLocationInformation(
     range: [start, end],
   };
 }
-
-import type { NGNode } from './types.ts';
 
 function isParenthesized(node: NGNode) {
   return Boolean(node.extra?.parenthesized);

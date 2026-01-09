@@ -11,7 +11,7 @@ export const visitTaggedTemplateLiteral = (
   node: TaggedTemplateLiteral,
   transformer: NodeTransformer,
 ) =>
-  transformer.createNode<babel.TaggedTemplateExpression>({
+  transformer.create<babel.TaggedTemplateExpression>({
     type: 'TaggedTemplateExpression',
     tag: transformer.transformChild<babel.Expression>(node.tag),
     quasi: transformer.transformChild<babel.TemplateLiteral>(node.template),
@@ -21,10 +21,12 @@ export const visitTemplateLiteral = (
   node: TemplateLiteral,
   transformer: NodeTransformer,
 ) =>
-  transformer.createNode<babel.TemplateLiteral>({
+  transformer.create<babel.TemplateLiteral>({
     type: 'TemplateLiteral',
-    quasis: transformer.transformChildren(node.elements),
-    expressions: transformer.transformChildren(node.expressions),
+    quasis: transformer.transformChildren<babel.TemplateElement>(node.elements),
+    expressions: transformer.transformChildren<babel.Expression>(
+      node.expressions,
+    ),
   });
 
 export const visitTemplateLiteralElement = (

@@ -1,9 +1,9 @@
 import type * as angular from '@angular/compiler';
 import type * as babel from '@babel/types';
 
-import { type RawLocationInformation } from '../source.ts';
-import type { NGNode, Range } from '../types.ts';
 import { type NodeTransformer } from '../ast-transform/node-transformer.ts';
+import { type RawLocationInformation } from '../source.ts';
+import type { NGNode, Range } from './node-types.ts';
 
 export const visitLiteralMap = (
   node: angular.LiteralMap,
@@ -14,7 +14,10 @@ export const visitLiteralMap = (
     properties: Partial<T> & { type: T['type'] },
     location: RawLocationInformation = node,
   ) =>
-    transformer.create(properties, location, [node, ...transformer.ancestors]);
+    transformer.create<T>(properties, location, [
+      node,
+      ...transformer.ancestors,
+    ]);
 
   return {
     type: 'ObjectExpression',
