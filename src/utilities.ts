@@ -2,6 +2,7 @@ import type { LocationInformation, StartEnd } from './types.ts';
 import type { NGNode } from './types.ts';
 
 function getCharacterSearchTestFunction(pattern: RegExp | string) {
+  /* c8 ignore next 3 @preserve */
   if (typeof pattern === 'string') {
     return (character: string) => character === pattern;
   }

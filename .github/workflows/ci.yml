@@ -42,9 +42,7 @@ jobs:
           node-version: ${{ matrix.node }}
           cache: 'yarn'
       - run: yarn install --immutable
-      - run: yarn run test
-        env:
-          ENABLE_COVERAGE: 1
+      - run: yarn run test --coverage
       - uses: codecov/codecov-action@v5
         with:
           fail_ci_if_error: true

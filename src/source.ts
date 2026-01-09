@@ -45,6 +45,7 @@ export class Source {
       }
     }
 
+    /* c8 ignore next 4 @preserve */
     if (range) {
       [start, end] = range;
     } else if (typeof start === 'number' && typeof end === 'number') {

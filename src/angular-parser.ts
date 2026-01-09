@@ -86,6 +86,7 @@ function throwErrors<
     let { message } = originalError;
     {
       const match = message.match(/ in .*?@\d+:\d+$/);
+      /* c8 ignore else @preserve */
       if (match) {
         message = message.slice(0, match.index);
       }

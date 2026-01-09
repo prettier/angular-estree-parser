@@ -20,6 +20,7 @@
   "scripts": {
     "prepare": "yarn run build",
     "test": "vitest",
+    "test-coverage": "vitest --coverage",
     "lint": "run-p \"lint:*\"",
     "lint:eslint": "eslint",
     "lint:prettier": "prettier --check .",
