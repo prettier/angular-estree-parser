@@ -11,6 +11,7 @@ export * from './transform-non-null-expression.ts';
 export * from './transform-object-expression.ts';
 export * from './transform-parenthesized-expression.ts';
 export * from './transform-pipe-expression.ts';
+export * from './transform-spread-element.ts';
 export * from './transform-template-literal.ts';
 export * from './transform-this-expression.ts';
 export * from './transform-unary-expression.ts';
