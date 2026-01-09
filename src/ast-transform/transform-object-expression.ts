@@ -19,6 +19,21 @@ export const visitLiteralMap = (
     type: 'ObjectExpression',
     properties: keys.map((keyNode, index) => {
       const valueNode = values[index];
+      const range: [number, number] = [
+        keyNode.sourceSpan.start,
+        valueNode.sourceSpan.end,
+      ];
+
+      if (keyNode.kind === 'spread') {
+        return createChild<babel.SpreadElement>(
+          {
+            type: 'SpreadElement',
+            argument: transformer.transformChild<babel.Expression>(valueNode),
+          },
+          range,
+        );
+      }
+
       const shorthand = Boolean(keyNode.isShorthandInitialized);
       const key = createChild<babel.Identifier | babel.StringLiteral>(
         keyNode.quoted
@@ -37,7 +52,7 @@ export const visitLiteralMap = (
           // @ts-expect-error -- Missed in types
           method: false,
         },
-        [keyNode.sourceSpan.start, valueNode.sourceSpan.end],
+        range,
       );
     }),
   };
