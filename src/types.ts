@@ -1,15 +1,16 @@
 import type * as babel from '@babel/types';
 
-export interface LocationInformation {
-  start: number;
-  end: number;
-  range: [number, number];
-  extra?: any;
-}
+export type Range = [number, number];
+export type StartEnd = { start: number; end: number };
 
-export interface NGBaseNode extends LocationInformation {
+export type LocationInformation = StartEnd & {
+  range: Range;
+  extra?: any;
+};
+
+export type NGBaseNode = LocationInformation & {
   type: string;
-}
+};
 
 export type NGOwnNode =
   | NGMicrosyntaxNode
@@ -35,11 +36,6 @@ export interface NGPipeExpression extends NGBaseNode {
 export interface NGChainedExpression extends NGBaseNode {
   type: 'NGChainedExpression';
   expressions: NGNode[];
-}
-
-export interface RawNGSpan {
-  start: number;
-  end: number;
 }
 
 /**

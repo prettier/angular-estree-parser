@@ -5,7 +5,7 @@ import {
 } from '@angular/compiler';
 
 import { transformAstNode } from './ast-transform/index.ts';
-import { Source } from './source.ts';
+import { type RawLocationInformation, Source } from './source.ts';
 import type {
   NGMicrosyntax,
   NGMicrosyntaxAs,
@@ -15,7 +15,7 @@ import type {
   NGMicrosyntaxLet,
   NGMicrosyntaxNode,
   NGNode,
-  RawNGSpan,
+  StartEnd,
 } from './types.ts';
 import { lowercaseFirst } from './utils.ts';
 
@@ -56,7 +56,7 @@ class TemplateBindingTransformer extends Source {
 
   #create<T extends NGNode>(
     properties: Partial<T> & { type: T['type'] },
-    location: angular.AST | RawNGSpan | [number, number],
+    location: RawLocationInformation,
   ) {
     return super.createNode<T>(properties, location);
   }
@@ -73,7 +73,7 @@ class TemplateBindingTransformer extends Source {
    * - "a"  (start=0 end=1) -> (start=0 end=3)
    * - '\'' (start=0 end=1) -> (start=0 end=4)
    */
-  #fixSpan(span: RawNGSpan) {
+  #fixSpan(span: StartEnd) {
     const text = this.#text;
     if (text[span.start] !== '"' && text[span.start] !== "'") {
       return;

@@ -1,4 +1,4 @@
-import type { LocationInformation, RawNGSpan } from './types.ts';
+import type { LocationInformation, StartEnd } from './types.ts';
 
 function getCharacterSearchTestFunction(pattern: RegExp | string) {
   if (typeof pattern === 'string') {
@@ -36,7 +36,7 @@ export function lowercaseFirst(str: string) {
 }
 
 export function sourceSpanToLocationInformation(
-  span: RawNGSpan,
+  span: StartEnd,
 ): LocationInformation {
   const { start, end } = span;
   return {

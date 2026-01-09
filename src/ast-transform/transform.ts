@@ -5,8 +5,8 @@ import {
   ParenthesizedExpression,
 } from '@angular/compiler';
 
-import { Source } from '../source.ts';
-import type { NGEmptyExpression, NGNode, RawNGSpan } from '../types.ts';
+import { type RawLocationInformation, Source } from '../source.ts';
+import type { NGEmptyExpression, NGNode } from '../types.ts';
 import { transformVisitor } from './visitor.ts';
 
 class NodeTransformer extends Source {
@@ -29,7 +29,7 @@ class NodeTransformer extends Source {
 
   create<T extends NGNode>(
     properties: Partial<T> & { type: T['type'] },
-    location: AST | RawNGSpan | [number, number],
+    location: RawLocationInformation,
     ancestors: AST[],
   ) {
     const node = super.createNode(properties, location);
@@ -46,7 +46,7 @@ class NodeTransformer extends Source {
 
   createNode<T extends NGNode>(
     properties: Partial<T> & { type: T['type'] },
-    location: AST | RawNGSpan | [number, number] = this.node,
+    location: RawLocationInformation = this.node,
     ancestorsToCreate: AST[] = this.ancestors,
   ) {
     return this.create(properties, location, ancestorsToCreate);

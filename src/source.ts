@@ -1,8 +1,10 @@
-import * as angular from '@angular/compiler';
+import { type AST } from '@angular/compiler';
 import type * as babel from '@babel/types';
 
-import type { LocationInformation, NGNode, RawNGSpan } from './types.ts';
+import type { LocationInformation, NGNode, Range, StartEnd } from './types.ts';
 import { getCharacterIndex, sourceSpanToLocationInformation } from './utils.ts';
+
+export type RawLocationInformation = AST | StartEnd | Range;
 
 export class Source {
   text;
@@ -15,38 +17,51 @@ export class Source {
     return getCharacterIndex(this.text, pattern, index);
   }
 
-  transformSpan(span: RawNGSpan): LocationInformation {
+  transformSpan(span: StartEnd): LocationInformation {
     return sourceSpanToLocationInformation(span);
   }
 
   createNode<T extends NGNode>(
     properties: Partial<T> & { type: T['type'] },
-    location: angular.AST | RawNGSpan | [number, number],
+    location?: RawLocationInformation,
   ) {
-    let start: number;
-    let end: number;
-    let range: [number, number];
-    if (Array.isArray(location)) {
-      range = location;
-      [start, end] = location;
-    } else {
-      ({ start, end } =
-        location instanceof angular.AST ? location.sourceSpan : location);
+    let start: number | undefined | null = properties.start;
+    let end: number | undefined | null = properties.end;
+    let range: Range | undefined = properties.range;
+
+    if (location) {
+      if (Array.isArray(location)) {
+        [start, end] = location;
+        range = location;
+      } else {
+        ({ start, end } = (location as AST).sourceSpan ?? location);
+        range = [start, end];
+      }
+    }
+
+    if (range) {
+      [start, end] = range;
+    } else if (typeof start === 'number' && typeof end === 'number') {
       range = [start, end];
     }
 
+    /* c8 ignore next 3 @preserve */
+    if (!(typeof start === 'number' && typeof end === 'number' && range)) {
+      throw new Error('Missing location information');
+    }
+
     const node = {
+      ...properties,
       start,
       end,
       range,
-      ...properties,
     } as T & LocationInformation;
 
     switch (node.type) {
       case 'NumericLiteral':
       case 'StringLiteral':
       case 'RegExpLiteral': {
-        const raw = this.text.slice(node.start, node.end);
+        const raw = this.text.slice(start, end);
         const { value } = node as unknown as
           | babel.NumericLiteral
           | babel.StringLiteral;

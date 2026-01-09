@@ -1,7 +1,8 @@
 import type * as angular from '@angular/compiler';
 import type * as babel from '@babel/types';
 
-import type { NGNode, RawNGSpan } from '../types.ts';
+import { type RawLocationInformation } from '../source.ts';
+import type { NGNode, Range } from '../types.ts';
 import { type Transformer } from './transform.ts';
 
 export const visitLiteralMap = (
@@ -11,7 +12,7 @@ export const visitLiteralMap = (
   const { keys, values } = node;
   const createChild = <T extends NGNode>(
     properties: Partial<T> & { type: T['type'] },
-    location: angular.AST | RawNGSpan | [number, number] = node,
+    location: RawLocationInformation = node,
   ) =>
     transformer.create(properties, location, [node, ...transformer.ancestors]);
 
@@ -19,10 +20,7 @@ export const visitLiteralMap = (
     type: 'ObjectExpression',
     properties: keys.map((keyNode, index) => {
       const valueNode = values[index];
-      const range: [number, number] = [
-        keyNode.sourceSpan.start,
-        valueNode.sourceSpan.end,
-      ];
+      const range: Range = [keyNode.sourceSpan.start, valueNode.sourceSpan.end];
 
       if (keyNode.kind === 'spread') {
         return createChild<babel.SpreadElement>(
