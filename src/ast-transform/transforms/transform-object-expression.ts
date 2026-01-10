@@ -48,6 +48,11 @@ export const visitLiteralMap = (
           type: 'ObjectProperty',
           key,
           value: transformer.transformChild<babel.Expression>(valueNode),
+          // TODO: Use this instead, https://github.com/babel/babel/pull/17703
+          // value:
+          //   transformer.transformChild<babel.ObjectProperty['value']>(
+          //     valueNode,
+          //   ),
           shorthand,
           computed: false,
           // @ts-expect-error -- Missed in types

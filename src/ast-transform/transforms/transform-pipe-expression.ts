@@ -1,14 +1,13 @@
 import { type BindingPipe } from '@angular/compiler';
 import type * as babel from '@babel/types';
 
-import { type IncompleteNode } from '../../source.ts';
 import type { NGPipeExpression } from '../../types.ts';
 import { type NodeTransformer } from '../node-transformer.ts';
 
 export const visitPipe = (
   node: BindingPipe,
   transformer: NodeTransformer,
-): IncompleteNode<NGPipeExpression> => ({
+): Omit<NGPipeExpression, 'start' | 'end' | 'range'> => ({
   type: 'NGPipeExpression',
   left: transformer.transformChild<babel.Expression>(node.exp),
   right: transformer.create<babel.Identifier>(

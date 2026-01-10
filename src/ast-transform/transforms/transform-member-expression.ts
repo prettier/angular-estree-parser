@@ -55,7 +55,7 @@ const transformMemberExpression =
     let property;
     if (computed) {
       const { key } = node as KeyedRead | SafeKeyedRead;
-      property = transformer.transformChild<babel.Expression>(key);
+      property = transformer.transformChild<babel.Identifier>(key);
     } else {
       const isImplicitReceiver = receiver instanceof ImplicitReceiver;
       const { name, nameSpan } = node as PropertyRead | SafePropertyRead;
@@ -72,28 +72,15 @@ const transformMemberExpression =
 
     const object = transformer.transformChild<babel.Expression>(receiver);
 
-    const isOptionalObject = isOptionalObjectOrCallee(object);
-
-    if (optional || isOptionalObject) {
-      return {
-        type: 'OptionalMemberExpression',
-        optional: optional || !isOptionalObject,
-        computed,
-        property,
-        object,
-      };
-    }
-
-    if (computed) {
-      return { type: 'MemberExpression', property, object, computed: true };
-    }
-
-    return {
-      type: 'MemberExpression',
-      object,
-      property: property as babel.MemberExpressionNonComputed['property'],
-      computed: false,
-    };
+    return optional || isOptionalObjectOrCallee(object)
+      ? {
+          type: 'OptionalMemberExpression',
+          optional: optional,
+          property,
+          object,
+          computed,
+        }
+      : { type: 'MemberExpression', property, object, computed };
   };
 
 export const visitKeyedRead =

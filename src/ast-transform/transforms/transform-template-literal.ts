@@ -10,29 +10,27 @@ import { type NodeTransformer } from '../node-transformer.ts';
 export const visitTaggedTemplateLiteral = (
   node: TaggedTemplateLiteral,
   transformer: NodeTransformer,
-) =>
-  transformer.create<babel.TaggedTemplateExpression>({
-    type: 'TaggedTemplateExpression',
-    tag: transformer.transformChild<babel.Expression>(node.tag),
-    quasi: transformer.transformChild<babel.TemplateLiteral>(node.template),
-  });
+): babel.TaggedTemplateExpression => ({
+  type: 'TaggedTemplateExpression',
+  tag: transformer.transformChild<babel.Expression>(node.tag),
+  quasi: transformer.transformChild<babel.TemplateLiteral>(node.template),
+});
 
 export const visitTemplateLiteral = (
   node: TemplateLiteral,
   transformer: NodeTransformer,
-) =>
-  transformer.create<babel.TemplateLiteral>({
-    type: 'TemplateLiteral',
-    quasis: transformer.transformChildren<babel.TemplateElement>(node.elements),
-    expressions: transformer.transformChildren<babel.Expression>(
-      node.expressions,
-    ),
-  });
+): babel.TemplateLiteral => ({
+  type: 'TemplateLiteral',
+  quasis: transformer.transformChildren<babel.TemplateElement>(node.elements),
+  expressions: transformer.transformChildren<babel.Expression>(
+    node.expressions,
+  ),
+});
 
 export const visitTemplateLiteralElement = (
   node: TemplateLiteralElement,
   transformer: NodeTransformer,
-) => {
+): babel.TemplateElement => {
   const [parent] = transformer.ancestors;
   const { elements } = parent as TemplateLiteral;
   const elementIndex = elements.indexOf(node);

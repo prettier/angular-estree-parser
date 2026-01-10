@@ -1,7 +1,7 @@
 import { type Interpolation } from '@angular/compiler';
-import type * as babel from '@babel/types';
 
 import { type NodeTransformer } from '../node-transformer.ts';
+import type { NGNode } from '../node-types.ts';
 
 export const visitInterpolation = (
   node: Interpolation,
@@ -14,5 +14,5 @@ export const visitInterpolation = (
     throw new Error("Unexpected 'Interpolation'");
   }
 
-  return transformer.transformChild<babel.Expression>(expressions[0]);
+  return transformer.transformChild<NGNode>(expressions[0]);
 };

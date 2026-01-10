@@ -9,6 +9,6 @@ export const visitLiteralArray = (
 ): babel.ArrayExpression => ({
   type: 'ArrayExpression',
   elements: transformer.transformChildren<
-    babel.Expression | babel.SpreadElement
+    Exclude<babel.ArrayExpression['elements'][number], null>
   >(node.expressions),
 });

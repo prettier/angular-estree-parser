@@ -19,7 +19,12 @@ export type NGOwnNode =
   | NGPipeExpression
   | NGChainedExpression;
 
-export type NGNode = babel.Node | NGOwnNode;
+export type NGNode =
+  | babel.Expression
+  | babel.ObjectProperty
+  | babel.SpreadElement
+  | babel.TemplateElement
+  | NGOwnNode;
 
 export interface NGEmptyExpression extends NGBaseNode {
   type: 'NGEmptyExpression';
