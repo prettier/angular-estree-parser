@@ -1,7 +1,7 @@
 import { type AstVisitor } from '@angular/compiler';
 
-import * as visitors from './visitors/index.ts';
+import * as transforms from './transforms/index.ts';
 
 type TransformVisitors = Required<Omit<AstVisitor, 'visit'>>;
 
-export const transformVisitors: TransformVisitors = visitors;
+export const transformVisitors: TransformVisitors = transforms;
