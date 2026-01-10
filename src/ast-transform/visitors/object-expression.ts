@@ -1,9 +1,9 @@
 import type * as angular from '@angular/compiler';
 import type * as babel from '@babel/types';
 
-import { type NodeTransformer } from '../ast-transform/node-transformer.ts';
-import { type RawLocationInformation } from '../source.ts';
-import type { NGNode, Range } from './node-types.ts';
+import { type RawLocationInformation } from '../../source.ts';
+import { type NodeTransformer } from '../node-transformer.ts';
+import type { NGNode, Range } from '../node-types.ts';
 
 export const visitLiteralMap = (
   node: angular.LiteralMap,

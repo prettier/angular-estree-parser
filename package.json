@@ -24,7 +24,7 @@
     "lint": "run-p \"lint:*\"",
     "lint:eslint": "eslint",
     "lint:prettier": "prettier --check .",
-    "lint:tsc": "tsc --noEmit",
+    "lint:types": "tsc --noEmit",
     "fix": "run-s \"fix:*\"",
     "fix:eslint": "yarn lint:eslint --fix",
     "fix:prettier": "yarn lint:prettier --write",

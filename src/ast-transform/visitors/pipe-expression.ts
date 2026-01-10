@@ -1,9 +1,9 @@
 import { type BindingPipe } from '@angular/compiler';
 import type * as babel from '@babel/types';
 
-import { type NodeTransformer } from '../ast-transform/node-transformer.ts';
-import { type IncompleteNode } from '../source.ts';
-import type { NGPipeExpression } from '../types.ts';
+import { type IncompleteNode } from '../../source.ts';
+import type { NGPipeExpression } from '../../types.ts';
+import { type NodeTransformer } from '../node-transformer.ts';
 
 export const visitPipe = (
   node: BindingPipe,

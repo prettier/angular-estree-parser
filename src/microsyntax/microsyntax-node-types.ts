@@ -1,7 +1,4 @@
-import {
-  type NGBaseNode,
-  type NGNode,
-} from '../ast-transform-visitors/node-types.ts';
+import { type NGBaseNode, type NGNode } from '../ast-transform/node-types.ts';
 
 /**
  *     Microsyntax ::

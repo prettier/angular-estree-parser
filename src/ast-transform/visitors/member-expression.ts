@@ -7,8 +7,8 @@ import {
 } from '@angular/compiler';
 import type * as babel from '@babel/types';
 
-import { type NodeTransformer } from '../ast-transform/node-transformer.ts';
-import { isOptionalObjectOrCallee } from '../utilities.ts';
+import { isOptionalObjectOrCallee } from '../../utilities.ts';
+import { type NodeTransformer } from '../node-transformer.ts';
 
 const keyedReadOptions = { computed: true, optional: false } as const;
 const safeKeyedReadOptions = { computed: true, optional: true } as const;

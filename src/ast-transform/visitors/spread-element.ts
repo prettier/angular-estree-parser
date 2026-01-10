@@ -1,7 +1,7 @@
 import { type SpreadElement } from '@angular/compiler';
 import type * as babel from '@babel/types';
 
-import { type NodeTransformer } from '../ast-transform/node-transformer.ts';
+import { type NodeTransformer } from '../node-transformer.ts';
 
 export const visitSpreadElement = (
   node: SpreadElement,

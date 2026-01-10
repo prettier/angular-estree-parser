@@ -4,16 +4,13 @@ import {
   ParenthesizedExpression,
 } from '@angular/compiler';
 
-import { transformVisitors } from '../ast-transform-visitors/index.ts';
-import type {
-  NGEmptyExpression,
-  NGNode,
-} from '../ast-transform-visitors/node-types.ts';
 import {
   type IncompleteNode,
   type RawLocationInformation,
   Source,
 } from '../source.ts';
+import type { NGEmptyExpression, NGNode } from './node-types.ts';
+import { transformVisitors } from './visitors.ts';
 
 export class NodeTransformer extends Source {
   node: AST;
