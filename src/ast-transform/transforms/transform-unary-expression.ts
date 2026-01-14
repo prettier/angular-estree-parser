@@ -52,5 +52,5 @@ export const visitUnary = (
   type: 'UnaryExpression',
   prefix: true,
   argument: transformer.transformChild<babel.Expression>(node.expr),
-  operator: node.operator as '-' | '+',
+  operator: node.operator,
 });
