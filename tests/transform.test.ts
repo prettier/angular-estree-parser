@@ -166,6 +166,11 @@ const testCases: TestCase[] = [
     text: ' a ( 1 )?.( 2 ) ',
   },
   {
+    expectedAngularType: 'SafeCall',
+    expectedEstreeType: 'OptionalCallExpression',
+    text: '( ( ( ( a ) ) ?.( ... ( ( b ) ) ) ) )',
+  },
+  {
     expectedAngularType: 'KeyedRead',
     expectedEstreeType: 'MemberExpression',
     text: ' a [ b ] ',
