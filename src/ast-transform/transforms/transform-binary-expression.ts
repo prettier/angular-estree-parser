@@ -3,11 +3,6 @@ import type * as babel from '@babel/types';
 
 import { type NodeTransformer } from '../node-transformer.ts';
 
-const isAssignmentOperator = (
-  operator: Binary['operation'],
-): operator is babel.AssignmentExpression['operator'] =>
-  Binary.isAssignmentOperation(operator);
-
 const isLogicalOperator = (
   operator: Binary['operation'],
 ): operator is babel.LogicalExpression['operator'] =>
@@ -30,7 +25,7 @@ export const visitBinary = (
     return { type: 'LogicalExpression', operator, left, right };
   }
 
-  if (isAssignmentOperator(operator)) {
+  if (Binary.isAssignmentOperation(operator)) {
     return {
       type: 'AssignmentExpression',
       left: left as babel.AssignmentExpression['left'],
@@ -39,10 +34,5 @@ export const visitBinary = (
     };
   }
 
-  return {
-    left,
-    right,
-    type: 'BinaryExpression',
-    operator: operator as babel.BinaryExpression['operator'],
-  };
+  return { left, right, type: 'BinaryExpression', operator: operator };
 };
