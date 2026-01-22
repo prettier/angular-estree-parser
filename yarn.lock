@@ -5,12 +5,12 @@ __metadata:
   version: 8
   cacheKey: 10
 
-"@angular/compiler@npm:21.1.0":
-  version: 21.1.0
-  resolution: "@angular/compiler@npm:21.1.0"
+"@angular/compiler@npm:21.2.0-next.0":
+  version: 21.2.0-next.0
+  resolution: "@angular/compiler@npm:21.2.0-next.0"
   dependencies:
     tslib: "npm:^2.3.0"
-  checksum: 10/1f409c20eb36079719e004f9e683a41d9d9fd975d814132faa28f941a0d491ba392c7cca92061f8dbe540bd922cac905f76ccab48a87c82c764b3b7cdb6b28dd
+  checksum: 10/61e5c75eff50de8ffcb3098fbbab7dbe3da885db5939d99965ab54cab1649771dc35dd57de0c7af0031a410f273afaac436ee66c63c639eb455175d38311b74a
   languageName: node
   linkType: hard
 
@@ -1671,7 +1671,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "angular-estree-parser@workspace:."
   dependencies:
-    "@angular/compiler": "npm:21.1.0"
+    "@angular/compiler": "npm:21.2.0-next.0"
     "@babel/code-frame": "npm:8.0.0-beta.4"
     "@babel/parser": "npm:8.0.0-beta.4"
     "@babel/types": "npm:8.0.0-beta.4"
@@ -1692,7 +1692,7 @@ __metadata:
     typescript-eslint: "npm:8.53.0"
     vitest: "npm:4.0.17"
   peerDependencies:
-    "@angular/compiler": ">=21.0.7 || >= 21.1.0-0"
+    "@angular/compiler": ">=21.0.7 || >= 21.2.0-0"
   languageName: unknown
   linkType: soft
 
