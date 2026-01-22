@@ -62,10 +62,6 @@ export class NodeTransformer extends Source {
 
   transform<T extends NGNode>() {
     const { node } = this;
-    if (node instanceof EmptyExpr) {
-      return this.create<NGEmptyExpression>({ type: 'NGEmptyExpression' }) as T;
-    }
-
     const properties = node.visit(transformVisitors, this);
     return this.create(properties, this.node) as T;
   }
