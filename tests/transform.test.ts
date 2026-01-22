@@ -44,6 +44,11 @@ const testCases: TestCase[] = [
   },
   {
     expectedAngularType: 'Binary',
+    expectedEstreeType: 'BinaryExpression',
+    text: ' ( ( ( ( a ) ) instanceof ( ( b ) ) ) ) ',
+  },
+  {
+    expectedAngularType: 'Binary',
     expectedEstreeType: 'LogicalExpression',
     text: ' ( ( ( ( a ) ) && ( ( b ) ) ) ) ',
   },
