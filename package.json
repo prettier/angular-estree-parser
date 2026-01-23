@@ -10,12 +10,7 @@
     "email": "ikatyang@gmail.com",
     "url": "https://github.com/ikatyang"
   },
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
-    }
-  },
+  "exports": "./dist/index.js",
   "license": "MIT",
   "scripts": {
     "prepare": "yarn run build",
