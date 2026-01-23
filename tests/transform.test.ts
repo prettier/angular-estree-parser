@@ -500,6 +500,16 @@ const testCases: TestCase[] = [
     expectedEstreeType: 'ObjectExpression',
     text: ' ( ( {foo: tag ` a ${ b } ` } ) ) ',
   },
+  {
+    expectedAngularType: 'ArrowFunction',
+    expectedEstreeType: 'ArrowFunctionExpression',
+    text: ' ( ( () => ( ( 1 ) ) ) ) ',
+  },
+  {
+    expectedAngularType: 'ArrowFunction',
+    expectedEstreeType: 'ArrowFunctionExpression',
+    text: ' ( ( (a) => ( ( 1 ) ) ) ) ',
+  },
 ];
 
 const IS_CI = Boolean(process.env.CI);
