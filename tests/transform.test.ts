@@ -508,7 +508,7 @@ const testCases: TestCase[] = [
   {
     expectedAngularType: 'ArrowFunction',
     expectedEstreeType: 'ArrowFunctionExpression',
-    text: ' ( ( (a) => ( ( 1 ) ) ) ) ',
+    text: ' ( ( (a, b ) => ( ( 1 ) ) ) ) ',
   },
 ];
 
