@@ -21,6 +21,6 @@ export const visitArrowFunction: AstVisitor['visitArrowFunction'] = (
       parameter.sourceSpan,
     ),
   ),
-  body: transformer.transformChild(node.body) as babel.Expression,
+  body: transformer.transformChild<babel.Expression>(node.body),
   ...commonProperties,
 });
