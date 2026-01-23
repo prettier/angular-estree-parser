@@ -11,10 +11,7 @@
     "url": "https://github.com/ikatyang"
   },
   "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
-    }
+    ".": "./dist/index.js"
   },
   "license": "MIT",
   "scripts": {
