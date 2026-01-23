@@ -1,15 +1,11 @@
-import {
-  type AST,
-  EmptyExpr,
-  ParenthesizedExpression,
-} from '@angular/compiler';
+import { type AST, ParenthesizedExpression } from '@angular/compiler';
 
 import {
   type IncompleteNode,
   type RawLocationInformation,
   Source,
 } from '../source.ts';
-import type { NGEmptyExpression, NGNode } from './node-types.ts';
+import type { NGNode } from './node-types.ts';
 import { transformVisitors } from './visitors.ts';
 
 export class NodeTransformer extends Source {
