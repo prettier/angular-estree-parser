@@ -46,6 +46,13 @@ export function massageAst(ast: any, parser: 'babel' | 'angular'): any {
       delete ast.extra.trailingComma;
     }
 
+    if (
+      ast.type === 'ArrowFunctionExpression' &&
+      !Object.hasOwn(ast, 'expression')
+    ) {
+      ast.expression = ast.body.type !== 'BlockStatement';
+    }
+
     delete ast.loc;
   }
 

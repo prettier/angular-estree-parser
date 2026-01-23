@@ -44,6 +44,11 @@ const testCases: TestCase[] = [
   },
   {
     expectedAngularType: 'Binary',
+    expectedEstreeType: 'BinaryExpression',
+    text: ' ( ( ( ( a ) ) instanceof ( ( b ) ) ) ) ',
+  },
+  {
+    expectedAngularType: 'Binary',
     expectedEstreeType: 'LogicalExpression',
     text: ' ( ( ( ( a ) ) && ( ( b ) ) ) ) ',
   },
@@ -494,6 +499,16 @@ const testCases: TestCase[] = [
     expectedAngularType: 'LiteralMap',
     expectedEstreeType: 'ObjectExpression',
     text: ' ( ( {foo: tag ` a ${ b } ` } ) ) ',
+  },
+  {
+    expectedAngularType: 'ArrowFunction',
+    expectedEstreeType: 'ArrowFunctionExpression',
+    text: ' ( ( () => ( ( 1 ) ) ) ) ',
+  },
+  {
+    expectedAngularType: 'ArrowFunction',
+    expectedEstreeType: 'ArrowFunctionExpression',
+    text: ' ( ( (a, b ) => ( ( 1 ) ) ) ) ',
   },
 ];
 
