@@ -49,3 +49,4 @@ jobs:
           disable_search: true
           files: coverage/lcov.info
           token: ${{ secrets.CODECOV_TOKEN }}
+      - run: yarn run build
