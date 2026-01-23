@@ -1,6 +1,6 @@
 {
   "name": "angular-estree-parser",
-  "version": "15.4.1",
+  "version": "15.4.2",
   "description": "A parser that converts Angular source code into an ESTree-compatible form",
   "keywords": [],
   "repository": "https://github.com/prettier/angular-estree-parser",
