@@ -27,7 +27,7 @@
     "release": "release-it"
   },
   "devDependencies": {
-    "@angular/compiler": "21.2.0-next.0",
+    "@angular/compiler": "21.2.4",
     "@babel/code-frame": "8.0.0-beta.4",
     "@babel/parser": "8.0.0-beta.4",
     "@babel/types": "8.0.0-beta.4",
