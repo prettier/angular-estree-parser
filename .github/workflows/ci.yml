@@ -43,7 +43,7 @@ jobs:
           cache: 'yarn'
       - run: yarn install --immutable
       - run: yarn test --coverage
-      - uses: codecov/codecov-action@v5
+      - uses: codecov/codecov-action@v6
         with:
           fail_ci_if_error: true
           disable_search: true
