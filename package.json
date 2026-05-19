@@ -27,27 +27,27 @@
     "release": "release-it"
   },
   "devDependencies": {
-    "@angular/compiler": "21.2.8",
-    "@babel/code-frame": "8.0.0-rc.3",
-    "@babel/parser": "8.0.0-rc.3",
-    "@babel/types": "8.0.0-rc.3",
+    "@angular/compiler": "21.2.13",
+    "@babel/code-frame": "8.0.0-rc.5",
+    "@babel/parser": "8.0.0-rc.5",
+    "@babel/types": "8.0.0-rc.5",
     "@eslint/js": "10.0.1",
-    "@types/node": "25.6.0",
-    "@vitest/coverage-v8": "4.1.4",
+    "@types/node": "25.9.0",
+    "@vitest/coverage-v8": "4.1.6",
     "eslint": "10.4.0",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-simple-import-sort": "13.0.0",
     "eslint-plugin-unicorn": "64.0.0",
-    "globals": "17.4.0",
+    "globals": "17.6.0",
     "jest-snapshot-serializer-raw": "2.0.0",
     "lines-and-columns": "2.0.4",
     "npm-run-all2": "9.0.0",
-    "prettier": "3.8.2",
+    "prettier": "3.8.3",
     "release-it": "20.0.1",
-    "tsdown": "0.21.7",
+    "tsdown": "0.22.0",
     "typescript": "6.0.3",
-    "typescript-eslint": "8.58.1",
-    "vitest": "4.1.4"
+    "typescript-eslint": "8.59.4",
+    "vitest": "4.1.6"
   },
   "peerDependencies": {
     "@angular/compiler": ">=21.0.7 || >= 21.2.0-0"
