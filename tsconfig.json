@@ -7,7 +7,7 @@
     "module": "NodeNext",
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "types": ["vitest/globals"],
+    "types": ["node", "vitest/globals"],
     "noEmit": true,
     "allowImportingTsExtensions": true
   },
