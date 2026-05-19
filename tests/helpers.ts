@@ -94,7 +94,7 @@ export function snapshotAst(ast: any, source: string) {
     }, {});
     const fixColumn = (p: { line: number; column: number }) => ({
       line: p.line + 1,
-      column: p.column + 1,
+      column: p.column,
     });
     const [start, end] = [node.start, node.end].map((index) =>
       fixColumn(linesAndColumns.locationForIndex(index)!),
