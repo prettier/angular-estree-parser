@@ -47,6 +47,7 @@
     "tsdown": "0.22.0",
     "typescript": "6.0.3",
     "typescript-eslint": "8.59.4",
+    "unrun": "0.3.0",
     "vitest": "4.1.6"
   },
   "peerDependencies": {

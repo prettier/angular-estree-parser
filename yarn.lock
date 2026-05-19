@@ -1391,6 +1391,7 @@ __metadata:
     tsdown: "npm:0.22.0"
     typescript: "npm:6.0.3"
     typescript-eslint: "npm:8.59.4"
+    unrun: "npm:0.3.0"
     vitest: "npm:4.1.6"
   peerDependencies:
     "@angular/compiler": ">=21.0.7 || >= 21.2.0-0"
@@ -4349,6 +4350,22 @@ __metadata:
   version: 7.0.3
   resolution: "universal-user-agent@npm:7.0.3"
   checksum: 10/c497e85f8b11eb8fa4dce584d7a39cc98710164959f494cafc3c269b51abb20fff269951838efd7424d15f6b3d001507f3cb8b52bb5676fdb642019dfd17e63e
+  languageName: node
+  linkType: hard
+
+"unrun@npm:0.3.0":
+  version: 0.3.0
+  resolution: "unrun@npm:0.3.0"
+  dependencies:
+    rolldown: "npm:^1.0.0"
+  peerDependencies:
+    synckit: ^0.11.11
+  peerDependenciesMeta:
+    synckit:
+      optional: true
+  bin:
+    unrun: ./dist/cli.mjs
+  checksum: 10/6dc90f799787335ab8fc9fb3b604144c4dc131a9078ee50ec2de8317cef20566845f29403d92c9d801816b3d87e5ba45c36516abb96e3d249eb20f1f1f10633c
   languageName: node
   linkType: hard
 
