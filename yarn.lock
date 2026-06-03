@@ -1382,7 +1382,7 @@ __metadata:
     typescript-eslint: "npm:8.60.1"
     vitest: "npm:4.1.8"
   peerDependencies:
-    "@angular/compiler": ">=21.0.7 || >= 21.2.0-0"
+    "@angular/compiler": ">=21"
   languageName: unknown
   linkType: soft
 
