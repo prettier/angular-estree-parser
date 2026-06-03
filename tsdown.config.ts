@@ -1,7 +1,9 @@
 import { defineConfig } from 'tsdown';
 
 export default defineConfig({
-  external: ['@babel/types'],
+  deps: {
+    neverBundle: ['@babel/types'],
+  },
   fixedExtension: false,
   dts: true,
 });

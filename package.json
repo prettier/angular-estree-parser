@@ -27,7 +27,7 @@
     "release": "release-it"
   },
   "devDependencies": {
-    "@angular/compiler": "21.2.16",
+    "@angular/compiler": "22.0.0",
     "@babel/code-frame": "8.0.0-rc.6",
     "@babel/parser": "8.0.0-rc.6",
     "@babel/types": "8.0.0-rc.6",
@@ -50,7 +50,7 @@
     "vitest": "4.1.8"
   },
   "peerDependencies": {
-    "@angular/compiler": ">=21.0.7 || >= 21.2.0-0"
+    "@angular/compiler": ">=21"
   },
   "engines": {
     "node": ">= 20"
