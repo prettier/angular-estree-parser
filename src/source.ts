@@ -70,8 +70,7 @@ export class Source {
       case 'RegExpLiteral': {
         const raw = this.text.slice(start, end);
         const { value } = node as unknown as
-          | babel.NumericLiteral
-          | babel.StringLiteral;
+          babel.NumericLiteral | babel.StringLiteral;
         node.extra = { ...node.extra, raw, rawValue: value };
         break;
       }

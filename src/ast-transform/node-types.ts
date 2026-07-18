@@ -15,9 +15,7 @@ export type NGBaseNode = LocationInformation & {
 export type CommentLine = babel.CommentLine & LocationInformation;
 
 export type NGOwnNode =
-  | NGEmptyExpression
-  | NGPipeExpression
-  | NGChainedExpression;
+  NGEmptyExpression | NGPipeExpression | NGChainedExpression;
 
 export type NGNode =
   | babel.Expression

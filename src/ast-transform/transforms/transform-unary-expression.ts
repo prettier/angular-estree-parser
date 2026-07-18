@@ -24,9 +24,7 @@ type VisitorVoidExpression = {
 const transformUnaryExpression =
   <
     Visitor extends
-      | VisitorPrefixNot
-      | VisitorTypeofExpression
-      | VisitorVoidExpression,
+      VisitorPrefixNot | VisitorTypeofExpression | VisitorVoidExpression,
   >(
     operator: Visitor['operator'],
   ) =>
