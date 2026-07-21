@@ -45,7 +45,7 @@
     "prettier": "3.9.6",
     "release-it": "20.2.1",
     "tsdown": "0.22.12",
-    "typescript": "6.0.3",
+    "typescript": "7.0.2",
     "typescript-eslint": "8.65.0",
     "vitest": "4.1.10"
   },
