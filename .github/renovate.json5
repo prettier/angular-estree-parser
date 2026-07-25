@@ -23,7 +23,7 @@
       groupName: 'peerDependencies',
       matchDepTypes: ['peerDependencies'],
       rangeStrategy: 'widen',
-     },
+    },
   ],
   ignoreDeps: ['node'],
 }
