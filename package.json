@@ -43,7 +43,7 @@
     "lines-and-columns": "2.0.4",
     "npm-run-all2": "9.0.2",
     "prettier": "3.9.6",
-    "release-it": "20.2.1",
+    "release-it": "21.0.0",
     "tsdown": "0.22.14",
     "typescript": "6.0.3",
     "typescript-eslint": "8.65.0",
