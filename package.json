@@ -64,5 +64,9 @@
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
-  "packageManager": "yarn@4.18.0"
+  "packageManager": "yarn@4.18.0",
+  "dependencies": {
+    "dev": "0.1.5",
+    "vite": "8.3.0"
+  }
 }
