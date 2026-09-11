@@ -16,13 +16,17 @@
       matchManagers: ['github-actions'],
     },
     {
+      groupName: 'peerDependencies',
+      matchDepTypes: ['peerDependencies'],
+      rangeStrategy: 'widen',
+    },
+    {
       groupName: 'Prettier',
       matchPackageNames: ['prettier'],
     },
     {
-      groupName: 'peerDependencies',
-      matchDepTypes: ['peerDependencies'],
-      rangeStrategy: 'widen',
+      groupName: 'Vitest',
+      matchPackageNames: ['vitest', '@vitest/*', 'vite'],
     },
   ],
   ignoreDeps: ['node'],
