@@ -9,6 +9,7 @@
     {
       groupName: 'non-major dev-dependencies',
       matchDepTypes: ['devDependencies'],
+      matchPackageNames: ['!/^(@angular/compiler|prettier)$/'],
       matchUpdateTypes: ['minor', 'patch'],
     },
     {
